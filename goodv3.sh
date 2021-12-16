@@ -26,7 +26,7 @@ while true
 do
 read  -p "$(echo -e "请选择
 1 tcpx
-2 realm
+2 realm 中转用
 3 xray
 4 trojan
 5 speed
@@ -37,7 +37,7 @@ read  -p "$(echo -e "请选择
 10 ss_go
 11 dd
 12 dd_1
-13 s5
+13 s5 socks5代理用
 " "
 ")" choose
 	case $choose in
