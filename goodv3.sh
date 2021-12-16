@@ -1,3 +1,5 @@
+#! /bin/bash
+
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ./gost.sh'
 
 
