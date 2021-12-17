@@ -1,6 +1,6 @@
 #! /bin/bash
 
-nf_free='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
+nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
 
 nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
 
@@ -61,7 +61,7 @@ read  -p "$(echo -e "请选择
 		12) eval $dd_1;;
 		13) eval $s5;;
 		14) eval $nf;;
-		15) eval $nf_free;;
+		15) eval $nfFree;;
 		
 		*) echo "wrong input" ;;
 	esac
