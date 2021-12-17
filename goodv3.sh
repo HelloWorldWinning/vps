@@ -1,5 +1,7 @@
 #! /bin/bash
 
+nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
+
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
 
@@ -38,6 +40,7 @@ read  -p "$(echo -e "请选择
 11 dd
 12 dd_1
 13 s5 socks5代理用
+14 netflix available test
 " "
 ")" choose
 	case $choose in
@@ -54,6 +57,8 @@ read  -p "$(echo -e "请选择
 		11) eval $dd;;
 		12) eval $dd_1;;
 		13) eval $s5;;
+		14) eval $nf;;
+		
 		*) echo "wrong input" ;;
 	esac
 done
