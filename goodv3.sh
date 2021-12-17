@@ -1,5 +1,7 @@
 #! /bin/bash
 
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
+
 nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
 
 nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
@@ -44,6 +46,7 @@ read  -p "$(echo -e "请选择
 13 s5 socks5代理用
 14 netflix available test
 15 nf freedom
+16 ss_rust
 " "
 ")" choose
 	case $choose in
@@ -62,6 +65,8 @@ read  -p "$(echo -e "请选择
 		13) eval $s5;;
 		14) eval $nf;;
 		15) eval $nfFree;;
+                16) eval $ss_rust;;
+
 		
 		*) echo "wrong input" ;;
 	esac
