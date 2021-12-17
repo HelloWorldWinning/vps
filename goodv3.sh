@@ -1,5 +1,7 @@
 #! /bin/bash
 
+nf_free='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
+
 nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
 
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
@@ -41,6 +43,7 @@ read  -p "$(echo -e "请选择
 12 dd_1
 13 s5 socks5代理用
 14 netflix available test
+15 nf freedom
 " "
 ")" choose
 	case $choose in
@@ -58,6 +61,7 @@ read  -p "$(echo -e "请选择
 		12) eval $dd_1;;
 		13) eval $s5;;
 		14) eval $nf;;
+		15) eval $nf_free;;
 		
 		*) echo "wrong input" ;;
 	esac
