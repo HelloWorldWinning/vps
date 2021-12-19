@@ -36,7 +36,7 @@ read  -p "$(echo -e "请选择
 2 realm 中转用
 3 xray
 4 trojan
-5 speedtest  of vps
+5 speedtest of vps
 6 wg
 7 openvpn
 8 v2ray 
@@ -66,7 +66,7 @@ read  -p "$(echo -e "请选择
 		13) eval $s5;;
 		14) eval $nf;;
 		15) eval $nfFree;;
-                16) eval $ss_rust;;
+         16) eval $ss_rust;;
 
 		
 		*) echo "wrong input" ;;
