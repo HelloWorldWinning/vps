@@ -17,7 +17,9 @@ tcpx='wget -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && c
 realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 xray='bash <(curl -sL https://s.hijk.art/xray.sh)'
 trojan='bash <(curl -sL https://s.hijk.art/trojan-go.sh)'
+
 speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash'
+speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
 
 
 wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
@@ -49,6 +51,7 @@ read  -p "$(echo -e "请选择
 14 netflix available test
 15 nf freedom
 16 ss_rust
+17 speed2   of vps 全网/三网
 " "
 ")" choose
 	case $choose in
@@ -67,7 +70,8 @@ read  -p "$(echo -e "请选择
 		13) eval $s5;;
 		14) eval $nf;;
 		15) eval $nfFree;;
-         16) eval $ss_rust;;
+                16) eval $ss_rust;;
+	        17) eval $speed2;;
 
 		
 		*) echo "wrong input" ;;
