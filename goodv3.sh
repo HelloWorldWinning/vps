@@ -1,6 +1,6 @@
 #! /bin/bash
 
-apt-get install wget curl
+apt-get install wget 
 
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
 
