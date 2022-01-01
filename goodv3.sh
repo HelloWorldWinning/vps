@@ -26,6 +26,8 @@ speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
 
 wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
+wg_to_wgcf='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
+
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
@@ -54,6 +56,7 @@ read  -p "$(echo -e "请选择
 15 nf freedom
 16 ss_rust
 17 speed2   of vps 全网/三网
+18 wg to wgcf 有wgcf 解锁nf 情况用
 " "
 ")" choose
 	case $choose in
@@ -74,8 +77,7 @@ read  -p "$(echo -e "请选择
 		15) eval $nfFree;;
                 16) eval $ss_rust;;
 	        17) eval $speed2;;
-
-		
+	        18) eval $wg_to_wgcf;;
 		*) echo "wrong input" ;;
 	esac
 done
