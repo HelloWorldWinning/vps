@@ -2,6 +2,8 @@
 
 apt-get install wget 
 
+xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
+
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
 
 nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
@@ -57,6 +59,9 @@ read  -p "$(echo -e "请选择
 16 ss_rust
 17 speed2   of vps 全网/三网
 18 wg to wgcf 有wgcf 解锁nf 情况用
+19 x ui 面板 
+
+
 " "
 ")" choose
 	case $choose in
@@ -78,6 +83,9 @@ read  -p "$(echo -e "请选择
                 16) eval $ss_rust;;
 	        17) eval $speed2;;
 	        18) eval $wg_to_wgcf;;
+		19) eval $xui;;
+		
+		
 		*) echo "wrong input" ;;
 	esac
 done
