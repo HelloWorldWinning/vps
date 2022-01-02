@@ -61,7 +61,6 @@ read  -p "$(echo -e "请选择
 18 wg to wgcf 有wgcf 解锁nf 情况用
 19 x ui 面板 
 
-
 " "
 ")" choose
 	case $choose in
@@ -84,6 +83,7 @@ read  -p "$(echo -e "请选择
 	        17) eval $speed2;;
 	        18) eval $wg_to_wgcf;;
 		19) eval $xui;;
+		
 		
 		*) echo "wrong input" ;;
 	esac
