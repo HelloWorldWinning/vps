@@ -85,7 +85,6 @@ read  -p "$(echo -e "请选择
 	        18) eval $wg_to_wgcf;;
 		19) eval $xui;;
 		
-		
 		*) echo "wrong input" ;;
 	esac
 done
