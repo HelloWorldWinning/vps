@@ -51,8 +51,8 @@ read  -p "$(echo -e "请选择
 8 v2ray 
 9 kcptun
 10 ss_go
-11 dd gcp用
-12 dd_1 azure用
+11 dd  aws DHCP默认  , GCP 子网掩码mask 255.255.255.0
+12 dd_1 azure用默认
 13 s5 socks5代理用
 14 netflix available test
 15 nf freedom
