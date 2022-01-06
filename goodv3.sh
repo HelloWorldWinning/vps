@@ -9,6 +9,9 @@ xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/instal
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
 
 nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
+nf_free2='wget -N https://cdn.jsdelivr.net/gh/kkkyg/CFwarp/CFwarp.sh && bash CFwarp.sh'
+nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
+
 #nfFree='bash <(curl -sSL https://raw.githubusercontent.com/fscarmen/tools/main/a.sh)'
 
 nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
@@ -68,6 +71,8 @@ read  -p "$(echo -e "请选择
 18 wg to wgcf 有wgcf 解锁nf 情况用
 19 x ui 面板 
 20 open ipv6
+21 甬哥 netflix free
+22 P3terx  netflix free
 
 " "
 ")" choose
@@ -92,6 +97,8 @@ read  -p "$(echo -e "请选择
 	        18) eval $wg_to_wgcf;;
 		19) eval $xui;;
 		20) eval $open_ipv6;;
+		21) eval $nf_free2;;
+		22) eval $nf_free3;;
 		
 		
 		*) echo "wrong input" ;;
