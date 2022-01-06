@@ -1,10 +1,14 @@
 cat > /etc/network/interfaces <<EOF 
-# This file describes the network interfaces available on your system
-# and how to activate them. For more information, see interfaces(5).
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
 
-source /etc/network/interfaces.d/*
+# Cloud images dynamically generate config fragments for newly
+# attached interfaces. See /etc/udev/rules.d/75-cloud-ifupdown.rules
+# and /etc/network/cloud-ifupdown-helper. Dynamically generated
+# configuration fragments are stored in /run:
+source-directory /run/network/interfaces.d
+ 
 
-# The loopback network interface
 auto lo
 iface lo inet loopback
 EOF
