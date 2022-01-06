@@ -40,6 +40,9 @@ wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.
 
 wg_to_wgcf='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
+wg_after_warp='wg-quick down wg0  && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf && wg-quick up wg0 && wg-quick down wg1 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
+
+
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
@@ -73,6 +76,7 @@ read  -p "$(echo -e "请选择
 20 open ipv6
 21 甬哥 netflix free
 22 P3terx  netflix free
+23 先 warp 再 wg
 
 " "
 ")" choose
@@ -99,6 +103,7 @@ read  -p "$(echo -e "请选择
 		20) eval $open_ipv6;;
 		21) eval $nf_free2;;
 		22) eval $nf_free3;;
+		23) eval $wg_after_warp;;
 		
 		
 		*) echo "wrong input" ;;
