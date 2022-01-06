@@ -2,6 +2,8 @@
 
 # apt-get install wget 
 
+open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/open_ipv6.sh)'
+
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
 
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
@@ -65,6 +67,7 @@ read  -p "$(echo -e "请选择
 17 speed2   of vps 全网/三网
 18 wg to wgcf 有wgcf 解锁nf 情况用
 19 x ui 面板 
+20 open ipv6
 
 " "
 ")" choose
@@ -88,6 +91,7 @@ read  -p "$(echo -e "请选择
 	        17) eval $speed2;;
 	        18) eval $wg_to_wgcf;;
 		19) eval $xui;;
+		20) eval $open_ipv6;;
 		
 		
 		*) echo "wrong input" ;;
