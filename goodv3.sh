@@ -1,6 +1,6 @@
 #! /bin/bash
 
-apt-get install wget 
+# apt-get install wget 
 
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
 
@@ -20,7 +20,11 @@ dd='wget --no-check-certificate -O AutoReinstall.sh https://d.02es.com/AutoReins
 tcpx='wget -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh'
 realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 xray='bash <(curl -sL https://s.hijk.art/xray.sh)'
+# xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vless.sh)'
+
 trojan='bash <(curl -sL https://s.hijk.art/trojan-go.sh)'
+
+# trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan-go.sh)'
 
 speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash'
 speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
