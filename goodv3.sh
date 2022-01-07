@@ -107,7 +107,7 @@ read  -p "$(echo -e "请选择
 		20) eval $open_ipv6;;
 		21) eval $nf_free2;;
 		22) eval $nf_free3;;
-		23) eval $wg_after_warp;;
+		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
 		
 		
