@@ -2,6 +2,8 @@
 
 # apt-get install wget 
 
+ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
+
 open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/open_ipv6.sh)'
 
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
@@ -78,6 +80,7 @@ read  -p "$(echo -e "请选择
 21 甬哥 netflix free
 22 P3terx  netflix free
 23 先 warp 再 wg
+24 ipv4 v6转发
 
 " "
 ")" choose
@@ -105,6 +108,7 @@ read  -p "$(echo -e "请选择
 		21) eval $nf_free2;;
 		22) eval $nf_free3;;
 		23) eval $wg_after_warp;;
+		24) eval $ipv4_v6_forwarding;;
 		
 		
 		*) echo "wrong input" ;;
