@@ -82,7 +82,7 @@ read  -p "$(echo -e "请选择
 23 先 warp 再 wg
 24 ipv4 v6转发
 25 xray 换统一的uuid 并且 重启
-26 安装   wget curl vim tree lsof  sudo
+26 安装   wget curl vim tree lsof  sudo htop
 27 dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa 
 
 " "
@@ -113,7 +113,7 @@ read  -p "$(echo -e "请选择
 		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
 		25)(sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json;echo 14 |eval $xray) ;;
-		26)eval 'apt update;apt install wget curl vim tree lsof sudo' ;;
+		26)eval 'apt update;apt install wget curl vim tree lsof sudo htop' ;;
 		27)eval  'mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys  ; systemctl restart sshd' ;;
 		
 		
