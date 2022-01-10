@@ -110,7 +110,7 @@ read  -p "$(echo -e "请选择
 		22) eval $nf_free3;;
 		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
-		25) sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json && echo 14  |   eval $xray;;
+		25)echo  "sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json && echo 14  |   eval $xray";;
 		
 		
 		*) echo "wrong input" ;;
