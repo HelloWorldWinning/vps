@@ -83,6 +83,7 @@ read  -p "$(echo -e "请选择
 24 ipv4 v6转发
 25 xray 换统一的uuid 并且 重启
 26 安装   wget curl vim tree lsof  sudo
+27 dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa 
 
 " "
 ")" choose
