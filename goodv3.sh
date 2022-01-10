@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/bash
 
 # apt-get install wget 
 
