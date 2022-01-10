@@ -82,6 +82,7 @@ read  -p "$(echo -e "请选择
 23 先 warp 再 wg
 24 ipv4 v6转发
 25 xray 换统一的uuid 并且 重启
+26 安装   wget curl vim tree lsof netstat
 
 " "
 ")" choose
@@ -111,7 +112,7 @@ read  -p "$(echo -e "请选择
 		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
 		25)(sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json;echo 14 |eval $xray) ;;
-		
+		26)(apt install wget curl vim tree lsof netstat )  ;;
 		
 		*) echo "wrong input" ;;
 	esac
