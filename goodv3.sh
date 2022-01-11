@@ -21,6 +21,7 @@ nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestriction
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
 
+dd_oracle='bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 11 -v 64 -a -p  1'
 dd_1='wget --no-check-certificate -O AutoReinstall.sh https://git.io/AutoReinstall.sh && bash AutoReinstall.sh'
 
 dd='apt update -y && apt dist-upgrade -y ; wget --no-check-certificate -O AutoReinstall.sh https://d.02es.com/AutoReinstall.sh && chmod a+x AutoReinstall.sh && bash AutoReinstall.sh'
@@ -50,10 +51,9 @@ openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-ins
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
 ss_go='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
-#select action  in "tcpx" "realm" "xray" "trojan" "speed" "wg" "openvpn" "v2ray" 
-#do
-#	echo $action
-#	break
+ 
+
+
 while true
 do
 read  -p "$(echo -e "请选择
@@ -85,6 +85,7 @@ read  -p "$(echo -e "请选择
 26 安装   wget curl vim tree lsof  sudo htop
 27 dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa 
 28 wg 甲骨文网卡enp0s3专用 
+29 dd甲骨文 debian 11 密码是:1
 
 " "
 ")" choose
@@ -117,6 +118,8 @@ read  -p "$(echo -e "请选择
 		26)eval 'apt update;apt install wget curl vim tree lsof sudo htop' ;;
 		27)eval  'mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys  ; systemctl restart sshd' ;;
 		28)eval $wg_for_oracle;;
+		29)eval $dd_oracle;;
+		
 		
 		*) echo "wrong input" ;;
 	esac
