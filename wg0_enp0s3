@@ -1,0 +1,83 @@
+[Interface]
+Address = 10.0.0.1/28,f::1/64
+ListenPort = 8001
+MTU = 1500
+PrivateKey = cFfXmLJgV3h7KQWQRIM1nDcusfBD/dOK9kzr08Md3FI=
+
+PostUp =   iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE; ip6tables -A FORWARD -i %i -j ACCEPT; ip6tables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o enp0s3 -j MASQUERADE; ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o enp0s3 -j MASQUERADE
+
+[Peer]
+PublicKey = GxYszZj+t66N7dyda25473woLrcsXUIPpC8wpjEvGXA=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.2/32, f::2/128
+
+[Peer]
+PublicKey = Z7aWTxS9Z8syR+voG31TEkDu0FB1Yr1QAOeRxkUeYA0=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.4/32, f::4/128
+
+[Peer]
+PublicKey = r/15nvmy9+VcQlkfzTUzv9ZKlKPvZee+AH1sz50dMhw=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.6/32, f::6/128
+
+[Peer]
+PublicKey = Ll0/7Rb6oItmnLPEVXmndjE6nsEgqN5YzE1Xxd8/kX0=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.8/32, f::8/128
+
+[Peer]
+PublicKey = /4d/VesXygYKYxqQRn7KH2y5Hi35VzI+BgFzH3kBVA8=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.10/32, f::10/128
+
+[Peer]
+PublicKey = o27SWtBlBpy6JeUkJygJhQzeUs8OgpnCYWGHAeeFlA8=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.12/32, f::12/128
+
+[Peer]
+PublicKey = 9dwEfk2GYj771AxKcQO7C1iBLZYHn4rPwyBacSvhTXU= 
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.14/32, f::14/128
+
+[Peer]
+PublicKey = Lmlgstsdtz4LfWMV0nEi9V4q6vLIlYxamcgR4NxVK0M=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.16/32, f::16/128
+
+[Peer]
+PublicKey = fQ3Rwrah9BUo7uz6ZaiEmV9yH1Zc36jR8rL+yAvTGkQ=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.18/32, f::18/128
+
+[Peer]
+PublicKey =  dusWBiYKicGDzoWwDWRRL8hi//hTI8t4lKN2O60kShM=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.20/32, f::20/128
+
+[Peer]
+PublicKey =  GTWjkG0ds9Xc3lSddHQPcl/56o/QErgnV8Zcqe+Rgw0=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.22/32, f::22/128
+
+[Peer]
+PublicKey =  XMPyUdwW0LBzAjNEsAD6n8MqV59Ao6LtAKzyHnCqPmo=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.24/32, f::24/128
+
+[Peer]
+PublicKey =  s6nXMK4i7WQpXngmm23FN+tY1URHP5grOJPYpeqeET4=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.26/32, f::26/128
+
+[Peer]
+PublicKey =  5FucPaaqx0RW5iZ7ny3VgGtNi+qzENWJrVMjpTxwGwU=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.28/32, f::28/128
+
+[Peer]
+PublicKey =  M2SpL67q6oIfd40zqQQWG3iKiVwt3wl+Txjn1SQsl2E=
+PresharedKey = vcJRzM/LxnB068jGwE+UAKrvT0E+jDeLeYC+iCvLbCE=
+AllowedIPs = 10.0.0.30/32, f::30/128
