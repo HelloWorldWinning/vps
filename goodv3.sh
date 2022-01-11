@@ -86,7 +86,7 @@ read  -p "$(echo -e "请选择
 27 dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa 
 28 wg 甲骨文网卡enp0s3专用 
 29 dd甲骨文 debian 11 密码是:1
-echo -e "\n"
+eval "echo -e "\n""
 ")" choose
 	case $choose in
 		1) eval $tcpx  ;;
