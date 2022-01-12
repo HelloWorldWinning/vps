@@ -53,6 +53,7 @@ v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
 ss_go='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
 ss_latest='bash <(curl -sL https://s.hijk.art/ss.sh)'
+ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
  
 
 
@@ -90,6 +91,7 @@ read  -p "$(echo -e "请选择
 29 dd甲骨文 debian 11 密码是:1
 30 秋水逸冰大佬的写的Bench.sh脚本
 31 s.hijk.art的最新ss脚本
+32 ssr 多用户脚本
 
 
 \r\n
@@ -126,6 +128,7 @@ read  -p "$(echo -e "请选择
 		29)eval $dd_oracle;;
 		30)eval $speed3;;
 		31)eval $ss_latest;;
+		32)eval $ssr;;
 		
 		
 		*) echo "wrong input" ;;
