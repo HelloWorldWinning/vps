@@ -97,8 +97,6 @@ ${Red_font_prefix}30${Font_color_suffix} 秋水逸冰大佬的写的Bench.sh脚�
 ${Red_font_prefix}31${Font_color_suffix} s.hijk.art的最新ss脚本
 ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
 
-
-
 \r\n
 ")" choose
 	case $choose in
