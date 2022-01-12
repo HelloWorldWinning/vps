@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+Red_font_prefix="\033[31m"
+Font_color_suffix="\033[0m"
+
 # apt-get install wget 
 
 ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
@@ -60,38 +63,40 @@ ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoub
 while true
 do
 read  -p "$(echo -e "请选择
-1 tcpx
-2 realm 中转用
-3 xray
-4 trojan
-5 speedtest of vps
-6 wg
-7 openvpn
-8 v2ray 
-9 kcptun
-10 ss_go
-11 dd  aws  ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
-12 dd_1 azure用默认 
-13 s5 socks5代理用
-14 netflix available test
-15 nf freedom
-16 ss_rust
-17 speed2   of vps 全网/三网
-18 wg to wgcf 有wgcf 解锁nf 情况用
-19 x ui 面板 
-20 open ipv6
-21 甬哥 netflix free
-22 P3terx  netflix free
-23 先 warp 再 wg
-24 ipv4 v6转发
-25 xray 换统一的uuid 并且 重启
-26 安装   wget curl vim tree lsof  sudo htop
-27 dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa 
-28 wg 甲骨文网卡enp0s3专用 
-29 dd甲骨文 debian 11 密码是:1
-30 秋水逸冰大佬的写的Bench.sh脚本
-31 s.hijk.art的最新ss脚本
-32 ssr 多用户脚本
+
+${Red_font_prefix}1${Font_color_suffix} tcpx
+${Red_font_prefix}2${Font_color_suffix} realm 中转用
+${Red_font_prefix}3${Font_color_suffix} xray
+${Red_font_prefix}4${Font_color_suffix} trojan
+${Red_font_prefix}5${Font_color_suffix} speedtest of vps
+${Red_font_prefix}6${Font_color_suffix} wg
+${Red_font_prefix}7${Font_color_suffix} openvpn
+${Red_font_prefix}8${Font_color_suffix} v2ray
+${Red_font_prefix}9${Font_color_suffix} kcptun
+${Red_font_prefix}10${Font_color_suffix} ss_go
+${Red_font_prefix}11${Font_color_suffix} dd  aws  ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
+${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
+${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
+${Red_font_prefix}14${Font_color_suffix} netflix available test
+${Red_font_prefix}15${Font_color_suffix} nf freedom
+${Red_font_prefix}16${Font_color_suffix} ss_rust
+${Red_font_prefix}17${Font_color_suffix} speed2   of vps 全网/三网
+${Red_font_prefix}18${Font_color_suffix} wg to wgcf 有wgcf 解锁nf 情况用
+${Red_font_prefix}19${Font_color_suffix} x ui 面板
+${Red_font_prefix}20${Font_color_suffix} open ipv6
+${Red_font_prefix}21${Font_color_suffix} 甬哥 netflix free
+${Red_font_prefix}22${Font_color_suffix} P3terx  netflix free
+${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
+${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
+${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
+${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop
+${Red_font_prefix}27${Font_color_suffix} dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa
+${Red_font_prefix}28${Font_color_suffix} wg 甲骨文网卡enp0s3专用
+${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
+${Red_font_prefix}30${Font_color_suffix} 秋水逸冰大佬的写的Bench.sh脚本
+${Red_font_prefix}31${Font_color_suffix} s.hijk.art的最新ss脚本
+${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
+
 
 
 \r\n
