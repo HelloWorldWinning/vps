@@ -74,7 +74,7 @@ ${Red_font_prefix}7${Font_color_suffix} openvpn
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
-${Red_font_prefix}11${Font_color_suffix} dd  aws  ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
+${Red_font_prefix}11${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
 ${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
 ${Red_font_prefix}14${Font_color_suffix} netflix available test
