@@ -5,6 +5,8 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
+isp_ip='curl "https://api.ipdata.co?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8"'
+
 ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
 
 open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/open_ipv6.sh)'
@@ -96,6 +98,7 @@ ${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
 ${Red_font_prefix}30${Font_color_suffix} 秋水逸冰大佬的写的Bench.sh脚本
 ${Red_font_prefix}31${Font_color_suffix} s.hijk.art的最新ss脚本
 ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
+${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 
 \r\n
 ")" choose
@@ -132,6 +135,7 @@ ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
 		30)eval $speed3;;
 		31)eval $ss_latest;;
 		32)eval $ssr;;
+		33)eval $isp_ip;;
 		
 		
 		*) echo "wrong input" ;;
