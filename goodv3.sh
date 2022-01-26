@@ -91,7 +91,7 @@ ${Red_font_prefix}22${Font_color_suffix} P3terx  netflix free
 ${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
 ${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
 ${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
-${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop
+${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop rsync
 ${Red_font_prefix}27${Font_color_suffix} dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa
 ${Red_font_prefix}28${Font_color_suffix} wg 甲骨文网卡enp0s3专用
 ${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
