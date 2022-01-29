@@ -5,7 +5,7 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
-update_Aria2='crontab -l > conf && echo "0 3 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
+update_Aria2='crontab -l > conf && echo "0 3 \* \* \*   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
 
