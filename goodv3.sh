@@ -5,7 +5,7 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
-update_Aria2='crontab -l > conf && echo  -e "0 3 \* \* \*   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
+update_Aria2='crontab -l > conf && echo  -e "0 */4 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
 
@@ -144,7 +144,7 @@ ${Red_font_prefix}35${Font_color_suffix} 自动更新 34的Aria2，bash /etc/cca
 		32)eval $ssr;;
 		33)eval $isp_ip;;
 		34)eval $Aria2;;
-		35)eval $update_Aria2;;
+		35)eval "$update_Aria2";;
 		
 		*) echo "wrong input" ;;
 	esac
