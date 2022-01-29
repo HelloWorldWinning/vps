@@ -5,6 +5,7 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
+update_Aria2='crontab -l > conf && echo "0 3 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
 
 isp_ip='curl "https://api.ipdata.co?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8"'
@@ -102,6 +103,7 @@ ${Red_font_prefix}31${Font_color_suffix} s.hijk.art的最新ss脚本
 ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
 ${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。ccaa:进入CCAA操作界面 ；文件管理默认用户名为ccaa，密码为admin，登录后可在后台修改
+${Red_font_prefix}35${Font_color_suffix} 自动更新 34的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
 
 
 \r\n
@@ -141,6 +143,7 @@ ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。
 		32)eval $ssr;;
 		33)eval $isp_ip;;
 		34)eval $Aria2;;
+		35)eval $update_Aria2;;
 		
 		
 		*) echo "wrong input" ;;
