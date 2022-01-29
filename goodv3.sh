@@ -104,7 +104,7 @@ ${Red_font_prefix}31${Font_color_suffix} s.hijk.art的最新ss脚本
 ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
 ${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。ccaa:进入CCAA操作界面 ；文件管理默认用户名为ccaa，密码为admin，登录后可在后台修改
-${Red_font_prefix}35${Font_color_suffix} 自动更新 34的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
+${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_color_suffix}的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
 
 
 \r\n
