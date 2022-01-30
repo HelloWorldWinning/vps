@@ -13,6 +13,9 @@ isp_ip='curl "https://api.ipdata.co?api-key=513d4b07583037a5a89b6cff4ebff0083bef
 
 ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
 
+oc_ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oc_ip_forwarding.sh)'
+
+
 open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/open_ipv6.sh)'
 
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
@@ -105,6 +108,7 @@ ${Red_font_prefix}32${Font_color_suffix} ssr 多用户脚本
 ${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。ccaa:进入CCAA操作界面 ；文件管理默认用户名为ccaa，密码为admin，登录后可在后台修改
 ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_color_suffix}的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
+${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 
 
 \r\n
@@ -145,6 +149,7 @@ ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_
 		33)eval $isp_ip;;
 		34)eval $Aria2;;
 		35)eval "$update_Aria2";;
+		36)eval "$oc_ipv4_v6_forwarding";;
 		
 		*) echo "wrong input" ;;
 	esac
