@@ -5,6 +5,8 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
+bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
+
 update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
@@ -109,6 +111,7 @@ ${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。ccaa:进入CCAA操作界面 ；文件管理默认用户名为ccaa，密码为admin，登录后可在后台修改
 ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_color_suffix}的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
+${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 
 
 \r\n
@@ -150,6 +153,7 @@ ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 		34)eval $Aria2;;
 		35)eval "$update_Aria2";;
 		36)eval "$oc_ipv4_v6_forwarding";;
+		37)eval "$bierendegongju";;
 		
 		*) echo "wrong input" ;;
 	esac
