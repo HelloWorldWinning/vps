@@ -100,7 +100,7 @@ ${Red_font_prefix}22${Font_color_suffix} P3terx  netflix free
 ${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
 ${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
 ${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
-${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop rsync
+${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop rsync screen
 ${Red_font_prefix}27${Font_color_suffix} dd后 新建 ~/.ssh,覆盖安装 ~/.ssh/authorized_keys rsa
 ${Red_font_prefix}28${Font_color_suffix} wg 甲骨文网卡enp0s3专用
 ${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
@@ -142,7 +142,7 @@ ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包
 		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
 		25)(sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json;echo 14 |eval $xray) ;;
-		26)eval 'apt update;apt install wget curl vim tree lsof sudo htop rsync' ;;
+		26)eval 'apt update;apt install wget curl vim tree lsof sudo htop rsync screen' ;;
 		27)eval  'rm -fr  ~/.ssh ;mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys  ; systemctl restart sshd' ;;
 		28)eval $wg_for_oracle;;
 		29)eval $dd_oracle;;
