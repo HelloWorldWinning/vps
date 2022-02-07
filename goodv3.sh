@@ -113,6 +113,8 @@ ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 
+sed -i 's/A/B/g'  /usr/local/etc/xray/config.json 
+
 
 \r\n
 ")" choose
