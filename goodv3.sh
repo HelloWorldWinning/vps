@@ -13,7 +13,7 @@ update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.s
 
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
 
-isp_ip='curl "https://api.ipdata.co?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8"'
+isp_ip='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_ip.sh)'
 
 ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
 
