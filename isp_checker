@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 IPV4=$(curl -4 ip.sb)
-read -p 'input ip; if Nothing input , this vps ip will be checked  : ' IPV42
+read -p 'https://www.ip2location.com/; if Nothing input , this vps ip will be checked  : ' IPV42
 
 if  [ -z "$IPV42" ] ; then
       curl "https://api.ip2location.com/v2/?key=EHYIGFQY1J&ip=$IPV4&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
