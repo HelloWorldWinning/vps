@@ -114,6 +114,7 @@ ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。
 ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_color_suffix}的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
+${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 
 
 sed -i 's/A/B/g'  /etc/sysctl.conf 
