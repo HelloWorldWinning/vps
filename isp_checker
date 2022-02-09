@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+IPV4=$(curl -4 ip.sb)
+curl "https://api.ip2location.com/v2/?key=EHYIGFQY1J&ip=$IPV4&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
