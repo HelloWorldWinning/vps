@@ -47,9 +47,9 @@ realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.
 xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xrayMINE)'
 # xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vless.sh)'
 
-trojan='bash <(curl -sL https://s.hijk.art/trojan-go.sh)'
+#trojan='bash <(curl -sL https://s.hijk.art/trojan-go.sh)'
 
-# trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan-go.sh)'
+trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan-go.sh)'
 
 speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash'
 speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
