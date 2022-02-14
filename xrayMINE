@@ -183,6 +183,7 @@ getVersion() {
 #    NEW_VER="$(normalizeVersion "$(curl -s "${TAG_URL}" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)")"
 #    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 #    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]",' |grep -o '".*"'  | tr -d '"'   |  sed 's/.*://'  )"
+
     NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]"' | tr -d '"'   |  sed 's/.*://'  )"
 
     if [[ $? -ne 0 ]] || [[ $NEW_VER == "" ]]; then
