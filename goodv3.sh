@@ -44,7 +44,7 @@ dd='wget --no-check-certificate -O AutoReinstall.sh https://d.02es.com/AutoReins
 
 tcpx='wget -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh'
 realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
-xray='bash <(curl -sL https://s.hijk.art/xray.sh)'
+xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xrayMINE)'
 # xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vless.sh)'
 
 trojan='bash <(curl -sL https://s.hijk.art/trojan-go.sh)'
