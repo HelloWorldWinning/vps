@@ -11,7 +11,7 @@ PLAIN='\033[0m'
 
 jq_not=$(apt --installed list | grep jq |wc -l)
 if [  $jq_not=0 ];then
-   apt install jq
+   apt install jq -y
 fi
 
 
