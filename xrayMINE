@@ -9,6 +9,13 @@ YELLOW="\033[33m"   # Warning message
 BLUE="\033[36m"     # Info message
 PLAIN='\033[0m'
 
+jq_not=$(apt --installed list | grep jq |wc -l)
+if [  $jq_not=0 ];then
+   apt install jq
+fi
+
+
+
 # 以下网站是随机从Google上找到的无广告小说网站，不喜欢请改成其他网址，以http或https开头
 # 搭建好后无法打开伪装域名，可能是反代小说网站挂了，请在网站留言，或者Github发issue，以便替换新的网站
 SITES=(
@@ -181,10 +188,10 @@ getVersion() {
     CUR_VER="$(normalizeVersion "$(echo "$VER" | head -n 1 | cut -d " " -f2)")"
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
 #    NEW_VER="$(normalizeVersion "$(curl -s "${TAG_URL}" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)")"
-#    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 #    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]",' |grep -o '".*"'  | tr -d '"'   |  sed 's/.*://'  )"
 
-    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]"' | tr -d '"'   |  sed 's/.*://'  )"
+#    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]"' | tr -d '"'   |  sed 's/.*://'  )"
 
     if [[ $? -ne 0 ]] || [[ $NEW_VER == "" ]]; then
         colorEcho $RED " 检查Xray版本信息失败，请检查网络"
