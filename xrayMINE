@@ -1188,6 +1188,9 @@ vlessTLSConfig() {
 EOF
 }
 
+
+
+#          "id": "$uuid",
 vlessXTLSConfig() {
     local uuid="$(cat '/proc/sys/kernel/random/uuid')"
     cat > $CONFIG_FILE<<-EOF
@@ -1198,7 +1201,7 @@ vlessXTLSConfig() {
     "settings": {
       "clients": [
         {
-#          "id": "$uuid",
+
 	  "id": "12345678-1234-1234-1234-123456789012",
           "flow": "$FLOW",
           "level": 0
