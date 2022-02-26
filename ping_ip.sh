@@ -12,7 +12,7 @@ echo $resulte_id
 get_result=$(echo "https://api.boce.com/v3/task/ping/$resulte_id?key=5061ff89a104e28fa6c9f434200a4e8a")
 echo $get_result
 
-curl $get_result
+# curl $get_result
 sleep 15
 curl $get_result | jq 'del(.. | .report_source?)'
  
@@ -26,7 +26,7 @@ echo $resulte_id
 get_result=$(echo "https://api.boce.com/v3/task/ping/$resulte_id?key=5061ff89a104e28fa6c9f434200a4e8a")
 echo $get_result
 
-curl $get_result
+# curl $get_result
 sleep 15
 curl $get_result | jq 'del(.. | .report_source?)'
 fi
