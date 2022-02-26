@@ -5,6 +5,10 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
+
+
+ping_ip='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ip.sh)'
+
 isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_checker)'
 
 bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
@@ -115,6 +119,7 @@ ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
+${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/ 
 ${Red_font_prefix}999${Font_color_suffix} exit
 
 sed -i 's/A/B/g'  /etc/sysctl.conf 
@@ -161,6 +166,7 @@ sed -i 's/A/B/g'  /etc/sysctl.conf
 		36)eval "$oc_ipv4_v6_forwarding";;
 		37)eval "$bierendegongju";;
 		38)eval "$isp_checker2";;
+		39)eval "$ping_ip";;		
 		999)eval "exit";;
 		
 		*) echo "wrong input" ;;
