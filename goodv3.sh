@@ -120,9 +120,11 @@ ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/ 
+
+
 ${Red_font_prefix}999${Font_color_suffix} exit
 
-sed -i 's/A/B/g'  /etc/sysctl.conf 
+sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 
 
 \r\n
