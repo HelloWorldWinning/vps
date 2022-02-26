@@ -13,7 +13,7 @@ get_result=$(echo "https://api.boce.com/v3/task/ping/$resulte_id?key=5061ff89a10
 echo $get_result
 
 # curl $get_result
-sleep 15
+sleep 20
 curl $get_result | jq 'del(.. | .report_source?)'
  
 else
@@ -27,6 +27,6 @@ get_result=$(echo "https://api.boce.com/v3/task/ping/$resulte_id?key=5061ff89a10
 echo $get_result
 
 # curl $get_result
-sleep 15
+sleep 20
 curl $get_result | jq 'del(.. | .report_source?)'
 fi
