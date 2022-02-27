@@ -119,7 +119,7 @@ ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
-${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/ 
+${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
 
 
 ${Red_font_prefix}999${Font_color_suffix} exit
