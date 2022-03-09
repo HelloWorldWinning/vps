@@ -241,8 +241,8 @@ getData() {
     done
 
     echo ""
-    read -p " 请输入trojan-go端口[100-65535的一个数字，默认4443]：" PORT
-    [[ -z "${PORT}" ]] && PORT=4443
+    read -p " 请输入trojan-go端口[100-65535的一个数字，默认443]：" PORT
+    [[ -z "${PORT}" ]] && PORT=443
     if [[ "${PORT:0:1}" = "0" ]]; then
         echo -e "${RED}端口不能以0开头${PLAIN}"
         exit 1
