@@ -1,3 +1,3 @@
 # my_filter
 #DOMAIN-SUFFIX,ip138.com,my_filter
-#DOMAIN-SUFFIX,ipdata.co,my_filter
+DOMAIN-SUFFIX,ipdata.co,my_filter
