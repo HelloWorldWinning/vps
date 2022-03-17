@@ -129,7 +129,7 @@ ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
 
 
-${Red_font_prefix}999${Font_color_suffix} exit
+${Red_font_prefix}00${Font_color_suffix} exit
 
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 hostnamectl set-hostname
@@ -180,7 +180,7 @@ hostnamectl set-hostname
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
 		
 
-		99)eval "exit";;
+		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
 	esac
