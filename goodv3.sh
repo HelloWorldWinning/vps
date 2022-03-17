@@ -126,11 +126,13 @@ ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
 ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
+${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
 
 
 ${Red_font_prefix}999${Font_color_suffix} exit
 
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
+hostnamectl set-hostname
 
 
 \r\n
@@ -151,9 +153,9 @@ sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf
 		13) eval $s5;;
 		14) eval $nf;;
 		15) eval $nfFree;;
-         16) eval $ss_rust;;
-	     17) eval $speed2;;
-	     18) eval $wg_to_wgcf;;
+                16) eval $ss_rust;;
+	        17) eval $speed2;;
+	        18) eval $wg_to_wgcf;;
 		19) eval $xui;;
 		20) eval $open_ipv6;;
 		21) eval $nf_free2;;
@@ -175,7 +177,10 @@ sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf
 		37)eval "$bierendegongju";;
 		38)eval "$isp_checker2";;
 		39)eval "$ping_ip";;		
-		999)eval "exit";;
+		40)eval 'sysctl -p /etc/sysctl.conf';;	
+		
+
+		99)eval "exit";;
 		
 		*) echo "wrong input" ;;
 	esac
