@@ -88,9 +88,9 @@ do
 read  -p "$(echo -e "请选择
 
 ${Red_font_prefix}1${Font_color_suffix} tcpx
-${Red_font_prefix}2${Font_color_suffix} realm 中转用
+${Red_font_prefix}2${Font_color_suffix} trojan
 ${Red_font_prefix}3${Font_color_suffix} xray
-${Red_font_prefix}4${Font_color_suffix} trojan
+${Red_font_prefix}4${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} wg
 ${Red_font_prefix}7${Font_color_suffix} openvpn
@@ -139,9 +139,9 @@ hostnamectl set-hostname
 ")" choose
 	case $choose in
 		1) eval $tcpx  ;;
-		2) eval $realm ;;
+		2) eval $trojan ;;
 		3) eval $xray;;
-		4) eval $trojan;;
+		4) eva $realml;;
 		5) eval $speed;;
 		6) eval $wg;;
 		7) eval $openvpn;;
