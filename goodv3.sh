@@ -6,6 +6,7 @@ Font_color_suffix="\033[0m"
 # apt-get install wget 
 
 
+install_docker='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh)'
 
 ping_ip='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ip.sh)'
 
@@ -127,7 +128,7 @@ ${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
-
+${Red_font_prefix}41${Font_color_suffix} install docker
 
 ${Red_font_prefix}00${Font_color_suffix} exit
 
@@ -178,6 +179,7 @@ hostnamectl set-hostname
 		38)eval "$isp_checker2";;
 		39)eval "$ping_ip";;		
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
+		41)eval $install_docker;;
 		
 
 		00)eval "exit";;
