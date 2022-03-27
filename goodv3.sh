@@ -5,6 +5,9 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
+install_docker_ccaa='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_ccaa.sh)'
+
+
 
 install_docker='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh)'
 
@@ -129,6 +132,7 @@ ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
 ${Red_font_prefix}41${Font_color_suffix} install docker
+${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
 
 ${Red_font_prefix}00${Font_color_suffix} exit
 
@@ -180,6 +184,7 @@ hostnamectl set-hostname
 		39)eval "$ping_ip";;		
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
 		41)eval $install_docker;;
+		41)eval $install_docker_ccaa;;
 		
 
 		00)eval "exit";;
