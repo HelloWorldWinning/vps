@@ -184,7 +184,7 @@ hostnamectl set-hostname
 		39)eval "$ping_ip";;		
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
 		41)eval $install_docker;;
-		41)eval $install_docker_ccaa;;
+		42)eval $install_docker_ccaa;;
 		
 
 		00)eval "exit";;
