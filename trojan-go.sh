@@ -597,7 +597,7 @@ configTrojan() {
         "prefer_ipv4": false
     },
     "mux": {
-        "enabled": false,
+        "enabled": true,
         "concurrency": 8,
         "idle_timeout": 60
     },
