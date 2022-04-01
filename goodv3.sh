@@ -139,7 +139,7 @@ ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
 ${Red_font_prefix}41${Font_color_suffix} install docker
 ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
-${Red_font_prefix}43${Font_color_suffix} enable jupyter_notebook_remote_access
+${Red_font_prefix}43${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
