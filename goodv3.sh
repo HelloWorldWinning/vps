@@ -5,14 +5,9 @@ Font_color_suffix="\033[0m"
 
 # apt-get install wget 
 
-
-
-jupyter_notebook_remote_access='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter_notebook_remote_access.sh)'
-
-
+jupyter_notebook_remote_access='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter_notebook_remote_access.sh); source  ~/.bashrc'
 
 install_docker_ccaa='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_ccaa.sh)'
-
 
 
 install_docker='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh)'
