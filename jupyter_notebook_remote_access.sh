@@ -25,3 +25,6 @@ EOF
 
 
 jupyter notebook password 
+
+
+source  ~/.bashrc
