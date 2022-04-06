@@ -1,0 +1,5 @@
+apt update
+apt-get install wget sudo net-tools xz-utils openssl gawk file wget -y 
+apt-get update -y 
+apt-get upgrade -y 
+apt install -y sudo wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet nmap
