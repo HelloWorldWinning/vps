@@ -14,8 +14,8 @@ GREEN='\033[0;31m'
 RED='\033[0;32m'
 YELLOW='\033[0;33m'
 
-# SKYBLUE='\033[0;36m' latancy
-SKYBLUE='\033[0;31m'
+SKYBLUE='\033[0;36m' 
+Latency='\033[0;31m'
 
 PLAIN='\033[0m'
 
@@ -154,7 +154,7 @@ speed_test(){
 
 	        temp=$(echo "${REDownload}" | awk -F ' ' '{print $1}')
 	        if [[ $(awk -v num1=${temp} -v num2=0 'BEGIN{print(num1>num2)?"1":"0"}') -eq 1 ]]; then
-	        	printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${SKYBLUE}%-12s${PLAIN}\n" " ${nodeName}" "${reupload} Mbit/s" "${REDownload} Mbit/s" "${relatency} ms" | tee -a $log
+	        	printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${Latency}%-12s${PLAIN}\n" " ${nodeName}" "${reupload} Mbit/s" "${REDownload} Mbit/s" "${relatency} ms" | tee -a $log
 	        fi
 		else
 	        local cerror="ERROR"
@@ -170,7 +170,7 @@ speed_test(){
 
 	        temp=$(echo "${REDownload}" | awk -F ' ' '{print $1}')
 	        if [[ $(awk -v num1=${temp} -v num2=0 'BEGIN{print(num1>num2)?"1":"0"}') -eq 1 ]]; then
-	        	printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${SKYBLUE}%-12s${PLAIN}\n" " ${nodeName}" "${reupload} Mbit/s" "${REDownload} Mbit/s" "${relatency} ms" | tee -a $log
+	        	printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${Latency}%-12s${PLAIN}\n" " ${nodeName}" "${reupload} Mbit/s" "${REDownload} Mbit/s" "${relatency} ms" | tee -a $log
 			fi
 		else
 	        local cerror="ERROR"
@@ -220,7 +220,7 @@ speed_fast_com() {
 	        local relatency="-"
 	        local nodeName="Fast.com"
 
-	        printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${SKYBLUE}%-12s${PLAIN}\n" " ${nodeName}" "${reupload}" "${REDownload}" "${relatency}" | tee -a $log
+	        printf "${YELLOW}%-18s${GREEN}%-18s${RED}%-20s${Latency}%-12s${PLAIN}\n" " ${nodeName}" "${reupload}" "${REDownload}" "${relatency}" | tee -a $log
 		else
 	        local cerror="ERROR"
 		fi
