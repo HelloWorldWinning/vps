@@ -72,7 +72,9 @@ xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/m
 
 trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan-go.sh)'
 
-speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash'
+# speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash'
+
+speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/speed5.sh | bash'
 speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
 speed3='wget -qO- bench.sh | bash'
 
