@@ -13,8 +13,14 @@
 GREEN='\033[0;31m'
 RED='\033[0;32m'
 YELLOW='\033[0;33m'
-SKYBLUE='\033[0;36m'
+
+# SKYBLUE='\033[0;36m' latancy
+SKYBLUE='\033[0;31m'
+
 PLAIN='\033[0m'
+
+
+
 
 about() {
 	echo ""
