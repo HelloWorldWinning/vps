@@ -7,7 +7,8 @@
 # Thanks: Bench.sh <i@teddysun.com>
 #
 # URL: https://www.oldking.net/350.html
-#
+
+# RED GREEN 
 
 GREEN='\033[0;31m'
 RED='\033[0;32m'
