@@ -109,8 +109,8 @@ benchinit() {
 
 	if  [ ! -e 'tools.py' ]; then
 		echo " Installing tools.py ..."
-#		wget --no-check-certificate https://cdn.jsdelivr.net/gh/oooldking/script@1.1.7/tools.py > /dev/null 2>&1
-		 wget --no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools.py > /dev/null 2>&1
+		wget --no-check-certificate https://cdn.jsdelivr.net/gh/oooldking/script@1.1.7/tools.py > /dev/null 2>&1
+#		 wget --no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools.py > /dev/null 2>&1
 	fi
 	chmod a+rx tools.py
 
@@ -270,22 +270,22 @@ install_smart() {
 ip_info4(){
 	ip_date=$(curl -4 -s http://api.ip.la/en?json)
 	echo $ip_date > ip_json.json
-	isp=$(python tools.py geoip isp)
-	as_tmp=$(python tools.py geoip as)
+	isp=$(/usr/bin/python tools.py geoip isp)
+	as_tmp=$(/usr/bin/python tools.py geoip as)
 	asn=$(echo $as_tmp | awk -F ' ' '{print $1}')
-	org=$(python tools.py geoip org)
+	org=$(/usr/bin/python tools.py geoip org)
 	if [ -z "ip_date" ]; then
 		echo $ip_date
 		echo "hala"
-		country=$(python tools.py ipip country_name)
-		city=$(python tools.py ipip city)
-		countryCode=$(python tools.py ipip country_code)
-		region=$(python tools.py ipip province)
+		country=$(/usr/bin/python tools.py ipip country_name)
+		city=$(/usr/bin/python tools.py ipip city)
+		countryCode=$(/usr/bin/python tools.py ipip country_code)
+		region=$(/usr/bin/python tools.py ipip province)
 	else
-		country=$(python tools.py geoip country)
-		city=$(python tools.py geoip city)
-		countryCode=$(python tools.py geoip countryCode)
-		region=$(python tools.py geoip regionName)	
+		country=$(/usr/bin/python tools.py geoip country)
+		city=$(/usr/bin/python tools.py geoip city)
+		countryCode=$(/usr/bin/python tools.py geoip countryCode)
+		region=$(/usr/bin/python tools.py geoip regionName)	
 	fi
 	if [ -z "$city" ]; then
 		city=${region}
