@@ -1,0 +1,1 @@
+crontab -l > conf && echo  -e "30 5 */7 * *   eval 'echo 3 \| bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan-go.sh)' >/root/tmp_trojan.txt" >> conf && crontab conf && rm -f conf
