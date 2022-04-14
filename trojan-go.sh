@@ -2,6 +2,8 @@
 # trojan-go一键安装脚本
 # Author: hijk<https://hijk.art>
 
+update_trojan='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_trojan.sh )'
+
 
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
@@ -724,6 +726,8 @@ installBBR() {
 install() {
     getData
     
+    eval $update_trojan
+    
     update_trojan='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_trojan.sh )'
     eval $update_trojan
     
@@ -952,6 +956,7 @@ menu() {
     echo -e "  ${GREEN}8.${PLAIN}  查看trojan-go配置"
     echo -e "  ${GREEN}9.  ${RED}修改trojan-go配置${PLAIN}"
     echo -e "  ${GREEN}10.${PLAIN} 查看trojan-go日志"
+    echo -e "  ${GREEN}11.${PLAIN} crontab 自动升级 trojan"
     echo " -------------"
     echo -e "  ${GREEN}0.${PLAIN} 退出"
     echo 
@@ -995,6 +1000,10 @@ menu() {
         10)
             showLog
             ;;
+        11)
+            eval $update_trojan
+            ;;
+
         *)
             echo -e "$RED 请选择正确的操作！${PLAIN}"
             exit 1
