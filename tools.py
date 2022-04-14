@@ -1,13 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import time,urllib2,json,sys
+import time,json,sys
 import shlex
 import datetime
 import subprocess
+try: 
+    from importlib import reload
+except:
+    pass
+
+try:
+    import urllib2
+except:
+    import urllib.request
+    urllib2 = urllib.request
+
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+try:
+    sys.setdefaultencoding('utf-8')
+except:
+    pass
 
 def GetIpipInfo(para):
     f = open("ip_json.json",'r')
@@ -41,22 +55,22 @@ def GetDiskInfo(para):
 
 def ExecShell(cmdstring, cwd=None, timeout=None, shell=True):
 
-	if shell:
-	   cmdstring_list = cmdstring
-	else:
-	    cmdstring_list = shlex.split(cmdstring)
-	if timeout:
-	    end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout)
-	    
-	sub = subprocess.Popen(cmdstring_list, cwd=cwd, stdin=subprocess.PIPE,shell=shell,bufsize=4096,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	    
-	while sub.poll() is None:
-	    time.sleep(0.1)
-	    if timeout:
-	        if end_time <= datetime.datetime.now():
-	           raise Exception("Timeout：%s"%cmdstring)
-	            
-	return sub.communicate()
+    if shell:
+       cmdstring_list = cmdstring
+    else:
+        cmdstring_list = shlex.split(cmdstring)
+    if timeout:
+        end_time = datetime.datetime.now() + datetime.timedelta(seconds=timeout)
+        
+    sub = subprocess.Popen(cmdstring_list, cwd=cwd, stdin=subprocess.PIPE,shell=shell,bufsize=4096,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        
+    while sub.poll() is None:
+        time.sleep(0.1)
+        if timeout:
+            if end_time <= datetime.datetime.now():
+               raise Exception("Timeout：%s"%cmdstring)
+                
+    return sub.communicate()
 
 if __name__ == "__main__":
     type = sys.argv[1];
