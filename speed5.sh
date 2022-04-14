@@ -109,7 +109,8 @@ benchinit() {
 
 	if  [ ! -e 'tools.py' ]; then
 		echo " Installing tools.py ..."
-		wget --no-check-certificate https://cdn.jsdelivr.net/gh/oooldking/script@1.1.7/tools.py > /dev/null 2>&1
+#		wget --no-check-certificate https://cdn.jsdelivr.net/gh/oooldking/script@1.1.7/tools.py > /dev/null 2>&1
+		 wget --no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools.py > /dev/null 2>&1
 	fi
 	chmod a+rx tools.py
 
