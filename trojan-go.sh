@@ -723,7 +723,10 @@ installBBR() {
 
 install() {
     getData
-
+    
+    update_trojan='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_trojan.sh )'
+    eval $update_trojan
+    
     $PMT clean all
     [[ "$PMT" = "apt" ]] && $PMT update
     #echo $CMD_UPGRADE | bash
