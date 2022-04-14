@@ -80,8 +80,14 @@ if __name__ == "__main__":
     if type == 'disk':
         GetDiskInfo(sys.argv[2])
     elif type == 'geoip':
-        GetGeoioInfo(sys.argv[1])
+        try:
+            GetGeoioInfo(sys.argv[2])
+        except:
+            pass
     elif type == 'ipip':
-        GetIpipInfo(sys.argv[2])
+        try:
+            GetIpipInfo(sys.argv[2])
+        except:
+            pass
     else:
         print( 'ERROR: Parameter error')
