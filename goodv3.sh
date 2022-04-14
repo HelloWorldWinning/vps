@@ -6,6 +6,10 @@ Font_color_suffix="\033[0m"
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+latest_arm_kernel='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/latest_arm_kernel.sh)'
+
+
 debian_tools='source <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/debian_tools ) '
 
 bashrc='source <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/bashrc ) '
@@ -145,6 +149,7 @@ ${Red_font_prefix}41${Font_color_suffix} install docker
 ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
 ${Red_font_prefix}43${Font_color_suffix} wget bashrc 。手工输入  source  ~/.bashrc
 ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
+${Red_font_prefix}45${Font_color_suffix}  升级到最新的 armv8 debian系统
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -203,6 +208,7 @@ passwd root
 		42)eval $install_docker_ccaa;;
 		43)eval "$bashrc";;
 		44)eval "$jupyter_notebook_remote_access";;
+		45)eval "$latest_arm_kernel";;
 		
 
 		00)eval "exit";;
