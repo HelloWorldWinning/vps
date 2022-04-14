@@ -1,5 +1,5 @@
 sudo apt update && sudo apt upgrade -y
-Last_Version=$(apt-cache search linux-image  |grep arm64|grep v8|grep -v rt | tail -1 |awk '{print $1; exit}')
+Last_Version=$(apt-cache search linux-image  |grep arm64|grep v8|grep -v rt  |grep -v meta|sort| tail -1 |awk '{print $1; exit}')
 
 echo $Last_Version
 apt -t bullseye-backports install $Last_Version
