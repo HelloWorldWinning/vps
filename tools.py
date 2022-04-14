@@ -73,7 +73,10 @@ def ExecShell(cmdstring, cwd=None, timeout=None, shell=True):
     return sub.communicate()
 
 if __name__ == "__main__":
-    type = sys.argv[1];
+    try:
+        type = sys.argv[1]
+    except:
+        pass
     if type == 'disk':
         GetDiskInfo(sys.argv[2])
     elif type == 'geoip':
