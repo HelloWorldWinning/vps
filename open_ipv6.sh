@@ -17,11 +17,10 @@ EOF
 
 cat > /etc/network/interfaces.d/eth0 <<EOF 
 
+# auto eth0
 auto eth0
 allow-hotplug eth0
-
 iface eth0 inet dhcp
-
 iface eth0 inet6 dhcp
 EOF
 
@@ -47,9 +46,11 @@ net.ipv4.ip_forward = 1
 # forward ipv6
 net.ipv6.conf.all.accept_ra=2
 net.ipv6.conf.default.accept_ra=2
-net.ipv6.conf.eth0.accept_ra=2
+# net.ipv6.conf.eth0.accept_ra=2
+net.ipv6.conf.${net_card}.accept_ra=2
 net.ipv6.conf.all.accept_ra=2
-net.ipv6.conf.eth0.forwarding=1
+# net.ipv6.conf.eth0.forwarding=1
+net.ipv6.conf.${net_card}.forwarding=1
 net.ipv6.conf.all.forwarding=1
 
 EOF
