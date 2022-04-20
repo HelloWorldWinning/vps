@@ -1,3 +1,7 @@
+net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
+
+
+
 cat > /etc/network/interfaces <<EOF 
 # Include files from /etc/network/interfaces.d:
 source-directory /etc/network/interfaces.d
@@ -8,24 +12,29 @@ source-directory /etc/network/interfaces.d
 # configuration fragments are stored in /run:
 source-directory /run/network/interfaces.d
  
-
 auto lo
 iface lo inet loopback
+
 EOF
 
 
 
-cat > /etc/network/interfaces.d/eth0 <<EOF 
+cat > /etc/network/interfaces.d/${net_card} <<EOF 
+auto ${net_card}
+allow-hotplug ${net_card}
+iface ${net_card} inet dhcp
+iface ${net_card} inet6 dhcp
+EOF
 
-# auto eth0
+cat > /etc/network/interfaces.d/eth0 <<EOF 
 auto eth0
 allow-hotplug eth0
 iface eth0 inet dhcp
 iface eth0 inet6 dhcp
 EOF
 
-/etc/init.d/networking restart
 
+/etc/init.d/networking restart
 
 
 cat  >> /etc/resolv.conf<<EOF 
