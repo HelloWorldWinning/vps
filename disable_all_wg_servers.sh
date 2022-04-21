@@ -3,8 +3,9 @@ all_wg=$(ps aux|grep  wg-crypt-wg |grep "\["  | tail -n +2|  awk '{print $NF}' |
 for wg_i in $all_wg
 do
   (
-  echo " systemctl stop and disable:"
+  echo " wg-quick down , systemctl stop and disable:"
   echo ${wg_i}
+  wg-quick down ${wg_i}
   systemctl stop wg-quick@${wg_i}
   systemctl disable wg-quick@${wg_i}
   )
