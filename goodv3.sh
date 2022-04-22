@@ -158,7 +158,7 @@ ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
 ${Red_font_prefix}43${Font_color_suffix} wget bashrc 。手工输入  source  ~/.bashrc
 ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
-${Red_font_prefix}46${Font_color_suffix} systemctl stop and disable all wg
+${Red_font_prefix}46${Font_color_suffix}   systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
