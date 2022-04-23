@@ -11,3 +11,6 @@ iptables -I  INPUT -p tcp --dport 8090 -j ACCEPT  #插入在链的第一位置
 iptables -A INPUT -p tcp --dport 20 -j ACCEPT  #追加到链的末尾
 
 iptables -I INPUT -p udp --destination-port  53848 -j DROP
+
+需要 iptables 规则来接受所有传入的流量
+https://qa.1r1g.cn/superuser/ask/44412861/
