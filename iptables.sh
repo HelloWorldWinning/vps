@@ -12,3 +12,6 @@ iptables -I INPUT -p udp --destination-port  53848 -j DROP
 
 需要 iptables 规则来接受所有传入的流量
 https://qa.1r1g.cn/superuser/ask/44412861/
+
+iptables -P INPUT ACCEPT iptables 说明
+http://blog.chinaunix.net/uid-31410005-id-5775932.html
