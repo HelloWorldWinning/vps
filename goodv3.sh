@@ -11,6 +11,9 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
+Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
+
+
 iptables_rules="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh"
 
 
@@ -165,6 +168,7 @@ ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
 ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
+${Red_font_prefix}48${Font_color_suffix}  Linux VPS tools
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -226,6 +230,7 @@ passwd root
 		45)eval "$latest_arm_kernel";;
 		46)eval "$disable_all_wg_servers";;
 		47)curl ${iptables_rules};;
+		48)eval "$Linux_tools";;	
 
 		00)eval "exit";;
 		
