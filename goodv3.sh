@@ -168,7 +168,7 @@ ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
 ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
-${Red_font_prefix}48${Font_color_suffix}  Linux VPS tools
+${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
