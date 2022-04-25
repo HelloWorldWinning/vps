@@ -9,7 +9,7 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
-
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
 
 Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
 
@@ -169,6 +169,7 @@ ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
 ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
 ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
+${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -230,7 +231,8 @@ passwd root
 		45)eval "$latest_arm_kernel";;
 		46)eval "$disable_all_wg_servers";;
 		47)curl ${iptables_rules};;
-		48)eval "$Linux_tools";;	
+		48)eval "$Linux_tools";;
+		49)eval "$ss_rust";;
 
 		00)eval "exit";;
 		
