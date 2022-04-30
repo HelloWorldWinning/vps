@@ -41,8 +41,8 @@ request.onreadystatechange = function () {
 
 
   var message = ""
-  const paras = ["ip","isp","country_code","city","type"]
-  const paran = ["IP","ISP","地区","城市","type"]
+  const paras = ["ip","country_code","city","type"]
+  const paran = ["IP","地区","城市","type"]
   $task.fetch(request).then(response => {
     message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
