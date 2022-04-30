@@ -9,7 +9,7 @@
 // var content= `<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: bold">` + response.body + `</p>`;
 
 //  var url = "https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8"
-  var url="https://api.ip2location.com/v2/?key=EHYIGFQY1J&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=en"
+  var url="https://api.ip2location.com/v2/?key=XLTQRHOID1&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=en"
   var opts = {
       policy: $environment.params
   };
