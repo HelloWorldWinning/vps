@@ -31,7 +31,7 @@ request.onreadystatechange = function () {
 
 
   $task.fetch(request.send()).then(response => {
-    message = response? json2info(response.body,paras) : ""
+    message = response? json2info(response,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
   }, reason => {
     message = "</br></br>🛑 查询超时"
