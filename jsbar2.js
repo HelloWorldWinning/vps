@@ -19,8 +19,8 @@
   };
  
   var message = ""
-  const paras = ["ip","country_code","city"]
-  const paran = ["IP","地区","城市"]
+  const paras = ["ip","country_code","city","asn"]
+  const paran = ["IP","地区","城市","asn"]
   $task.fetch(myRequest).then(response => {
     message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
