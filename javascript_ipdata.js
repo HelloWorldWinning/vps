@@ -20,7 +20,8 @@
   };
 */
 
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+
 var request = new XMLHttpRequest();
 
 request.open('GET', 'https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8');
@@ -33,7 +34,7 @@ request.onreadystatechange = function () {
   }
 };
 
-// request.send();
+request.send();
 
  
 
@@ -41,9 +42,9 @@ request.onreadystatechange = function () {
 
 
   var message = ""
-  const paras = ["ip","country_code","city","type"]
-  const paran = ["IP","地区","城市","type"]
-  $task.fetch(request).then(response => {
+  const paras = ["ip","isp","country_code","city","type"]
+  const paran = ["IP","ISP","地区","城市","type"]
+fetch(request).then(response => {
     message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
   }, reason => {
