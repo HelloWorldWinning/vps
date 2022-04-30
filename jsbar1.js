@@ -34,7 +34,7 @@ request.onreadystatechange = function () {
     message = response? json2info(response,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
   }, reason => {
-    message = "</br></br>🛑 查询超时"
+//    message = "</br></br>🛑 查询超时"
     message = `<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: bold;">` + message + `</p>`
       $done({"title": "🔎 IP.SB 查询结果", "htmlMessage": message});
   })
