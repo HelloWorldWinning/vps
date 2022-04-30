@@ -4,10 +4,10 @@ IPV4=$(curl -4 ip.sb)
 read -p 'https://www.ip2location.com/; if Nothing input , this vps ip will be checked  : ' IPV42
 
 if  [ -z "$IPV42" ] ; then
-      curl "https://api.ip2location.com/v2/?key=EHYIGFQY1J&ip=$IPV4&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
+      curl "https://api.ip2location.com/v2/?key=XLTQRHOID1&ip=$IPV4&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
 
      else
 
-     curl "https://api.ip2location.com/v2/?key=EHYIGFQY1J&ip=$IPV42&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
+     curl "https://api.ip2location.com/v2/?key=XLTQRHOID1&ip=$IPV42&format=json&package=WS25&&addon=continent,country,region,city,geotargeting,country_groupings,time_zone_info&lang=zh-cn"   |jq
 
 fi
