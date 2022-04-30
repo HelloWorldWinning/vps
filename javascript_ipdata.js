@@ -20,6 +20,7 @@
   };
 */
 
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var request = new XMLHttpRequest();
 
 request.open('GET', 'https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8');
