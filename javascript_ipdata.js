@@ -20,7 +20,7 @@
   };
 */
 
-
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 var request = new XMLHttpRequest();
 
