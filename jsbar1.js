@@ -10,7 +10,7 @@ request.onreadystatechange = function () {
   }
 };
 
-// request.send();
+request.send();
 
 /*
 
