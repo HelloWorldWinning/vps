@@ -20,6 +20,8 @@
   };
 */
 
+const fetch = require('node-fetch');	
+
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 var request = new XMLHttpRequest();
