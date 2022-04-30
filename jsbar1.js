@@ -1,17 +1,20 @@
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var request = new XMLHttpRequest();
 
+var html_json= ""
+
 request.open('GET', 'https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8');
 request.setRequestHeader('Accept', 'application/json');
+request.send()
 
 request.onreadystatechange = function () {
   if (this.readyState === 4) {
-    console.log(this.responseText);
+   //console.log(this.responseText);
+    html_json=this.responseText;
+    console.log(html_json);
+
   }
 };
-
-request.send();
-
 /*
 
   var url = "https://api.ip.sb/geoip"
@@ -30,11 +33,11 @@ request.send();
   const paran = ["IP","地区","城市"]
 
 
-  $task.fetch(request.send()).then(response => {
-    message = response? json2info(response,paras) : ""
+$task.fetch(html_json).then(response => {
+    message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
   }, reason => {
-//    message = "</br></br>🛑 查询超时"
+    message = "</br></br>🛑 查询超时"
     message = `<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: bold;">` + message + `</p>`
       $done({"title": "🔎 IP.SB 查询结果", "htmlMessage": message});
   })
