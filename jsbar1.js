@@ -1,23 +1,14 @@
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-var request = new XMLHttpRequest();
+ /***
+  [task_local]
+  event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/geo_location.js, tag=GeoIP 查询, img-url=location.fill.viewfinder.system
+  
+  @XIAO_KOP
 
-var html_json= ""
+  **/
 
-request.open('GET', 'https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8');
-request.setRequestHeader('Accept', 'application/json');
-request.send()
+// var content= `<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: bold">` + response.body + `</p>`;
 
-request.onreadystatechange = function () {
-  if (this.readyState === 4) {
-   //console.log(this.responseText);
-    html_json=this.responseText;
-    console.log(html_json);
-
-  }
-};
-/*
-
-  var url = "https://api.ip.sb/geoip"
+  var url = "https://api.ipdata.co/?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8"
   var opts = {
       policy: $environment.params
   };
@@ -26,14 +17,11 @@ request.onreadystatechange = function () {
       opts: opts,
       timeout: 4000
   };
-*/ 
-
+ 
   var message = ""
   const paras = ["ip","country_code","city"]
   const paran = ["IP","地区","城市"]
-
-
-$task.fetch(html_json).then(response => {
+  $task.fetch(myRequest).then(response => {
     message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 IP.SB 查询结果", "htmlMessage": message});
   }, reason => {
