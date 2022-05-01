@@ -244,7 +244,7 @@ fi
     echo ""
     while true
     do
-        read -p " 是否需要再设置一组密码？[y/n]" answer
+        read -p " 默认【n】不要一组密码[y/n]" answer
 #        if [[ ${answer,,} = "n" ]]; then
       if [[ -z ${answer,,}  ]]; then
             break
