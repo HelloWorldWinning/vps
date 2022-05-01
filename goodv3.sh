@@ -242,5 +242,10 @@ passwd root
 		
 		*) echo "wrong input" ;;
 	esac
+
+read -p 'time to stay': seconds ;
+[[ -z "${seconds}" ]] && seconds=0.01
+sleep ${seconds}
+
 done
 exit
