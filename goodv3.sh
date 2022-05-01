@@ -236,7 +236,7 @@ passwd root
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
 		50)eval "netstat -lpntu";;
-		55)eval "read -p 'script to run': x ;${x}";;
+                55)read -p 'script to run': x && ${x};;
 
 		00)eval "exit";;
 		
