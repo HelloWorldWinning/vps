@@ -171,7 +171,7 @@ ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
 ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
-${Red_font_prefix}55${Font_color_suffix} eval "read -p 'script to run': x ;${x}"
+${Red_font_prefix}55${Font_color_suffix} eval read -p 'script to run':    
 
 ${Red_font_prefix}00${Font_color_suffix} exit
 
@@ -179,6 +179,7 @@ sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf
 hostnamectl set-hostname
 echo insecure >> ~/.curlrc
 passwd root
+ 
 
 
 \r\n
@@ -235,7 +236,7 @@ passwd root
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
 		50)eval "netstat -lpntu";;
-                55)eval "read -p 'script to run': x ;${x}";;
+		55)eval "read -p 'script to run': x ;${x}";;
 
 		00)eval "exit";;
 		
