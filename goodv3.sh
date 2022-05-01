@@ -171,7 +171,7 @@ ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
 ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
-
+${Red_font_prefix}51${Font_color_suffix} read -p 'script to run': x ;${x};;
 
 ${Red_font_prefix}00${Font_color_suffix} exit
 
