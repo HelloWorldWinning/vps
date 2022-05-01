@@ -245,7 +245,8 @@ fi
     while true
     do
         read -p " 是否需要再设置一组密码？[y/n]" answer
-        if [[ ${answer,,} = "n" ]]; then
+#        if [[ ${answer,,} = "n" ]]; then
+      if [[ -z ${answer,,}  ]]; then
             break
         fi
         read -p " 请设置trojan-go密码（不输则随机生成）:" pass
