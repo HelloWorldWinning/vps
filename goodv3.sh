@@ -170,6 +170,7 @@ ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemc
 ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
 ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
+${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -233,6 +234,7 @@ passwd root
 		47)curl ${iptables_rules};;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
+		50)eval "netstat -lpntu";;
 
 		00)eval "exit";;
 		
