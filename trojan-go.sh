@@ -180,10 +180,10 @@ getData() {
         echo -e "  ${RED}2. 伪装域名DNS解析指向当前服务器ip（${IP}）${PLAIN}"
         echo -e "  3. 如果/root目录下有 ${GREEN}trojan-go.pem${PLAIN} 和 ${GREEN}trojan-go.key${PLAIN} 证书密钥文件，无需理会条件2"
         echo " "
-        read -p " 确认满足按y，按其他退出脚本：" answer
-        if [[ "${answer,,}" != "y" ]]; then
-            exit 0
-        fi
+        #read -p " 确认满足按y，按其他退出脚本：" answer
+        #if [[ "${answer,,}" != "y" ]]; then
+         #   exit 0
+        #fi
 
         echo ""
         while true
@@ -225,9 +225,22 @@ getData() {
     fi
 
     echo ""
-    read -p " 请设置trojan-go密码（不输则随机生成）:" PASSWORD
-    [[ -z "$PASSWORD" ]] && PASSWORD=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1`
-    colorEcho $BLUE " trojan-go密码：$PASSWORD"
+   # read -p " 请设置trojan-go密码（不输则随机生成）:" PASSWORD
+   # [[ -z "$PASSWORD" ]] && PASSWORD=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1`
+   # colorEcho $BLUE " trojan-go密码：$PASSWORD"
+   
+   
+  read -p "default 1 ，2 for input，others for randoms:" PASSWORD
+if   [[ -z "$PASSWORD" ]]; then
+        PASSWORD='1'
+elif [[ "${PASSWORD}" = 2 ]]; then
+read -p "输入自定义密码:" PASSWORD
+else
+PASSWORD=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1`
+fi
+   
+   
+   
     echo ""
     while true
     do
