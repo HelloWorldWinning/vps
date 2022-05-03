@@ -13,6 +13,6 @@ sudo apt-get install net-tools xrdp xfce4 tigervnc-standalone-server
 
 echo xfce4-session>/home/${rdp_username}/.xsession
 
-sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
