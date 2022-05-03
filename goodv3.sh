@@ -244,7 +244,7 @@ passwd root
 		47)curl ${iptables_rules};;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
-		50)eval "netstat -lpntu";;
+		50)eval "sudo netstat -lpntu";;
                 55)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
 		
