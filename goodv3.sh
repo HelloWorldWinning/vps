@@ -247,7 +247,7 @@ passwd root
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
 		50)eval "sudo netstat -lpntu";;
-                55)read -p 'script to run': x && ${x};;
+                tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;		
 		
