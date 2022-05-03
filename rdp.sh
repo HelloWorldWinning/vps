@@ -8,9 +8,6 @@ rdp_username=$rdp_username
 fi
 sudo adduser ${rdp_username}
 sudo adduser ${rdp_username} ssl-cert  
-sudo cat  >>/etc/sudoers<<EOF 
-${rdp_username}   ALL=(ALL:ALL) ALL
-EOF
 
 sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g"  /etc/ssh/sshd_config
 sudo systemctl restart sshd
@@ -27,5 +24,11 @@ echo xfce4-session>/home/${rdp_username}/.xsession
 sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
+
+sudo cat  >>/etc/sudoers<<EOF 
+${rdp_username}   ALL=(ALL:ALL) ALL
+EOF
+
+
 
 sudo systemctl status xrdp
