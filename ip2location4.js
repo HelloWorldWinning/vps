@@ -21,7 +21,7 @@
  
   var message = ""
   const paras = ["isp","domain","country_code","country_name","city_name","region_name","usage_type","address_type","category","category_name"]
-  const paran = ["ISP","Domain",     "地区",       "Country_Name",     "城市", "区域", "【【 Usage_Type 】 】","Address_type","Category","Category_Name"]
+  const paran = ["ISP","Domain",     "地区",       "国家",     "城市", "区域", "【【 Usage_Type 】 】","Address_type","Category","Category_Name"]
   $task.fetch(myRequest).then(response => {
     message = response? json2info(response.body,paras) : ""
       $done({"title": "    🔎 ip2location 查询结果", "htmlMessage": message});
