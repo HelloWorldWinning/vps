@@ -181,7 +181,7 @@ ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}55${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} 一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
-${Red_font_prefix}57${Font_color_suffix} delete user getent passwd | awk -F: '{ print \$1}'|sort
+${Red_font_prefix}57${Font_color_suffix} delete user "getent passwd | awk -F: '{ print \$1}'|sort"
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
