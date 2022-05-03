@@ -1,3 +1,6 @@
+
+sudo service xrdp stop
+
 read -p 'input a grep  word to filter users<rdp default>': filter_input
 if [[ -z "${filter_input}" ]] ; then
 filter=rdp
