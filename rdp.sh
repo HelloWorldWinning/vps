@@ -9,7 +9,7 @@ fi
 sudo adduser ${rdp_username}
 sudo adduser ${rdp_username} ssl-cert  
 cat  >>/etc/sudoers<<EOF 
- ${rdp_username}   ALL=(ALL:ALL) ALL
+${rdp_username}   ALL=(ALL:ALL) ALL
 EOF
 
 sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g"  /etc/ssh/sshd_config
