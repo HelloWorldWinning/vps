@@ -5,7 +5,7 @@ else
 filter=${filter_input}
 fi
 
-getent passwd | awk -F: '{ print $1}'|grep  $filter
+getent passwd | awk -F: '{ print $1}'| sort| grep  $filter
 
  
 read -p 'input a existing user name to delete': rdp_username_input
