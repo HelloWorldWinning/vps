@@ -9,6 +9,14 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+
+rdp='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp.sh)'
+
+
+
+
+
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
 
 Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
@@ -172,6 +180,7 @@ ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}55${Font_color_suffix} "read -p "script to run ":  ${x}"
+${Red_font_prefix}56${Font_color_suffix} 一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession
 
 ${Red_font_prefix}00${Font_color_suffix} exit
 
@@ -237,7 +246,8 @@ passwd root
 		49)eval "$ss_rust";;
 		50)eval "netstat -lpntu";;
                 55)read -p 'script to run': x && ${x};;
-
+                56)eval "$rdp";;
+		
 		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
