@@ -42,6 +42,23 @@ sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
 
 
+# https://blog.51cto.com/u_15060545/3936030  Debian 9.5 解决中文显示乱码
+ 
+echo "en_US.UTF-8 zh_CN.UTF-8 ← 选择 chose "
+echo "locale zh_CN.UTF-8 ← 选择 chose  "
+
+sleep 3
+
+sudo apt-get install locales
+
+# 安装字体
+apt-get install ttf-wqy-zenhei
+# 安装输入法
+apt-get install ibus ibus-gtk ibus-pinyin
+
+
+
+
 
 
 ## https://zhuanlan.zhihu.com/p/76991840  安装Debian并开启远程桌面（通过Xorg）
