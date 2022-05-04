@@ -49,12 +49,12 @@ echo "locale zh_CN.UTF-8 ← 选择 chose  "
 
 sleep 3
 
-sudo apt-get install locales
+sudo apt-get install locales -y
 
 # 安装字体
-apt-get install ttf-wqy-zenhei
+apt-get install ttf-wqy-zenhei -y
 # 安装输入法
-apt-get install ibus ibus-gtk ibus-pinyin
+apt-get install ibus ibus-gtk ibus-pinyin -y
 
 
 
