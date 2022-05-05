@@ -21,11 +21,9 @@ ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git
 
 Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
 
-
-iptables_rules="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh"
-
-
-
+ 
+iptables_rules='bash <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh)'
+ 
 disable_all_wg_servers='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/disable_all_wg_servers.sh)'
 
 
