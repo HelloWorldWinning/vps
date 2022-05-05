@@ -1,9 +1,17 @@
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+setenforce 0
+ufw disable
+ 
+iptables -t nat -F
+iptables -t mangle -F 
 iptables -F
 iptables -X
 iptables -Z
 iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -P FORWARD ACCEPT
+netfilter-persistent save
 
 echo '
 已经清空所有 规则，允许所有端口
