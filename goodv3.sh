@@ -179,7 +179,7 @@ ${Red_font_prefix}47${Font_color_suffix} curl/echo iptables rules
 ${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
-${Red_font_prefix}55${Font_color_suffix} "read -p "script to run ":  ${x}"
+${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} (amd64)一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
 
@@ -243,7 +243,7 @@ passwd root
 		44)eval "$jupyter_notebook_remote_access";;
 		45)eval "$latest_arm_kernel";;
 		46)eval "$disable_all_wg_servers";;
-		47)curl ${iptables_rules};;
+		47)eval "${iptables_rules}";;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
 		50)eval "sudo netstat -lpntu";;
