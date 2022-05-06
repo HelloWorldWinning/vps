@@ -13,7 +13,10 @@ iptables -P OUTPUT ACCEPT
 iptables -P FORWARD ACCEPT
 netfilter-persistent save
 
-echo '
+
+echo  "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh"
+
+echo"
 已经清空所有 规则，允许所有端口
 非常好的iptables详解 规则 
 https://www.jianshu.com/p/ee4ee15d3658
@@ -37,4 +40,4 @@ https://qa.1r1g.cn/superuser/ask/44412861/
 
 iptables -P INPUT ACCEPT iptables 说明
 http://blog.chinaunix.net/uid-31410005-id-5775932.html
-'
+"
