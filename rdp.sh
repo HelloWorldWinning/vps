@@ -42,6 +42,10 @@ sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
 
 
+
+
+
+
 # https://blog.51cto.com/u_15060545/3936030  Debian 9.5 解决中文显示乱码
  
 echo "en_US.UTF-8 zh_CN.UTF-8 ← 选择 chose "
@@ -55,6 +59,19 @@ sudo apt-get install locales -y
 apt-get install ttf-wqy-zenhei -y
 # 安装输入法
 apt-get install ibus ibus-gtk ibus-pinyin -y
+
+
+ 
+# microsoft-edge  https://www.linuxcapable.com/how-to-install-microsoft-edge-on-debian-11/
+
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install software-properties-common apt-transport-https wget ca-certificates gnupg2 ubuntu-keyring -y
+sudo wget -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg
+echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main' | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
+sudo apt update
+sudo apt install microsoft-edge-stable -y
+
 
 
 
