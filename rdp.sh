@@ -33,7 +33,7 @@ cat  >>/etc/sudoers<<EOF
 ${rdp_username} ALL=(ALL:ALL) ALL
 EOF
 
-echo xfce4-session>/home/${rdp_username}/.xsession
+
 
 sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
@@ -74,6 +74,12 @@ sudo apt install microsoft-edge-stable -y
 
 
 
+
+
+
+
+#echo xfce4-session>/home/${rdp_username}/.xsession
+#echo gnome-session>/home/${rdp_username}/.xsession
 
 
 
