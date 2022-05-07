@@ -9,6 +9,9 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+hysteria='bash <(curl -fsSL https://git.io/hysteria.sh)'
+
+
 delete_user='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/delete_user.sh)'
 
 rdp='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp.sh)'
@@ -180,6 +183,7 @@ ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} (amd64)一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
+${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hysteria.sh)
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -247,7 +251,8 @@ passwd root
 		50)eval "sudo netstat -lpntu";;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
-                57)eval "$delete_user";;		
+                57)eval "$delete_user";;
+                58)eval "$hysteria";;
 		
 		00)eval "exit";;
 		
