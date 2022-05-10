@@ -1,0 +1,5 @@
+# my_filter_direct.list
+
+DOMAIN-SUFFIX,pan.baidu.com, my_filter_direct
+DOMAIN-SUFFIX,baidu.com, my_filter_direct
+HOST-SUFFIX,baidu.com, my_filter_direct
