@@ -26,23 +26,22 @@ iface ${net_card} inet dhcp
 iface ${net_card} inet6 dhcp
 EOF
 
-cat > /etc/network/interfaces.d/eth0 <<EOF 
-auto eth0
-allow-hotplug eth0
-iface eth0 inet dhcp
-iface eth0 inet6 dhcp
-EOF
+#cat > /etc/network/interfaces.d/eth0 <<EOF 
+#auto eth0
+#allow-hotplug eth0
+#iface eth0 inet dhcp
+#iface eth0 inet6 dhcp
+#EOF
 
 
 /etc/init.d/networking restart
 
 
 cat  >> /etc/resolv.conf<<EOF 
-nameserver 8.8.8.8
 nameserver 8.8.4.4
-nameserver 2001:4860:4860::8888
+nameserver 8.8.8.8
 nameserver 2001:4860:4860::8844
-
+nameserver 2001:4860:4860::8888
 EOF
 
 
