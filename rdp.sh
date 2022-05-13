@@ -43,6 +43,10 @@ sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
 
 
+sudo apt-get install aptitude  -y 
+sudo aptitude  install  firefox-esr -y
+
+
 
 
 
@@ -104,10 +108,19 @@ sudo apt-get install ttf-mscorefonts-installer -y
 
 
 
+
+
+
+
+##########################################################################################################################################
+
+
+
+
+
+
+
 #echo gnome-session>/home/${rdp_username}/.xsession 不要这太臃肿
-
-
-
 
 ## https://zhuanlan.zhihu.com/p/76991840  安装Debian并开启远程桌面（通过Xorg）
 ## https://linuxize.com/post/how-to-install-xrdp-on-debian-10/  How to Install Xrdp Server (Remote Desktop) on Debian 10
