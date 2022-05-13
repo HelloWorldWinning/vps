@@ -63,6 +63,24 @@ apt-get install ttf-wqy-zenhei -y
 apt-get install ibus ibus-gtk ibus-pinyin -y
 
 
+
+
+cat >>/etc/X11/app-defaults/XTerm<<EOF
+xterm*faceName: Monospace
+xterm*faceSize: 22
+XTerm*background: lightblack
+XTerm*foreground: lightgreen
+EOF
+
+
+
+
+
+
+
+
+
+
  
 # microsoft-edge  https://www.linuxcapable.com/how-to-install-microsoft-edge-on-debian-11/
 
