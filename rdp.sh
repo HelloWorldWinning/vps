@@ -87,7 +87,20 @@ sudo apt install microsoft-edge-stable -y
 
 
 
+cat >>/etc/X11/app-defaults/XTerm<<EOF
+xterm*faceName: Andale Mone
+xterm*faceSize: 22
+XTerm*background: lightblack
+XTerm*foreground: lightgreen
+EOF
 
+  
+wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
+sudo dpkg -i ttf-mscorefonts-installer_3.8_all.deb
+sudo apt install  cabextract -y
+sudo apt --fix-broken install  -y
+sudo apt autoremove -y
+sudo apt-get install ttf-mscorefonts-installer -y
 
 
 
