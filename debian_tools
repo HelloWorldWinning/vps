@@ -14,4 +14,5 @@ cat  >>~/.vimrc<<EOF
 " set showtabline=2   " this turns on the tabline
 set tabline=%F\ %y  " only the format
 set laststatus=2
+set number 
 EOF
