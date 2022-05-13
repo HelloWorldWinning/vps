@@ -1,3 +1,12 @@
+net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
+ip_inet=$(ifconfig $net_card|grep inet|grep  -v inet6| awk '{print $2}')
+echo $ip_inet
+cat >>/etc/hosts<<EOF
+$ip_inet  $HOSTNAME
+EOF
+
+
+
 apt update -y
 apt install sudo curl wget  -y
 sudo apt-get update -y
