@@ -259,7 +259,7 @@ passwd root
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
                 58)eval "$hysteria";;
-                59)eval "$superspeed_uxh |tee speed.log";;		
+                59)eval "$superspeed_uxh | tee speeds.log";;		
 		
 		00)eval "exit";;
 		
