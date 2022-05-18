@@ -9,6 +9,9 @@ apt-get upgrade -y
 apt-get install -y sudo wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet nmap netcat aptitude parted
 apt install fuse -y
 
+curl https://rclone.org/install.sh | sudo bash
+
+
 cat  >~/.vimrc<<EOF 
 " Statusline at the top (use tabline)
 " set showtabline=2   " this turns on the tabline
