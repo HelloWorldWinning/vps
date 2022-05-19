@@ -18,4 +18,5 @@ cat  >~/.vimrc<<EOF
 set tabline=%F\ %y  " only the format
 set laststatus=2
 set number 
+highlight LineNr term=bold cterm=NONE guifg=#DA70D6
 EOF
