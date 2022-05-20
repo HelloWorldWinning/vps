@@ -127,6 +127,22 @@ sudo apt-get install ttf-mscorefonts-installer -y
 
 
 
+ 
+cat  >/home/${rdp_username}/.vimrc<<EOF 
+
+" Statusline at the top (use tabline)
+" set showtabline=2   " this turns on the tabline
+set tabline=%F\ %y  " only the format
+set laststatus=2
+set number 
+" highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+EOF
+
+
+
+
 
 
 
