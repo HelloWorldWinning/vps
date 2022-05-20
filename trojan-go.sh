@@ -983,7 +983,7 @@ menu() {
             exit 0
             ;;
         1)
-            install
+             eval $update_trojan;install
             ;;
         2)
             WS="true"
