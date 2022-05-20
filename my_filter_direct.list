@@ -6,3 +6,7 @@ HOST-SUFFIX,baidu.com, my_filter_direct
 DOMAIN-SUFFIX,apple.com, my_filter_direct
 HOST-SUFFIX,apple.com, my_filter_direct
 
+
+
+HOST-SUFFIX,qiandurebo.com, my_filter_direct
+
