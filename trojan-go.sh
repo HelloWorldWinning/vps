@@ -739,10 +739,7 @@ installBBR() {
 
 install() {
     getData
-    
-    eval $update_trojan
-    
-
+  
     
     $PMT clean all
     [[ "$PMT" = "apt" ]] && $PMT update
