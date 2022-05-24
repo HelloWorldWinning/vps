@@ -11,6 +11,11 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
+
+ping_local='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local.sh)'
+
+
+
 superspeed_uxh='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/superspeed_uxh.sh)'
 
 
@@ -190,6 +195,7 @@ ${Red_font_prefix}56${Font_color_suffix} (amd64)一键安装 远程桌面 echo x
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
 ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hysteria.sh)
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
+${Red_font_prefix}60${Font_color_suffix} ping_local
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -260,6 +266,7 @@ passwd root
                 57)eval "$delete_user";;
                 58)eval "$hysteria";;
                 59)eval "$superspeed_uxh | tee speeds.log";;		
+                60)eval "$ping_local";;		
 		
 		00)eval "exit";;
 		
