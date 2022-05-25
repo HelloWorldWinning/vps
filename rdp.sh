@@ -141,7 +141,7 @@ hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
 EOF
 
 
-
+sudo apt-get install locales-all
 
 
 
