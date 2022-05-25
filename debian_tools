@@ -27,3 +27,4 @@ EOF
 
 
 echo insecure >> ~/.curlrc
+sudo apt-get install locales-all
