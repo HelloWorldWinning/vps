@@ -9,7 +9,7 @@ apt-get upgrade -y
 apt-get install -y sudo wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet nmap netcat aptitude parted
 apt install fuse -y
 
-aptitude install bc unzip nginx
+aptitude install bc unzip nginx  -y 
 
 curl https://rclone.org/install.sh | sudo bash
 
@@ -27,4 +27,4 @@ EOF
 
 
 echo insecure >> ~/.curlrc
-sudo apt-get install locales-all
+sudo apt-get install locales-all  -y 
