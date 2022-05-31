@@ -202,10 +202,8 @@ ${Red_font_prefix}00${Font_color_suffix} exit
 
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 hostnamectl set-hostname
-echo insecure >> ~/.curlrc
 passwd root
  
-
 
 \r\n
 ")" choose
