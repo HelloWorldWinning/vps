@@ -1,6 +1,10 @@
 #!/usr/local/bin/bash
-n=5
-
+read -p "ping n (default 3)=" PING_N_input
+if   [[ -z "$PING_N" ]]; then
+        n=3
+else
+n=${PING_N_input}
+fi
 
 
 out=$(ping gtw.wardao.xyz -c ${n} | grep -E 'loss$|^---|^round')
