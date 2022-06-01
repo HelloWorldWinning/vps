@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 read -p "ping n (default 3)=" PING_N_input
-if   [[ -z "$PING_N" ]]; then
+if   [[ -z "$PING_N_input" ]]; then
         n=3
 else
 n=${PING_N_input}
