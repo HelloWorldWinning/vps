@@ -17,7 +17,9 @@ netfilter-persistent save
 echo  "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh"
 
 
-echo"
+echo
+"
+
 已经清空所有 规则，允许所有端口
 非常好的iptables详解 规则 
 https://www.jianshu.com/p/ee4ee15d3658
@@ -44,5 +46,6 @@ http://blog.chinaunix.net/uid-31410005-id-5775932.html
 
 LinuxONE VPS
 https://owo.misaka.rest/linux1-ss/ 
+
 
 "
