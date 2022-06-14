@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+mkdir /root/job_2021
+
 aptitude install  -y chromium-driver  msmtp mutt
 
 
