@@ -11,6 +11,8 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
+jobs_spiders='wget --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
+
 
 ping_local='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local.sh)'
 
@@ -196,6 +198,7 @@ ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '
 ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hysteria.sh)
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
+${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc 
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -265,6 +268,7 @@ passwd root
                 58)eval "$hysteria";;
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
+                61)eval "$jobs_spiders" ;;		
 		
 		00)eval "exit";;
 		
