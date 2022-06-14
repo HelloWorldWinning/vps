@@ -276,7 +276,7 @@ passwd root
 	esac
 
 read -p 'time to go': seconds ;
-[[ -z "${seconds}" ]] && seconds=0.01
+[[ -z "${seconds}" ]] && seconds=0.0001
 sleep ${seconds}
 
 done
