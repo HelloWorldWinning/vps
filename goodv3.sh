@@ -216,7 +216,7 @@ passwd root
 		3) eval $xray;;
 		4) eva $realml;;
 		5) eval $speed;;
-		6) eval $wg ; eval $ipv4_v6_forwarding;;
+		6) eval $wg && eval $ipv4_v6_forwarding;;
 		7) eval $openvpn;;
 		8) eval $v2ray;;
 		9) eval $kcptun;;
