@@ -199,7 +199,7 @@ ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hyster
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc 
-${Red_font_prefix}tcpx121721${Font_color_suffix} 一键搞定13 17 21,需要reboot
+${Red_font_prefix}2137${Font_color_suffix} 一键搞定13 17 21,需要reboot
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
