@@ -2,6 +2,10 @@
 
 SITES=(
 
+"as.wardao.xyz"
+"aj.wardao.xyz"
+"ao.wardao.xyz"
+
 "g1.wardao.xyz"
 "az.wardao.xyz"
 "az2.wardao.xyz"
