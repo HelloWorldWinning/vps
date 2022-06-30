@@ -18,6 +18,10 @@ echo  "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh"
 
 
 echo '''
+
+Shell脚本———— /dev/null 2>&1详解
+https://www.cnblogs.com/tinywan/p/6025468.html
+
 已经清空所有 规则，允许所有端口
 非常好的iptables详解 规则 
 https://www.jianshu.com/p/ee4ee15d3658
