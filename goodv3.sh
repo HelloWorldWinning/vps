@@ -205,8 +205,8 @@ ${Red_font_prefix}2137${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}00${Font_color_suffix} exit
 
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
+nohup command > /dev/null 2>&1 &
 hostnamectl set-hostname
-passwd root
  
 
 \r\n
