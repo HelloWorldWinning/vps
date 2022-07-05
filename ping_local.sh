@@ -1,6 +1,7 @@
 #!/usr/local/bin/bash
 
 SITES=(
+"uloveme.eu.org"
 
 "g1.wardao.xyz"
 
