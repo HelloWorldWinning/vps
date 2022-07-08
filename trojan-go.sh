@@ -60,8 +60,11 @@ colorEcho() {
 }
 
 checkSystem() {
-    result=$(id | awk '{print $1}')
-    if [[ $result != "uid=0(root)" ]]; then
+  # result=$(id | awk '{print $1}')
+  # if [[ $result != "uid=0(root)" ]]; then
+    result=$(id | awk '{print $1}' |  cut -d "(" -f2 | cut -d  ")" -f1)
+    if [[ $result != "root" ]]; then
+
         echo -e " ${RED}请以root身份执行该脚本${PLAIN}"
         exit 1
     fi
