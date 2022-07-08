@@ -63,8 +63,10 @@ XTLS="false"
 KCP="false"
 
 checkSystem() {
-    result=$(id | awk '{print $1}')
-    if [[ $result != "uid=0(root)" ]]; then
+#   result=$(id | awk '{print $1}')
+#    if [[ $result != "uid=0(root)" ]]; then
+    result=$(id | awk '{print $1}' |  cut -d "(" -f2 | cut -d  ")" -f1)
+    if [[ $result != "root" ]]; then
         colorEcho $RED " 请以root身份执行该脚本"
         exit 1
     fi
