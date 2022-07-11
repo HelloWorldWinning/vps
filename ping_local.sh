@@ -3,8 +3,6 @@
 SITES=(
 "uloveme.eu.org"
 
-"g1.wardao.xyz"
-
 "g.wardao.xyz"
 
 
