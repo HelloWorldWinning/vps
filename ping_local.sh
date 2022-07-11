@@ -12,12 +12,6 @@ SITES=(
 "az2.wardao.xyz"
 "az3.wardao.xyz"
 
-
-"as.wardao.xyz"
-"aj.wardao.xyz"
-"ao.wardao.xyz"
-
-
 "ibm1.wardao.xyz"
 
 )
