@@ -3,3 +3,4 @@ DOMAIN-SUFFIX,ip138.com,my_filter
 DOMAIN-SUFFIX,ipdata.co,my_filter
 DOMAIN-SUFFIX,readwise.io,my_filter
 HOST-SUFFIX,readwise.io,my_filter
+DOMAIN-SUFFIX,hjedd.com,my_filter
