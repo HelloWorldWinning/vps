@@ -5,6 +5,8 @@ SITES=(
 
 "g.wardao.xyz"
 
+"az.wardao.xyz"
+
  
 
 "ibm1.wardao.xyz"
