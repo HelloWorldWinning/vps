@@ -98,7 +98,7 @@ fi
 
 }
 
-showInfo
+
 
 
 ############
@@ -1959,6 +1959,7 @@ menu() {
 	    
         20)
           vmessWSConfig_mianliu
+	  showInfo
         ;;
 	 
         5)
