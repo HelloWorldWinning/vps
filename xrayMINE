@@ -79,11 +79,11 @@ read -p "ws path 需要输入/：" WSPATH
 EOF
 
 installXray
-res=`status`
-if [[ $res -lt 2 ]]; then
-    colorEcho $RED " Xray未安装，请先安装！"
-    return
-fi
+#res=`status`
+#if [[ $res -lt 2 ]]; then
+#    colorEcho $RED " Xray未安装，请先安装！"
+#    return
+#fi
 systemctl restart xray
 sleep 2
 
