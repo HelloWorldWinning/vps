@@ -1,5 +1,3 @@
-new 
-
 #!/bin/bash
 # trojan-go一键安装脚本
 # Author: hijk<https://hijk.art>
