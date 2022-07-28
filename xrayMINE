@@ -16,6 +16,96 @@ fi
 
 
 
+##################
+
+
+
+
+vlessWSConfig_mianliu() {
+#installXray
+CONFIG_FILE="/usr/local/etc/xray/config.json"
+NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
+NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+
+read -p " 输入xray vmess免流端口[默认80]：" PORT
+            [[ -z "${PORT}" ]] && PORT=80
+
+read -p "uuid空就固定 ，其他就random:" uuid
+if   [[ -z "$uuid" ]]; then
+        uuid="12345678-1234-1234-1234-123456789012"
+else
+        uuid="$(cat '/proc/sys/kernel/random/uuid')"
+fi
+
+read -p "ws path 需要输入/：" WSPATH
+            [[ -z "${WSPATH}" ]] && WSPATH='/'
+ 
+
+
+    cat > $CONFIG_FILE<<-EOF
+{
+  "inbounds": [{
+    "port": $PORT,
+    "listen": "0.0.0.0",
+    "protocol": "vless",
+    "settings": {
+      "decryption": "none",
+      "clients": [
+        {
+          "id": "$uuid",
+          "level": 1,
+          "alterId": 0
+        }
+      ],
+      "disableInsecureEncryption": false
+    },
+    "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+            "path": "$WSPATH"
+        }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }]
+}
+EOF
+
+installXray
+#res=`status`
+#if [[ $res -lt 2 ]]; then
+#    colorEcho $RED " Xray未安装，请先安装！"
+#    return
+#fi
+systemctl restart xray
+sleep 2
+
+port=`grep port $CONFIG_FILE| head -n 1| cut -d: -f2| tr -d \",' '`
+res=`ss -nutlp| grep ${port} | grep -i xray`
+if [[ "$res" = "" ]]; then
+    colorEcho $RED " Xray启动失败，请检查日志或查看端口是否被占用！"
+else
+    colorEcho $BLUE " Xray启动成功"
+fi
+
+
+}
+
+
+
+
+############
+
+
+
+
 
 ##################
 
@@ -1919,6 +2009,7 @@ menu() {
     echo -e "  ${GREEN}9.${PLAIN}   安装${BLUE}trojan${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}10.${PLAIN}  安装${BLUE}trojan+XTLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${GREEN}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -1959,6 +2050,11 @@ menu() {
 	    
         20)
           vmessWSConfig_mianliu
+	  showInfo
+        ;;
+	
+        2)
+          vlessWSConfig_mianliu
 	  showInfo
         ;;
 	 
