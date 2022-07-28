@@ -2053,7 +2053,7 @@ menu() {
 	  showInfo
         ;;
 	
-        2)
+        21)
           vlessWSConfig_mianliu
 	  showInfo
         ;;
