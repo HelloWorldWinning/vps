@@ -40,7 +40,11 @@ fi
 
 read -p "ws path 需要输入/：" WSPATH
             [[ -z "${WSPATH}" ]] && WSPATH='/'
- 
+
+read -p "输入nginx fallback_port 8080:" Fallback_PORT
+if   [[ -z "$Fallback_PORT" ]]; then
+        Fallback_PORT=8080
+fi
 
 
     cat > $CONFIG_FILE<<-EOF
@@ -51,6 +55,15 @@ read -p "ws path 需要输入/：" WSPATH
     "protocol": "vless",
     "settings": {
       "decryption": "none",
+      
+    "fallbacks": [
+                {
+                    "dest": ${Fallback_PORT} 
+                }
+            ]
+         ,
+      
+      
       "clients": [
         {
           "id": "$uuid",
