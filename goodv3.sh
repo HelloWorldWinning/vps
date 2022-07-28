@@ -9,6 +9,12 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+
+
+
+trojan_go_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan_go_mianliu.sh)'
+
 tcpx121721='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcp131721.sh)'
 
 jobs_spiders='wget --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
@@ -200,6 +206,7 @@ ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc 
 ${Red_font_prefix}2137${Font_color_suffix} 一键搞定13 17 21,需要reboot
+${Red_font_prefix}62${Font_color_suffix} trojan_go ws 免流
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -271,6 +278,7 @@ hostnamectl set-hostname
                 60)eval "$ping_local";;		
                 61)eval "$jobs_spiders" ;;		
                 2137)eval "$tcpx121721" ;;
+                62)eval "$trojan_go_mianliu" ;;
 		
 		00)eval "exit";;
 		
