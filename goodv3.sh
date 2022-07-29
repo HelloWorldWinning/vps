@@ -11,7 +11,7 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
-
+dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
 
 xray_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu.sh)'
 
@@ -161,7 +161,8 @@ ${Red_font_prefix}7${Font_color_suffix} openvpn
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
-${Red_font_prefix}11${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
+${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
+${Red_font_prefix}11${Font_color_suffix} MoeClub InstallNET.sh
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
 ${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
 ${Red_font_prefix}14${Font_color_suffix} netflix available test
@@ -233,7 +234,8 @@ hostnamectl set-hostname
 		8) eval $v2ray;;
 		9) eval $kcptun;;
 		10) eval $ss_go;;
-		11) eval $dd;;
+		11o) eval $dd;;
+		11) eval $dd_debian11;;
 		12) eval $dd_1;;
 		13) eval $s5;;
 		14) eval $nf;;
