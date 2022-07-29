@@ -5,6 +5,8 @@
 ## Default root password: MoeClub.org
 ## Blog: https://moeclub.org
 ## Written By MoeClub.org
+## https://raw.githubusercontent.com/MoeClub/Note/master/InstallNET.sh
+## bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/MoeClub/Note/master/InstallNET.sh') -d 11 -v 64 -p "passwd" -port "22"
 
 export tmpVER=''
 export tmpDIST=''
@@ -14,7 +16,7 @@ export tmpMirror=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='8.8.8.8'
+export ipDNS='8.8.4.4'
 export IncDisk='default'
 export interface=''
 export interfaceSelect=''
