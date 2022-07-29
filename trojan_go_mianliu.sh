@@ -279,8 +279,8 @@ fi
 
  
 
-   read -p "输入免流port 默认80:" PORT 
-    [[ -z "${PORT}" ]] && PORT=80
+   read -p "输入免流port 默认443:" PORT 
+    [[ -z "${PORT}" ]] && PORT=443
     if [[ "${PORT:0:1}" = "0" ]]; then
         echo -e "${RED}端口不能以0开头${PLAIN}"
         exit 1
@@ -612,9 +612,9 @@ installTrojan() {
 
 configTrojan() {
 
-read -p "输入免流port 默认80:" PORT 
+read -p "输入免流port 默认443:" PORT 
 if   [[ -z "$PORT" ]]; then
-        PORT=80
+        PORT=443
 fi
 
 
