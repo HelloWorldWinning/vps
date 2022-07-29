@@ -204,8 +204,8 @@ getData() {
 
 
 
-read -p "需要自签域名，免流吗？默认yes：" mianliu_zhengshu
-            if [[ -z "${mianliu_zhengshu}" ]]; then
+read -p "需要自签域名，免流吗？默认no：" mianliu_zhengshu
+            if [[ ! -z "${mianliu_zhengshu}" ]]; then
 	    	openssl ecparam -genkey -name prime256v1 -out ~/trojan-go.key
 
 		openssl req -new -x509 -days 36500 -key  ~/trojan-go.key -out  ~/trojan-go.pem  -subj "/CN=$DOMAIN"
