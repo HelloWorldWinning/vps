@@ -646,7 +646,7 @@ fi
         "session_ticket": true,
         "reuse_session": true,
         "fallback_addr": "127.0.0.1",
-        "fallback_port": ${PORT}
+        "fallback_port": ${Nginx_PORT}
     },
     "tcp": {
         "no_delay": true,
