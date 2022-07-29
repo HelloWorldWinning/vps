@@ -13,6 +13,9 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
+xray_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu.sh)'
+
+
 trojan_go_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trojan_go_mianliu.sh)'
 
 tcpx121721='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcp131721.sh)'
@@ -206,7 +209,8 @@ ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc 
 ${Red_font_prefix}2137${Font_color_suffix} 一键搞定13 17 21,需要reboot
-${Red_font_prefix}62${Font_color_suffix} trojan_go ws 免流
+${Red_font_prefix}62${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
+${Red_font_prefix}63${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -279,6 +283,7 @@ hostnamectl set-hostname
                 61)eval "$jobs_spiders" ;;		
                 2137)eval "$tcpx121721" ;;
                 62)eval "$trojan_go_mianliu" ;;
+                63)eval "$xray_mianliu" ;;
 		
 		00)eval "exit";;
 		
