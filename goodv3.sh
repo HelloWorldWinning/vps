@@ -147,7 +147,10 @@ wg_for_oracle='wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.c
 
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
-kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
+
+#kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
+kcptun='bash <(curl -s -L https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kcptun_modified.sh)'
+
 ss_go='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
 ss_latest='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss.sh)'
 ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
