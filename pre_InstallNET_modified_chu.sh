@@ -46,7 +46,16 @@ function netmask() {
 if   [[ -z "$DD_GO" ]]; then
          eval ${dd_debian11}
 else
-  echo "bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr  "
+ read -p "输入内网ip:" DD_IP
+ read -p "输入网关gate:" DD_GATE
+ read -p "输入mask:" DD_MASK
+
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask ${DD_MASK}       --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
+
+
+
+
+#  echo "bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr  "
 fi
 
 
