@@ -2,14 +2,16 @@
 
 SITES=(
 "uloveme.eu.org"
-
 "g.wardao.xyz"
 
 "az.wardao.xyz"
-"az2.wardao.xyz"
+"ajp.wardao.xyz"
+
+"jp.wardao.xyz"
+"sg.wardao.xyz"
+"sgec2.wardao.xyz"
 
  
-
 "ibm1.wardao.xyz"
 
 )
