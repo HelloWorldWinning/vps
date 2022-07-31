@@ -11,6 +11,7 @@ SITES=(
 
 "comment:AWS"
 "jp.wardao.xyz"
+"jp2.wardao.xyz"
 "sg.wardao.xyz"
 "sgec2.wardao.xyz"
 
@@ -50,7 +51,7 @@ if [[ $a_site == *"comment"* ]]; then
   #echo "It's there!"
 #  echo "comment:gcp" | cut -d ":" -f 2
   name_vps=$(echo $a_site | cut -d ":" -f 2)
-  echo -e "========================   ${Red_font_prefix}${name_vps}${Font_color_suffix}   ========================"
+  echo -e "=================  ${Red_font_prefix}${name_vps}${Font_color_suffix}  ================="
 
 else     
 out=$(ping $a_site -c ${n} | grep -E 'loss$|^---|^round')
