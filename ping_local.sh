@@ -8,6 +8,7 @@ SITES=(
 "comment:AZ"
 "az.wardao.xyz"
 "ajp.wardao.xyz"
+"asg.wardao.xyz"
 
 "comment:AWS"
 "jp.wardao.xyz"
