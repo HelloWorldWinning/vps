@@ -29,6 +29,10 @@ Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+
 # Error="${Red_font_prefix}[错误]${Font_color_suffix}"
  
 
@@ -61,8 +65,10 @@ loss=$(echo $out | cut -d ' ' -f 12)
 ping=$(echo $out | cut -d ' ' -f 18  | sed "s/\.[0-9][0-9][0-9]//g" )
 #echo $loss $ping $site  
 av_ping=$(echo $ping | cut -d "/" -f 2)
-echo $av_ping  $loss  $ping $site  
+echo ${RED}$av_ping${NC}  ${RED}$loss${NC}  $ping $site  
 fi
+
+
 
 done
 
