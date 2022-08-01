@@ -65,7 +65,7 @@ loss=$(echo $out | cut -d ' ' -f 12)
 ping=$(echo $out | cut -d ' ' -f 18  | sed "s/\.[0-9][0-9][0-9]//g" )
 #echo $loss $ping $site  
 av_ping=$(echo $ping | cut -d "/" -f 2)
-echo ${RED}$av_ping${NC}  ${RED}$loss${NC}  $ping $site  
+echo -e ${RED}$av_ping${NC}  ${RED}$loss${NC}  $ping $site  
 fi
 
 
