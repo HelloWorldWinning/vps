@@ -32,7 +32,17 @@ Font_color_suffix="\033[0m"
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+ 
+
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
 Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
 
 
 # Error="${Red_font_prefix}[错误]${Font_color_suffix}"
@@ -67,7 +77,7 @@ loss=$(echo $out | cut -d ' ' -f 12)
 ping=$(echo $out | cut -d ' ' -f 18  | sed "s/\.[0-9][0-9][0-9]//g" )
 #echo $loss $ping $site  
 av_ping=$(echo $ping | cut -d "/" -f 2)
-echo -e ${RED}$av_ping${NC}  ${Purple}$loss${NC}  $ping $site  
+echo -e ${RED}$av_ping${NC}  ${Blue}$loss${NC}  $ping $site  
 fi
 
 
