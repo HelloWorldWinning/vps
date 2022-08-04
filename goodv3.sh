@@ -10,6 +10,7 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
 
+ping_local_fast='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-Rust/master/ping_local_fast.sh)'
 ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-Rust/master/ss-rust.sh)'
 
 
@@ -227,6 +228,7 @@ ${Red_font_prefix}62${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${
 ${Red_font_prefix}63${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}64${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
+${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
 
 
 
@@ -306,6 +308,7 @@ hostnamectl set-hostname
                 63)eval "$xray_mianliu" ;;
                 64)eval "$pre_InstallNET_modified_chu" ;;
                 65)eval "$ss_rust2" ;;
+                66)eval "$ping_local_fast" ;;
 		
 		
 		00)eval "exit";;
