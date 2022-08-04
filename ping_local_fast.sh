@@ -1,3 +1,16 @@
+site=(
+"uloveme.eu.org"
+"g.wardao.xyz"
+"az.wardao.xyz"
+"ajp.wardao.xyz"
+"jp.wardao.xyz"
+"jp2.wardao.xyz"
+"sg.wardao.xyz"
+"sgec2.wardao.xyz"
+"ibm1.wardao.xyz")
+
+
+
 Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
@@ -23,16 +36,7 @@ if [[ -z "${n}" ]]; then
 	    	 n=3
 fi
 
-site=(
-"uloveme.eu.org"
-"g.wardao.xyz"
-"az.wardao.xyz"
-"ajp.wardao.xyz"
-"jp.wardao.xyz"
-"jp2.wardao.xyz"
-"sg.wardao.xyz"
-"sgec2.wardao.xyz"
-"ibm1.wardao.xyz")
+
 
 #ehco "${site[*]}"
 #echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {}
