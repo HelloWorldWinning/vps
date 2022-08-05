@@ -31,9 +31,9 @@ White='\033[0;37m'        # White
 
 
 
-read -p "ping n default 3:" n
+read -p "ping n default 5=>" n
 if [[ -z "${n}" ]]; then
-	    	 n=3
+	    	 n=5
 fi
 
 
