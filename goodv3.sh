@@ -11,7 +11,8 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 
 
 
-ping_local_fast='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local_fast.sh)'
+ping_local_fast='bash <(curl -SL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local_fast.sh)'
+
 ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-Rust/master/ss-rust.sh)'
 
 
