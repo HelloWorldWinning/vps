@@ -1,12 +1,10 @@
 site=(
 "uloveme.eu.org"
-"g.wardao.xyz"
 "az.wardao.xyz"
-"ajp.wardao.xyz"
+"os.wardao.xyz"
 "jp.wardao.xyz"
 "jp2.wardao.xyz"
 "sg.wardao.xyz"
-"sgec2.wardao.xyz"
 "ibm1.wardao.xyz")
 
 
