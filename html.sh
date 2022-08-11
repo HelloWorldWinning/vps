@@ -1,4 +1,4 @@
-ehco "tree -H '.' -L 1 --noreport --charset utf-8 -o index.html"
+echo "tree -H '.' -L 1 --noreport --charset utf-8 -o index.html"
 
 #
 #read -p 'level of tree default=1 =>': level ;
