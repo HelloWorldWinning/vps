@@ -9,7 +9,7 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
-
+html='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/html.sh)'
 
 ping_local_fast='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local_fast.sh)'
 
@@ -231,6 +231,7 @@ ${Red_font_prefix}63${Font_color_suffix} xray ${Red_font_prefix}免流${Font_col
 ${Red_font_prefix}64${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
 ${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
+${Red_font_prefix}67${Font_color_suffix} html
 
 
 
@@ -311,6 +312,7 @@ hostnamectl set-hostname
                 64)eval "$pre_InstallNET_modified_chu" ;;
                 65)eval "$ss_rust2" ;;
                 66)eval "$ping_local_fast" ;;
+                67)eval "$html" ;;
 		
 		
 		00)eval "exit";;
