@@ -234,6 +234,7 @@ ${Red_font_prefix}64${Font_color_suffix} 可以检查mask ip gate ${Red_font_pre
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
 ${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
 ${Red_font_prefix}67${Font_color_suffix} html
+${Red_font_prefix}68${Font_color_suffix} azure relative
 
 
 
