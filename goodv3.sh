@@ -5,9 +5,11 @@ Font_color_suffix="\033[0m"
 
 net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
 
-
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
+
+
+realm2='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 
 
 azure_create='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/azure_create.sh)'
@@ -183,6 +185,7 @@ ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用�
 ${Red_font_prefix}11${Font_color_suffix} bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
 ${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
+${Red_font_prefix}13.1${Font_color_suffix}reaml2 转发
 ${Red_font_prefix}14${Font_color_suffix} netflix available test
 ${Red_font_prefix}15${Font_color_suffix} nf freedom
 ${Red_font_prefix}16${Font_color_suffix} ss_rust
@@ -262,6 +265,7 @@ hostnamectl set-hostname
 		11) eval $dd_debian11;;
 		12) eval $dd_1;;
 		13) eval $s5;;
+		13.1) eval $realm2;;
 		14) eval $nf;;
 		15) eval $nfFree;;
                 16) eval $ss_rust;;
