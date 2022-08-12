@@ -9,6 +9,8 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+azure_create='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/azure_create.sh)'
 html='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/html.sh)'
 
 ping_local_fast='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local_fast.sh)'
@@ -313,7 +315,17 @@ hostnamectl set-hostname
                 65)eval "$ss_rust2" ;;
                 66)eval "$ping_local_fast" ;;
                 67)eval "$html" ;;
-		
+		68)read  -p "$(echo -e "
+1   azure_create
+others for input location
+\r\n
+")"  choose
+        case $choose in
+          1) eval "$azure_create" ;;
+	  
+          *) read  -p  "user input = ": others ;;
+        esac
+;;
 		
 		00)eval "exit";;
 		
