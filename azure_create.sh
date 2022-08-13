@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
+handy_script="
+az group create --name az11111 --location japaneast
+
+az vm create --name az --location japaneast --resource-group az11111 --size Standard_DS3_v2 --accelerated-networking true --admin-username init --authentication-type ssh --image Canonical:UbuntuServer:16.04-LTS:16.04.201611220 --public-ip-sku standard --zone 1 --os-disk-size-gb 64 --ssh-key-values 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= '
+"
+
+read  -p "handy script? default no ->"  input_
+if [[ "$input_" == "yes" ]]
+then
+ echo "${handy_script}"
+fi
+
 lite_location='
 eastasia\n
 southeastasia\n
