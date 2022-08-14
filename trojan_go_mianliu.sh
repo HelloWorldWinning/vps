@@ -223,7 +223,8 @@ read -p "需要自签域名，免流吗？默认no：" mianliu_zhengshu
             KEY_FILE="/etc/trojan-go/${DOMAIN}.key"
         else
 #	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
-	    resolve="dig +short ${DOMAIN} @1.1.1.1"
+#	    resolve="dig +short ${DOMAIN} @1.1.1.1"
+             resolve="$(dig +short ${DOMAIN} @1.1.1.1)"
 	    
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
