@@ -12,6 +12,8 @@ BLUE="\033[36m"     # Info message
 PLAIN='\033[0m'
 
 OS=`hostnamectl | grep -i system | cut -d: -f2`
+apt install dnsutils -y
+
 
 V6_PROXY=""
 IP=`curl -sL -4 ip.sb`
@@ -208,7 +210,9 @@ getData() {
             KEY_FILE="/etc/trojan-go/${DOMAIN}.key"
         else
 #            resolve=`curl -sL https://hijk.art/hostip.php?d=${DOMAIN}`
-	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+#	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+	    resolve="dig +short ${DOMAIN} @1.1.1.1"
+
 	    
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
