@@ -142,8 +142,8 @@ trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/
 speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/speed5.sh | bash'
 # speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
 speed2='bash <(curl -Lso-  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/speed17.sh) |tee speed2.log'
-speed3='wget -qO- bench.sh | bash |tee speed3.log'
-
+#speed3='wget -qO- bench.sh | bash |tee speed3.log'
+speed3='bash <(curl -Lso-  bench.sh) |tee speed3.log'
 
 # wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -r && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
