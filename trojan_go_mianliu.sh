@@ -3,7 +3,7 @@
 # Author: hijk<https://hijk.art>
 
 update_trojan='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_trojan.sh )'
-
+apt install dnsutils -y
 
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
@@ -222,7 +222,8 @@ read -p "需要自签域名，免流吗？默认no：" mianliu_zhengshu
             CERT_FILE="/etc/trojan-go/${DOMAIN}.pem"
             KEY_FILE="/etc/trojan-go/${DOMAIN}.key"
         else
-	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+#	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+	    resolve="dig +short ${DOMAIN} @1.1.1.1"
 	    
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
