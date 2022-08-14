@@ -211,8 +211,8 @@ getData() {
         else
 #            resolve=`curl -sL https://hijk.art/hostip.php?d=${DOMAIN}`
 #	    resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
-	    resolve="dig +short ${DOMAIN} @1.1.1.1"
-
+#	    resolve="dig +short ${DOMAIN} @1.1.1.1"
+  	     resolve="$(dig +short ${DOMAIN} @1.1.1.1)"
 	    
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
