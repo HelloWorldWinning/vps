@@ -3,6 +3,8 @@
 # Author: hijk<https://hijk.art>
 
 
+apt install dnsutils -y
+
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
 YELLOW="\033[33m"   # Warning message
@@ -494,7 +496,8 @@ getData() {
             CERT_FILE="/usr/local/etc/xray/${DOMAIN}.pem"
             KEY_FILE="/usr/local/etc/xray/${DOMAIN}.key"
         else
-            resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+#            resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+	    resolve="dig +short ${DOMAIN} @1.1.1.1"	    
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
                 colorEcho ${BLUE}  "${DOMAIN} 解析结果：${resolve}"
