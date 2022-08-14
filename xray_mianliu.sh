@@ -497,7 +497,8 @@ getData() {
             KEY_FILE="/usr/local/etc/xray/${DOMAIN}.key"
         else
 #            resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
-	    resolve="dig +short ${DOMAIN} @1.1.1.1"	    
+#	    resolve="dig +short ${DOMAIN} @1.1.1.1"	    
+		resolve="$(dig +short ${DOMAIN} @1.1.1.1)"
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
                 colorEcho ${BLUE}  "${DOMAIN} 解析结果：${resolve}"
