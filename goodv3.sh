@@ -6,7 +6,7 @@ Font_color_suffix="\033[0m"
 net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
 
 # apt-get install wget 
-# 26)eval 'apt update;apt install -y wget curl vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
+# 26)eval 'apt update;apt install -y wget curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
 
 realm2='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
