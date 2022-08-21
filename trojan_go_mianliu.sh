@@ -512,7 +512,7 @@ fi
         fi
         res=`id nginx 2>/dev/null`
         if [[ "$?" != "0" ]]; then
-            user="www-data"
+            user="root"
         else
             user="nginx"
         fi
