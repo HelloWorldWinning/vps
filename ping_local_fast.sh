@@ -2,7 +2,6 @@ site=(
 "wardao.xyz"
 "uloveme.eu.org"
 "az.wardao.xyz"
-"az2.wardao.xyz"
 "os.wardao.xyz"
 "jp.wardao.xyz"
 "jp2.wardao.xyz"
