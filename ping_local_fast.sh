@@ -4,6 +4,7 @@ site=(
 "uloveme.eu.org"
 "az.wardao.xyz"
 "os.wardao.xyz"
+"tokyo.wardao.xyz"
 "jp.wardao.xyz"
 "jp2.wardao.xyz"
 "sg.wardao.xyz"
