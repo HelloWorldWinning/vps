@@ -1,5 +1,6 @@
 site=(
 "wardao.xyz"
+"hk.wardao.xyz"
 "uloveme.eu.org"
 "az.wardao.xyz"
 "os.wardao.xyz"
