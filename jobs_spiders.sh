@@ -65,3 +65,9 @@ EOF
 #EOF
 #source ~/.bashrc 
 #pip install  html5lib selenium
+
+
+
+
+
+/root/anaconda3/bin/pip  install python-telegram-bot --upgrade
