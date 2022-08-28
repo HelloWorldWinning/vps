@@ -574,6 +574,7 @@ server {
     listen ${PORT};
     listen [::]:${PORT};
     server_name ${DOMAIN};
+    charset utf-8;
     root /usr/share/nginx/html;
     location / {
         proxy_ssl_server_name on;
