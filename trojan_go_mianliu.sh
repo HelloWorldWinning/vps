@@ -576,6 +576,18 @@ server {
     server_name ${DOMAIN};
     charset utf-8;
     root /usr/share/nginx/html;
+
+
+location /f/ {
+#auth_basic_user_file    /root/passwd.txt;
+#auth_basic            "Restricted Area";
+
+    alias  /root/d.share/;
+    autoindex on;
+    
+}
+
+
     location / {
         proxy_ssl_server_name on;
         proxy_pass $PROXY_URL;
