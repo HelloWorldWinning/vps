@@ -561,6 +561,7 @@ EOF
 server {
     listen ${PORT};
     listen [::]:${PORT};
+    charset utf-8;
     server_name ${DOMAIN};
     root /usr/share/nginx/html;
 
