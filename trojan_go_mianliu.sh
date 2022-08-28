@@ -579,6 +579,7 @@ server {
 
 
 location /f/ {
+# find . -name "*.txt"|xargs -I {} iconv -f gb18030  -t utf8  {} -o {}
 # apt-get install apache2-utils
 #auth_basic_user_file    /root/passwd.txt;
 #auth_basic            "Restricted Area";
