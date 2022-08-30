@@ -1128,8 +1128,8 @@ start_menu() {
  ${Green_font_prefix}21.${Font_color_suffix} 系统配置优化	 	${Green_font_prefix}22.${Font_color_suffix} 应用johnrosen1的优化方案
  ${Green_font_prefix}23.${Font_color_suffix} 禁用IPv6	 		${Green_font_prefix}24.${Font_color_suffix} 开启IPv6
  ${Green_font_prefix}51.${Font_color_suffix} 查看排序内核               ${Green_font_prefix}52.${Font_color_suffix} 删除保留指定内核
- ${Green_font_prefix}25.${Font_color_suffix} 卸载全部加速	 	${Green_font_prefix}99.${Font_color_suffix} 退出脚本 
- ${Green_font_prefix}2137.${Font_color_suffix} 13 17 21 
+ ${Green_font_prefix}25.${Font_color_suffix} 卸载全部加速 	 	${Green_font_prefix}99.${Font_color_suffix} 退出脚本 
+ ${Green_font_prefix}2137.${Font_color_suffix} 13 17 21 	 	${Green_font_prefix}311.${Font_color_suffix} 退出脚本  
 ————————————————————————————————————————————————————————————————" &&
     check_status
   get_system_info
@@ -1242,6 +1242,10 @@ start_menu() {
     startbbrcake
     startecn
     optimizing_system
+    ;;
+
+  311)
+    apt-get install linux-image-arm64 linux-headers-arm64  -y
     ;;
 
   99)
