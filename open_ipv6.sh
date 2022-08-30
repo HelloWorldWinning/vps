@@ -60,6 +60,8 @@ net.ipv6.conf.all.accept_ra=2
 # net.ipv6.conf.eth0.forwarding=1
 net.ipv6.conf.${net_card}.forwarding=1
 net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.all.disable_ipv6 = 0
+
 
 EOF
 
