@@ -1245,6 +1245,8 @@ start_menu() {
     ;;
 
   311)
+    apt update -y
+    apt upgrade -y
     apt-get install linux-image-arm64 linux-headers-arm64  -y
     ;;
 
