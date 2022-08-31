@@ -87,6 +87,8 @@ done
 
 ##########
 
+echo "##############"
+
 #ehco "${site[*]}"
 #echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {}
 
