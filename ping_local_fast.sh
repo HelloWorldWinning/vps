@@ -55,7 +55,7 @@ fi
 
 
 
-out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6  -c ${n} {})
+out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n} )
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
