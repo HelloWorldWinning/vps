@@ -6,7 +6,7 @@ site6=(
 "6tokyo2.wardao.xyz"
 "6sg.wardao.xyz"
 "6hk.wardao.xyz"
-"6.wardao.xyz"
+"6tw.wardao.xyz"
 )
 
 
