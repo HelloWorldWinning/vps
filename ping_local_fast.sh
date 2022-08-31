@@ -58,7 +58,8 @@ out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
-stat_out=$(echo "$out" |grep  stddev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+stat_out=$(echo "$out" |grep  max|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+#stat_out=$(echo "$out" |grep  std-dev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
 
 #stat_out=$(echo "$out" |grep  stddev| cut -d " " -f4   )
 #cat "$stat_out"
@@ -93,7 +94,8 @@ out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {})
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
-stat_out=$(echo "$out" |grep  std-dev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+stat_out=$(echo "$out" |grep max|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+#stat_out=$(echo "$out" |grep  std-dev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
 #stat_out=$(echo "$out" |grep  stddev| cut -d " " -f4   )
 #cat "$stat_out"
 
