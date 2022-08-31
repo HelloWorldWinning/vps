@@ -1,11 +1,27 @@
+site6=(
+"6jp.wardao.xyz"
+"6jp2.wardao.xyz"
+"6jp3.wardao.xyz"
+"6tokyo.wardao.xyz"
+"6tokyo2.wardao.xyz"
+"6sg.wardao.xyz"
+"6hk.wardao.xyz"
+"6.wardao.xyz"
+)
+
+
+
 site=(
 "wardao.xyz"
 "hk.wardao.xyz"
 "uloveme.eu.org"
 "az.wardao.xyz"
 "tokyo.wardao.xyz"
+"tokyo2.wardao.xyz"
 "jp.wardao.xyz"
 "jp2.wardao.xyz"
+"jp3.wardao.xyz"
+"uk.wardao.xyz"
 "ibm1.wardao.xyz"
 )
 
@@ -35,7 +51,37 @@ if [[ -z "${n}" ]]; then
 	    	 n=5
 fi
 
+##########
 
+
+
+out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6  -c ${n} {})
+
+sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
+loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
+stat_out=$(echo "$out" |grep  stddev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+#stat_out=$(echo "$out" |grep  stddev| cut -d " " -f4   )
+#cat "$stat_out"
+
+#for ((i = 0; i < ${#sites_out[@]}; ++i)); do
+#    # bash arrays are 0-indexed
+#    # echo -e "${loss_out[$i]}" "${stat_out[$i]}"  "${sites_out[$i]}"
+#     echo "$i"
+#done
+#echo $sites_out
+sites_out=($sites_out)
+#echo $sites_out
+loss_out=($loss_out)
+stat_out=($stat_out)
+#
+for i in ${!sites_out[@]}; do
+  av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
+  echo -e "${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]}"
+done
+
+
+
+##########
 
 #ehco "${site[*]}"
 #echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {}
