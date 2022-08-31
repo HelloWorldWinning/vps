@@ -10,7 +10,6 @@ site6=(
 )
 
 
-
 site=(
 "wardao.xyz"
 "hk.wardao.xyz"
@@ -60,6 +59,7 @@ out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
 stat_out=$(echo "$out" |grep  stddev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+
 #stat_out=$(echo "$out" |grep  stddev| cut -d " " -f4   )
 #cat "$stat_out"
 
@@ -69,11 +69,14 @@ stat_out=$(echo "$out" |grep  stddev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-
 #     echo "$i"
 #done
 #echo $sites_out
+
 sites_out=($sites_out)
+
 #echo $sites_out
 loss_out=($loss_out)
 stat_out=($stat_out)
 #
+
 for i in ${!sites_out[@]}; do
   av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
   echo -e "${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]}"
@@ -90,7 +93,7 @@ out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {})
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
-stat_out=$(echo "$out" |grep  stddev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
+stat_out=$(echo "$out" |grep  std-dev|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
 #stat_out=$(echo "$out" |grep  stddev| cut -d " " -f4   )
 #cat "$stat_out"
 
