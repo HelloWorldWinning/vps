@@ -8,6 +8,7 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
 
 aws_arm_dd='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322" -console ttyS0,115200'
 
@@ -242,6 +243,7 @@ ${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
 ${Red_font_prefix}67${Font_color_suffix} html
 ${Red_font_prefix}68${Font_color_suffix} azure relative
 ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd
+${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
 
 
 
@@ -337,6 +339,7 @@ others for input location
 ;;
 		
 		69)eval "$aws_arm_dd";;
+                70)eval "$docker_socks5_serjs" ;;
 		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
