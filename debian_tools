@@ -39,3 +39,6 @@ sudo apt-get install locales -y
 apt-get install ttf-wqy-zenhei -y
 # 安装输入法
 apt-get install ibus ibus-gtk ibus-pinyin -y
+
+
+timedatectl set-timezone Asia/Shanghai
