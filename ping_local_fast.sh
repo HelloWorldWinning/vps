@@ -1,10 +1,8 @@
 site6=(
-"6jp.wardao.xyz"
 "6jp2.wardao.xyz"
 "6jp3.wardao.xyz"
 "6tokyo.wardao.xyz"
 "6tokyo2.wardao.xyz"
-"6sg.wardao.xyz"
 "6hk.wardao.xyz"
 "6tw.wardao.xyz"
 )
@@ -17,11 +15,8 @@ site=(
 "az.wardao.xyz"
 "tokyo.wardao.xyz"
 "tokyo2.wardao.xyz"
-"jp.wardao.xyz"
 "jp2.wardao.xyz"
 "jp3.wardao.xyz"
-"uk.wardao.xyz"
-"ibm1.wardao.xyz"
 )
 
 
