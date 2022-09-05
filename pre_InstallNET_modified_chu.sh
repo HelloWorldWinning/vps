@@ -37,9 +37,10 @@ function netmask() {
   ipAddr=`echo ${iAddr} |cut -d'/' -f1`
   ipMask=`netmask $(echo ${iAddr} |cut -d'/' -f2)`
   ipGate=`ip route show default |grep "^default" |grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' |head -n1`
-  echo "ip" $ipAddr
-  echo "mask" $ipMask
-  echo "gateway" $ipGate
+
+  echo "ip:" $ipAddr
+  echo "gateway:" $ipGate
+  echo "mask:" $ipMask
 
 
  read -p "重点关注mask 默认DD进行，其他情况手工输入:" DD_GO
