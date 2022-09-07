@@ -84,7 +84,13 @@ install_docker='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorld
 
 ping_ip='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ip.sh)'
 
-isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_checker)'
+#isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_checker)'
+
+isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/credit.sh)'
+
+
+
+
 
 bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
 
