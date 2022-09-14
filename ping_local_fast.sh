@@ -1,4 +1,5 @@
 site6=(
+"6jp.wardao.xyz"
 "6jp2.wardao.xyz"
 "6jp3.wardao.xyz"
 "6tokyo.wardao.xyz"
@@ -13,8 +14,8 @@ site=(
 "hk.wardao.xyz"
 "uloveme.eu.org"
 "az.wardao.xyz"
-"tokyo.wardao.xyz"
 "tokyo2.wardao.xyz"
+"jp.wardao.xyz"
 "jp2.wardao.xyz"
 "jp3.wardao.xyz"
 )
