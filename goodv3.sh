@@ -270,7 +270,11 @@ tar cfzv  -   <* xinxin777> | nc -q  jp3.wardao.xyz  9
 		3) eval $xray;;
 		4) eva $realml;;
 		5) eval $speed;;
-		6) eval $wg ; eval $ipv4_v6_forwarding;;
+		6) eval $wg ; eval $ipv4_v6_forwarding;
+crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf
+
+ ;;
+
 		7) eval $openvpn;;
 		8) eval $v2ray;;
 		9) eval $kcptun;;
