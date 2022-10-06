@@ -59,7 +59,8 @@ rdp='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
 
-Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
+#Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
+#Linux_tools='wget -N --no-check-certificate https://gitlab.com/misakablog/vps-toolbox/-/raw/main/MisakaToolbox.sh && bash MisakaToolbox.sh'
 
  
 iptables_rules='bash <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh)'
@@ -231,7 +232,7 @@ ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
 ${Red_font_prefix}47${Font_color_suffix} iptables -P  INPUT/OUTPUT/FORWARD  ACCEPT
-${Red_font_prefix}48${Font_color_suffix} Linux VPS tools
+${Red_font_prefix}48${Font_color_suffix} Misaka Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
 ${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
