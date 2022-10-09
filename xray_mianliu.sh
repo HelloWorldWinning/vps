@@ -3,7 +3,7 @@
 # Author: hijk<https://hijk.art>
 
 
-apt install dnsutils -y
+apt install dnsutils vim unzip  jq  -y
 
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
