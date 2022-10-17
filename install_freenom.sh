@@ -3,5 +3,5 @@ docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/ap
 wget  -O /root/.env  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/env_freenom.txt
 
 docker restart freenom
-sleep 5
+sleep 9
 docker logs freenom
