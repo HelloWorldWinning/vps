@@ -8,7 +8,13 @@ net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+
+install_freenom='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_freenom.sh)'
+
+
 docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
+
 
 aws_arm_dd='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322" -console ttyS0,115200'
 
@@ -17,6 +23,7 @@ realm2='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm
 
 
 azure_create='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/azure_create.sh)'
+
 html='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/html.sh)'
 
 ping_local_fast='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local_fast.sh)'
@@ -351,6 +358,8 @@ others for input location
 		
 		69)eval "$aws_arm_dd";;
                 70)eval "$docker_socks5_serjs" ;;
+                71)eval "$install_freenom" ;;
+
 		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
