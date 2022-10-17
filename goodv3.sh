@@ -259,6 +259,7 @@ ${Red_font_prefix}67${Font_color_suffix} html
 ${Red_font_prefix}68${Font_color_suffix} azure relative
 ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd ${Red_font_prefix}ARM${Font_color_suffix}
 ${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
+${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
 
 
 
