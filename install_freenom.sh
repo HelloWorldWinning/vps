@@ -1,4 +1,5 @@
-docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs -e RUN_AT="04:50" luolongfei/freenom
+#docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs -e RUN_AT="04:50" luolongfei/freenom
+docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs   luolongfei/freenom
 
 #wget  -O /root/.env  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/env_freenom.txt
 
