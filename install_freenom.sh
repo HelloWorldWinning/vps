@@ -9,7 +9,7 @@ docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/ap
 
 wget  -O /root/.env   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/env_freenom.txt
 
-read -p 'password for freenom.com':FNpassword;
+read -p 'password for freenom.com': FNpassword
 
 sed -i 's/RepLAce/${FNpassword}/g' /root/.env
 
