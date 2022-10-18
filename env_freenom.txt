@@ -16,10 +16,10 @@ ENV_FILE_VERSION='v2.6'
 
 ######################  账户配置 Account config  #########################
 # Freenom 账户 Freenom Account
-FREENOM_USERNAME='@qq.com'
+FREENOM_USERNAME='427851847@qq.com'
 
 # Freenom 密码 Freenom password
-FREENOM_PASSWORD=''
+FREENOM_PASSWORD='RepLAce'
 
 # 多账户支持 Support for multiple accounts
 MULTIPLE_ACCOUNTS=''
