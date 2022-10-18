@@ -11,7 +11,7 @@ wget  -O /root/.env   https://raw.githubusercontent.com/HelloWorldWinning/vps/ma
 
 read -p 'password for freenom.com': FNpassword
 
-sed -i 's/RepLAce/${FNpassword}/g' /root/.env
+sed -i "s/RepLAce/${FNpassword}/g" /root/.env
 
 docker restart freenom
 sleep 9
