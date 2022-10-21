@@ -16,7 +16,7 @@ ENV_FILE_VERSION='v2.6'
 
 ######################  账户配置 Account config  #########################
 # Freenom 账户 Freenom Account
-FREENOM_USERNAME='427851847@qq.com'
+FREENOM_USERNAME='okzhulei@gmail.com'
 
 # Freenom 密码 Freenom password
 FREENOM_PASSWORD='RepLAce'
