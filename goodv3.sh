@@ -269,7 +269,7 @@ ${Red_font_prefix}00${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
 nc -l 9  | tar xfvz - 
-tar cfzv  -   <* xinxin777> | nc -q 2  jp3.wardao.xyz  9 
+tar cfzv  -   <*/filei_path> | nc -q 1   zhulei.ga 9 
 
 \r\n
 ")" choose
