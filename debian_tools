@@ -53,4 +53,11 @@ apt-get install ibus ibus-gtk ibus-pinyin -y
 timedatectl set-timezone Asia/Shanghai
 
 
+apt update -y && apt dist-upgrade -y
+apt autoremove
+
 echo "gh auth login manually"
+
+
+
+
