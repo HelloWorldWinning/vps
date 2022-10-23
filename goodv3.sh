@@ -261,6 +261,8 @@ ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd ${Red_font_prefix}ARM${Font_
 ${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
 ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
 ${Red_font_prefix}72${Font_color_suffix} rename vps
+${Red_font_prefix}73${Font_color_suffix} receive on 59797
+${Red_font_prefix}74${Font_color_suffix} send on 59797
 
 
 
@@ -360,8 +362,14 @@ others for input location
 		69)eval "$aws_arm_dd";;
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
-                72)
-    read -p 'user name =>': USER_NAME;   hostnamectl set-hostname $USER_NAME ;;
+                72)read -p 'user name =>': USER_NAME;   hostnamectl set-hostname $USER_NAME ;;
+
+		73)nc -l 59797  | tar xfvz - ;;
+		74)read -p 'ip or domain =>': $IPIP;  tar cfzv  -   | nc -q 1 $IPIP   59797 ;;
+
+
+
+
 
 		00)eval "exit";;
 		
