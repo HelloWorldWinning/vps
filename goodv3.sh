@@ -362,11 +362,10 @@ others for input location
 		69)eval "$aws_arm_dd";;
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
-                72)read -p 'user name =>': USER_NAME;   hostnamectl set-hostname $USER_NAME ;;
+                72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME ;;
 
 		73)nc -l 59797  | tar xfvz - ;;
-		74)read -p 'ip or domain =>': $IPIP
-tar cfzv  -   | nc -q 1 $IPIP 59797 ;;
+		74)read -p 'ip or domain =>': $IPIP && tar cfzv  -   | nc -q 1 ${IPIP} 59797 ;;
 
 
 
