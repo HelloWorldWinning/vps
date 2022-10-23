@@ -579,6 +579,10 @@ server {
 
 
 location /f/ {
+
+    alias  /root/d.share/;
+    autoindex on;
+    
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
 # find . -name "*.txt"|xargs -I {} iconv -f gb18030  -t utf8  {} -o {}
 # apt-get install apache2-utils
@@ -588,9 +592,6 @@ location /f/ {
 #auth_basic_user_file    /root/passwd.txt;
 #auth_basic            "Restricted Area";
 
-    alias  /root/d.share/;
-    autoindex on;
-    
 }
 
 
