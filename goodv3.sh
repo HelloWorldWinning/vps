@@ -260,6 +260,7 @@ ${Red_font_prefix}68${Font_color_suffix} azure relative
 ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd ${Red_font_prefix}ARM${Font_color_suffix}
 ${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
 ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
+${Red_font_prefix}72${Font_color_suffix} rename vps
 
 
 
@@ -360,8 +361,7 @@ others for input location
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
                 72)
-    read -p 'user name =>': USER_NAME;
-    hostnamectl set-hostname $USER_NAME ;;
+    read -p 'user name =>': USER_NAME;   hostnamectl set-hostname $USER_NAME ;;
 
 		00)eval "exit";;
 		
