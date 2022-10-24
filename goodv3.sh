@@ -3,11 +3,20 @@
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
+
 net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
 
 # apt-get install wget 
 # 26)eval 'apt update;apt install -y wget curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
+
+get_az_api='方法1：使用cloudshell by Powershell
+多订阅：az ad sp create-for-rbac --role owner --scopes /subscriptions/订阅ID
+单订阅：$sub_id=$(az account list --query [].id -o tsv) ; az ad sp create-for-rbac --role owner --scopes /subscriptions/$sub_id
+
+方法2：cloudshell by Bash
+
+sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id'
 
 
 install_freenom='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_freenom.sh)'
@@ -264,6 +273,7 @@ ${Red_font_prefix}72${Font_color_suffix} rename vps
 ${Red_font_prefix}73${Font_color_suffix} receive on 59797
 ${Red_font_prefix}74${Font_color_suffix} send on 59797
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel
+${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
 ${Red_font_prefix}76${Font_color_suffix} docker aws   panel
 
 
@@ -369,6 +379,17 @@ others for input location
 		73)nc -l 59797  | tar xfvz - ;;
 		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 59797 ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 1 ;;
+		75.1)
+echo '
+方法1：使用cloudshell by Powershell
+多订阅：az ad sp create-for-rbac --role owner --scopes /subscriptions/订阅ID
+单订阅：$sub_id=$(az account list --query [].id -o tsv) ; az ad sp create-for-rbac --role owner --scopes /subscriptions/$sub_id
+
+方法2：cloudshell by Bash
+
+sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id
+'
+;;
 
 		76)
 wget -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
