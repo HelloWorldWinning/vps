@@ -185,7 +185,7 @@ sysctl -p
 	read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VPS  不  重启中..."
+		echo -e "${Info} VPS  请手动重启  "
 		#reboot
 	fi
 }
