@@ -263,6 +263,7 @@ ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
 ${Red_font_prefix}72${Font_color_suffix} rename vps
 ${Red_font_prefix}73${Font_color_suffix} receive on 59797
 ${Red_font_prefix}74${Font_color_suffix} send on 59797
+${Red_font_prefix}75${Font_color_suffix} docker azure panel
 
 
 
@@ -366,7 +367,7 @@ others for input location
 
 		73)nc -l 59797  | tar xfvz - ;;
 		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 59797 ;;
-
+		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager && docker exec -it azure-manager flask admin 1 1  ;;
 
 
 
