@@ -368,7 +368,7 @@ others for input location
 
 		73)nc -l 59797  | tar xfvz - ;;
 		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 59797 ;;
-		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager && docker exec -it azure-manager flask admin 1 1  ;;
+		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 1 ;;
 
 		76)
 wget -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
