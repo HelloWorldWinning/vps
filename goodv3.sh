@@ -388,6 +388,12 @@ echo '
 方法2：cloudshell by Bash
 
 sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id
+
+账号：defaultuser
+密码：Thisis.yourpassword1
+https://github.com/elunez/azure-manager
+https://zhile.one/archives/1404.html
+
 '
 ;;
 
