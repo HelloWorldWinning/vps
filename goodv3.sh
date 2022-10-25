@@ -412,7 +412,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 
 read -p 'time to go': seconds ;
 [[ -z "${seconds}" ]] && seconds=0
-sleep ${seconds}
+#sleep ${seconds}
 
 done
 exit
