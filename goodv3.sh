@@ -274,7 +274,7 @@ ${Red_font_prefix}73${Font_color_suffix} receive on 59797
 ${Red_font_prefix}74${Font_color_suffix} send on 59797
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel
 ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
-${Red_font_prefix}76${Font_color_suffix} docker aws   panel
+${Red_font_prefix}76${Font_color_suffix} aws   panel
 
 
 
