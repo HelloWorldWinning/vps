@@ -21,6 +21,7 @@ fi
 ##################
 
 
+install_80_install='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)'
 
 
 vlessWSConfig_mianliu() {
@@ -2082,12 +2083,13 @@ menu() {
             vlessWSConfig_mianliu
             showInfo
         ;;
-	 
+
         22)
             installXray
             vlessWSConfig_mianliu
             showInfo
-bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)
+eval "$install_80_install"
+
         ;;
 	 
         5)
