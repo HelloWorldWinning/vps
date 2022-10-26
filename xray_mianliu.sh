@@ -11,12 +11,12 @@ YELLOW="\033[33m"   # Warning message
 BLUE="\033[36m"     # Info message
 PLAIN='\033[0m'
 
-jq_not=$(apt --installed list | grep jq |wc -l)
-if [  $jq_not=0 ];then
- apt install jq -y
-fi
+#jq_not=$(apt --installed list | grep jq |wc -l)
+#if [  $jq_not=0 ];then
+# apt install jq -y
+#fi
 
-
+mkdir -p  /root/d.share/
 
 ##################
 
