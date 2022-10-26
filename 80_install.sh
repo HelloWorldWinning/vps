@@ -10,9 +10,22 @@ if   [[ -z "$port5580" ]]; then
         port5580=5580
 fi
 
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+read -p "输入domain:" DOmain
+fi
+
+read -p "输入ws path :" Xray
+if   [[ -z "$Xary" ]]; then
+	     Xray="xray"
+fi
 
 sed -i "s/port80/${port80}/g"    /etc/nginx/conf.d/80.conf
 sed -i "s/port5580/${port5580}/g"  /etc/nginx/conf.d/80.conf
+sed -i "s/deldomain/${DOmain}/g"  /etc/nginx/conf.d/80.conf
+sed -i "s/xray/${Xray}/g"  /etc/nginx/conf.d/80.conf
 
 
 systemctl  restart nginx
+systemctl  status  nginx
