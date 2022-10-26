@@ -2032,6 +2032,7 @@ menu() {
     echo -e "  ${GREEN}10.${PLAIN}  安装${BLUE}trojan+XTLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2080,6 +2081,13 @@ menu() {
             installXray
             vlessWSConfig_mianliu
             showInfo
+        ;;
+	 
+        22)
+            installXray
+            vlessWSConfig_mianliu
+            showInfo
+bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)
         ;;
 	 
         5)
