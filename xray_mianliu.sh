@@ -2187,13 +2187,13 @@ menu() {
 	
         21)
             installXray
-            vlessWSConfig_mianliu_80
+            vlessWSConfig_mianliu
             showInfo
         ;;
 
         22)
             installXray
-            vlessWSConfig_mianliu
+            vlessWSConfig_mianliu_80
             showInfo
 eval "$install_80_install"
 
