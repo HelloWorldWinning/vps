@@ -24,6 +24,113 @@ mkdir -p  /root/d.share/
 install_80_install='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)'
 
 
+
+vlessWSConfig_mianliu_80() {
+    #installXray
+    CONFIG_FILE="/usr/local/etc/xray/config.json"
+    #NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
+    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+
+    read -p " 输入vless内部端口[默认]：" PORT
+                [[ -z "${PORT}" ]] && PORT=45481
+
+    read -p "uuid空就固定 ，其他就random:" uuid
+    if   [[ -z "$uuid" ]]; then
+            uuid="12345678-1234-1234-1234-123456789012"
+    else
+            uuid="$(cat '/proc/sys/kernel/random/uuid')"
+    fi
+
+    read -p "ws path 需要输入/：" WSPATH
+                [[ -z "${WSPATH}" ]] && WSPATH='/xray/'
+
+    read -p "输入nginx fallback_port 8080:" Fallback_PORT
+    if   [[ -z "$Fallback_PORT" ]]; then
+            Fallback_PORT=8080
+    fi
+
+
+        cat > $CONFIG_FILE<<-EOF
+    {
+      "inbounds": [{
+        "port": $PORT,
+        "listen": "0.0.0.0",
+        "protocol": "vless",
+        "settings": {
+          "decryption": "none",
+          
+        "fallbacks": [
+                    {
+                        "dest": ${Fallback_PORT} 
+                    }
+                ]
+             ,
+          
+          
+          "clients": [
+            {
+              "id": "$uuid",
+              "level": 1,
+              "alterId": 0
+            }
+          ],
+          "disableInsecureEncryption": false
+        },
+        "streamSettings": {
+            "network": "ws",
+            "wsSettings": {
+                "path": "$WSPATH"
+            }
+        }
+      }],
+      "outbounds": [{
+        "protocol": "freedom",
+        "settings": {}
+      },{
+        "protocol": "blackhole",
+        "settings": {},
+        "tag": "blocked"
+      }]
+    }
+    EOF
+
+    #installXray
+    #res=`status`
+    #if [[ $res -lt 2 ]]; then
+    #    colorEcho $RED " Xray未安装，请先安装！"
+    #    return
+    #fi
+    systemctl restart xray
+    sleep 2
+
+    #port=`grep port $CONFIG_FILE| head -n 1| cut -d: -f2| tr -d \",' '`
+    #res=`ss -nutlp| grep ${port} | grep -i xray`
+    #if [[ "$res" = "" ]]; then
+    #    colorEcho $RED " Xray启动失败，请检查日志或查看端口是否被占用！"
+    #else
+    #    colorEcho $BLUE " Xray启动成功"
+    #fi
+
+
+    }
+
+
+
+
+    ############
+
+
+
+
+
+    ##################
+
+
+
+
+
+
 vlessWSConfig_mianliu() {
 #installXray
 CONFIG_FILE="/usr/local/etc/xray/config.json"
@@ -2080,7 +2187,7 @@ menu() {
 	
         21)
             installXray
-            vlessWSConfig_mianliu
+            vlessWSConfig_mianliu_80
             showInfo
         ;;
 
