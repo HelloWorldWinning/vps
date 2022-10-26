@@ -32,7 +32,7 @@ vlessWSConfig_mianliu_80() {
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
     NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
-    read -p " 输入vless内部端口[默认]：" PORT
+    read -p " 输入vless内部端口[默认45481]：" PORT
                 [[ -z "${PORT}" ]] && PORT=45481
 
     read -p "uuid空就固定 ，其他就random:" uuid
