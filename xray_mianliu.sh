@@ -42,7 +42,7 @@ vlessWSConfig_mianliu_80() {
             uuid="$(cat '/proc/sys/kernel/random/uuid')"
     fi
 
-    read -p "ws path 需要输入/：" WSPATH
+    read -p "ws path 默认/xray/：" WSPATH
                 [[ -z "${WSPATH}" ]] && WSPATH='/xray/'
 
     read -p "输入nginx fallback_port 8080:" Fallback_PORT
