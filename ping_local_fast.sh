@@ -19,7 +19,6 @@ site6=(
 "61.doeasy.gq"
 "62.doeasy.gq"
 "6.wardao.xyz"
-"6del.wardao.xyz"
 "6hk.wardao.xyz"
 )
 
