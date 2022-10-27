@@ -109,7 +109,10 @@ isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinnin
 
 
 
-bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
+#bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
+
+bierendegongju1='bash <(curl -Ss https://www.idleleo.com/install.sh)'
+bierendegongju2='wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh'
 
 update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
@@ -237,7 +240,7 @@ ${Red_font_prefix}33${Font_color_suffix} isp ipdata.co check
 ${Red_font_prefix}34${Font_color_suffix} 网盘 Aria2秘密安装时候设定。ccaa:进入CCAA操作界面 ；文件管理默认用户名为ccaa，密码为admin，登录后可在后台修改
 ${Red_font_prefix}35${Font_color_suffix} 自动更新${Red_font_prefix}34${Font_color_suffix}的Aria2，bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt
 ${Red_font_prefix}36${Font_color_suffix} 甲骨文 ipv4 v6转发 enp0s3网卡
-${Red_font_prefix}37${Font_color_suffix} 别人的vps 工具包 
+${Red_font_prefix}37${Font_color_suffix} 37.1 37.2 别人的vps 工具包 
 ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
@@ -329,7 +332,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   zhulei.ga 9
 		34)eval $Aria2;;
 		35)eval "$update_Aria2";;
 		36)eval "$oc_ipv4_v6_forwarding";;
-		37)eval "$bierendegongju";;
+		37.1)eval "$bierendegongju1";;
+		37.2)eval "$bierendegongju2";;
 		38)eval "$isp_checker2";;
 		39)eval "$ping_ip";;		
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
