@@ -1,23 +1,18 @@
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 echo "必须输入 domain"
-fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 echo "必须输入 domain"
-fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 echo "必须输入 domain"
-fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 echo "必须输入 domain"
-fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 echo "必须输入 domain"
-fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 exit 1

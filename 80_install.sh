@@ -10,30 +10,17 @@ if   [[ -z "$port5580" ]]; then
         port5580=11180
 fi
 
+
+n=1
+while [ $n -le 10 ]
+do
 read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-echo "必须输入 domain"
+if  [ ! -z "$DOmain" ];
+ then break 
 fi
-read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-echo "必须输入 domain"
-fi
-read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-echo "必须输入 domain"
-fi
-read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-echo "必须输入 domain"
-fi
-read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-echo "必须输入 domain"
-fi
-read -p "输入domain:" DOmain
-if   [[ -z "$DOmain" ]]; then
-exit 1
-fi
+let n++    
+done
+
 #####
 
 read -p "输入ws path default xray :" Xray

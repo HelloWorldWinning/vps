@@ -1,0 +1,12 @@
+n=1
+while [ $n -le 10 ]
+do
+
+read -p "输入domain:" DOmain
+if  [ ! -z "$DOmain" ];
+ then break 
+fi
+
+
+let n++    
+done

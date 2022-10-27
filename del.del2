@@ -1,0 +1,13 @@
+i=1
+while (( $i -le 5 ))
+do
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then echo "必须输入 domain" fi 
+   echo "必须输入 domain"
+   echo $i
+   i=`expr $i + 1`
+done
+if [[ $i -gt 5 ]]
+   echo "no domain, exit"
+exit
+if
