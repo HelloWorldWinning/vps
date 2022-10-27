@@ -1,23 +1,26 @@
-site6=(
-"6jp.wardao.xyz"
-"6jp2.wardao.xyz"
-"6jp3.wardao.xyz"
-"6tokyo.wardao.xyz"
-"6tokyo2.wardao.xyz"
-"6hk.wardao.xyz"
+site=(
+"tokyo.wardao.xyz"
+"doeasy.ml"
+"doeasy.cf"
+"doeasy.tk"
+"doeasy.gq"
+"az.wardao.xyz"
+"wardao.xyz"
+"hk.wardao.xyz"
+"del.wardao.xyz"
 )
 
 
-site=(
-"wardao.xyz"
-"hk.wardao.xyz"
-"uloveme.eu.org"
-"az.wardao.xyz"
-"tokyo.wardao.xyz"
-"tokyo2.wardao.xyz"
-"jp.wardao.xyz"
-"jp2.wardao.xyz"
-"jp3.wardao.xyz"
+site6=(
+"6tokyo.wardao.xyz"
+"6.doeasy.ml"
+"6.doeasy.cf"
+"6.doeasy.tk"
+"6.doeasy.gq"
+"6.wardao.xyz"
+"6hk.wardao.xyz"
+"6del.wardao.xyz"
+"6hk.wardao.xyz"
 )
 
 
