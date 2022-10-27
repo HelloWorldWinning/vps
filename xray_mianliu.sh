@@ -95,7 +95,8 @@ vlessWSConfig_mianliu_80() {
     }
 
     EOF
-
+systemctl restart xray
+sleep 2
 }
 
 
