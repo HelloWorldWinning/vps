@@ -93,7 +93,6 @@ vlessWSConfig_mianliu_80() {
         "tag": "blocked"
       }]
     }
-
     EOF
 systemctl restart xray
 sleep 2
