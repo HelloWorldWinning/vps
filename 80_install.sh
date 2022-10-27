@@ -5,15 +5,34 @@ if   [[ -z "$port80" ]]; then
         port80=80
 fi
 
-read -p "输入ws to vless port default 45481:" port5580 
+read -p "输入ws to vless port default 11180:" port5580 
 if   [[ -z "$port5580" ]]; then
-        port5580=45481
+        port5580=11180
 fi
 
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
 ehco "必须输入 domain"
 read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+
+read -p "输入domain:" DOmain
+if   [[ -z "$DOmain" ]]; then
+ehco "必须输入 domain"
+
+read -p "输入domain:" DOmain
+exit 1
 fi
 
 read -p "输入ws path default xray :" Xray

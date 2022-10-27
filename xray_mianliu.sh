@@ -32,8 +32,8 @@ vlessWSConfig_mianliu_80() {
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
     NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
-    read -p " 输入vless内部端口[默认45481]：" PORT
-                [[ -z "${PORT}" ]] && PORT=45481
+    read -p " 输入vless内部端口[默认11180]：" PORT
+                [[ -z "${PORT}" ]] && PORT=11180
 
     read -p "uuid空就固定 ，其他就random:" uuid
     if   [[ -z "$uuid" ]]; then
@@ -42,7 +42,7 @@ vlessWSConfig_mianliu_80() {
             uuid="$(cat '/proc/sys/kernel/random/uuid')"
     fi
 
-    read -p "ws path 默认/xray/：" WSPATH
+    read -p "ws path 默认: /xray/ " WSPATH
                 [[ -z "${WSPATH}" ]] && WSPATH='/xray/'
 
     read -p "输入nginx fallback_port 8080:" Fallback_PORT
@@ -2173,8 +2173,8 @@ menu() {
         22)
             installXray
             vlessWSConfig_mianliu_80
+            eval "$install_80_install"
             showInfo
-eval "$install_80_install"
 
         ;;
 	 
