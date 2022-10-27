@@ -93,11 +93,32 @@ vlessWSConfig_mianliu_80() {
         "tag": "blocked"
       }]
     }
-
     EOF
 
+    #installXray
+    #res=`status`
+    #if [[ $res -lt 2 ]]; then
+    #    colorEcho $RED " Xray未安装，请先安装！"
+    #    return
+    #fi
+    systemctl restart xray
+    sleep 2
+
+    #port=`grep port $CONFIG_FILE| head -n 1| cut -d: -f2| tr -d \",' '`
+    #res=`ss -nutlp| grep ${port} | grep -i xray`
+    #if [[ "$res" = "" ]]; then
+    #    colorEcho $RED " Xray启动失败，请检查日志或查看端口是否被占用！"
+    #else
+    #    colorEcho $BLUE " Xray启动成功"
+    #fi
 
 
+    }
+
+
+
+
+    ############
 
 
 
