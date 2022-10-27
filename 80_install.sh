@@ -12,28 +12,29 @@ fi
 
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
+echo "必须输入 domain"
+fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
+echo "必须输入 domain"
+fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
+echo "必须输入 domain"
+fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
-
+echo "必须输入 domain"
+fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
-
+echo "必须输入 domain"
+fi
 read -p "输入domain:" DOmain
 if   [[ -z "$DOmain" ]]; then
-ehco "必须输入 domain"
-
-read -p "输入domain:" DOmain
 exit 1
 fi
+#####
 
 read -p "输入ws path default xray :" Xray
 if   [[ -z "$Xary" ]]; then
