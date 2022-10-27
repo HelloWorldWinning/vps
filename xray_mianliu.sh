@@ -51,7 +51,7 @@ vlessWSConfig_mianliu_80() {
     fi
 
 
-        cat > $CONFIG_FILE<<-EOF
+        cat > $CONFIG_FILE<<EOF
     {
       "inbounds": [{
         "port": $PORT,
@@ -93,7 +93,7 @@ vlessWSConfig_mianliu_80() {
         "tag": "blocked"
       }]
     }
-    EOF
+EOF
 systemctl restart xray
 sleep 2
 }
