@@ -4,7 +4,7 @@
 apt install -y sudo  curl
 apt-get install -y  sudo  curl 
 
-sudo apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+sudo apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring 
 
 
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
@@ -14,7 +14,7 @@ gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/sh
 
 
 cat >>/etc/hosts<<EOF
-$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname'  )
+$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
