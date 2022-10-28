@@ -20,7 +20,7 @@ sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --rol
 
 
 install_freenom='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_freenom.sh)'
-
+install_nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_nginx.sh)'
 
 docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
 
@@ -245,6 +245,7 @@ ${Red_font_prefix}38${Font_color_suffix} https://www.ip2location.com/ check
 ${Red_font_prefix}39${Font_color_suffix} https://www.boce.com/ping/  | jq 'del(.. | .report_source?)'
 ${Red_font_prefix}40${Font_color_suffix} sysctl -p /etc/sysctl.conf
 ${Red_font_prefix}41${Font_color_suffix} install docker
+${Red_font_prefix}41.1${Font_color_suffix} install nginx
 ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
 ${Red_font_prefix}43${Font_color_suffix} wget bashrc 。手工输入  source  ~/.bashrc
 ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
@@ -338,6 +339,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   zhulei.ga 9
 		39)eval "$ping_ip";;		
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
 		41)eval $install_docker;;
+		41.1)eval $install_nginx;;
 		42)eval $install_docker_ccaa;;
 		43)eval "$bashrc";;
 		44)eval "$jupyter_notebook_remote_access";;
