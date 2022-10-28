@@ -1721,7 +1721,7 @@ vlessWSConfig_vless_ws_tls() {
 {
   "inbounds": [{
     "port": $WS2vless,
-    "listen": "127.0.0.1",
+    "listen": "0.0.0.0",
     "protocol": "vless",
     "settings": {
         "clients": [
