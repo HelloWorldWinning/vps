@@ -963,6 +963,14 @@ EOF
         # VMESS+WS+TLS
         # VLESS+WS+TLS
         if [[ "$WS" = "true" ]]; then
+
+    read -p "ws to 内部 xray 11180 :" WS2vless
+    if   [[ -z "$WS2vless" ]]; then
+            WS2vless="1180"
+    else
+	    WS2vless=${XPORT}
+            echo "随机10000～"
+    fi
             cat > ${NGINX_CONF_PATH}${DOMAIN}.conf<<-EOF
 server {
     listen 8080;
@@ -994,13 +1002,6 @@ server {
     }
     $ROBOT_CONFIG
 
-    read -p "ws to 内部 xray 11180 :" WS2vless
-    if   [[ -z "$WS2vless" ]]; then
-            WS2vless="1180"
-    else
-	    WS2vless=${XPORT}
-            echo "随机10000～"
-    fi
 
     location ${WSPATH} {
       proxy_redirect off;
