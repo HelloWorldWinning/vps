@@ -380,10 +380,10 @@ others for input location
 		69)eval "$aws_arm_dd";;
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
-                72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME
-cat >>/etc/hosts<<EOF
-$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname'  )
-EOF       
+                72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
+$(cat >>/etc/hosts<<-EOF
+$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
+EOF)   
 			;;
 
 		73)nc -l 59797  | tar xfvz - ;;
