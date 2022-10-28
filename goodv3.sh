@@ -383,7 +383,7 @@ others for input location
                 72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
 $(cat >>/etc/hosts<<EOF
 $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
-EOF)   
+EOF
 			;;
 
 		73)nc -l 59797  | tar xfvz - ;;
