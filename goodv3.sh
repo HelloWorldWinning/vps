@@ -381,7 +381,7 @@ others for input location
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
                 72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
-$(cat >>/etc/hosts<<EOF
+cat >>/etc/hosts<<EOF
 $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
