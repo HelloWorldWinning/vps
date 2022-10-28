@@ -43,7 +43,7 @@ vlessWSConfig_mianliu_80() {
     fi
 
     read -p "ws path 默认: /xray " WSPATH
-                [[ -z "${WSPATH}" ]] && WSPATH='/xray/'
+                [[ -z "${WSPATH}" ]] && WSPATH='/xray'
 
     read -p "输入nginx fallback_port 8080:" Fallback_PORT
     if   [[ -z "$Fallback_PORT" ]]; then
