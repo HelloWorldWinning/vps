@@ -1709,6 +1709,13 @@ vlessWSConfig_vless_ws_tls() {
             uuid="$(cat '/proc/sys/kernel/random/uuid')"
     fi
 
+    read -p "from ws 内部 xray 11180 :" WS2vless
+    if   [[ -z "$WS2vless" ]]; then
+            WS2vless="1180"
+    else
+	    WS2vless=${XPORT}
+            echo "随机10000～"
+    fi
 
     cat > $CONFIG_FILE<<-EOF
 {
