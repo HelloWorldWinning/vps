@@ -687,10 +687,10 @@ getData() {
         echo ""
         while true
         do
-            read -p " 请输入伪装路径，以/开头(不懂请直接回车)：" WSPATH
+           # read -p " 请输入伪装路径，以/开头(不懂请直接回车)：" WSPATH
    read -p "ws path 默认: /xray " WSPATH
-                [[ -z "${WSPATH}" ]] && WSPATH='/xrayx/'
-
+                [[ -z "${WSPATH}" ]] && WSPATH='/xray'
+              break
            # if [[ -z "${WSPATH}" ]]; then
            #     len=`shuf -i5-12 -n1`
            #     ws=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1`
