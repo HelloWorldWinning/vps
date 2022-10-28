@@ -685,25 +685,25 @@ getData() {
 
     if [[ "${WS}" = "true" ]]; then
         echo ""
-        while true
-        do
+        #while true
+        #do
            # read -p " 请输入伪装路径，以/开头(不懂请直接回车)：" WSPATH
-   read -p "ws path 默认: /xray " WSPATH
+    read -p "ws path 默认: /xray " WSPATH
                 [[ -z "${WSPATH}" ]] && WSPATH='/xray'
-              break
+        #      break
            # if [[ -z "${WSPATH}" ]]; then
            #     len=`shuf -i5-12 -n1`
            #     ws=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1`
            #     WSPATH="/$ws"
            #     break
-            elif [[ "${WSPATH:0:1}" != "/" ]]; then
-                colorEcho ${RED}  " 伪装路径必须以/开头！"
-            elif [[ "${WSPATH}" = "/" ]]; then
-                colorEcho ${RED}   " 不能使用根路径！"
-            else
-                break
-            fi
-        done
+          #  elif [[ "${WSPATH:0:1}" != "/" ]]; then
+          #      colorEcho ${RED}  " 伪装路径必须以/开头！"
+          #  elif [[ "${WSPATH}" = "/" ]]; then
+          #      colorEcho ${RED}   " 不能使用根路径！"
+          #  else
+          #      break
+          #  fi
+        #done
         colorEcho ${BLUE}  " ws路径：$WSPATH"
     fi
 
