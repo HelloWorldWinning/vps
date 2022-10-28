@@ -19,7 +19,7 @@ PLAIN='\033[0m'
 mkdir -p  /root/d.share/
 
 ##################
-
+uuid="12345678-1234-1234-1234-123456789012"
 
 install_80_install='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)'
 
@@ -42,7 +42,7 @@ vlessWSConfig_mianliu_80() {
             uuid="$(cat '/proc/sys/kernel/random/uuid')"
     fi
 
-    read -p "ws path 默认: /xray/ " WSPATH
+    read -p "ws path 默认: /xray " WSPATH
                 [[ -z "${WSPATH}" ]] && WSPATH='/xray/'
 
     read -p "输入nginx fallback_port 8080:" Fallback_PORT
@@ -688,11 +688,14 @@ getData() {
         while true
         do
             read -p " 请输入伪装路径，以/开头(不懂请直接回车)：" WSPATH
-            if [[ -z "${WSPATH}" ]]; then
-                len=`shuf -i5-12 -n1`
-                ws=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1`
-                WSPATH="/$ws"
-                break
+   read -p "ws path 默认: /xray " WSPATH
+                [[ -z "${WSPATH}" ]] && WSPATH='/xrayx/'
+
+           # if [[ -z "${WSPATH}" ]]; then
+           #     len=`shuf -i5-12 -n1`
+           #     ws=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $len | head -n 1`
+           #     WSPATH="/$ws"
+           #     break
             elif [[ "${WSPATH:0:1}" != "/" ]]; then
                 colorEcho ${RED}  " 伪装路径必须以/开头！"
             elif [[ "${WSPATH}" = "/" ]]; then
@@ -883,6 +886,156 @@ getCert() {
         cp ~/xray.key /usr/local/etc/xray/${DOMAIN}.key
     fi
 }
+
+
+
+configNginx_vless_ws_tls() {
+    mkdir -p /usr/share/nginx/html;
+    if [[ "$ALLOW_SPIDER" = "n" ]]; then
+        echo 'User-Agent: *' > /usr/share/nginx/html/robots.txt
+        echo 'Disallow: /' >> /usr/share/nginx/html/robots.txt
+        ROBOT_CONFIG="    location = /robots.txt {}"
+    else
+        ROBOT_CONFIG=""
+    fi
+
+    if [[ "$BT" = "false" ]]; then
+        if [[ ! -f /etc/nginx/nginx.conf.bak ]]; then
+            mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+        fi
+        res=`id nginx 2>/dev/null`
+        if [[ "$?" != "0" ]]; then
+            user="www-data"
+        else
+            user="nginx"
+        fi
+        cat > /etc/nginx/nginx.conf<<-EOF
+user $user;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+                      '\$status \$body_bytes_sent "\$http_referer" '
+                      '"\$http_user_agent" "\$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+    server_tokens off;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+    gzip                on;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+}
+EOF
+    fi
+
+    if [[ "$PROXY_URL" = "" ]]; then
+        action=""
+    else
+        action="proxy_ssl_server_name on;
+        proxy_pass $PROXY_URL;
+        proxy_set_header Accept-Encoding '';
+        sub_filter \"$REMOTE_HOST\" \"$DOMAIN\";
+        sub_filter_once off;"
+    fi
+
+    if [[ "$TLS" = "true" || "$XTLS" = "true" ]]; then
+        mkdir -p ${NGINX_CONF_PATH}
+        # VMESS+WS+TLS
+        # VLESS+WS+TLS
+        if [[ "$WS" = "true" ]]; then
+            cat > ${NGINX_CONF_PATH}${DOMAIN}.conf<<-EOF
+server {
+    listen 8080;
+    listen [::]:8080;
+    server_name ${DOMAIN};
+    return 301 https://\$server_name:${PORT}\$request_uri;
+}
+
+server {
+    listen       ${PORT} ssl http2;
+    listen       [::]:${PORT} ssl http2;
+    server_name ${DOMAIN};
+    charset utf-8;
+
+    # ssl配置
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_ecdh_curve secp384r1;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    ssl_session_tickets off;
+    ssl_certificate $CERT_FILE;
+    ssl_certificate_key $KEY_FILE;
+
+    root /usr/share/nginx/html;
+    location / {
+        $action
+    }
+    $ROBOT_CONFIG
+
+    read -p "ws to 内部 xray 11180 :" WS2vless
+    if   [[ -z "$WS2vless" ]]; then
+            WS2vless="1180"
+    else
+	    WS2vless=${XPORT}
+            echo "随机10000～"
+    fi
+
+    location ${WSPATH} {
+      proxy_redirect off;
+      proxy_pass http://127.0.0.1:${WS2vless};
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade \$http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_set_header Host \$host;
+      proxy_set_header X-Real-IP \$remote_addr;
+      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+EOF
+        else
+            # VLESS+TCP+TLS
+            # VLESS+TCP+XTLS
+            # trojan
+            cat > ${NGINX_CONF_PATH}${DOMAIN}.conf<<-EOF
+server {
+    listen 80;
+    listen [::]:80;
+    listen 81 http2;
+    server_name ${DOMAIN};
+    root /usr/share/nginx/html;
+    location / {
+        $action
+    }
+    $ROBOT_CONFIG
+}
+EOF
+        fi
+    fi
+}
+
+
 
 configNginx() {
     mkdir -p /usr/share/nginx/html;
@@ -1544,8 +1697,69 @@ vlessXTLSConfig() {
 EOF
 }
 
+
+vlessWSConfig_vless_ws_tls() {
+    #local uuid="$(cat '/proc/sys/kernel/random/uuid')"
+
+    read -p "uuid空就固定 ，其他就random:" uuid
+    if   [[ -z "$uuid" ]]; then
+            uuid="12345678-1234-1234-1234-123456789012"
+    else
+            uuid="$(cat '/proc/sys/kernel/random/uuid')"
+    fi
+
+
+    cat > $CONFIG_FILE<<-EOF
+{
+  "inbounds": [{
+    "port": $WS2vless,
+    "listen": "127.0.0.1",
+    "protocol": "vless",
+    "settings": {
+        "clients": [
+            {
+                "id": "$uuid",
+                "level": 0
+            }
+        ],
+        "decryption": "none"
+    },
+    "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+            "path": "$WSPATH",
+            "headers": {
+                "Host": "$DOMAIN"
+            }
+        }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }]
+}
+EOF
+}
+
+
+
+
 vlessWSConfig() {
-    local uuid="$(cat '/proc/sys/kernel/random/uuid')"
+   # local uuid="$(cat '/proc/sys/kernel/random/uuid')"
+    read -p "uuid空就固定 ，其他就random:" uuid
+    if   [[ -z "$uuid" ]]; then
+            uuid="12345678-1234-1234-1234-123456789012"
+    else
+            uuid="$(cat '/proc/sys/kernel/random/uuid')"
+    fi
+
+
     cat > $CONFIG_FILE<<-EOF
 {
   "inbounds": [{
@@ -1627,6 +1841,57 @@ vlessKCPConfig() {
 EOF
 }
 
+
+configXray_vless_ws_tls() {
+    mkdir -p /usr/local/xray
+    if [[ "$TROJAN" = "true" ]]; then
+        if [[ "$XTLS" = "true" ]]; then
+            trojanXTLSConfig
+        else
+            trojanConfig
+        fi
+        return 0
+    fi
+    if [[ "$VLESS" = "false" ]]; then
+        # VMESS + kcp
+        if [[ "$KCP" = "true" ]]; then
+            vmessKCPConfig
+            return 0
+        fi
+        # VMESS
+        if [[ "$TLS" = "false" ]]; then
+            vmessConfig
+        elif [[ "$WS" = "false" ]]; then
+            # VMESS+TCP+TLS
+            vmessTLSConfig
+        # VMESS+WS+TLS
+        else
+            vmessWSConfig
+        fi
+    #VLESS
+    else
+        if [[ "$KCP" = "true" ]]; then
+            vlessKCPConfig
+            return 0
+        fi
+        # VLESS+TCP
+        if [[ "$WS" = "false" ]]; then
+            # VLESS+TCP+TLS
+            if [[ "$XTLS" = "false" ]]; then
+                vlessTLSConfig
+            # VLESS+TCP+XTLS
+            else
+                vlessXTLSConfig
+            fi
+        # VLESS+WS+TLS
+        else
+            vlessWSConfig_vless_ws_tls
+        fi
+    fi
+}
+
+
+
 configXray() {
     mkdir -p /usr/local/xray
     if [[ "$TROJAN" = "true" ]]; then
@@ -1674,6 +1939,59 @@ configXray() {
         fi
     fi
 }
+
+
+install_vless_ws_tls() {
+
+uuid="12345678-1234-1234-1234-123456789012"
+    getData
+
+    $PMT clean all
+    [[ "$PMT" = "apt" ]] && $PMT update
+    #echo $CMD_UPGRADE | bash
+    $CMD_INSTALL wget vim unzip tar gcc openssl
+    $CMD_INSTALL net-tools
+    if [[ "$PMT" = "apt" ]]; then
+        $CMD_INSTALL libssl-dev g++
+    fi
+    res=`which unzip 2>/dev/null`
+    if [[ $? -ne 0 ]]; then
+        colorEcho $RED " unzip安装失败，请检查网络"
+        exit 1
+    fi
+
+    installNginx
+    setFirewall
+    if [[ "$TLS" = "true" || "$XTLS" = "true" ]]; then
+        getCert
+    fi
+    configNginx_vless_ws_tls
+
+    colorEcho $BLUE " 安装Xray..."
+    getVersion
+    RETVAL="$?"
+    if [[ $RETVAL == 0 ]]; then
+        colorEcho $BLUE " Xray最新版 ${CUR_VER} 已经安装"
+    elif [[ $RETVAL == 3 ]]; then
+        exit 1
+    else
+        colorEcho $BLUE " 安装Xray ${NEW_VER} ，架构$(archAffix)"
+        installXray
+    fi
+
+    configXray_vless_ws_tls
+
+    setSelinux
+    installBBR
+
+    start
+    showInfo
+
+    bbrReboot
+}
+
+
+
 
 install() {
     getData
@@ -2120,6 +2438,7 @@ menu() {
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
+    echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2193,6 +2512,12 @@ menu() {
             TLS="true"
             WS="true"
             install
+            ;;
+        23)
+            VLESS="true"
+            TLS="true"
+            WS="true"
+            install_vless_ws_tls
             ;;
         8)
             VLESS="true"
