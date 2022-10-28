@@ -386,8 +386,8 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
 
-		73)nc -l 59797  | tar xfvz - ;;
-		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 59797 ;;
+		73)nc -l 9  -q 1  | tar xfvz - ;;
+		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 1 ;;
 		75.1)
 echo '
