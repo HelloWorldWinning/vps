@@ -13,7 +13,7 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
 gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
 
 
-cat >>/etc/hosts<<EOF
+cat>>/etc/hosts<<EOF
 $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 
