@@ -691,8 +691,9 @@ getData() {
         #while true
         #do
            # read -p " 请输入伪装路径，以/开头(不懂请直接回车)：" WSPATH
-    read -p "ws path 默认: /xray " WSPATH
-                [[ -z "${WSPATH}" ]] && WSPATH='/xray'
+    #read -p "ws path 默认: /xray " WSPATH
+    read -p "ws path 默认: / " WSPATH
+                [[ -z "${WSPATH}" ]] && WSPATH='/'
         #      break
            # if [[ -z "${WSPATH}" ]]; then
            #     len=`shuf -i5-12 -n1`
