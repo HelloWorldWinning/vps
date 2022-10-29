@@ -41,9 +41,12 @@ vlessWSConfig_mianliu_80() {
     else
             uuid="$(cat '/proc/sys/kernel/random/uuid')"
     fi
+######### 23
+    read -p "ws path 默认: / " WSPATH
+                [[ -z "${WSPATH}" ]] && WSPATH='/'
 
-    read -p "ws path 默认: /xray " WSPATH
-                [[ -z "${WSPATH}" ]] && WSPATH='/xray'
+    #read -p "ws path 默认: /xray " WSPATH
+    #            [[ -z "${WSPATH}" ]] && WSPATH='/xray'
 
     read -p "输入nginx fallback_port 8080:" Fallback_PORT
     if   [[ -z "$Fallback_PORT" ]]; then
@@ -997,9 +1000,14 @@ server {
     ssl_certificate_key $KEY_FILE;
 
     root /usr/share/nginx/html;
-    location / {
-        $action
-    }
+
+
+#########
+######  fan dai  google  reverse proxy
+    #location / {
+    #    $action
+    #}
+
     $ROBOT_CONFIG
 
 
@@ -1717,6 +1725,12 @@ vlessWSConfig_vless_ws_tls() {
             echo "随机10000～"
     fi
 
+
+        #    "headers": {
+         #       "Host": "$DOMAIN"
+         #   }
+
+
     cat > $CONFIG_FILE<<-EOF
 {
   "inbounds": [{
@@ -1738,7 +1752,6 @@ vlessWSConfig_vless_ws_tls() {
         "wsSettings": {
             "path": "$WSPATH",
             "headers": {
-                "Host": "$DOMAIN"
             }
         }
     }
