@@ -975,6 +975,17 @@ EOF
 	    WS2vless=${XPORT}
             echo "随机10000～"
     fi
+
+#  fan dai  google  reverse proxy
+
+#########
+######  fan dai  google  reverse proxy
+    #location / {
+    #    $ action
+    #}
+
+
+
             cat > ${NGINX_CONF_PATH}${DOMAIN}.conf<<-EOF
 server {
     listen 8080;
@@ -1001,13 +1012,6 @@ server {
     ssl_certificate_key $KEY_FILE;
 
     root /usr/share/nginx/html;
-
-
-#########
-######  fan dai  google  reverse proxy
-    #location / {
-    #    $action
-    #}
 
     $ROBOT_CONFIG
 
