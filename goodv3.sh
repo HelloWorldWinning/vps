@@ -19,6 +19,7 @@ get_az_api='方法1：使用cloudshell by Powershell
 sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id'
 
 
+modify_id_of_v2ray='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/modify_id_of_v2ray.sh)'
 install_freenom='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_freenom.sh)'
 install_nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_nginx.sh)'
 
@@ -210,6 +211,7 @@ ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} wg
 ${Red_font_prefix}7${Font_color_suffix} openvpn
 ${Red_font_prefix}8${Font_color_suffix} v2ray
+${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
@@ -302,6 +304,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   zhulei.ga 9
 
 		7) eval $openvpn;;
 		8) eval $v2ray;;
+		8.1) eval $modify_id_of_v2ray;;
 		9) eval $kcptun;;
 		10) eval $ss_go;;
 		11o) eval $dd;;
