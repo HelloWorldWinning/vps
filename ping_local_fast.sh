@@ -1,5 +1,4 @@
 site=(
-"tokyo.wardao.xyz"
 "doeasy.ml"
 "doeasy.cf"
 "doeasy.tk"
@@ -12,7 +11,6 @@ site=(
 
 
 site6=(
-"6tokyo.wardao.xyz"
 "6.doeasy.ml"
 "6.doeasy.cf"
 "61.doeasy.gq"
