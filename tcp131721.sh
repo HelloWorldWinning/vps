@@ -1243,6 +1243,8 @@ start_menu() {
     startbbrcake
     startecn
     optimizing_system
+    apt update -y
+    apt upgrade -y
     ;;
 
   311)
