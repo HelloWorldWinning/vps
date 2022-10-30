@@ -391,7 +391,7 @@ EOF
 
 		73)nc -l 9  -q 1  | tar xfvz - ;;
 		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
-		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 1 ;;
+		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 19860826 ;;
 		75.1)
 echo '
 方法1：使用cloudshell by Powershell
