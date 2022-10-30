@@ -38,7 +38,7 @@ White='\033[0;37m'        # White
 
 
 
-n=50
+n=5
 
 #read -p "ping n default 5=>" n
 #if [[ -z "${n}" ]]; then
@@ -49,8 +49,8 @@ n=50
 
 
 
-#out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n} )
-out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 sudo ping6 {} -l 50  -c ${n} )
+out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n} )
+#out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 sudo ping6 {} -l 50  -c ${n} )
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
@@ -88,8 +88,8 @@ echo "##############"
 #ehco "${site[*]}"
 #echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {}
 
-#out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {})
-out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 sudo  ping -l 50 -c ${n} {})
+out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {})
+#out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 sudo  ping -l 50 -c ${n} {})
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
