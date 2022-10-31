@@ -1245,7 +1245,7 @@ start_menu() {
     optimizing_system
     apt update -y
     apt upgrade -y
-apt install -y  vim  curl wget netcat htop net-tools
+apt install -y  vim  curl wget netcat htop net-tools screen
     ;;
 
   311)
