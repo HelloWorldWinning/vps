@@ -36,6 +36,8 @@ sudo apt-get -y  install docker-ce docker-ce-cli containerd.io docker-compose-pl
 # https://stackoverflow.com/questions/44678725/cannot-connect-to-the-docker-daemon-at-unix-var-run-docker-sock-is-the-docker
 # Cannot connect to the Docker daemon at unix:/var/run/docker.sock. Is the docker daemon running?
 
+
+#sudo dockerd
 #sudo service --status-all 
 #sudo service docker start
 #sudo service docker start
