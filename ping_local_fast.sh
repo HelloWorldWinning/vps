@@ -17,7 +17,9 @@ site6=(
 "62.doeasy.gq"
 "6.wardao.xyz"
 "6t.doeasy.cf"
+"6hk.wardao.xyz"
 )
+
 
 
 Green_font_prefix="\033[32m"
