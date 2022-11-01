@@ -19,7 +19,7 @@ get_az_api='方法1：使用cloudshell by Powershell
 sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id'
 
 
-probe_x ='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/probe_x.sh )'
+probe_x='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/probe_x.sh )'
 
 modify_id_of_v2ray='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/modify_id_of_v2ray.sh)'
 install_freenom='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_freenom.sh)'
