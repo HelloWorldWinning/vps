@@ -28,7 +28,7 @@ sudo apt-get update   -y
 
 sudo apt-get -y  install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-docker ps -a
+#docker ps -a
 
 #apt-cache madison docker-ce
 #sudo docker run hello-world 
