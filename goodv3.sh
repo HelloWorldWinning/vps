@@ -347,7 +347,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		40)eval 'sysctl -p /etc/sysctl.conf';;	
 		41)eval $install_docker;;
 		41.1)eval $install_nginx;;
-		41.2)eval $probe_x ;;
+		41.2)eval "$probe_x" ;;
 		42)eval $install_docker_ccaa;;
 		43)eval "$bashrc";;
 		44)eval "$jupyter_notebook_remote_access";;
