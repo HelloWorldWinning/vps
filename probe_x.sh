@@ -11,6 +11,7 @@
 
 docker pull mysql
 
+mkdir -p /home
 mkdir -p /home/mysql
 
 docker run -d --name=mysql \
