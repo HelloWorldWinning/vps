@@ -41,3 +41,7 @@ sudo apt-get -y  install docker-ce docker-ce-cli containerd.io docker-compose-pl
 #sudo service --status-all 
 #sudo service docker start
 #sudo service docker start
+
+
+
+docker ps  -a 
