@@ -1242,10 +1242,10 @@ start_menu() {
   222)
     startbbrcake
     startecn
-    optimizing_system
     apt update -y
     apt upgrade -y
 apt install -y  vim  curl wget netcat htop net-tools screen
+    optimizing_system
     ;;
 
   311)
