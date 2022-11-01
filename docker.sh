@@ -1,3 +1,5 @@
+systemctl stop dokcer
+
 apt install sudo -y
 sudo apt-get -y purge docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
