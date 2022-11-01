@@ -59,3 +59,6 @@ EOF
 
 
 docker run -d --name=mynodequery -p 5000:5000 -v /etc/mynodequery/appsettings.json:/app/appsettings.json jaydenlee2019/mynodequery:latest
+
+
+docker ps  -a 
