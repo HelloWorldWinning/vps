@@ -32,3 +32,10 @@ docker ps -a
 
 #apt-cache madison docker-ce
 #sudo docker run hello-world 
+
+# https://stackoverflow.com/questions/44678725/cannot-connect-to-the-docker-daemon-at-unix-var-run-docker-sock-is-the-docker
+# Cannot connect to the Docker daemon at unix:/var/run/docker.sock. Is the docker daemon running?
+
+#sudo service --status-all 
+#sudo service docker start
+#sudo service docker start
