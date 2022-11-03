@@ -140,7 +140,7 @@ nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
 
 #nfFree='bash <(curl -sSL https://raw.githubusercontent.com/fscarmen/tools/main/a.sh)'
 
-nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc999/RegionRestrictionCheck/main/check.sh)'
+nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc1000/RegionRestrictionCheck/main/check.sh)|tee netflix.log'
 
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
