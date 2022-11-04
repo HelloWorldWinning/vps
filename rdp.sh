@@ -50,7 +50,7 @@ sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/
 
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
 
-
+sudo rm ./google-chrome-stable_current_amd64.deb
 
 sudo apt-get install aptitude  -y 
 sudo aptitude  install  firefox-esr -y
