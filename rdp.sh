@@ -123,6 +123,7 @@ sudo apt install  cabextract -y
 sudo apt --fix-broken install  -y
 sudo apt autoremove -y
 sudo apt-get install ttf-mscorefonts-installer -y
+sudo rm ttf-mscorefonts-installer_3.8_all.deb
 
 
 
