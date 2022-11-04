@@ -140,7 +140,7 @@ nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
 
 #nfFree='bash <(curl -sSL https://raw.githubusercontent.com/fscarmen/tools/main/a.sh)'
 
-nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc1000/RegionRestrictionCheck/main/check.sh)|tee netflix.log'
+nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc1000/RegionRestrictionCheck/main/check.sh)'
 
 s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
@@ -316,7 +316,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		12) eval $dd_1;;
 		13) eval $s5;;
 		13.1) eval $realm2;;
-		14) eval $nf;;
+		14) eval $nf |tee netflix.log ;;
 		15) eval $nfFree;;
                 16) eval $ss_rust;;
 	        17) eval $speed2;;
