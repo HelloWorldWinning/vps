@@ -184,6 +184,8 @@ speed3='bash <(curl -Lso-  bench.sh) |tee speed3.log'
 
 wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh ; chmod 755  ~/wireguard.sh ; bash ~/wireguard.sh -s ; bash  ~/wireguard.sh  -u ; wg-quick down wg0  ; mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111_oringal.conf  ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service'
 
+wg61='apt update -y && apt upgrade -y && apt install wireguard -y ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service'
+
 wg_to_wgcf='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
 wg_after_warp=' wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0  && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
@@ -212,6 +214,7 @@ ${Red_font_prefix}3${Font_color_suffix} xray
 ${Red_font_prefix}4${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} wg
+${Red_font_prefix}6.1${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}7${Font_color_suffix} openvpn
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
@@ -304,8 +307,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		3) eval $xray;;
 		4) eva $realml;;
 		5) eval $speed;;
-		6) eval $wg ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)
- ;;
+		6) eval $wg ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
+		6.1) eval $wg61 ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "55 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
 
 		7) eval $openvpn;;
 		8) eval $v2ray;;
