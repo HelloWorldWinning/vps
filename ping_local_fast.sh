@@ -7,7 +7,7 @@ site=(
 "doeasy.cf"
 "doeasy.tk"
 "doeasy.gq"
-"az.wardao.xyz"
+"vastiny.cf"
 )
 
 
