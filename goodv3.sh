@@ -340,7 +340,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		30)eval $speed3;;
 		31)eval $ss_latest;;
 		32)eval $ssr;;
-		33)eval $isp_ip;;
+		33)apt install -y jq;eval $isp_ip ;;
 		34)eval $Aria2;;
 		35)eval "$update_Aria2";;
 		36)eval "$oc_ipv4_v6_forwarding";;
