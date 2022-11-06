@@ -286,9 +286,9 @@ ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
 ${Red_font_prefix}72${Font_color_suffix} rename vps
 ${Red_font_prefix}73${Font_color_suffix} receive on 9
 ${Red_font_prefix}74${Font_color_suffix} send on 9
-${Red_font_prefix}75${Font_color_suffix} docker azure panel
+${Red_font_prefix}75${Font_color_suffix} docker azure panel ip:8888  1 19860826
 ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
-${Red_font_prefix}76${Font_color_suffix} aws   panel
+${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin123456
 
 
 
