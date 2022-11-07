@@ -181,6 +181,7 @@ read -p " 选择：" answer
            start
             ;;
         2)
+           systemctl status tuic
            echo "/etc/tuic/config.json" 
            cat "/etc/tuic/config.json" 
             ;;
