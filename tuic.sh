@@ -113,7 +113,7 @@ while true
 
 mkdir -p /etc/tuic/
 
-		cat <<EOF > /etc/tuic/config.json
+		cat <<EOF > /etc/tuic/config4.json
 {
     "port": 55555,
     "token": ["1"],
@@ -131,7 +131,29 @@ mkdir -p /etc/tuic/
 EOF
 
 
-	cat <<EOF > /etc/systemd/system/tuic.service
+
+
+		cat <<EOF > /etc/tuic/config6.json
+{
+    "port": 55555,
+    "token": ["1"],
+    "certificate": "${cert_path}",
+    "private_key": "${key_path}",
+
+    "ip": "::",
+    "congestion_controller": "bbr",
+    "max_idle_time": 15000,
+    "authentication_timeout": 1000,
+    "alpn": ["h3"],
+    "max_udp_relay_packet_size": 1500,
+    "log_level": "info"
+}
+EOF
+
+
+
+
+	cat <<EOF > /etc/systemd/system/tuic4.service
 [Unit]
 Description=Tuic Service
 Documentation=https://github.com/EAimTY/tuic/
@@ -143,7 +165,7 @@ User=root
 #CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 #AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 NoNewPrivileges=true
-ExecStart=/usr/bin/Tuic -c /etc/tuic/config.json
+ExecStart=/usr/bin/Tuic -c /etc/tuic/config4.json
 Restart=on-failure
 RestartPreventExitStatus=23
 
@@ -151,6 +173,27 @@ RestartPreventExitStatus=23
 WantedBy=multi-user.target
 EOF
 
+
+
+	cat <<EOF > /etc/systemd/system/tuic6.service
+[Unit]
+Description=Tuic Service
+Documentation=https://github.com/EAimTY/tuic/
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+#User=nobody
+#CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+#AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/bin/Tuic -c /etc/tuic/config6.json
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 
 
@@ -161,9 +204,10 @@ EOF
 start(){
 
 
-            systemctl restart tuic
-            systemctl status tuic
-
+            systemctl restart tuic4
+            systemctl status tuic4
+            systemctl restart tuic6
+            systemctl status tuic6
 }
 
 echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}tuic${PLAIN}"
@@ -183,11 +227,16 @@ read -p " 选择：" answer
             ;;
         2)
            systemctl status tuic
-           echo "/etc/tuic/config.json" 
-           cat "/etc/tuic/config.json" 
+           echo "/etc/tuic/config4.json" 
+           echo "/etc/tuic/config6.json" 
+           cat "/etc/tuic/config4.json" 
+           cat "/etc/tuic/config6.json" 
             ;;
-	3)systemctl restart tuic
-systemctl status tuic
+	3)
+systemctl restart tuic4
+systemctl status tuic4
+systemctl restart tuic6
+systemctl status tuic6
 ;;
 
         00)
