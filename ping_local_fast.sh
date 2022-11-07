@@ -1,4 +1,5 @@
 site=(
+"baidu.com"
 "doeasy.ga"
 "hk.wardao.xyz"
 "wardao.xyz"
