@@ -19,6 +19,7 @@ get_az_api='方法1：使用cloudshell by Powershell
 sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --role contributor --scopes /subscriptions/$sub_id'
 
 
+tuic='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tuic.sh )'
 probe_x='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/probe_x.sh )'
 
 modify_id_of_v2ray='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/modify_id_of_v2ray.sh)'
@@ -289,7 +290,8 @@ ${Red_font_prefix}74${Font_color_suffix} send on 9
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel ip:8888  1 19860826
 ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
 ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin123456
-
+${Red_font_prefix}77${Font_color_suffix} tuic
+ 
 
 
 ${Red_font_prefix}00${Font_color_suffix} exit
@@ -428,7 +430,7 @@ unzip  AWS-Panel-linux-amd64.zip
 chmod 777 AWS-Panel-linux-amd64
 nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 ;;
-
+                77)eval "${tuic}";;
 
 		00)eval "exit";;
 		
