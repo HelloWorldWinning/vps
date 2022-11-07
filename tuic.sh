@@ -226,7 +226,8 @@ read -p " 选择：" answer
            start
             ;;
         2)
-           systemctl status tuic
+           systemctl status tuic4
+           systemctl status tuic6
            echo "/etc/tuic/config4.json" 
            echo "/etc/tuic/config6.json" 
            cat "/etc/tuic/config4.json" 
