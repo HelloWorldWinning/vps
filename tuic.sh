@@ -92,7 +92,7 @@ read -p "Token默认1:" TokenPassword
 
 while true
         do
-            read -p " 请输入certificate path：" cert_path
+            read -p " 请输入cer path：" cert_path
             if [[ -z "${cert_path}" ]]; then
                 echoColor red " certificate path wrong，请重新输入！"
             else
