@@ -168,6 +168,7 @@ start(){
 
 echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}tuic${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
+echo -e "  ${GREEN}3.${PLAIN} restart ${BLUE}config${PLAIN}"
 echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 
 
@@ -185,6 +186,10 @@ read -p " 选择：" answer
            echo "/etc/tuic/config.json" 
            cat "/etc/tuic/config.json" 
             ;;
+	3)systemctl restart tuic
+systemctl status tuic
+;;
+
         00)
        exit
             ;;
