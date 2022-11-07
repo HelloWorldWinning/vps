@@ -77,12 +77,17 @@ function downloadTuicCore(){
 config()
 {
 
-read -p "监听端口默认55555:" ListenPort
-    if   [[ -z "$ListenPort" ]]; then
-            ListenPort="55555"
+read -p "监听v6端口默认55555:" ListenPort6
+    if   [[ -z "$ListenPort6" ]]; then
+            ListenPort6="55555"
 
     fi
 
+read -p "监听v4端口默认55554:" ListenPort4
+    if   [[ -z "$ListenPort4" ]]; then
+            ListenPort4="55554"
+
+    fi
 
 read -p "Token默认1:" TokenPassword
     if   [[ -z "$TokenPassword" ]]; then
@@ -115,7 +120,7 @@ mkdir -p /etc/tuic/
 
 		cat <<EOF > /etc/tuic/config4.json
 {
-    "port": 55555,
+    "port": ${ListenPort4},
     "token": ["1"],
     "certificate": "${cert_path}",
     "private_key": "${key_path}",
@@ -135,7 +140,7 @@ EOF
 
 		cat <<EOF > /etc/tuic/config6.json
 {
-    "port": 55555,
+    "port":${ListenPort6},
     "token": ["1"],
     "certificate": "${cert_path}",
     "private_key": "${key_path}",
