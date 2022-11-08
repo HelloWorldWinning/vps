@@ -223,7 +223,6 @@ start(){
             systemctl restart tuic
             systemctl status tuic
 
-
            echo "/etc/tuic/config.json" 
            cat "/etc/tuic/config.json" 
 

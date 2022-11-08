@@ -366,7 +366,9 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
-                58)eval "$hysteria";;
+                58)eval "$hysteria";
+sed -i 's/8.8.8.8/8.8.4.4/g'  /etc/hihy/conf/hihyServer.json
+;;
                 58.1)
 bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/install_server.sh)
 ;;
