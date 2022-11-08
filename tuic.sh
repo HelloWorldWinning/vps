@@ -77,9 +77,9 @@ function downloadTuicCore(){
 config()
 {
 
-read -p "监听v6端口默认44455:" ListenPort6
+read -p "监听v6端口默认44499:" ListenPort6
     if   [[ -z "$ListenPort6" ]]; then
-            ListenPort6="44455"
+            ListenPort6="44499"
 
     fi
 
