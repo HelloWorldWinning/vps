@@ -212,6 +212,11 @@ start(){
 
             systemctl restart tuic
             systemctl status tuic
+
+
+           echo "/etc/tuic/config.json" 
+           cat "/etc/tuic/config.json" 
+
            # systemctl restart tuic4
            # systemctl status tuic4
            # systemctl restart tuic6
