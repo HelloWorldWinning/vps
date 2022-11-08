@@ -82,6 +82,16 @@ read -p "监听v6端口默认44455:" ListenPort6
             ListenPort6="44455"
 
     fi
+
+
+
+read -p "default:bbr/bbr2:" bbrbbr2
+    if   [[ -z "$bbrbbr2" ]]; then
+            bbrbbr2="bbr"
+
+    fi
+
+
 #
 #read -p "监听v4端口默认55554:" ListenPort4
 #    if   [[ -z "$ListenPort4" ]]; then
@@ -147,7 +157,7 @@ mkdir -p /etc/tuic/
     "private_key": "${key_path}",
 
     "ip": "::",
-    "congestion_controller": "bbr",
+    "congestion_controller": "${bbrbbr2}",
     "max_idle_time": 15000,
     "authentication_timeout": 1000,
     "alpn": ["h3"],
