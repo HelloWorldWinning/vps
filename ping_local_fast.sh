@@ -96,7 +96,7 @@ out=$(echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {})
 
 sites_out=$(echo "$out" |grep  statistics |cut -d " " -f2)
 
-ip_out=$(echo "$out" |grep PING | awk '{print $3}' | tr -d '(|)|:')
+ip_out=   $(echo "$out" |grep PING | awk '{print $3}' | tr -d '(|)|:')
 
 loss_out=$(echo "$out" |grep  transmitted |awk  '{print $(NF -2)}')
 stat_out=$(echo "$out" |grep max|awk '{print $(NF -1)}' |  sed "s/\.[0-9][0-9][0-9]//g")
@@ -117,5 +117,6 @@ stat_out=($stat_out)
 #
 for i in ${!sites_out[@]}; do
   av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
-  echo -e "${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} ${ip_out["${i}"]} "
+  ip="$(echo $ip_out[$i] )"
+  echo -e "${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} ${ip} "
 done
