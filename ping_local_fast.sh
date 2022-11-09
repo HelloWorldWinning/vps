@@ -50,6 +50,7 @@ n=5
 
 
 
+echo "============ ipv6 ============"
 
 out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping6 {}  -c ${n} )
 #out=$(echo "${site6[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 sudo ping6 {} -l 50  -c ${n} )
@@ -85,7 +86,7 @@ done
 
 ##########
 
-echo "###### ipv4 ########"
+echo "============ ipv4 ============"
 
 #ehco "${site[*]}"
 #echo "${site[@]}" | tr " " "\n"  | xargs -n 1 -I {} -P 0 ping  -c ${n} {}
