@@ -122,7 +122,7 @@ update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.s
 
 Aria2='bash <(curl -Lsk https://raw.githubusercontent.com/helloxz/ccaa/master/ccaa.sh)'
 
-isp_ip='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_ip.sh)'
+isp_ip='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/isp_ip.sh) | head -25'
 
 ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)'
 
