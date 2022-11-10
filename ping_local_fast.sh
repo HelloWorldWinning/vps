@@ -1,6 +1,5 @@
 site=(
 "baidu.com"
-"doeasy.ga"
 "hk.wardao.xyz"
 "wardao.xyz"
 "del.wardao.xyz"
@@ -9,6 +8,7 @@ site=(
 "doeasy.tk"
 "doeasy.gq"
 "vastiny.cf"
+"vastiny.ml"
 )
 
 
