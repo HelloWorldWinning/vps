@@ -12,7 +12,8 @@ if  [ -z "$IPV42" ] ; then
 
      else
 
-     IPV42=$(ping  -4  -c 1 "${IPV42}"  |head -1 | awk '{print $3}'  | tr -d '(|)') >/dev/null 2>&1
+     #IPV42=$(ping  -4  -c 1 "${IPV42}"  |head -1 | awk '{print $3}'  | tr -d '(|)') >/dev/null 2>&1
+     IPV42=$(dig  A "${IPV42}"    @8.8.4.4 +short)
      curl -sSLk  "https://api.ipdata.co/$IPV42?api-key=513d4b07583037a5a89b6cff4ebff0083bef180977dc71dd73804cf8" |jq
 
 fi
