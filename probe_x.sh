@@ -1,6 +1,6 @@
  while true
         do
-            read -p "database PassWordi=>" PassWord
+            read -p "database PassWord=>" PassWord
             if [[ -z "${PassWord}" ]]; then
                 echo " 必须输入"
             else
