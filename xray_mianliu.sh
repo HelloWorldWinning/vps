@@ -588,7 +588,8 @@ getData() {
         else
 #            resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
 #	    resolve="dig +short ${DOMAIN} @1.1.1.1"	    
-		resolve="$(dig +short ${DOMAIN} @1.1.1.1)"
+		resolve="$(dig A  +short ${DOMAIN} @1.1.1.1)"
+
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
                 colorEcho ${BLUE}  "${DOMAIN} 解析结果：${resolve}"
@@ -735,7 +736,10 @@ getData() {
                     index=`shuf -i0-${len} -n1`
                     PROXY_URL=${SITES[$index]}
                     host=`echo ${PROXY_URL} | cut -d/ -f3`
-                    ip=`curl -sL https://hijk.art/hostip.php?d=${host}`
+                    #ip=`curl -sL https://hijk.art/hostip.php?d=${host}`
+			
+		    resolve="$(dig A  +short ${host} @1.1.1.1)"
+
                     res=`echo -n ${ip} | grep ${host}`
                     if [[ "${res}" = "" ]]; then
                         echo "$ip $host" >> /etc/hosts
