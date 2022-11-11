@@ -1,14 +1,15 @@
 site=(
 "baidu.com"
-"hk.wardao.xyz"
-"wardao.xyz"
-"del.wardao.xyz"
-"doeasy.ml"
-"doeasy.cf"
-"doeasy.tk"
-"doeasy.gq"
-"vastiny.ml"
-"vastiny.cf"
+"hk.hardeasy.top"
+"hardeasy.top"
+"tw.hardeasy.top"
+"ali.hardeasy.top"
+"azsg.hardeasy.top"
+"azjp.hardeasy.top"
+"awsjp.hardeasy.top"
+"awssg.hardeasy.top"
+"tokyo.hardeasy.top"
+"sanjose.hardeasy.top"
 )
 
 
