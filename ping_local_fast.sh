@@ -10,16 +10,19 @@ site=(
 "awssg.hardeasy.top"
 "tokyo.hardeasy.top"
 "sanjose.hardeasy.top"
+"uloveme.eu.org"
+"ulovem.eu.org"
 )
 
 
 site6=(
-"6.doeasy.ml"
-"6.doeasy.cf"
-"61.doeasy.gq"
-"6.wardao.xyz"
-"6t.doeasy.cf"
-"6hk.wardao.xyz"
+"6tokyo.hardeasy.top"
+"6awssg.hardeasy.top"
+"6awsjp.hardeasy.top"
+"6.hardeasy.top"
+"6hk.hardeasy.top"
+"6tw.hardeasy.top"
+"66sanjose.hardeasy.top"
 )
 
 
