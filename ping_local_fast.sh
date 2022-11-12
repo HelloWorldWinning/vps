@@ -96,8 +96,8 @@ stat_out=($stat_out)
 for i in ${!sites_out[@]}; do
   av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
   #ip="$(echo $ip_out|cut -d' ' -f  $(($i+1)) )"
-ip=$(dig +short AAAA  ${sites_out[$i]} @8.8.4.4 )
-  echo -e "    ${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} $ip"
+ip=$(dig +short AAAA  ${sites_out[$i]} @1.1.1.1 )
+  echo -e "  ${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} $ip"
 done
 
 
@@ -137,7 +137,7 @@ for i in ${!sites_out[@]}; do
   av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
   #ip="$(echo $ip_out | cut -d' ' -f $i)"
 #  ip="$(echo $ip_out|cut -d' ' -f  $(($i+1)) )" 
-ip=$(dig +short A ${sites_out[$i]} @8.8.4.4)
+ip=$(dig +short A ${sites_out[$i]} @1.1.1.1 |head -1)
 
-  echo -e "    ${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} $ip "
+  echo -e "  ${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} $ip "
 done
