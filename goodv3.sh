@@ -314,11 +314,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 今天运行数/总运行数 $today_hit / $all_hit
 
 \r\n
-")"
-
-
-
- choose
+")"  choose
 	case $choose in
 		222) eval $tcpx  ;;
 		62) eval $trojan ;;
