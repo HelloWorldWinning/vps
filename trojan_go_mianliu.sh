@@ -293,9 +293,9 @@ fi
     if [[ ${WS} = "true" ]]; then
         echo ""
 
-						read -p "输入WSPATH 默认/ ,2手工输入,其余随机:" WSPATH
+						read -p "输入websocket 默认/ws ,2手工输入,其余随机:" WSPATH
 						if   [[ -z "$WSPATH" ]]; then
-						        WSPATH="/"
+						        WSPATH="/ws"
 						elif [[ "${WSPATH}" = 2 ]]; then
 						read -p "输入自定义ws path:" WSPATH
 						else
