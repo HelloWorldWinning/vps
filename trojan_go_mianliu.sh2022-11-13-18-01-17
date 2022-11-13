@@ -643,18 +643,10 @@ if   [[ -z "$PORT" ]]; then
 fi
 
 
-read -p "输入websocket path 默认/ws:"  WSPATH
-if   [[ -z "$WSPATH" ]]; then
-        WSPATH="/ws"
-fi
-
 read -p "输入nginx 监听port 默认8080:" Nginx_PORT 
 if   [[ -z "$Nginx_PORT" ]]; then
         Nginx_PORT=8080
 fi
-
-
-
 
 
 
