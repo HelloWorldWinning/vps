@@ -1048,7 +1048,10 @@ menu() {
     statusText
     echo 
 
-    read -p " 请选择操作[0-10]：" answer
+    read -p " 请选择操作[0-10]默认2：" answer
+    if [[ -z "$answer" ]]; then
+       answer=2
+    fi
     case $answer in
         0)
             exit 0
