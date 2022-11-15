@@ -41,6 +41,8 @@ function echoColor() {
 
 sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server@.service
 sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server.service
+systemctl daemon-reload
+
 
 function  install_config_hy(){
 
