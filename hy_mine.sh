@@ -43,6 +43,33 @@ function echoColor() {
 #sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server.service
 #systemctl daemon-reload
 
+
+
+function optimization_udp_tcp() {
+
+echo 20240000 > /proc/sys/fs/file-max
+
+
+	cat <<EOF >>  /etc/sysctl.conf 
+net.core.rmem_default = 2097152
+net.core.rmem_max = 8000000
+
+net.core.wmem_default = 2097152
+net.core.wmem_max = 5242880
+
+net.ipv4.tcp_mem = 65536  393216  524288
+net.ipv4.tcp_rmem = 1048576  2097152  5242880
+net.ipv4.tcp_wmem = 1048576  2097152  5242880
+EOF
+
+sysctl -p
+
+	 
+}
+
+
+
+
 mkdir -p /etc/hy/
 
 
@@ -155,9 +182,14 @@ EOF
  echo "/etc/hy/config.json" 
  cat "/etc/hy/config.json" 
 
+ 
+
+ systemctl daemon-reload
+ systemctl enable hy
+ systemctl start hy
+
 systemctl  restart hy
 systemctl  status hy
- 
 
 }
 
@@ -176,11 +208,12 @@ read -p " 选择：" answer
     case $answer in
         1)
             install_config_hy
+           optimization_udp_tcp
             ;;
         2)
-systemctl  status hy
            echo "/etc/hy/config.json" 
            cat "/etc/hy/config.json" 
+systemctl  status hy
    
             ;;
 	3)
