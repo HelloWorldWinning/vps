@@ -46,7 +46,7 @@ function echoColor() {
 mkdir -p /etc/hy/
 
 
-	cat <<EOF > /etc/hy/config.json
+cat <<EOF >/./usr/lib/systemd/system/hy.service
 [Unit]
 Description=Hysteria, a feature-packed network utility optimized for networks of poor quality
 Documentation=https://github.com/HyNetwork/hysteria/wiki
