@@ -198,7 +198,7 @@ getData() {
                 break
             fi
         done
-        colorEcho $BLUE " 伪装域名(host)： $DOMAIN"
+        colorEcho $BLUE "伪装域名(host)： $DOMAIN"
 
         echo ""
 
