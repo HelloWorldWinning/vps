@@ -39,9 +39,34 @@ function echoColor() {
 	esac
 }
 
-sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server@.service
-sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server.service
-systemctl daemon-reload
+#sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server@.service
+#sed -i 's/User=hysteria/User=root/g'  /./usr/lib/systemd/system/hysteria-server.service
+#systemctl daemon-reload
+
+mkdir -p /etc/hy/
+
+
+	cat <<EOF > /etc/hy/config.json
+[Unit]
+Description=Hysteria, a feature-packed network utility optimized for networks of poor quality
+Documentation=https://github.com/HyNetwork/hysteria/wiki
+After=network.target
+
+[Service]
+User=root
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_RAW
+NoNewPrivileges=true
+WorkingDirectory=/etc/hysteria
+Environment=HYSTERIA_LOG_LEVEL=info
+ExecStart=/usr/local/bin/hysteria -c /etc/hy/config.json server
+Restart=on-failure
+RestartPreventExitStatus=1
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 
 function  install_config_hy(){
@@ -127,11 +152,11 @@ read -p "QUIC stream receive window recv_window_conn default(16777216)
 }
 EOF
 
- echo "/etc/hysteria/config.json" 
- cat "/etc/hysteria/config.json" 
+ echo "/etc/hy/config.json" 
+ cat "/etc/hy/config.json" 
 
-systemctl  restart hysteria-server
-systemctl  status hysteria-server
+systemctl  restart hy
+systemctl  status hy
  
 
 }
@@ -153,14 +178,14 @@ read -p " 选择：" answer
             install_config_hy
             ;;
         2)
-systemctl  status hysteria-server
-           echo "/etc/hysteria/config.json" 
-           cat "/etc/hysteria/config.json" 
+systemctl  status hy
+           echo "/etc/hy/config.json" 
+           cat "/etc/hy/config.json" 
    
             ;;
 	3)
-systemctl  restart hysteria-server
-systemctl  status hysteria-server
+systemctl  restart hy
+systemctl  status hy
 ;;
 
         00)
