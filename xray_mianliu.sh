@@ -559,7 +559,7 @@ getData() {
         echo ""
         echo " Xray一键脚本，运行之前请确认如下条件已经具备："
         colorEcho ${YELLOW} "  1. 一个伪装域名"
-        colorEcho ${YELLOW} "  2. 伪装域名DNS解析指向当前服务器ip（${IP}）"
+        colorEcho ${YELLOW} "  2. 伪装域名DNS解析指向当前服务器ip$IPV4$IPV6 "
         colorEcho ${BLUE} "  3. 如果/root目录下有 xray.pem 和 xray.key 证书密钥文件，无需理会条件2"
         echo " "
 #        read -p " 确认满足按y，按其他退出脚本：" answer
@@ -597,6 +597,7 @@ resolve6="$(dig AAAA +short ${DOMAIN} @1.1.1.1)"
 res4=`echo -n ${resolve4} | grep $IPV4`
 res6=`echo -n ${resolve6} | grep $IPV6`
 res=`echo $res4$res6`
+IP=`echo $res4$res6`
 echo "${DOMAIN}  points to: $res"
 
 if [[ -z "${res}" ]]; then
@@ -887,9 +888,17 @@ getCert() {
         ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
         ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
         if [[ "$BT" = "false" ]]; then
+			if [[ ! -z "${IPV4}" ]]; then
             ~/.acme.sh/acme.sh   --issue -d $DOMAIN --keylength ec-256 --pre-hook "systemctl stop nginx" --post-hook "systemctl restart nginx"  --standalone
+			else
+            ~/.acme.sh/acme.sh   --issue -d $DOMAIN --keylength ec-256 --pre-hook "systemctl stop nginx" --post-hook "systemctl restart nginx"  --standalone --listen-v6
+			fi				
         else
+			if [[ ! -z "${IPV4}" ]]; then
             ~/.acme.sh/acme.sh   --issue -d $DOMAIN --keylength ec-256 --pre-hook "nginx -s stop || { echo -n ''; }" --post-hook "nginx -c /www/server/nginx/conf/nginx.conf || { echo -n ''; }"  --standalone
+			else
+            ~/.acme.sh/acme.sh   --issue -d $DOMAIN --keylength ec-256 --pre-hook "nginx -s stop || { echo -n ''; }" --post-hook "nginx -c /www/server/nginx/conf/nginx.conf || { echo -n ''; }"  --standalone --listen-v6
+			fi
         fi
         [[ -f ~/.acme.sh/${DOMAIN}_ecc/ca.cer ]] || {
             colorEcho $RED " 获取证书失败，请复制上面的红色文字到 https://hijk.art 反馈"
