@@ -207,8 +207,8 @@ echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 read -p " 选择：" answer
     case $answer in
         1)
-            install_config_hy
            optimization_udp_tcp
+            install_config_hy
             ;;
         2)
            echo "/etc/hy/config.json" 
