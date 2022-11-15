@@ -334,12 +334,31 @@ fi
                 PROXY_URL=${SITES[$index]}
                 host=`echo ${PROXY_URL} | cut -d/ -f3`
                 #ip=`curl -sL https://hijk.art/hostip.php?d=${host}`
-                ip="$(dig A  +short ${host} @1.1.1.1)"
-                res=`echo -n ${ip} | grep ${host}`
-                if [[ "${res}" = "" ]]; then
-                    echo "$ip $host" >> /etc/hosts
-                    break
-                fi
+ #               ip="$(dig A  +short ${host} @1.1.1.1)"
+ #               res=`echo -n ${ip} | grep ${host}`
+ #               if [[ "${res}" = "" ]]; then
+ #                   echo "$ip $host" >> /etc/hosts
+ #                   break
+ #               fi
+
+
+IPV4=$(dig @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
+IPV6=$(dig +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
+resolve4="$(dig A  +short ${DOMAIN} @1.1.1.1)"
+resolve6="$(dig AAAA +short ${DOMAIN} @1.1.1.1)"
+res4=`echo -n ${resolve4} | grep $IPV4`
+res6=`echo -n ${resolve6} | grep $IPV6`
+res=`echo $res4$res6`
+echo "${DOMAIN}  points to: $res"
+
+if [[ -z "${res}" ]]; then
+echo " ${DOMAIN} 解析结果：${res}"
+echo -e " ${RED}伪装域名未解析到当前服务器 $IPV4$IPV6 "
+exit 1
+fi
+
+
+
             done
             ;;
         3)
