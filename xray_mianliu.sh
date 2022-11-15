@@ -570,7 +570,7 @@ getData() {
         echo ""
         while true
         do
-            read -p "请输入伪装域名:" DOMAIN
+            read -p "请输入伪装域名: " DOMAIN
             if [[ -z "${DOMAIN}" ]]; then
                 colorEcho ${RED} " 域名输入错误，请重新输入！"
             else
