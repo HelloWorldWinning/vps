@@ -151,7 +151,7 @@ read -p " 选择：" answer
             install_config_hy
             ;;
         2)
-           systemctl status hysteria
+systemctl  status hysteria-server
            echo "/etc/hysteria/config.json" 
            cat "/etc/hysteria/config.json" 
    
