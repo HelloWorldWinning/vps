@@ -602,7 +602,7 @@ echo "${DOMAIN}  points to: $res"
 
 if [[ -z "${res}" ]]; then
 echo " ${DOMAIN} 解析结果：${res}"
-echo -e " ${RED}伪装域名未解析到当前服务器 $IPV4$IPV6 "
+echo -e " ${RED}伪装域名未解析到当前服务器 $IPV4 $IPV6 "
 exit 1
 fi
 
