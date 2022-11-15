@@ -129,7 +129,7 @@ read -p "QUIC stream receive window recv_window_conn default(16777216)
 #echo "cert_path" $cert_path
 #echo "key_path" $key_path
  
-	cat <<EOF > /etc/hysteria/config.json
+	cat <<EOF > /etc/hy/config.json
 {
 "listen": ":$Listen_Port",
 "protocol": "wechat-video",
