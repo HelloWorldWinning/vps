@@ -578,7 +578,7 @@ getData() {
             fi
         done
         DOMAIN=${DOMAIN,,}
-        colorEcho ${BLUE}  "伪装域名(host):$DOMAIN"
+        colorEcho ${BLUE}  "伪装域名(host): $DOMAIN"
 
         echo ""
         if [[ -f ~/xray.pem && -f ~/xray.key ]]; then
