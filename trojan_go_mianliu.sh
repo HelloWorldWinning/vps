@@ -637,6 +637,7 @@ autoindex_localtime on;
 #fancyindex_exact_size off;
 #charset utf-8,gbk;
 #fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+#fancyindex_name_length  1024;
 
     
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
