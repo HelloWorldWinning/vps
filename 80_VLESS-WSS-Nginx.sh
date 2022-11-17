@@ -19,8 +19,7 @@ while true
         done
 
 
-#cat <<EOF > /etc/nginx/conf.d/80_VLESS-WSS-Nginx.conf
-cat <<EOF > n.conf
+cat <<EOF > /etc/nginx/conf.d/80_VLESS-WSS-Nginx.conf
 server {
 	listen 80;
         listen [::]:80;
