@@ -629,6 +629,9 @@ location /f/ {
 
     alias  /root/d.share/;
     autoindex on;
+autoindex_exact_size off;
+autoindex_localtime on; 
+
     
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
 # find . -name "*.txt"|xargs -I {} iconv -f gb18030  -t utf8  {} -o {}
