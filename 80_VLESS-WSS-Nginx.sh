@@ -217,7 +217,6 @@ temp_d=$(mktemp -d)
 	else
 		echoColor red "Network Error: Can't connect to Github!"
 	fi
-}
 
 
 	cat <<EOF > /etc/systemd/system/xrayZ.service
