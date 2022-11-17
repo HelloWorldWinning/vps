@@ -18,6 +18,18 @@ apt-get update -y
 apt-get upgrade -y
 
 
+
+########## nginx ########
+apt install nginx-extras -y
+sed -i '1i \load_module \"modules\/ngx_http_fancyindex_module.so\";'  /etc/nginx/nginx.conf
+
+
+#load_module "modules/ngx_http_fancyindex_module.so";
+
+
+########## nginx ########
+
+
 type -p curl >/dev/null || sudo apt install curl -y
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
 && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
