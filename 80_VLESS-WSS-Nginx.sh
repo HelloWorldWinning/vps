@@ -183,23 +183,32 @@ function echoColor() {
 
 
 function DownloadxrayZCore(){
-	version=`wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xrayZ-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'`
-	wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xrayZ-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'
+	version=`wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'`
+	wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'
 	echo -e "The Latest xrayZ version:"`echoColor red "${version}"`"\nDownload..."
     get_arch=`arch`
 
 #https://github.com/XTLS/xrayZ-core/releases/download/v1.6.1/xrayZ-linux-64.zip
 
+temp_f=$(mktemp)
+temp_d=$(mktemp -d)
+
+
     if [ $get_arch = "x86_64" ];then
-        wget -q -O /usr/bin/xrayZ --no-check-certificate https://github.com/XTLS/xrayZ-core/releases/download/${version}/xrayZ-linux-64.zip
-        
-       #  echo "https://github.com/XTLS/xrayZ-core/releases/download/${version}/xrayZ-server-"${version}"-${get_arch}-linux-musl"
+        wget -q -O $temp_f  --no-check-certificate https://github.com/XTLS/xray-core/releases/download/${version}/xray-linux-64.zip
+        unzip $temp_f -d $temp_d/
+        mv -rfv $temp_d/xray /usr/bin/xrayZ
+        mv -rfv $temp_d/* /usr/bin/
+
          
     elif [ $get_arch = "aarch64" ];then
-        wget -q -O /usr/bin/xrayZ --no-check-certificate https://github.com/XTLS/xrayZ-core/releases/download/${version}/xrayZ-linux-arm64-v8a.zip
+        wget -q -O $temp_f  --no-check-certificate https://github.com/XTLS/xray-core/releases/download/${version}/xray-linux-64.zip
+        unzip $temp_f -d $temp_d/
+        mv -rfv $temp_d/xray /usr/bin/xrayZ
+        mv -rfv $temp_d/* /usr/bin/
    
     else
-        echoColor yellowBlack "Error[OS Message]:${get_arch}\nPlease open a issue to https://github.com/XTLS/xrayZ-core/releases/"
+        echoColor yellowBlack "Error[OS Message]:${get_arch}\nPlease open a issue to https://github.com/XTLS/xray-core/releases/"
         exit
     fi
 	if [ -f "/usr/bin/xrayZ" ]; then
