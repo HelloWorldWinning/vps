@@ -261,6 +261,7 @@ systemctl enable nginx
 start(){
 
 systemctl restart  nginx
+netstat  -lptnu |grep 80
 
            echo "/etc/xrayZ/config.json" 
            cat "/etc/xrayZ/config.json" 
