@@ -240,20 +240,35 @@ EOF
 
 
 
+
+
+apt update -y
+apt upgrade -y
+apt install  -y nginx
+sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
+
+systemctl stop nginx
+systemctl enable nginx
+
+
 }
+
+
+
 
 
 
 start(){
 
+systemctl restart  nginx
+
            echo "/etc/xrayZ/config.json" 
            cat "/etc/xrayZ/config.json" 
-     systemctl daemon-reload
+    systemctl daemon-reload
     systemctl enable xrayZ
     systemctl start  xrayZ
             systemctl restart xrayZ
             systemctl status xrayZ
-
 
 
 }
