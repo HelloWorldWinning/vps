@@ -2551,7 +2551,7 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80
 
 
 	25) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/.xray_vless.sh)
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh)
  ;;
 
         22)
