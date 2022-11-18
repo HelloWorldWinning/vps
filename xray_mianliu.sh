@@ -2546,12 +2546,12 @@ menu() {
             showInfo
         ;;
 	24) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh)
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh )
  ;;
 
 
 	25) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh)
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh )
  ;;
 
         22)
