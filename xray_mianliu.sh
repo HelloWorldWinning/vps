@@ -2498,7 +2498,7 @@ menu() {
     echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 不依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Xray-Nginx-Trojan-GRPC 依赖 nignix${PLAIN} ${RED}xtls "
-    echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Xray_No_Nginx_Trojan_Grpc nginx 反带 google 速度快不依赖 nignix${PLAIN} ${RED}xtls "
+    echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Xray_No_Nginx_Trojan  nginx 反带 google 速度快不依赖 nignix${PLAIN} ${RED}xtls "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
