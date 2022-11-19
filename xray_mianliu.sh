@@ -2497,6 +2497,7 @@ menu() {
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
     echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 不依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 依赖 nignix${PLAIN}   "
+    echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Xray-Nginx-Trojan-GRPC 依赖 nignix${PLAIN} ${RED}xtls "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2557,6 +2558,10 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xr
 
 	26) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC.sh  )
+ ;;
+
+	27) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-Trojan-GRPC.sh  )
  ;;
         22)
             installXray
