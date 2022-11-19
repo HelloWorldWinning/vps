@@ -313,6 +313,7 @@ read -p " 选择：" answer
             Xray_Grpc_Nginx
             DownloadxrayRCore
             start
+netstat -ltnp  |grep nginx 
             ;;
         2)
            echo "/etc/xrayR/config.json" 
