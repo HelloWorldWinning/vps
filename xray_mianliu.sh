@@ -2496,6 +2496,7 @@ menu() {
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
     echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 不依赖 nignix${PLAIN}   "
+    echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 依赖 nignix${PLAIN}   "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2554,6 +2555,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh )
  ;;
 
+	26) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC.sh  )
+ ;;
         22)
             installXray
             vlessWSConfig_mianliu_80
