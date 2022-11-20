@@ -207,6 +207,7 @@ wg_after_warp=' wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.
 wg_for_oracle='wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_enp0s3.conf && wg-quick up wg0  ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_enp0s3.conf ; wg-quick up wg1; systemctl enable wg-quick@wg1.service  ; systemctl enable wg-quick@wg0.service'
 
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
+openvpn2='wget https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 
 #kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
@@ -229,7 +230,8 @@ ${Red_font_prefix}64${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} wg
 ${Red_font_prefix}6.1${Font_color_suffix} apt install wireguard
-${Red_font_prefix}7${Font_color_suffix} openvpn
+${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
+${Red_font_prefix}7${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
@@ -329,6 +331,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		6) eval $wg61 ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "55 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
 
 		7) eval $openvpn;;
+		7.1) eval $openvpn2;;
 		8) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
 		9) eval $kcptun;;
