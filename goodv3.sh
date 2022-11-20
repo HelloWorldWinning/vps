@@ -219,6 +219,17 @@ ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoub
  
 
 
+
+
+##		#6.1) eval $wg ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
+##		6) eval $wg61 ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "55 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
+
+
+
+
+
+
+
 while true
 do
 read  -p "$(echo -e "请选择
@@ -228,8 +239,8 @@ ${Red_font_prefix}62${Font_color_suffix} trojan
 ${Red_font_prefix}63${Font_color_suffix} xray
 ${Red_font_prefix}64${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
-${Red_font_prefix}6${Font_color_suffix} wg
-${Red_font_prefix}6.1${Font_color_suffix} apt install wireguard
+${Red_font_prefix}6${Font_color_suffix} apt install wireguard
+${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
 ${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}8${Font_color_suffix} v2ray
@@ -327,8 +338,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		63) eval $xray;;
 		64) eval $realm;;
 		5) eval $speed;;
-		6.1) eval $wg ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
-		6) eval $wg61 ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "55 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
+		6.1) eval $wg ;;
+		6) eval $wg61 ;;
 
 		7) eval $openvpn;;
 		7.1) eval $openvpn2;;
