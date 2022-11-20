@@ -231,7 +231,7 @@ ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} wg
 ${Red_font_prefix}6.1${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
-${Red_font_prefix}7${Font_color_suffix} openvpn Nyr / openvpn-install
+${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
