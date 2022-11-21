@@ -122,6 +122,7 @@ cat <<EOF > /etc/xrayXtlsHttp/config.json
     
       "clients": [
         {
+	"flow": "xtls-rprx-direct",
           "id": "12345678-1234-1234-1234-123456789012",
           "level": 1,
           "alterId": 0
