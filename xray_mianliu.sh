@@ -2499,6 +2499,7 @@ menu() {
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Xray-Nginx-Trojan-GRPC 依赖 nignix${PLAIN} ${RED}xtls "
     echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Xray_No_Nginx_Trojan  nginx 反带 google 速度快不依赖 nignix${PLAIN} ${RED}xtls "
+    echo -e "  ${GREEN}29.${PLAIN}  安装Xray-${BLUE} vless xtls http 简单粗暴非常快    "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2566,6 +2567,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xr
  ;;
 	28) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray_No_Nginx_Trojan_Grpc.sh ) 
+ ;;
+	29) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls_http.sh )
  ;;
         22)
             installXray
