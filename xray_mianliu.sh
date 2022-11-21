@@ -2495,7 +2495,7 @@ menu() {
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
-    echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+xtls+grpc 不依赖 nignix${PLAIN}   "
+    echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 不依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc 依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Xray-Nginx-Trojan-GRPC 依赖 nignix${PLAIN} ${RED}xtls "
     echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Xray_No_Nginx_Trojan  nginx 反带 google 速度快不依赖 nignix${PLAIN} ${RED}xtls "

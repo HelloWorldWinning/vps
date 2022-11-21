@@ -122,8 +122,8 @@ cat <<EOF > /etc/xrayG/config.json
       },
       "streamSettings": {
         "network": "grpc",
-        "security": "xtls",
-            "xtlsSettings": {
+	"security": "tls",
+            "tlsSettings": {
                 "serverName": "$Domain",
                 "alpn": [ 
                     "h2"
