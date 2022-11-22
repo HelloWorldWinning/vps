@@ -18,7 +18,7 @@ apt install -y sudo
 
 sh_ver="100.0.1.4"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
-ubuntu_update='bash  <(curl -Lks https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh)'
+ubuntu_update='echo "y" |bash  <(curl -Lks https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh)'
 
 imgurl=""
 headurl=""
