@@ -18,6 +18,7 @@ apt install -y sudo
 
 sh_ver="100.0.1.4"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
+ubuntu_update='bash  <(curl -Lks https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh)'
 
 imgurl=""
 headurl=""
@@ -1131,6 +1132,7 @@ start_menu() {
  ${Green_font_prefix}51.${Font_color_suffix} 查看排序内核               ${Green_font_prefix}52.${Font_color_suffix} 删除保留指定内核
  ${Green_font_prefix}25.${Font_color_suffix} 卸载全部加速 	 	${Green_font_prefix}99.${Font_color_suffix} 退出脚本 
  ${Green_font_prefix}222.${Font_color_suffix} 13 17 21 	 	${Green_font_prefix}311.${Font_color_suffix} arm debian update  
+ ${Green_font_prefix}322.${Font_color_suffix} ubuntu update pimlie/ubuntu-mainline-kernel.sh
 ————————————————————————————————————————————————————————————————" &&
     check_status
   get_system_info
@@ -1253,6 +1255,9 @@ apt install -y  vim  curl wget netcat htop net-tools screen
     apt upgrade -y
     apt-get install linux-image-arm64 linux-headers-arm64  -y
     ;;
+ 322)
+eval $ubuntu_update
+   ;;
 
   99)
     exit 1
