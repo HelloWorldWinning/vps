@@ -1,3 +1,6 @@
+echo "2525252525"
+
+
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
 YELLOW="\033[33m"   # Warning message
@@ -66,40 +69,43 @@ read -p "input grpc serviceName default: love: " ServiceName
     fi
 
 
-while true
-        do
-            read -p "Domain ："  Domain
-            if [[ -z "${Domain}" ]]; then
-                echo "Domain 请重新输入！"
-            else
-                break
-            fi
-        done
+
+Get_Key_Path
 
 
+#while true
+#        do
+#            read -p "Domain ："  Domain
+#            if [[ -z "${Domain}" ]]; then
+#                echo "Domain 请重新输入！"
+#            else
+#                break
+#            fi
+#        done
+#
 
-while true
-        do
-            read -p " 请输入cer path：" cer_path
-            if [ ! -f "${cer_path}" ]; then
-                echoColor red " certificate path wrong，请重新输入！"
-				echoColor green "请输入证书cert文件路径:"
-            else
-                break
-            fi
-        done
-
-while true
-        do
-            read -p " 请输入key path：" key_path
-            if [ !  -f "${key_path}" ]; then
-                echoColor red " key path wrong，请重新输入！"
-				echoColor green "请输入证书key文件路径:"
-            else
-                break
-            fi
-        done
-
+#while true
+#        do
+#            read -p " 请输入cer path：" cer_path
+#            if [ ! -f "${cer_path}" ]; then
+#                echoColor red " certificate path wrong，请重新输入！"
+#				echoColor green "请输入证书cert文件路径:"
+#            else
+#                break
+#            fi
+#        done
+#
+#while true
+#        do
+#            read -p " 请输入key path：" key_path
+#            if [ !  -f "${key_path}" ]; then
+#                echoColor red " key path wrong，请重新输入！"
+#				echoColor green "请输入证书key文件路径:"
+#            else
+#                break
+#            fi
+#        done
+#
 
 
 cat <<EOF > /etc/xrayG/config.json
