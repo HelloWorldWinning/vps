@@ -25,8 +25,8 @@ site6=(
 "66sanjose.hardeasy.top"
 )
 
-IPV4_local=(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -4 |tr -d \")
-IPV6_local=IPV6_local=(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -6 |tr -d \")
+IPV4_local=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -4 |tr -d \")
+IPV6_local=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -6 |tr -d \")
 echo "local Public IPV4 : $IPV4_local"
 echo "local Public IPV6 : $IPV6_local"
 
