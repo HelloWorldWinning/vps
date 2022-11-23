@@ -7,7 +7,6 @@ site=(
 "azsg.hardeasy.top"
 "azjp.hardeasy.top"
 "awsjp.hardeasy.top"
-"awssg.hardeasy.top"
 "tokyo.hardeasy.top"
 "sanjose.hardeasy.top"
 "uloveme.eu.org"
@@ -17,7 +16,6 @@ site=(
 
 site6=(
 "6tokyo.hardeasy.top"
-"6awssg.hardeasy.top"
 "6awsjp.hardeasy.top"
 "6.hardeasy.top"
 "6hk.hardeasy.top"
