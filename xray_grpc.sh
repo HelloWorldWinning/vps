@@ -1,4 +1,39 @@
-echo "2525252525"
+
+Acme_Get(){
+
+curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
+source ~/.bashrc
+~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
+~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+~/.acme.sh/acme.sh   --issue -d $Domain --keylength ec-256 --force  --standalone --listen-v6
+
+}
+
+Get_Key_Path(){
+  
+read -p "请输入域名: " Domain
+cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+
+if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
+echo $cer_path
+echo $key_path
+
+else
+
+Acme_Get
+
+cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+echo $cer_path
+echo $key_path
+
+fi
+
+
+}
+
+
 
 
 RED="\033[31m"      # Error message

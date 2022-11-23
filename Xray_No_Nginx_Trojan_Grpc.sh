@@ -1,4 +1,39 @@
 
+
+Acme_Get(){
+curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
+source ~/.bashrc
+~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
+~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+~/.acme.sh/acme.sh   --issue -d $Domain --keylength ec-256 --force  --standalone --listen-v6
+}
+
+Get_Key_Path(){
+
+echo "如果~/.acme.sh下没有正确的域名cer/key ，请确保80端口没有被占用，脚本自动获取域名"
+  
+read -p "请正确输入域名: " Domain
+cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+
+if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
+echo $cer_path
+echo $key_path
+
+else
+
+Acme_Get
+
+cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+echo $cer_path
+echo $key_path
+
+fi
+
+}
+
+
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
 YELLOW="\033[33m"   # Warning message
@@ -71,6 +106,7 @@ else
 xtls_option=''
 fi
 
+Get_Key_Path
 
 #read -p "input nginx_grpc_path_to_vless default:/love : " nginx_grpc_path_to_vless
 #    if   [[ -z "$nginx_grpc_path_to_vless" ]]; then
@@ -82,41 +118,42 @@ fi
 #            ServiceName="love"
 #    fi
 
-
-while true
-        do
-            read -p "Domain ："  Domain
-            if [[ -z "${Domain}" ]]; then
-                echo "Domain 请重新输入！"
-            else
-                break
-            fi
-        done
-
-
-while true
-        do
-            read -p " 请输入cer path：" cer_path
-            if [ ! -f "${cer_path}" ]; then
-                echoColor red " certificate path wrong，请重新输入！"
-				echoColor green "请输入证书cert文件路径:"
-            else
-                break
-            fi
-        done
-
-while true
-        do
-            read -p " 请输入key path：" key_path
-            if [ !  -f "${key_path}" ]; then
-                echoColor red " key path wrong，请重新输入！"
-				echoColor green "请输入证书key文件路径:"
-            else
-                break
-            fi
-        done
-
-
+#
+#
+#while true
+#        do
+#            read -p "Domain ："  Domain
+#            if [[ -z "${Domain}" ]]; then
+#                echo "Domain 请重新输入！"
+#            else
+#                break
+#            fi
+#        done
+#
+#
+#while true
+#        do
+#            read -p " 请输入cer path：" cer_path
+#            if [ ! -f "${cer_path}" ]; then
+#                echoColor red " certificate path wrong，请重新输入！"
+#				echoColor green "请输入证书cert文件路径:"
+#            else
+#                break
+#            fi
+#        done
+#
+#while true
+#        do
+#            read -p " 请输入key path：" key_path
+#            if [ !  -f "${key_path}" ]; then
+#                echoColor red " key path wrong，请重新输入！"
+#				echoColor green "请输入证书key文件路径:"
+#            else
+#                break
+#            fi
+#        done
+#
+#
 
 #serviceName=$(echo $nginx_grpc_path_to_vless|tr -d "\/" )
 
