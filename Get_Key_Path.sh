@@ -1,5 +1,3 @@
-
-
 Acme_Get(){
 curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
 source ~/.bashrc
@@ -32,6 +30,5 @@ echo $key_path
 fi
 
 }
-
 
 Get_Key_Path
