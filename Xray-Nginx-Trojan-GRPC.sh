@@ -342,7 +342,8 @@ start(){
 #unlink /dev/shm/Xray-VLESS-to-Nginx.socket
 #unlink /dev/shm/Xray-VLESS-gRPC.socket
 unlink  /dev/shm/Xray-Trojan-gRPC.socket
-systemctl restart  nginx
+#systemctl restart  nginx
+systemctl  reload nginx
 netstat  -lptnu |grep  $Port
 
            echo "/etc/xrayT/config.json" 
