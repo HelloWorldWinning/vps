@@ -322,7 +322,8 @@ start(){
 #unlink /dev/shm/Xray-VLESS-to-Nginx.socket
 unlink /dev/shm/vless_trojan_to_nginx.sock
 unlink /dev/shm/h2vless_trojan_to_nginx.sock 
-systemctl restart  nginx
+#systemctl restart  nginx
+systemctl  reload nginx
 netstat  -lptnu 
 
            echo "/etc/xrayTnoNginx/config.json" 
@@ -359,7 +360,8 @@ netstat -ltnp
 	3)
 unlink /dev/shm/vless_trojan_to_nginx.sock
 unlink /dev/shm/h2vless_trojan_to_nginx.sock 
-systemctl restart nginx
+#systemctl restart nginx
+systemctl  reload nginx
 netstat -ltnp 
 systemctl restart xrayTnoNginx
 systemctl status xrayTnoNginx
