@@ -90,6 +90,8 @@ Xray_Grpc() {
 
 mkdir -p /etc/xrayG/
 
+Get_Key_Path
+
 
 read -p "port  default: 11180: " Port
     if   [[ -z "$Port" ]]; then
@@ -102,11 +104,6 @@ read -p "input grpc serviceName default: love: " ServiceName
     if   [[ -z "$ServiceName" ]]; then
             ServiceName="love"
     fi
-
-
-
-Get_Key_Path
-
 
 #while true
 #        do
