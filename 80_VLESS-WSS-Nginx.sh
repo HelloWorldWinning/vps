@@ -91,7 +91,7 @@ EOF
 cat <<EOF > /etc/xrayZ/config.json
 {
   "log": {
-    "loglevel": "warning"
+    "loglevel": "none"
   },
   "inbounds": [
     {

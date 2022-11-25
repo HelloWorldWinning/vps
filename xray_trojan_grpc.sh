@@ -146,7 +146,7 @@ Get_Key_Path
 cat <<EOF > /etc/xrayTrojanXtlsGrpc/config.json
 {
   "log": {
-    "loglevel": "debug"
+    "loglevel": "none"
   },
   "inbounds": [
     {

@@ -202,7 +202,7 @@ serviceName=$(echo $nginx_grpc_path_to_vless|tr -d "\/" )
 cat <<EOF > /etc/xrayR/config.json
 {
   "log": {
-    "loglevel": "warning"
+    "loglevel": "none"
   },
   "inbounds": [
     {
