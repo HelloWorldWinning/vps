@@ -190,7 +190,7 @@ server {
 		grpc_set_header X-Real-IP \$remote_addr;
 		client_body_timeout 52w;
 		grpc_read_timeout 52w;
-		grpc_pass unix:/dev/shm/Xray-VLESS-gRPC.socket;
+		grpc_pass unix:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket;
 	}
 }
 EOF
@@ -207,7 +207,7 @@ cat <<EOF > /etc/xrayR/config.json
   },
   "inbounds": [
     {
-      "listen": "/dev/shm/Xray-VLESS-gRPC.socket,0666",
+      "listen": "/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket,0666",
       "protocol": "vless",
       "settings": {
         "clients": [
