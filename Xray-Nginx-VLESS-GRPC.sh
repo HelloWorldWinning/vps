@@ -344,8 +344,15 @@ netstat  -lptnu |grep  $Port
             systemctl restart xrayR
             systemctl status xrayR
 
-
 }
+
+get_nginx_port(){
+nginx_conf_file=$(grep -r Nginx_to_Xray_VLESS_gRPC.socket /etc/nginx/conf.d/* |cut -d ":" -f1)
+
+nginx_port=$(cat /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf|grep listen |head -1 |cut -d" " -f2)
+}
+
+get_nginx_port
 
 echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}xrayR${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
@@ -359,17 +366,23 @@ read -p " 选择：" answer
             Xray_Grpc_Nginx
             DownloadxrayRCore
             start
-netstat -ltnp  |grep nginx |grep $Port
+	    get_nginx_port
+netstat -ltnp  |grep nginx |grep $nginx_port
             ;;
         2)
            echo "/etc/xrayR/config.json" 
            cat "/etc/xrayR/config.json" 
-netstat -ltnp  |grep nginx 
+	   get_nginx_port
+netstat -ltnp  |grep nginx  |grep  $nginx_port
            systemctl status xrayR
             ;;
 	3)
-unlink /dev/shm/Xray-VLESS-gRPC.socket
-netstat -ltnp  |grep  nginx
+unlink  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
+systemctl restart nginx
+
+get_nginx_port
+
+netstat -ltnp  |grep  nginx |grep  $nginx_port
 systemctl restart xrayR
 systemctl status xrayR
 ;;
