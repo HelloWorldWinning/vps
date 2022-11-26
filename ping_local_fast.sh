@@ -1,3 +1,6 @@
+read -p "ping n default 5=>" n
+if [[ -z "${n}" ]]; then n=5 fi
+#n=5
 site=(
 "baidu.com"
 "hk.hardeasy.top"
@@ -46,12 +49,6 @@ White='\033[0;37m'        # White
 
 
 
-n=5
-
-#read -p "ping n default 5=>" n
-#if [[ -z "${n}" ]]; then
-#	    	 n=5
-#fi
 
 
 
