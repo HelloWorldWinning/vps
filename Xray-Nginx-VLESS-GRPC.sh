@@ -322,8 +322,8 @@ apt upgrade -y
 apt install  -y nginx
 sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
 
-systemctl stop nginx
 systemctl enable nginx
+#systemctl stop nginx
 
 
 }
@@ -331,8 +331,7 @@ systemctl enable nginx
 
 
 start(){
-#unlink /dev/shm/Xray-VLESS-to-Nginx.socket
-unlink /dev/shm/Xray-VLESS-gRPC.socket
+unlink /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
 systemctl reload nginx
 netstat  -lptnu |grep  $Port
 
