@@ -1,5 +1,6 @@
 read -p "ping n default 5=>" n
-if [[ -z "${n}" ]]; then n=5 fi
+[[ -z "${n}" ]] && n=5 
+#if [[ -z "${n}" ]]; then n=5 fi
 #n=5
 site=(
 "baidu.com"
