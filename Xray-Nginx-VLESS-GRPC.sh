@@ -94,6 +94,8 @@ Xray_Grpc_Nginx() {
 
 mkdir -p /etc/xrayR/
 
+Get_Key_Path
+
 read -p "port  default: 22280: " Port
     if   [[ -z "$Port" ]]; then
             Port=22280
@@ -105,7 +107,6 @@ read -p "input nginx_grpc_path_to_vless default:/love : " nginx_grpc_path_to_vle
             nginx_grpc_path_to_vless="/love"
     fi
 
-Get_Key_Path
 
 
 #read -p "input grpc serviceName default: love: " ServiceName
@@ -332,7 +333,7 @@ systemctl enable nginx
 start(){
 #unlink /dev/shm/Xray-VLESS-to-Nginx.socket
 unlink /dev/shm/Xray-VLESS-gRPC.socket
-systemctl restart  nginx
+systemctl reload nginx
 netstat  -lptnu |grep  $Port
 
            echo "/etc/xrayR/config.json" 
@@ -358,7 +359,7 @@ read -p " 选择：" answer
             Xray_Grpc_Nginx
             DownloadxrayRCore
             start
-netstat -ltnp  |grep nginx 
+netstat -ltnp  |grep nginx |grep $Port
             ;;
         2)
            echo "/etc/xrayR/config.json" 
