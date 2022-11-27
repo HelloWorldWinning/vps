@@ -14,10 +14,11 @@ Get_Key_Path(){
 echo "如果~/.acme.sh下没有正确的域名cer/key ，请确保80端口没有被占用，脚本自动获取域名"
   
 read -p "请正确输入域名: " Domain
-cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
-key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+echo "输入的域名为：$Domain"
 
 if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
+cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
 echo $cer_path
 echo $key_path
 
