@@ -185,12 +185,41 @@ server {
 		if (\$content_type !~ "application/grpc") {
 			return 404;
 		}
-		client_max_body_size 0;
-		client_body_buffer_size 512k;
-		grpc_set_header X-Real-IP \$remote_addr;
-		client_body_timeout 52w;
-		grpc_read_timeout 52w;
+		if ($request_method != "POST") {
+                    return 404;
+                
+                }		
+
+#		client_max_body_size 0;
+#		client_body_buffer_size 512k;
+#		grpc_set_header X-Real-IP \$remote_addr;
+#		client_body_timeout 52w;
+#		grpc_read_timeout 52w;
 		grpc_pass unix:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket;
+   
+         # https://chirpset.com/t/topic/310  断流
+		keepalive_timeout 7d;
+		keepalive_requests 100000;
+
+                client_max_body_size 0;
+                client_body_buffer_size 8k;
+            	client_body_timeout 300s;
+                grpc_read_timeout 1d;
+                grpc_send_timeout 1d;
+
+	        grpc_set_header Connection "";
+                grpc_connect_timeout 10s;
+                proxy_buffering off;
+                #grpc_buffer_size 100m;
+                grpc_socket_keepalive on;
+                #grpc_pass grpc:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket;
+
+grpc_set_header X-Real-IP \$remote_addr;
+grpc_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+
+
+		
+
 	}
 }
 EOF
