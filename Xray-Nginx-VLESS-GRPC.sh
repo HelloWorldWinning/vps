@@ -362,7 +362,9 @@ systemctl enable nginx
 
 start(){
 unlink /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
+systemctl start  nginx
 systemctl reload nginx
+
 netstat  -lptnu |grep  $Port
 
            echo "/etc/xrayR/config.json" 
