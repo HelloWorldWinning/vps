@@ -1,6 +1,6 @@
 
 Acme_Get(){
-
+apt install socat -y
 curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
 source ~/.bashrc
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
