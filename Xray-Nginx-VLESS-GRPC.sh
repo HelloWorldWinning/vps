@@ -185,7 +185,7 @@ server {
 		if (\$content_type !~ "application/grpc") {
 			return 404;
 		}
-		if ($request_method != "POST") {
+		if (\$request_method != "POST") {
                     return 404;
                 
                 }		
