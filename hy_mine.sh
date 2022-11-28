@@ -40,7 +40,6 @@ read -p "请正确输入域名: " Domain
 #echo "输入的域名为：$Domain"
 Check_Domain_Resolve 
 
-#cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
 cer_path=/root/.acme.sh/${Domain}_ecc/fullchain.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
 
@@ -239,7 +238,7 @@ read -p "QUIC stream receive window recv_window_conn default(16777216)
 "listen": ":$Listen_Port",
 "protocol": "wechat-video",
 "disable_udp": false,
-"cert": "$cert_path",
+"cert": "$cer_path",
 "key":  "$key_path",
 "obfs": "love me",
 "auth": {
