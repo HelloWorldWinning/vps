@@ -40,7 +40,8 @@ read -p "请正确输入域名: " Domain
 #echo "输入的域名为：$Domain"
 Check_Domain_Resolve 
 
-cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+#cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+cer_path=/root/.acme.sh/${Domain}_ecc/fullchain.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
 
 if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
