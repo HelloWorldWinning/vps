@@ -295,8 +295,8 @@ ${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} (amd64)一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
 ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hysteria.sh)
-${Red_font_prefix}58.1${Font_color_suffix} install_hysteria HyNetwork  
-${Red_font_prefix}58.2${Font_color_suffix} install_hysteria mine
+${Red_font_prefix}581${Font_color_suffix} install_hysteria HyNetwork  
+${Red_font_prefix}582${Font_color_suffix} install_hysteria mine
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc  jobs_spiders
@@ -399,10 +399,10 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
                 58)eval "$hysteria";
 sed -i 's/8.8.8.8/8.8.4.4/g'  /etc/hihy/conf/hihyServer.json
 ;;
-                58.1)
+                581)
 bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/install_server.sh)
 ;;
-                58.2)eval "$hy_mine"  ;;
+                582)eval "$hy_mine"  ;;
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
                 61)eval "$jobs_spiders" ;;		
