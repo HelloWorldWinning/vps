@@ -14,9 +14,9 @@ Get_Key_Path(){
 read -p "请输入域名: " Domain
 echo "输入的域名为：$Domain"
 
-if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 echo $cer_path
 echo $key_path
 

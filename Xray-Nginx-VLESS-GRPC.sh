@@ -1,3 +1,22 @@
+check_domain_resolve () {
+IPV4=$(dig  +time=2 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
+IPV6=$(dig  +time=2 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
+resolve4="$(dig  +time=2 +tries=2  A  +short ${DOMAIN} @1.1.1.1)"
+resolve6="$(dig  +time=2 +tries=2  AAAA +short ${DOMAIN} @1.1.1.1)"
+res4=`echo -n ${resolve4} | grep $IPV4`
+res6=`echo -n ${resolve6} | grep $IPV6`
+res=`echo $res4$res6`
+IP=`echo $res4$res6`
+echo "${DOMAIN}  points to: $res"
+            if [[ -z "${res}" ]]; then
+                echo " ${DOMAIN} 解析结果：${res}"
+                echo -e " ${RED}伪装域名未解析到当前服务器IP $IPV4$IPV6 !${PLAIN}"
+                exit 1
+               else
+                    echo "$DOMAIN successfully resolved to $res "
+            fi
+}
+
 
 Acme_Get(){
 
@@ -15,11 +34,13 @@ Get_Key_Path(){
 echo "如果~/.acme.sh下没有正确域名 ，请确保80端口没有被占用，脚本自动获取域名"
   
 read -p "请正确输入域名: " Domain
-echo "输入的域名为：$Domain"
+#echo "输入的域名为：$Domain"
+check_domain_resolve 
 
-if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+
+if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 echo $cer_path
 echo $key_path
 
