@@ -800,12 +800,13 @@ net.ipv4.tcp_max_orphans = 32768
   echo "*               soft    nofile           1000000
 *               hard    nofile          1000000" >/etc/security/limits.conf
   echo "ulimit -SHn 1000000" >>/etc/profile
-  read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [y/N] :" yn
-  [ -z "${yn}" ] && yn="y"
-  if [[ $yn == [Yy] ]]; then
-    echo -e "${Info} VPS 请手动重启" 
-    #reboot
-  fi
+  #read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [y/N] :" yn
+  echo "需要重启VPS后，才能生效系统优化配置"
+ # [ -z "${yn}" ] && yn="y"
+ # if [[ $yn == [Yy] ]]; then
+ #   echo -e "${Info} VPS 请手动重启" 
+ #   #reboot
+ # fi
 }
 
 optimizing_system_johnrosen1() {

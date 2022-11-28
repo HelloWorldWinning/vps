@@ -163,6 +163,7 @@ read -p "QUIC stream receive window recv_window_conn default(16777216)
 "disable_udp": false,
 "cert": "$cert_path",
 "key":  "$key_path",
+"obfs": "love me",
 "auth": {
 	"mode": "password",
 	"config": {
