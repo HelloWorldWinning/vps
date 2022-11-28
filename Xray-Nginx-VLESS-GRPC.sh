@@ -1,21 +1,24 @@
-check_domain_resolve () {
-IPV4=$(dig  +time=2 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
-IPV6=$(dig  +time=2 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
-resolve4="$(dig  +time=2 +tries=2  A  +short ${DOMAIN} @1.1.1.1)"
-resolve6="$(dig  +time=2 +tries=2  AAAA +short ${DOMAIN} @1.1.1.1)"
+Check_Domain_Resolve () {
+IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
+IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
+resolve4="$(dig  +time=1 +tries=2  A  +short ${Domain} @1.1.1.1)"
+resolve6="$(dig  +time=1 +tries=2  AAAA +short ${Domain} @1.1.1.1)"
 res4=`echo -n ${resolve4} | grep $IPV4`
 res6=`echo -n ${resolve6} | grep $IPV6`
 res=`echo $res4$res6`
+echo "======"
+echo "$res"
 IP=`echo $res4$res6`
-echo "${DOMAIN}  points to: $res"
+echo "${Domain}  points to: $res"
             if [[ -z "${res}" ]]; then
-                echo " ${DOMAIN} 解析结果：${res}"
+                echo " ${Domain} 解析结果：${res}"
                 echo -e " ${RED}伪装域名未解析到当前服务器IP $IPV4$IPV6 !${PLAIN}"
                 exit 1
                else
-                    echo "$DOMAIN successfully resolved to $res "
+                    echo "$Domain successfully resolved to $res "
             fi
 }
+
 
 
 Acme_Get(){
@@ -48,11 +51,17 @@ else
 
 Acme_Get
 
-cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
-key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
-echo $cer_path
-echo $key_path
+#cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+#key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+      if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
+    	echo $cer_path
+    	echo $key_path
+      else
 
+	echo  "/root/.acme.sh/${Domain}_ecc/ 不存在cer key"	
+	exit 1
+
+      fi
 fi
 
 
