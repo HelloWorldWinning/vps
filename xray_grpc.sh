@@ -39,7 +39,7 @@ echo "如果~/.acme.sh下没有正确域名 ，请确保80端口没有被占用�
   
 read -p "请正确输入域名: " Domain
 #echo "输入的域名为：$Domain"
-check_domain_resolve 
+Check_Domain_Resolve 
 
 cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
