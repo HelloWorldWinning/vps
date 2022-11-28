@@ -1,24 +1,49 @@
+Check_Domain_Resolve () {
+IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
+IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
+resolve4="$(dig  +time=1 +tries=2  A  +short ${Domain} @1.1.1.1)"
+resolve6="$(dig  +time=1 +tries=2  AAAA +short ${Domain} @1.1.1.1)"
+res4=`echo -n ${resolve4} | grep $IPV4`
+res6=`echo -n ${resolve6} | grep $IPV6`
+res=`echo $res4$res6`
+echo "======"
+echo "$res"
+IP=`echo $res4$res6`
+echo "${Domain}  points to: $res"
+            if [[ -z "${res}" ]]; then
+                echo " ${Domain} 解析结果：${res}"
+                echo -e " ${RED}伪装域名未解析到当前服务器IP $IPV4$IPV6 !${PLAIN}"
+                exit 1
+               else
+                    echo "$Domain successfully resolved to $res "
+            fi
+}
+
 
 
 Acme_Get(){
+
 apt install socat -y
 curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
 source ~/.bashrc
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
 ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
 ~/.acme.sh/acme.sh   --issue -d $Domain --keylength ec-256 --force  --standalone --listen-v6
+
 }
 
 Get_Key_Path(){
 
-echo "如果~/.acme.sh下没有正确的域名cer/key ，请确保80端口没有被占用，脚本自动获取域名"
+echo "如果~/.acme.sh下没有正确域名 ，请确保80端口没有被占用，脚本自动获取域名"
   
 read -p "请正确输入域名: " Domain
-echo "输入的域名为：$Domain"
+#echo "输入的域名为：$Domain"
+check_domain_resolve 
 
-if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
 key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+
+if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
 echo $cer_path
 echo $key_path
 
@@ -26,14 +51,26 @@ else
 
 Acme_Get
 
-cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
-key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
-echo $cer_path
-echo $key_path
+#cer_path=/root/.acme.sh/${Domain}_ecc/${Domain}.cer
+#key_path=/root/.acme.sh/${Domain}_ecc/${Domain}.key
+      if [[ -f $cer_path ]]  && [[ -f $key_path ]]  ; then
+    	echo $cer_path
+    	echo $key_path
+      else
 
+	echo  "/root/.acme.sh/${Domain}_ecc/ 不存在cer key"	
+	exit 1
+
+      fi
 fi
 
+
 }
+
+
+
+
+
 
 
 RED="\033[31m"      # Error message
