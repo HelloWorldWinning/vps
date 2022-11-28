@@ -6,8 +6,8 @@ resolve6="$(dig  +time=1 +tries=2  AAAA +short ${Domain} @1.1.1.1)"
 res4=`echo -n ${resolve4} | grep $IPV4`
 res6=`echo -n ${resolve6} | grep $IPV6`
 res=`echo $res4$res6`
-echo "======"
-echo "$res"
+echo "============="
+echo "resolved : $res"
 IP=`echo $res4$res6`
 echo "${Domain}  points to: $res"
             if [[ -z "${res}" ]]; then
