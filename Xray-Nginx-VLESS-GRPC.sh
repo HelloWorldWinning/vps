@@ -182,6 +182,17 @@ read -p "input nginx_grpc_path_to_vless default:/love : " nginx_grpc_path_to_vle
 #
 #
 
+install_nginx_config_it() {
+apt update -y
+apt upgrade -y
+apt install  -y nginx
+sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
+
+systemctl enable nginx
+systemctl start nginx
+
+
+
 cat <<EOF > /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf
 server {
 	listen $Port ssl http2 so_keepalive=on;
@@ -256,7 +267,9 @@ grpc_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
 }
 EOF
 
+}
 
+install_nginx_config_it
 
 
 serviceName=$(echo $nginx_grpc_path_to_vless|tr -d "\/" )
@@ -384,7 +397,7 @@ apt install  -y nginx
 sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
 
 systemctl enable nginx
-#systemctl stop nginx
+systemctl start nginx
 
 
 }
