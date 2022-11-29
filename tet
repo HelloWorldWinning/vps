@@ -1,0 +1,2 @@
+links=$(grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";" )
+echo $links

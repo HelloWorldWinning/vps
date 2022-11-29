@@ -1,3 +1,20 @@
+
+Un_Links() {
+
+grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";"|cut -d" " -f1 |xargs -I {} unlink {}
+
+#grep .socket /etc/nginx/conf.d/*.conf |grep grpc_pass  |xargs -I {}  echo {} |cut -d":" -f3 | tr -d ";" |xargs -I {} unlink {}
+#grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";" |xargs -I {} unlink {}
+}
+
+Restart_Ng_under_links() {
+systemctl reload nginx
+systemctl restart nginx
+systemctl stop nginx
+Un_Links
+systemctl restart nginx
+}
+
 Check_Domain_Resolve () {
 IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
 IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
@@ -12,7 +29,7 @@ IP=`echo $res4$res6`
 echo "${Domain}  points to: $res"
             if [[ -z "${res}" ]]; then
                 echo " ${Domain} 解析结果：${res}"
-                echo -e " ${RED}伪装域名未解析到当前服务器IP $IPV4$IPV6 !${PLAIN}"
+                echo -e " ${RED}伪装域名未解析到当前服务器IP $IPV4; $IPV6 !${PLAIN}"
                 exit 1
                else
                     echo "$Domain successfully resolved to $res "
@@ -398,7 +415,7 @@ apt install  -y nginx
 sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
 
 systemctl enable nginx
-systemctl start nginx
+#systemctl start nginx
 
 
 }
@@ -407,9 +424,14 @@ systemctl start nginx
 
 start(){
 unlink /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
-systemctl start  nginx
-systemctl reload nginx
+Un_Links
 
+systemctl stop nginx
+Un_Links
+systemctl restart nginx
+systemctl stop nginx
+Un_Links
+systemctl restart nginx
 netstat  -lptnu |grep  $Port
 
            echo "/etc/xrayR/config.json" 
@@ -442,6 +464,7 @@ read -p " 选择：" answer
             Xray_Grpc_Nginx
             DownloadxrayRCore
             start
+Restart_Ng_under_links
 	    get_nginx_port
 netstat -ltnp  |grep nginx |grep $nginx_port
             ;;
@@ -453,11 +476,15 @@ netstat -ltnp  |grep nginx  |grep  $nginx_port
            systemctl status xrayR
             ;;
 	3)
+systemctl  stop nginx
+Un_Links
+systemctl restart nginx
 unlink  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
 systemctl restart nginx
 
-get_nginx_port
+Restart_Ng_under_links
 
+get_nginx_port
 netstat -ltnp  |grep  nginx |grep  $nginx_port
 systemctl restart xrayR
 systemctl status xrayR
