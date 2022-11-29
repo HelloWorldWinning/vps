@@ -467,6 +467,8 @@ read -p " 选择：" answer
 Restart_Ng_under_links
 	    get_nginx_port
 netstat -ltnp  |grep nginx |grep $nginx_port
+systemctl restart xrayR
+systemctl status xrayR
             ;;
         2)
            echo "/etc/xrayR/config.json" 
