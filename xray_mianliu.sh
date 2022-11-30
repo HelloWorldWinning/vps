@@ -2544,6 +2544,8 @@ menu() {
     echo -e "  ${GREEN}275.${PLAIN} 安装Xray-${BLUE}trojan_grpc ${RED}xtls 不依赖nginx "
     echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Trojan xtls; nginx 反带 google 速度快不依赖nignix${PLAIN} ${RED}xtls "
     echo -e "  ${GREEN}29.${PLAIN}  安装Xray-${BLUE}vless xtls http 简单粗暴非常快    "
+    echo -e "  ${GREEN}30.${PLAIN}  安装Xray-${BLUE} xray_quic " 
+    echo -e "  ${GREEN}31.${PLAIN}  安装Xray-${BLUE} xray_quic_tls"
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2614,6 +2616,12 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xr
  ;;
 	29) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls_http.sh )
+ ;;
+	30) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic.sh  )
+ ;;
+	31) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic_tls.sh  )
  ;;
 	275) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
