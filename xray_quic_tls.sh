@@ -298,6 +298,8 @@ read -p " 选择：" answer
             xray_tuic_vmess
             DownloadxrayQuicTlsCore
             start
+           echo "/etc/xrayQuicTls/config.json" 
+           cat "/etc/xrayQuicTls/config.json" 
 systemctl restart xrayQuicTls
 systemctl status xrayQuicTls
             ;;

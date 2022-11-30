@@ -290,14 +290,19 @@ read -p " 选择：" answer
             start
 systemctl restart xrayQuic
 systemctl status xrayQuic
+           echo "/etc/xrayQuic/config.json" 
+           cat "/etc/xrayQuic/config.json" 
             ;;
         2)
            echo "/etc/xrayQuic/config.json" 
            cat "/etc/xrayQuic/config.json" 
+           echo "/etc/xrayQuic/config.json" 
            systemctl status xrayQuic
             ;;
 	3)
 systemctl restart xrayQuic
+echo "/etc/xrayQuic/config.json" 
+cat "/etc/xrayQuic/config.json" 
 systemctl status xrayQuic
 ;;
 
