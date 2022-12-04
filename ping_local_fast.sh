@@ -7,7 +7,6 @@ site=(
 "hk.hardeasy.top"
 "hardeasy.top"
 "tw.hardeasy.top"
-"ali.hardeasy.top"
 "azsg.hardeasy.top"
 "azjp.hardeasy.top"
 "awsjp.hardeasy.top"
