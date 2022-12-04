@@ -135,7 +135,9 @@ for i in ${!sites_out[@]}; do
   av="$(echo "${stat_out[$i]}"|cut -d "/" -f 2)"
   #ip="$(echo $ip_out | cut -d' ' -f $i)"
 #  ip="$(echo $ip_out|cut -d' ' -f  $(($i+1)) )" 
-ip=$(dig +time=2  +short A ${sites_out[$i]} @1.1.1.1 |head -1)
+
+#ip=$(dig +time=2  +short A ${sites_out[$i]} @1.1.1.1 |head -1)
+ip=$(dig +time=2  +short A ${sites_out[$i]} @1.1.1.1 )
 
   echo -e "  ${Red}${av}${NC} ${Blue}${loss_out[$i]}${NC} ${stat_out[$i]} ${sites_out[$i]} $ip "
 done
