@@ -392,7 +392,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		47)eval "${iptables_rules}";;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
-		50)eval "sudo netstat -lpntu";;
+		50)eval "netstat -lpntu";;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
