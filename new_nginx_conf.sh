@@ -165,19 +165,19 @@ server {
 #root  /root/Nginx-Fancyindex-Theme/fancyindex.conf ;
 
 location /f/ {
-
-fancyindex on;
-fancyindex_localtime on;
-fancyindex_exact_size off;
-charset utf-8,gbk;
-fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-fancyindex_name_length  1024;
-
+  
  alias  /root/d.share/;
 
-# autoindex on;
-# autoindex_exact_size off; 
-# autoindex_localtime on;     
+autoindex on;
+autoindex_exact_size off; 
+autoindex_localtime on;     
+charset utf-8,gbk;
+
+#fancyindex on;
+#fancyindex_localtime on;
+#fancyindex_exact_size off;
+#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+#fancyindex_name_length  1024;
 
 
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
@@ -195,28 +195,37 @@ fancyindex_name_length  1024;
 location /rdp/ {
 
 alias  /home/rdp/Downloads/;
-#    autoindex on;
-#autoindex_localtime on; 
-#autoindex_exact_size off;
-fancyindex on;
-fancyindex_localtime on;
-fancyindex_exact_size off;
+autoindex on;
+autoindex_exact_size off; 
+autoindex_localtime on;     
 charset utf-8,gbk;
-fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-fancyindex_name_length  1024;
+
+##    autoindex on;
+##autoindex_localtime on; 
+##autoindex_exact_size off;
+#fancyindex on;
+#fancyindex_localtime on;
+#fancyindex_exact_size off;
+#charset utf-8,gbk;
+#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+#fancyindex_name_length  1024;
 }    
 
 
 location /ccaa/ {
-
-fancyindex on;
-fancyindex_localtime on;
-fancyindex_exact_size off;
-charset utf-8,gbk;
-fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-fancyindex_name_length  1024;
     alias  /data/ccaaDown/;
-    #autoindex on;
+autoindex on;
+autoindex_exact_size off; 
+autoindex_localtime on;     
+charset utf-8,gbk;
+
+#fancyindex on;
+#fancyindex_localtime on;
+#fancyindex_exact_size off;
+#charset utf-8,gbk;
+#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+#fancyindex_name_length  1024;
+#    #autoindex on;
     
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
 # find . -name "*.txt"|xargs -I {} iconv -f gb18030  -t utf8  {} -o {}
