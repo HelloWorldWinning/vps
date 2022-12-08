@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 apt install markdown -y
 #apt install markdown pandoc -y
 
