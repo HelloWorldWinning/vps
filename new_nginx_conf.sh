@@ -154,7 +154,7 @@ read -p "port  default: 9988: " Port
 
 
 
-                cat <<EOF > /etc/systemd/system/nginx_$Port.conf
+cat <<EOF > /etc/nginx/conf.d/nginx_$Port.conf
 server {
     listen $Port;
     listen [::]:$Port;
