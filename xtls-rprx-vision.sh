@@ -138,14 +138,15 @@ read -p "port  default: 55443: " Port
 
 cat <<EOF > /etc/xray-xtls-rprx-vision/config.yaml
 log:
-  loglevel: info
-routing:
-  domainStrategy: IPIfNonMatch
-  rules:
-    - type: field
-      ip:
-        - geoip:cn
-      outboundTag: block
+  loglevel: error
+#routing:
+#  domainStrategy: IPIfNonMatch
+#  domainStrategy: AsIs
+#  rules:
+#    - type: field
+#      ip:
+#        - geoip:cn
+#      outboundTag: block
 inbounds:
   - listen: 0.0.0.0
     port: $Port
