@@ -168,10 +168,22 @@ inbounds:
         - http
         - tls
 outbounds:
+#  - protocol: freedom
+#    tag: direct
+
   - protocol: freedom
     tag: direct
+    settings:
+       domainStrategy: UseIP
+
   - protocol: blackhole
     tag: block
+dns:
+  servers:
+  -  https+local://8.8.4.4/dns-query
+  -  https+local://dns.google/dns-query
+  -  https+local://8.8.8.8/dns-query
+
 
 EOF
 
