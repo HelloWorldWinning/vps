@@ -21,6 +21,6 @@ for i in ${!md_arr[@]}; do
    if [[ !  "$html"  =~  "${md_arr[$i]}"   ]]; then
    #if [[    "$html"  =~  ".*${md_arr[$i]}.*"   ]]; then
     echo  ${md_arr[$i]}.md
-	markdown  $de_path/${md_arr[$i]}.md   >  $de_path/html_md.d/${md_arr[$i]}.html
+	markdown  $de_path/md.d/${md_arr[$i]}.md   >  $de_path/html_md.d/${md_arr[$i]}.html
    fi
 done
