@@ -2546,7 +2546,7 @@ menu() {
     echo -e "  ${GREEN}29.${PLAIN}  安装Xray-${BLUE}vless xtls http 简单粗暴非常快    "
     echo -e "  ${GREEN}30.${PLAIN}  安装Xray-${BLUE} xray_quic " 
     echo -e "  ${GREEN}31.${PLAIN}  安装Xray-${BLUE} xray_quic_tls"
-    echo -e "  ${GREEN}32.${PLAIN}  安装Xray-${BLUE} xtls-rprx-vision.sh
+    echo -e "  ${GREEN}32.${PLAIN}  安装Xray-${BLUE} xtls-rprx-vision.sh "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
