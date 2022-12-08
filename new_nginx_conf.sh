@@ -159,8 +159,11 @@ server {
     listen $Port;
     listen [::]:$Port;
     server_name  $Domain;
+
     charset utf-8;
     root /usr/share/nginx/html;
+
+
 
 #root  /root/Nginx-Fancyindex-Theme/fancyindex.conf ;
 
