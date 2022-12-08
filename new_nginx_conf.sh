@@ -263,7 +263,7 @@ start_func(){
 }
 
 
-echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}xray-xtls-rprx-vision${PLAIN}"
+echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}-new_nginx_conf.sh-${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}Restart_Ng_under_links${PLAIN}"
 echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
