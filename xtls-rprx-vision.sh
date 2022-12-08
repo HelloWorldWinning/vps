@@ -252,8 +252,8 @@ EOF
 
 start(){
 
-           echo "/etc/xray-xtls-rprx-vision/config.json" 
-           cat "/etc/xray-xtls-rprx-vision/config.json" 
+           echo "/etc/xray-xtls-rprx-vision/config.yaml" 
+           cat "/etc/xray-xtls-rprx-vision/config.yaml" 
     systemctl daemon-reload
     systemctl enable xray-xtls-rprx-vision
     systemctl start  xray-xtls-rprx-vision
@@ -275,14 +275,14 @@ read -p " 选择：" answer
             xray_xtls-rprx-vision_downloade_func
             Downloadxray-xtls-rprx-visionCore
             start
-           echo "/etc/xray-xtls-rprx-vision/config.json" 
-           cat "/etc/xray-xtls-rprx-vision/config.json" 
+           echo "/etc/xray-xtls-rprx-vision/config.yaml" 
+           cat "/etc/xray-xtls-rprx-vision/config.yaml" 
 systemctl restart xray-xtls-rprx-vision
 systemctl status xray-xtls-rprx-vision
             ;;
         2)
-           echo "/etc/xray-xtls-rprx-vision/config.json" 
-           cat "/etc/xray-xtls-rprx-vision/config.json" 
+           echo "/etc/xray-xtls-rprx-vision/config.yaml" 
+           cat "/etc/xray-xtls-rprx-vision/config.yaml" 
            systemctl status xray-xtls-rprx-vision
             ;;
 	3)
