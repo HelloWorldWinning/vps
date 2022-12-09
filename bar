@@ -1,0 +1,7 @@
+
+version=$(curl https://repo.anaconda.com/archive/ |grep Linux-x86_64.sh|cut -d">" -f2|cut -d'"' -f2  |head -1)
+URL=$(echo "https://repo.anaconda.com/archive/$version")
+echo $URL
+
+
+wget -O /root/Anaconda-Linux-x86_64.sh     "${URL}"
