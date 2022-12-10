@@ -301,7 +301,7 @@ ${Red_font_prefix}581${Font_color_suffix} install_hysteria HyNetwork
 ${Red_font_prefix}582${Font_color_suffix} install_hysteria mine
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
-${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc  jobs_spiders
+${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc  jobs_spiders  jupyter notebook password
 ${Red_font_prefix}1${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}3${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
