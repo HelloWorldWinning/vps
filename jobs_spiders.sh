@@ -10,8 +10,16 @@ export PATH="/root/anaconda3/bin:$PATH"
 EOF
 source ~/.bashrc 
 
-wget -O /root/Anaconda3-2022.05-Linux-x86_64.sh https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
-bash  /root/Anaconda3-2022.05-Linux-x86_64.sh
+
+version=$(curl https://repo.anaconda.com/archive/ |grep Linux-x86_64.sh|cut -d">" -f2|cut -d'"' -f2  |head -1)
+URL=$(echo "https://repo.anaconda.com/archive/$version")
+#echo $URL
+
+
+#wget -O /root/Anaconda3-2022.05-Linux-x86_64.sh https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
+#wget -O /root/Anaconda-Linux-x86_64.sh           https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh
+wget -O /root/Anaconda3-Linux-x86_64.sh     "${URL}"      
+bash    /root/Anaconda3-Linux-x86_64.sh
 
 pip install  html5lib selenium
 
@@ -71,3 +79,5 @@ EOF
 
 
 /root/anaconda3/bin/pip  install python-telegram-bot --upgrade
+
+rm /root/Anaconda3-Linux-x86_64.sh 
