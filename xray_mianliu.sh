@@ -2632,7 +2632,7 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xt
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
  ;;
         33)
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh    )
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh ) 
 ;;
         22)
             installXray
