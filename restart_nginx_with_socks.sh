@@ -15,3 +15,6 @@ Un_Links
 systemctl restart nginx
 systemctl status nginx
 }
+
+
+Restart_Ng_under_links
