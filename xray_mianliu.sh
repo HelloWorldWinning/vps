@@ -2547,6 +2547,7 @@ menu() {
     echo -e "  ${GREEN}30.${PLAIN}  安装Xray-${BLUE} xray_quic " 
     echo -e "  ${GREEN}31.${PLAIN}  安装Xray-${BLUE} xray_quic_tls"
     echo -e "  ${GREEN}32.${PLAIN}  安装Xray-${BLUE} xtls-rprx-vision.sh "
+    echo -e "  ${GREEN}33.${PLAIN}   restart_nginx_with_socks.sh   "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2630,6 +2631,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xt
 	275) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
  ;;
+        33)
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh    )
+;;
         22)
             installXray
             vlessWSConfig_mianliu_80
