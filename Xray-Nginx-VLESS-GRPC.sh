@@ -410,7 +410,7 @@ EOF
 
 
 apt update -y
-apt upgrade -y
+#apt upgrade -y
 apt install  -y nginx
 sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
 
