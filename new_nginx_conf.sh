@@ -221,23 +221,23 @@ charset utf-8,gbk;
 
 location /rdp/ {
 
-alias  /home/rdp/Downloads/;
-autoindex on;
-autoindex_exact_size off; 
-autoindex_localtime on;     
-charset utf-8,gbk;
-
-##    autoindex on;
-##autoindex_localtime on; 
-##autoindex_exact_size off;
-#fancyindex on;
-#fancyindex_localtime on;
-#fancyindex_exact_size off;
+#alias  /home/rdp/Downloads/;
+#autoindex on;
+#autoindex_exact_size off; 
+#autoindex_localtime on;     
 #charset utf-8,gbk;
-#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-#fancyindex_name_length  1024;
-}    
-
+#
+###    autoindex on;
+###autoindex_localtime on; 
+###autoindex_exact_size off;
+##fancyindex on;
+##fancyindex_localtime on;
+##fancyindex_exact_size off;
+##charset utf-8,gbk;
+##fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+##fancyindex_name_length  1024;
+#}    
+#
 
 #location /ccaa/ {
 #    alias  /data/ccaaDown/;
