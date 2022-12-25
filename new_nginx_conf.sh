@@ -167,6 +167,26 @@ server {
 
 #root  /root/Nginx-Fancyindex-Theme/fancyindex.conf ;
 
+
+
+location /rdp/ {
+
+    alias /home/rdp/Downloads/; 
+    autoindex on;
+autoindex_exact_size off;
+autoindex_localtime on; 
+}
+
+
+location /ccaa/ {
+
+    alias  /data/ccaaDown/;
+    autoindex on;
+autoindex_exact_size off;
+autoindex_localtime on; 
+}
+
+
 location /f/ {
   
  alias  /root/d.share/;
