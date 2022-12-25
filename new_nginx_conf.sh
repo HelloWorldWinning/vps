@@ -247,8 +247,9 @@ start_func(){
 
     systemctl daemon-reload
     systemctl reload  nginx
+    systemctl restart nginx
+    netstat  -lptnu
     systemctl status nginx
-netstat  -lptnu
 
 
 }
