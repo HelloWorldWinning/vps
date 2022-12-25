@@ -1,3 +1,7 @@
+mkdir -p  /home/rdp/Downloads/
+mkdir -p  /data/ccaaDown/
+
+
 Un_Links() {
 
 grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";"|cut -d" " -f1 |xargs -I {} unlink {}
@@ -235,12 +239,12 @@ charset utf-8,gbk;
 }    
 
 
-location /ccaa/ {
-    alias  /data/ccaaDown/;
-autoindex on;
-autoindex_exact_size off; 
-autoindex_localtime on;     
-charset utf-8,gbk;
+#location /ccaa/ {
+#    alias  /data/ccaaDown/;
+#autoindex on;
+#autoindex_exact_size off; 
+#autoindex_localtime on;     
+#charset utf-8,gbk;
 
 #fancyindex on;
 #fancyindex_localtime on;
@@ -259,7 +263,7 @@ charset utf-8,gbk;
 #auth_basic_user_file    /root/passwd.txt;
 #auth_basic            "Restricted Area";
 
-}
+#}
 
 
     location / {
