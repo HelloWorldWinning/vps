@@ -1,3 +1,6 @@
+apt  install dnsutils -y
+
+
 mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
 
