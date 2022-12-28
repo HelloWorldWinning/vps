@@ -167,118 +167,8 @@ read -p "port  default: 9988: " Port
 
 cat <<EOF > /etc/nginx/conf.d/${Port}.conf
 server {
-    listen $Port ; #ssl 
-    listen [::]:$Port; #ssl
-    server_name  $Domain;
-
-    charset utf-8;
-    root /usr/share/nginx/html;
-
-
-#	ssl_certificate  $cer_path  ;
-#	ssl_certificate_key  $key_path;
-#	ssl_protocols TLSv1.2 TLSv1.3;
-#	ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
-	
-#	client_header_timeout 52w;
-#        keepalive_timeout 52w;
-
-
-#root  /root/Nginx-Fancyindex-Theme/fancyindex.conf ;
-
-
-
-location /rdp/ {
-
-    alias /home/rdp/Downloads/; 
-    autoindex on;
-autoindex_exact_size off;
-autoindex_localtime on; 
-}
-
-
-location /ccaa/ {
-
-    alias  /data/ccaaDown/;
-    autoindex on;
-autoindex_exact_size off;
-autoindex_localtime on; 
-}
-
-
-location /f/ {
-  
- alias  /root/d.share/;
-
-autoindex on;
-autoindex_exact_size off; 
-autoindex_localtime on;     
-charset utf-8,gbk;
-
-#fancyindex on;
-#fancyindex_localtime on;
-#fancyindex_exact_size off;
-#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-#fancyindex_name_length  1024;
-
-
-# find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
-# find . -name "*.txt"|xargs -I {} iconv -f gb18030  -t utf8  {} -o {}
-# apt-get install apache2-utils
-#  htpasswd -c /root/passwd.txt 1
-#   chmod o+r /root/passwd.txt
-#
-#auth_basic_user_file    /root/passwd.txt;
-#auth_basic            "Restricted Area";
-
-}
-
-
-    location / {
-        proxy_ssl_server_name on;
-        proxy_pass https://www.google.com;
-        proxy_set_header Accept-Encoding '';
-        sub_filter "www.google.com" "$Domain";
-        sub_filter_once off;
- #include /root/Nginx-Fancyindex-Theme/ ;
-    }
-    
-        location = /robots.txt {}
-}
-
-EOF
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-nginx_conf_func443() {
-
-
-Get_Key_Path
-
-read -p "port  default: 443: " Port
-    if   [[ -z "$Port" ]]; then
-            Port=443
-
-    fi
-
-
-
-
-cat <<EOF > /etc/nginx/conf.d/${Port}.conf
-server {
-    listen $Port ssl ;
-    listen [::]:$Port ssl;
+    listen $Port ssl ; 
+    listen [::]:$Port ssl; 
     server_name  $Domain;
 
     charset utf-8;
@@ -368,16 +258,6 @@ EOF
 
 
 
-
-
-
-
-
-
-
-
-
-
 start_func(){
 
     systemctl daemon-reload
@@ -389,8 +269,7 @@ netstat -ltnpu |grep nginx
 }
 
 
-echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}new_nginx_conf.sh${PLAIN}"
-echo -e "  ${GREEN}443.${PLAIN} 安装 ${BLUE}nginx_conf_func443 ${PLAIN}"
+echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}-new_nginx_conf.sh-${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
 echo -e "  ${GREEN}3.${PLAIN} restart ${BLUE}Restart_Ng_under_links${PLAIN}"
 echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
@@ -400,10 +279,6 @@ read -p " 选择：" answer
     case $answer in
         1)
 	    nginx_conf_func
-            start_func
-            ;;
-        443)
-	    nginx_conf_func443
             start_func
             ;;
         2)
