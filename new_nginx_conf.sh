@@ -167,8 +167,8 @@ read -p "port  default: 9988: " Port
 
 cat <<EOF > /etc/nginx/conf.d/${Port}.conf
 server {
-    listen $Port;
-    listen [::]:$Port;
+    listen $Port ; #ssl 
+    listen [::]:$Port; #ssl
     server_name  $Domain;
 
     charset utf-8;
