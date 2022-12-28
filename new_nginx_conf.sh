@@ -1,8 +1,12 @@
 apt  install dnsutils -y
+apt-get update -y
+apt-get install nginx -y
 
 
 mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
+mkdir -p  /etc/nginx/
+mkdir -p  /etc/nginx/conf.d/
 
 
 Un_Links() {
