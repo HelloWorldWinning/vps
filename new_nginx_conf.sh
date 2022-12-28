@@ -393,6 +393,7 @@ echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}new_nginx_conf.sh${PLAIN}"
 echo -e "  ${GREEN}443.${PLAIN} 安装 ${BLUE}nginx_conf_func443 ${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
 echo -e "  ${GREEN}3.${PLAIN} restart ${BLUE}Restart_Ng_under_links${PLAIN}"
+echo -e "  ${GREEN}4.${PLAIN}  ${RED}check docker command${PLAIN}"
 echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 
 
@@ -413,6 +414,9 @@ read -p " 选择：" answer
 	3)
 Restart_Ng_under_links
 ;;
+	4)
+curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh
+		;;
         00)
        exit
             ;;
