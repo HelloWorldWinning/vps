@@ -2540,6 +2540,7 @@ menu() {
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
     echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED} 不依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED}  依赖 nignix${PLAIN}   "
+    echo -e "  ${GREEN}261.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED} docker nginx  依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Troja-nginx-GRPC 依赖 nginx${PLAIN} ${RED}xtls "
     echo -e "  ${GREEN}275.${PLAIN} 安装Xray-${BLUE}trojan_grpc ${RED}xtls 不依赖nginx "
     echo -e "  ${GREEN}28.${PLAIN}  安装Xray-${BLUE}Trojan xtls; nginx 反带 google 速度快不依赖nignix${PLAIN} ${RED}xtls "
@@ -2608,6 +2609,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xr
 
 	26) 
 bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC.sh  )
+ ;;
+	261) 
+bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC_docker.sh )
  ;;
 
 	27) 
