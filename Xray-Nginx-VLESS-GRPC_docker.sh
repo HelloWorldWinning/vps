@@ -1,18 +1,21 @@
-
+mkdir -p /etc/nginx/
+mkdir -p /etc/nginx/conf.d/
+apt install  -y  unzip
+#touch /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
 Un_Links() {
 
-grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";"|cut -d" " -f1 |xargs -I {} unlink {}
+grep  ".socket\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";"|cut -d" " -f1 |xargs -I {} unlink {}
 
 #grep .socket /etc/nginx/conf.d/*.conf |grep grpc_pass  |xargs -I {}  echo {} |cut -d":" -f3 | tr -d ";" |xargs -I {} unlink {}
-#grep  ".sock\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";" |xargs -I {} unlink {}
+#grep  ".socket\|.socket" /etc/nginx/conf.d/*.conf |xargs -I {}  echo {} |grep -v "#" |cut -d":" -f3 | tr -d ";" |xargs -I {} unlink {}
 }
 
 Restart_Ng_under_links() {
-systemctl reload nginx
-systemctl restart nginx
-systemctl stop nginx
+#systemctl reload nginx
+#systemctl restart nginx
+#systemctl stop nginx
 Un_Links
-systemctl restart nginx
+#systemctl restart nginx
 }
 
 Check_Domain_Resolve () {
@@ -202,23 +205,31 @@ read -p "input nginx_grpc_path_to_vless default:/love : " nginx_grpc_path_to_vle
 
 install_nginx_config_it() {
 apt update -y
-apt upgrade -y
-apt install  -y nginx
+#apt upgrade -y
+#apt install  -y nginx
+
+docker pull nginx
+
 sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-enabled\/\*;/g'  /etc/nginx/nginx.conf
 
-systemctl enable nginx
-systemctl start nginx
-
+#systemctl enable nginx
+#systemctl start nginx
 
 
 cat <<EOF > /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf
 server {
+	#listen $Port ssl ;
+        #listen [::]:$Port ssl ;
 	listen $Port ssl http2 so_keepalive=on;
         listen [::]:$Port ssl http2 so_keepalive=on;
 	server_name   $Domain;
 
-	index index.html;
-	root /var/www/html;
+
+        index index.html;
+ root /usr/share/nginx/html;
+
+
+
 
 	ssl_certificate  $cer_path  ;
 	ssl_certificate_key  $key_path;
@@ -384,6 +395,25 @@ temp_d=$(mktemp -d)
 		echoColor red "Network Error: Can't connect to Github!"
 	fi
 
+  cat <<EOF > /etc/systemd/system/xrayR.service
+[Unit]
+Description=xrayR Service
+Documentation=https://github.com/XTLS/xrayR-core/
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+#User=nobody
+#CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+#AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/bin/xrayR -c /etc/xrayR/config.json
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 
 
@@ -430,16 +460,56 @@ netstat  -lptnu |grep  $Port
 start_docker(){
 unlink /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
 Un_Links
-Un_Links
+
+
+echo "==========="
+echo $cer_path
+echo $key_path 
+echo "/etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf"
+
+#docker run -d  --name $Port  --restart=always  -p $Port:$Port  \
+#-v /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf  \
+#-v :/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket \
+#-v $cer_path:$cer_path \
+#-v $key_path:$key_path \
+#nginx
+
+
+
+#docker run -d  --name 22280 --restart=always  -p 22280:22280  \
+#-v /root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key:/root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key  \
+#-v /root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer:/root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer  \
+#-v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
+#-v  /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf \
+#nginx  
+
+
+
 netstat  -lptnu |grep  $Port
 
            echo "/etc/xrayR/config.json" 
            cat "/etc/xrayR/config.json" 
     systemctl daemon-reload
     systemctl enable xrayR
-    systemctl start  xrayR
+    #systemctl start  xrayR
             systemctl restart xrayR
-            systemctl status xrayR
+            #systemctl status xrayR
+
+docker run -d  --name $Port  --restart=always  -p $Port:$Port \
+-v $key_path:$key_path \
+-v $cer_path:$cer_path \
+-v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
+-v /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf  \
+nginx
+
+
+#docker run -d  --name 22280 --restart=always  -p 22280:22280  \
+#-v /root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key:/root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key  \
+#-v /root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer:/root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer  \
+#-v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
+#-v  /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf \
+#nginx  
+
 
 }
 
@@ -463,31 +533,33 @@ read -p " 选择：" answer
         1)
             Xray_Grpc_Nginx
             DownloadxrayRCore
-            start
-            Restart_Ng_under_links
-	    get_nginx_port
-netstat -ltnp  | grep $nginx_port
-systemctl restart xrayR
+            start_docker
+    #     Restart_Ng_under_links
+	    #get_nginx_port
+#netstat -ltnp  | grep $nginx_port
+docker ps -a
+#systemctl restart xrayR
 systemctl status xrayR
             ;;
         2)
            echo "/etc/xrayR/config.json" 
            cat "/etc/xrayR/config.json" 
-	   get_nginx_port
-netstat -ltnp  |grep nginx  |grep  $nginx_port
-           systemctl status xrayR
+#	   get_nginx_port
+#netstat -ltnp  |  grep  $nginx_port
+docker ps -a
+          systemctl status xrayR
             ;;
 	3)
-systemctl  stop nginx
+#systemctl  stop nginx
 Un_Links
-systemctl restart nginx
+#systemctl restart nginx
 unlink  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket
-systemctl restart nginx
+#systemctl restart nginx
 
 Restart_Ng_under_links
 
 get_nginx_port
-netstat -ltnp  |grep  nginx |grep  $nginx_port
+netstat -ltnp  |grep  $nginx_port
 systemctl restart xrayR
 systemctl status xrayR
 ;;
