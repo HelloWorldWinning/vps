@@ -1,3 +1,6 @@
+
+wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
+
 docker pull nginx
 apt  install dnsutils -y
 apt install  net-tools -y
@@ -262,8 +265,12 @@ server {
     listen [::]:$Port ssl;
     server_name  $Domain;
 
-    charset utf-8;
+    #charset utf-8;
     #root /usr/share/nginx/html;
+
+    charset utf-8;
+    root /usr/share/nginx/html;
+ index index.html index.htm index.html inde.php;
 
 
 	ssl_certificate  $cer_path  ;
@@ -347,6 +354,7 @@ start_func(){
 
 docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v /home/rdp/Downloads/:/home/rdp/Downloads/  \
+-v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v  /root/d.share/:/root/d.share/  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
 -v /etc/nginx/conf.d/${Port}.conf:/etc/nginx/conf.d/default.conf   \
@@ -362,6 +370,7 @@ start_func443(){
 docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v $cer_path:$cer_path \
 -v $key_path:$key_path \
+-v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v  /root/d.share/:/root/d.share/  \
 -v /home/rdp/Downloads/:/home/rdp/Downloads/  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
