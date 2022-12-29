@@ -381,8 +381,8 @@ docker ps -a
 
 }
 
-echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}new_nginx_conf.sh${PLAIN}"
-echo -e "  ${GREEN}443.${PLAIN} 安装 ${BLUE}nginx_conf_func443 ${PLAIN}"
+echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}docker nginx  port ${PLAIN}"
+echo -e "  ${GREEN}443.${PLAIN} 安装 ${BLUE}docker nginx 443 ${PLAIN}"
 echo -e "  ${GREEN}2.${PLAIN} 查看 ${BLUE}config${PLAIN}"
 echo -e "  ${GREEN}3.${PLAIN} restart ${BLUE}Restart_Ng_under_links${PLAIN}"
 echo -e "  ${GREEN}4.${PLAIN}  ${RED}check docker command${PLAIN}"

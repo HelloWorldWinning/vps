@@ -32,6 +32,7 @@ sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --rol
 #80_VLESS-WSS-Nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh)'
 
 new_nginx_conf='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.sh)'
+new_nginx_conf_docker='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker.sh )'
 
 tuic='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tuic.sh )'
 hy_mine='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy_mine.sh )'
@@ -321,6 +322,7 @@ ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api
 ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin123456
 ${Red_font_prefix}77${Font_color_suffix} tuic
 ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
+${Red_font_prefix}79${Font_color_suffix} docker nginx 
  
 
 
@@ -468,6 +470,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 ;;
                 77)eval "${tuic}";;
                 78)eval "${new_nginx_conf}";;
+                79)eval "${new_nginx_conf_docker}";;
 
 		00)eval "exit";;
 		
