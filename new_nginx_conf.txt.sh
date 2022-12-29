@@ -12,3 +12,24 @@ docker run -d  --name 80  --restart=always  -p  80:80  \
 
 docker exec -i -t  443 bash
 
+
+
+docker run -d   --name 33  --restart=always  -p  33:33  \
+-v /home/rdp/Downloads/:/home/rdp/Downloads/  \
+-v /data/ccaaDown/:/data/ccaaDown/  \
+-v  /root/d.share/:/root/d.share/   \
+-v /etc/nginx/conf.d/33.conf:/etc/nginx/conf.d/default.conf   \
+nginx
+
+
+
+
+docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
+-v $cer_path:$cer_path \
+-v $key_path:$key_path \
+-v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
+-v  /root/d.share/:/root/d.share/  \
+-v /home/rdp/Downloads/:/home/rdp/Downloads/  \
+-v /data/ccaaDown/:/data/ccaaDown/  \
+-v /etc/nginx/conf.d/${Port}.conf:/etc/nginx/conf.d/default.conf   \
+nginx
