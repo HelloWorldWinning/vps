@@ -37,3 +37,9 @@ nginx
 
 
 apt install nginx-extras
+
+
+aptitude install poppler-utils
+pdftohtml -s  algo.pdf  index.html
+pdftohtml -c  algo.pdf  index.html
+
