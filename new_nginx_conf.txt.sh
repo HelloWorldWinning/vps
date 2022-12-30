@@ -33,3 +33,7 @@ docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
 -v /etc/nginx/conf.d/${Port}.conf:/etc/nginx/conf.d/default.conf   \
 nginx
+
+
+
+apt install nginx-extras
