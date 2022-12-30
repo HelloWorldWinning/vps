@@ -323,7 +323,7 @@ ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin1
 ${Red_font_prefix}77${Font_color_suffix} tuic
 ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
 ${Red_font_prefix}79${Font_color_suffix} docker nginx 
-${Red_font_prefix}80${Font_color_suffix} check commands
+${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
  
 
 
