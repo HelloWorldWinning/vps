@@ -186,7 +186,7 @@ server {
 
 
 
-location /rdp/ {
+location /rdp {
 
     alias /home/rdp/Downloads/; 
     autoindex on;
@@ -195,7 +195,7 @@ autoindex_localtime on;
 }
 
 
-location /ccaa/ {
+location /ccaa {
 
     alias  /data/ccaaDown/;
     autoindex on;
@@ -204,7 +204,7 @@ autoindex_localtime on;
 }
 
 
-location /f/ {
+location /f {
   
  alias  /root/d.share/;
 
@@ -286,7 +286,7 @@ server {
 
 
 
-location /rdp/ {
+location /rdp {
 
     alias /home/rdp/Downloads/; 
     autoindex on;
@@ -295,7 +295,7 @@ autoindex_localtime on;
 }
 
 
-location /ccaa/ {
+location /ccaa {
 
     alias  /data/ccaaDown/;
     autoindex on;
@@ -304,7 +304,7 @@ autoindex_localtime on;
 }
 
 
-location /f/ {
+location /f {
   
  alias  /root/d.share/;
 
