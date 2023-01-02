@@ -1,0 +1,25 @@
+#!/root/anaconda3/bin/python
+
+
+import pdfkit
+
+import sys
+import re
+
+pdffile= sys.argv[1]
+
+
+
+
+
+if __name__ == '__main__': 
+
+    pdf_file = open(pdffile, "rb")
+    
+    # Convert the PDF to HTML
+    
+    html_file = pdfkit.from_file(pdf_file, "my_html_file.html")
+    
+    # Close the PDF file
+    
+    pdf_file.close()
