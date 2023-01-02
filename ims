@@ -1,0 +1,77 @@
+#!/root/anaconda3/bin/python
+
+
+
+
+import asyncio,aiohttp
+import datetime
+import sys
+import requests
+import re
+
+url= sys.argv[1]
+
+headers={"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+"accept-encoding": "gzip, deflate, br",
+"accept-language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+"user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+"sec-ch-ua-platform": "macOS",
+"sec-ch-ua":'".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"'}
+
+link_regex = re.compile('((https?):((//)|(\\\\))+([\w\d:#@%/;$()~_?\+-=\\\.&](#!)?)*)', re.DOTALL)
+
+
+
+class Images():
+    def __init__(self,first_link):
+        self.first_link=first_link
+        self.get_image_links()
+    def get_image_links(self):
+        res = requests.get(self.first_link,headers=headers)
+        res.encoding = 'utf-8'   
+        links = re.findall(link_regex,res.text)
+        #links_to_download = [i[0] for i in links if i[0].find(".jpg")>=20 or i[0].find(".png")>=20] 
+        links_to_download = [i[0] for i in  links]
+        print("links,links_to_download",len(links),len(links_to_download))     
+        self.links_to_download = links_to_download
+
+#async def save_image(url,size_threshold=200000):
+#    async req = await requests.get(url,headers=headers)
+#    req = req.content
+#    tamp_time  = datetime.datetime.now().strftime("%Y-%m-%d_%H_%M_%S.%f")
+#    name=str(tamp_time)+".png"
+#    print(url)
+#    print("sys.getsizeof(req)",sys.getsizeof(req))
+#    if sys.getsizeof(req)<size_threshold:
+#        return None
+#    with open(name, 'wb') as file:
+#        file.write(req)
+#
+async def save_image(session, url): 
+    print("发送请求：", url)
+    async with session.get(url, verify_ssl=False,headers=headers) as response:
+        content = await response.content.read()
+        print("==="*15)
+#        print(content)
+        tamp_time  = datetime.datetime.now().strftime("%Y-%m-%d_%H_%M_%S.%f")
+        name=str(tamp_time)+".jpg"
+        print(url)
+        print("==="*50)
+        print("sys.getsizeof(content)",sys.getsizeof(content))
+        if sys.getsizeof(content)<200000:
+            return None
+        with open(name, mode='wb') as file_object:
+            file_object.write(content)
+
+
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        url_list = images.links_to_download
+        tasks = [asyncio.create_task(save_image(session, url)) for url in url_list]
+        await asyncio.wait(tasks)
+        
+        
+if __name__ == '__main__': 
+    images =  Images(url)   
+    asyncio.run(main())
