@@ -6,7 +6,7 @@ https://www.python.org/ftp/python/3.11.1/Python-3.11.1.tgz
 cd Python-3.9.1
 ./configure --enable-optimizations
 make -j  'nproc' # nproc  number of cpu
-make alt install
+make altinstall
 
 
 
