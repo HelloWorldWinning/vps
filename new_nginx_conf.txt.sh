@@ -1,3 +1,16 @@
+
+https://linuxhint.com/install-python-debian-10/ #How to Install Python on Debian 10
+
+https://www.python.org/ftp/python/3.11.1/Python-3.11.1.tgz
+
+cd Python-3.9.1
+./configure --enable-optimizations
+make -j  'nproc' # nproc  number of cpu
+make alt install
+
+
+
+
 docker run -d  --name 443  --restart=always  -p  443:443  \
 -v /etc/nginx/conf.d/443.conf:/etc/nginx/conf.d/default.conf   \
 -v /root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key:/root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key \
