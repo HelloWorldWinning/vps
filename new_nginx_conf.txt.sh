@@ -1,4 +1,17 @@
 
+ 
+/etc/nginx/mime.types  
+
+video/webm  mkv;
+video/webm  avi;
+video/webm  rmvb;
+video/webm  rm;
+text/py     txt;
+
+
+
+
+
 https://linuxhint.com/install-python-debian-10/ #How to Install Python on Debian 10
 
 https://www.python.org/ftp/python/3.11.1/Python-3.11.1.tgz
@@ -55,4 +68,5 @@ apt install nginx-extras
 aptitude install poppler-utils
 pdftohtml -s  algo.pdf  index.html
 pdftohtml -c  algo.pdf  index.html
+
 
