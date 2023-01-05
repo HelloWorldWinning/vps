@@ -9,6 +9,7 @@ video/webm  rmvb;
 video/webm  rm;
 text/py     txt;
 
+for i in *.rmvb; do ffmpeg  -c:a aac -strict -2   -i  "$i"  "${i%.rmvb}.mp4"; done
 
 
 
