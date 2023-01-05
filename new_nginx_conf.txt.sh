@@ -1,4 +1,5 @@
-
+https://blog.csdn.net/wzj_110/article/details/112850811 
+Nginx(十八)mime.types的作用
  
 /etc/nginx/mime.types  
 
