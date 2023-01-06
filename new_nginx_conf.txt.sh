@@ -1,3 +1,41 @@
+server {
+    listen 443 ssl ;
+    #listen [::]:443 ssl;
+    server_name  chat.openai.com;
+
+#    charset utf-8;
+#    root /usr/share/nginx/html;
+# index index.html index.htm index.html inde.php;
+#
+        ssl_certificate  /root/.acme.sh/ulovem.eu.org_ecc/fullchain.cer  ;
+        ssl_certificate_key  /root/.acme.sh/ulovem.eu.org_ecc/ulovem.eu.org.key;
+
+        #ssl_protocols TLSv1.2 TLSv1.3;
+        #ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+        #client_header_timeout 52w;
+        #keepalive_timeout 52w;
+
+        location / {
+        proxy_ssl_server_name on;
+        proxy_pass https://chat.openai.com;
+        proxy_set_header Host chat.openai.com;
+
+proxy_set_header CF-Connecting-IP $remote_addr;
+proxy_set_header CF-IPCountry $http_cf_ipcountry;
+
+#proxy_set_header Accept-Encoding '';
+#sub_filter "chat.openai.com" "ulovem.eu.org";
+#sub_filter_once off;
+
+}
+
+
+
+
+
+}
+
+=========
 
 https://linuxhint.com/install-python-debian-10/ #How to Install Python on Debian 10
 
@@ -55,4 +93,10 @@ apt install nginx-extras
 aptitude install poppler-utils
 pdftohtml -s  algo.pdf  index.html
 pdftohtml -c  algo.pdf  index.html
+
+
+
+
+
+
 
