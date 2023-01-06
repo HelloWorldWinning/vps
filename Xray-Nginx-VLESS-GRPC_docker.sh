@@ -216,7 +216,7 @@ sed -i 's/include \/etc\/nginx\/sites-enabled.*/#include \/etc\/nginx\/sites-ena
 #systemctl start nginx
 
 
-cat <<EOF > /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf
+cat <<EOF > /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf.docker
 server {
 	#listen $Port ssl ;
         #listen [::]:$Port ssl ;
@@ -465,23 +465,7 @@ Un_Links
 echo "==========="
 echo $cer_path
 echo $key_path 
-echo "/etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf"
-
-#docker run -d  --name $Port  --restart=always  -p $Port:$Port  \
-#-v /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf  \
-#-v :/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket \
-#-v $cer_path:$cer_path \
-#-v $key_path:$key_path \
-#nginx
-
-
-
-#docker run -d  --name 22280 --restart=always  -p 22280:22280  \
-#-v /root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key:/root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key  \
-#-v /root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer:/root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer  \
-#-v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
-#-v  /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf \
-#nginx  
+echo "/etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf.docker"
 
 
 
@@ -499,17 +483,8 @@ docker run -d  --name $Port  --restart=always  -p $Port:$Port \
 -v $key_path:$key_path \
 -v $cer_path:$cer_path \
 -v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
--v /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf  \
+-v /etc/nginx/conf.d/Nginx_${Port}_Grpc_path_to_vless.conf.docker:/etc/nginx/conf.d/default.conf  \
 nginx
-
-
-#docker run -d  --name 22280 --restart=always  -p 22280:22280  \
-#-v /root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key:/root/.acme.sh/febjp.hardeasy.top_ecc/febjp.hardeasy.top.key  \
-#-v /root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer:/root/.acme.sh/febjp.hardeasy.top_ecc/fullchain.cer  \
-#-v  /dev/shm/Nginx_to_Xray_VLESS_gRPC.socket:/dev/shm/Nginx_to_Xray_VLESS_gRPC.socket  \
-#-v  /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf:/etc/nginx/conf.d/default.conf \
-#nginx  
-
 
 }
 
@@ -517,7 +492,7 @@ nginx
 get_nginx_port(){
 nginx_conf_file=$(grep -r Nginx_to_Xray_VLESS_gRPC.socket /etc/nginx/conf.d/* |cut -d ":" -f1)
 
-nginx_port=$(cat /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf|grep listen |head -1 |cut -d" " -f2)
+nginx_port=$(cat /etc/nginx/conf.d/Nginx_22280_Grpc_path_to_vless.conf.docker|grep listen |head -1 |cut -d" " -f2)
 }
 
 get_nginx_port
