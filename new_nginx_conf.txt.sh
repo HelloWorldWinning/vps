@@ -29,13 +29,23 @@ proxy_set_header CF-IPCountry $http_cf_ipcountry;
 
 }
 
-
-
-
-
 }
 
-=========
+================
+https://blog.csdn.net/wzj_110/article/details/112850811 
+Nginx(十八)mime.types的作用
+ 
+/etc/nginx/mime.types  
+
+video/webm  mkv;
+video/webm  avi;
+video/webm  rmvb;
+video/webm  rm;
+text/py     txt;
+
+for i in *.rmvb; do ffmpeg  -c:a aac -strict -2   -i  "$i"  "${i%.rmvb}.mp4"; done
+
+
 
 https://linuxhint.com/install-python-debian-10/ #How to Install Python on Debian 10
 
@@ -93,10 +103,4 @@ apt install nginx-extras
 aptitude install poppler-utils
 pdftohtml -s  algo.pdf  index.html
 pdftohtml -c  algo.pdf  index.html
-
-
-
-
-
-
 
