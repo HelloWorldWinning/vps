@@ -29,7 +29,7 @@ set cursorline
 "nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
 
-hi Normal     ctermfg=40  ctermbg=235
+hi Normal     ctermfg=42  ctermbg=235
 
 highlight LineNr term=bold cterm=NONE guifg=#DA70D6
 highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
