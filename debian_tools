@@ -1,14 +1,29 @@
-cat  >~/.vimrc<<EOF 
-" Statusline at the top (use tabline)
-" set showtabline=2   " this turns on the tabline
-set tabline=%F\ %y  " only the format
-set laststatus=2
-set number 
-" highlight LineNr term=bold cterm=NONE guifg=#DA70D6
-hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
-hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
-EOF
+#cat  >~/.vimrc<<EOF 
+#" Statusline at the top (use tabline)
+#" set showtabline=2   " this turns on the tabline
+#set tabline=%F\ %y  " only the format
+#set laststatus=2
+#set number 
+#" highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+#hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+#hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+#EOF
 
+cat  >~/.vimrc<<EOF 
+syntax on
+filetype plugin on
+set showtabline=1
+set tabline=%F\ %y 
+set laststatus=2
+set statusline+=%F
+set number 
+highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+
+let g:gruvbox_contrast_medium = 0
+let g:gruvbox_contrast_high = 1
+EOF
 
 echo insecure >> ~/.curlrc
 
