@@ -12,15 +12,25 @@
 cat  >~/.vimrc<<EOF 
 syntax on
 filetype plugin on
-set showtabline=1
+"set showtabline=2
 set tabline=%F\ %y 
-set laststatus=2
-"set statusline+=%F
 set number 
 set ruler
-set rulerformat=Line:%l,Col:%v
+"set rulerformat=%l/[%L]:%v
+"let g:rulerformat_filepath_format = '%f'
 
-hi Normal     ctermfg=42  ctermbg=235
+"set statusline+=%F____%l/[%L]:%v
+set statusline+=%l:%v_______%F[%L]
+set laststatus=2
+
+set cursorline
+"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+"nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+
+
+hi Normal     ctermfg=40  ctermbg=235
+
 highlight LineNr term=bold cterm=NONE guifg=#DA70D6
 highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
 highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
@@ -28,16 +38,10 @@ highlight LineNr term=bold cterm=NONE guifg=#DA70D6
 hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
 hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
 
-
 "set background=dark
 "let g:gruvbox_material_background = 'medium'
 "colorscheme gruvbox
 EOF
-
-
-
-
-
 
 
 
@@ -114,3 +118,42 @@ echo "gh auth login manually"
 
 
 
+#syntax on
+#filetype plugin on
+#"set showtabline=2
+#set tabline=%F\ %y 
+#set number 
+#set ruler
+#"set rulerformat=%l/[%L]:%v
+#"let g:rulerformat_filepath_format = '%f'
+#
+#"set statusline+=%F____%l/[%L]:%v
+#set statusline+=%l:%v_______%F[%L]
+#set laststatus=2
+#
+#set cursorline
+#"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+#"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+#"nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+#
+#
+#
+#
+#hi Normal     ctermfg=40  ctermbg=235
+#
+#highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+#highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+#highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+#highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+#hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+#hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+#
+#
+#
+#
+#"set background=dark
+#
+#
+#"let g:gruvbox_material_background = 'medium'
+#
+#"colorscheme gruvbox
