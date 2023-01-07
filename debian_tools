@@ -20,7 +20,7 @@ set ruler
 "let g:rulerformat_filepath_format = '%f'
 
 "set statusline+=%F____%l/[%L]:%v
-set statusline+=%l:%v_______%F[%L]
+set statusline+=______%l:%v_______%F[%L]
 set laststatus=2
 
 set cursorline
