@@ -36,7 +36,7 @@ highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000
 highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
 highlight LineNr term=bold cterm=NONE guifg=#DA70D6
 hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
-hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+hi CursorLineNr   term=bold ctermfg=15  gui=bold guifg=Yellow
 
 "set background=dark
 "let g:gruvbox_material_background = 'medium'
