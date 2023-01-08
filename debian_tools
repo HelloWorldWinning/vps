@@ -21,7 +21,8 @@ set ruler
 
 "set statusline+=%F____%l/[%L]:%v
 "set statusline+=______%l:%v_______%F[%L]
-set statusline+=______%l:%v____%L________%F
+"set statusline+=______%l:%v____%L________%F
+set statusline+=______%l:%v___%p%%__%L________%F
 set laststatus=2
 
 set cursorline
