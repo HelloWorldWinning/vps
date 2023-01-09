@@ -27,8 +27,8 @@ set statusline+=\ \ \ \ \ \ %l:%v\ \ \ %p%%\ \ %L\ \ \ \ \ \ \ %F
 set laststatus=2
 
 set cursorline
-hi CursorLine term=bold cterm=bold guibg=NONE
-
+"hi CursorLine term=bold cterm=bold guibg=NONE
+hi CursorLine term=none cterm=none
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
