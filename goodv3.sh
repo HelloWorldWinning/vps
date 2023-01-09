@@ -107,7 +107,7 @@ disable_all_wg_servers='bash <(curl -sL    https://raw.githubusercontent.com/Hel
 latest_arm_kernel='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/latest_arm_kernel.sh)'
 
 
-debian_tools='source <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/debian_tools ) '
+debian_tools='source <(curl -ipv4 -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/debian_tools ) '
 
 bashrc='source <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/bashrc ) '
 
