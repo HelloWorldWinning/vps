@@ -55,13 +55,13 @@ echo insecure >> ~/.curlrc
 
 ## crontab -l > conf && echo  -e "*/1 * * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/convertmarkdown.sh ) " >> conf && crontab conf && rm -f conf
 
-wget -O /root/convertmarkdown.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/convertmarkdown.sh  
+wget --inet4-only -O /root/convertmarkdown.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/convertmarkdown.sh  
 
 crontab -l > conf && echo  -e "*/1 * * * *  bash  /root/convertmarkdown.sh   " >> conf && crontab conf && rm -f conf
 
 
 echo "updating... ... "
-sleep 2
+sleep 3
 
 apt update  -y
 apt upgrade -y
