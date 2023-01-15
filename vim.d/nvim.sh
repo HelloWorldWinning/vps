@@ -32,12 +32,12 @@ pip install neovim  pynvim jedi
 
 mkdir  -p /root/.config/nvim
 
+#wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 
+# cat>/root/.config/nvim/init.vim<<EOF
+# EOF
 
-"" cat>/root/.config/nvim/init.vim<<EOF
-"" EOF
-""
 
 
 #wget -O ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
