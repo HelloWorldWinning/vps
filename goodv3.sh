@@ -325,7 +325,7 @@ ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
 ${Red_font_prefix}79${Font_color_suffix} docker nginx 
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
 ${Red_font_prefix}81${Font_color_suffix} neovim to install
-${Red_font_prefix}82${Font_color_suffix} bash  <(curl -Ls tiny.one/myvps)
+${Red_font_prefix}82${Font_color_suffix} git clone vps
  
 
 
