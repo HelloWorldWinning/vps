@@ -11,7 +11,7 @@ chmod u+x /usr/bin/nvim.appimage
 ln -s /usr/bin/nvim.appimage /usr/bin/nvim
 
 
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+curl -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
@@ -30,12 +30,12 @@ pip3 install neovim  pynvim jedi
 pip install neovim  pynvim jedi
 
 
-mkdir  -p ~/.config/nvim
+mkdir  -p /root/.config/nvim
 
-wget -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
+wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 
 
-"" cat>~/.config/nvim/init.vim<<EOF
+"" cat>/root/.config/nvim/init.vim<<EOF
 "" EOF
 ""
 
@@ -51,7 +51,7 @@ alias n='/usr/bin/nvim.appimage'
 alias _g='git add . && git commit -m   " `date` " && git push'
 EOF
 
-source ~/.bashrc
+source /root/.bashrc
 
 
 cat  <<- EOF
