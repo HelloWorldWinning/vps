@@ -15,11 +15,13 @@ apt-get update
 apt-get install -y nodejs
 apt install -y node 
 
+apt-get update && apt-get install neovim -y
 
 apt install python3-pip -y
 
 #pip install --upgrade pip
 pip3 install neovim  pynvim jedi
+pip install neovim  pynvim jedi
 
 
 mkdir  -p ~/.config/nvim
