@@ -4,7 +4,9 @@
 # https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/
 #
 
-
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+./nvim.appimage
 
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -15,7 +17,9 @@ apt-get update
 apt-get install -y nodejs
 apt install -y node 
 
-apt-get update && apt-get install neovim -y
+apt-get update && apt-get install -y
+
+# neovim
 
 apt install python3-pip -y
 
