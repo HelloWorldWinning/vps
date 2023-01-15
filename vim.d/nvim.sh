@@ -8,6 +8,7 @@ curl -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/lates
 
 chmod u+x /usr/bin/nvim.appimage
 #./nvim.appimage
+ln -s /usr/bin/nvim.appimage /usr/bin/nvim
 
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
