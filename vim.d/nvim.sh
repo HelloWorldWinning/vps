@@ -9,8 +9,11 @@ apt-get update
 apt-get install -y nodejs
 apt install -y node 
 
-pip install --upgrade pip
-pip install neovim  pynvim jedi
+
+apt install python3-pip -y
+
+#pip install --upgrade pip
+pip3 install neovim  pynvim jedi
 
 
 mkdir  -p ~/.config/nvim
@@ -66,6 +69,7 @@ EOF
 
 cat >>~/.bashrc<<EOF
 alias n='nvim'
+alias l='ls -lrth'
 alias _g='git add . && git commit -m   " `date` " && git push'
 EOF
 
