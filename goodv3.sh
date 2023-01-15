@@ -476,7 +476,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
                 79)eval "${new_nginx_conf_docker}";;
 		80)curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 		81) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh ) ;;
-		82)git clone https://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@github.com/HelloWorldWinning/vps.git ;; 
+		82)git clone https://github.com/HelloWorldWinning/vps.git ;;
 		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
