@@ -4,9 +4,10 @@
 # https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/
 #
 
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-chmod u+x nvim.appimage
-./nvim.appimage
+curl -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+
+chmod u+x /usr/bin/nvim.appimage
+#./nvim.appimage
 
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -82,8 +83,9 @@ EOF
 
 
 cat >>~/.bashrc<<EOF
-alias n='nvim'
+#alias n='nvim'
 alias l='ls -lrth'
+alias n='/usr/bin/nvim.appimage'
 alias _g='git add . && git commit -m   " `date` " && git push'
 EOF
 
