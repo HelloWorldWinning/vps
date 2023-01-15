@@ -1,5 +1,11 @@
 # https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/ Linux 下 Neovim 配置 Python 开发环境指南
 # https://juejin.cn/post/6844904118948118536 如何将你的 neovim 打造成 vscode 一般的 Python IDE?
+# https://github.com/ellisonleao/gruvbox.nvim  ellisonleao / gruvbox.nvim
+# https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/
+#
+
+
+
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -25,7 +31,7 @@ let g:coc_disable_startup_warning = 1
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
-colorshceme gruvbox    
+"colorshceme gruvbox    
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
@@ -44,6 +50,9 @@ Plug 'preservim/nerdcommenter'
 
 call plug#end()
 
+
+set background=dark " or light if you want light mode
+colorscheme gruvbox
 
 
 
