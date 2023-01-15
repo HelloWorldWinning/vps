@@ -32,11 +32,51 @@ pip install neovim  pynvim jedi
 
 mkdir  -p ~/.config/nvim
 
-wget -O  ~/.config/nvim/init.vim https://github.com/HelloWorldWinning/vps/tree/main/vim.d/init.vim.ulovem
+cat>~/.config/nvim/init.vim<<EOF
+let g:deoplete#enable_at_startup = 1
+let g:coc_disable_startup_warning = 1
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 
-"" cat>~/.config/nvim/init.vim<<EOF
-"" EOF
-""
+call plug#begin('~/.local/share/nvim/plugged')
+
+Plug 'morhetz/gruvbox'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'vim-airline/vim-airline'
+Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter' 
+
+"Plug 'vim-airline/vim-airline'
+Plug 'kkoomen/vim-doge'
+Plug 'preservim/nerdcommenter' 
+
+call plug#end()
+
+
+set background=dark " or light if you want light mode
+colorscheme gruvbox
+
+
+
+syntax on
+filetype plugin on
+"set showtabline=2
+set tabline=%F\ %y 
+set number 
+set relativenumber
+set ruler
+"set rulerformat=%l/[%L]:%v
+"let g:rulerformat_filepath_format = '%f'
+
+
+
+EOF
+
 
 
 #wget -O ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
@@ -59,11 +99,6 @@ cat  <<- EOF
 :CocInstall coc-snippets
 :CocInstall coc-bookmark
 :PlugInstall
-:UpdateRemotePlugins
-
-
-https://github.com/Shougo/deoplete.nvim#install
-Write call deoplete#enable() or let g:deoplete#enable_at_startup = 1 in your init.vim
 ~/.config/nvim/init.vim
 EOF
 
