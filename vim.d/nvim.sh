@@ -29,24 +29,23 @@ mkdir  -p ~/.config/nvim
 cat>~/.config/nvim/init.vim<<EOF
 let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
 
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
-"colorshceme gruvbox    
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'
 Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter' 
 
-Plug 'vim-airline/vim-airline'
-let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+"Plug 'vim-airline/vim-airline'
 Plug 'kkoomen/vim-doge'
 Plug 'preservim/nerdcommenter' 
 
@@ -93,7 +92,7 @@ cat  <<- EOF
 :CocInstall coc-snippets
 :CocInstall coc-bookmark
 :PlugInstall
-
+~/.config/nvim/init.vim
 EOF
 
 
