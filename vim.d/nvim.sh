@@ -33,7 +33,7 @@ pip install neovim  pynvim jedi
 mkdir  -p /root/.config/nvim
 
 #wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
-wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
+wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 
 # cat>/root/.config/nvim/init.vim<<EOF
 # EOF
