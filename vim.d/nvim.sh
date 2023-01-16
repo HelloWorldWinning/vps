@@ -47,6 +47,8 @@ wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent
 cat >>~/.bashrc<<EOF
 #alias n='nvim'
 alias l='ls -lrth'
+alias c='clear'
+alias s='ls -lhSr'
 alias n='/usr/bin/nvim.appimage'
 alias _g='git add . && git commit -m   " `date` " && git push'
 EOF
