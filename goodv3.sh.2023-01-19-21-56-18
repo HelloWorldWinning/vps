@@ -16,8 +16,8 @@ all_hit=$(echo "${today_all}"|cut -d" " -f2)
 
 net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
 
-# apt-get install wget --inet4-only 
-# 26)eval 'apt update;apt install -y wget --inet4-only curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
+# apt-get install wget 
+# 26)eval 'apt update;apt install -y wget curl git  vim tree lsof sudo htop rsync screen jq net-tools telnet' ;;
 
 
 get_az_api='方法1：使用cloudshell by Powershell
@@ -45,10 +45,10 @@ install_nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWin
 docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
 
 
-aws_arm_dd='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322" -console ttyS0,115200'
+aws_arm_dd='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322" -console ttyS0,115200'
 
 
-realm2='wget --inet4-only -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
+realm2='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 
 
 azure_create='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/azure_create.sh)'
@@ -63,7 +63,7 @@ ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-R
 pre_InstallNET_modified_chu='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu.sh)'
 
 
-dd_debian11='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
+dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
 
 xray_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu.sh)'
 
@@ -72,7 +72,7 @@ trojan_go_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorl
 
 tcpx121721='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcp131721.sh)'
 
-jobs_spiders='wget --inet4-only --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
+jobs_spiders='wget --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
 
 
 ping_local='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local.sh)'
@@ -93,10 +93,10 @@ rdp='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 
 
-ss_rust='wget --inet4-only -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
 
-#Linux_tools='wget --inet4-only -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
-Linux_tools='wget --inet4-only -N --no-check-certificate https://gitlab.com/misakablog/vps-toolbox/-/raw/main/MisakaToolbox.sh && bash MisakaToolbox.sh'
+#Linux_tools='wget -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
+Linux_tools='wget -N --no-check-certificate https://gitlab.com/misakablog/vps-toolbox/-/raw/main/MisakaToolbox.sh && bash MisakaToolbox.sh'
 
  
 iptables_rules='bash <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh)'
@@ -129,10 +129,10 @@ isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinnin
 
 
 
-#bierendegongju='wget --inet4-only -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
+#bierendegongju='wget -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
 
 bierendegongju1='bash <(curl -Ss https://www.idleleo.com/install.sh)'
-bierendegongju2='wget --inet4-only -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh'
+bierendegongju2='wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh'
 
 update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
@@ -149,10 +149,10 @@ open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/v
 
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
 
-ss_rust='wget --inet4-only -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
 
-nfFree='wget --inet4-only -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
-nf_free2='wget --inet4-only -N https://cdn.jsdelivr.net/gh/kkkyg/CFwarp/CFwarp.sh && bash CFwarp.sh'
+nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
+nf_free2='wget -N https://cdn.jsdelivr.net/gh/kkkyg/CFwarp/CFwarp.sh && bash CFwarp.sh'
 nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
 
 #nfFree='bash <(curl -sSL https://raw.githubusercontent.com/fscarmen/tools/main/a.sh)'
@@ -160,27 +160,27 @@ nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
 #nf='bash <(curl -L -s https://raw.githubusercontent.com/lmc1000/RegionRestrictionCheck/main/check.sh)'
 nf='bash <(curl -L -s check.unlock.media)'
 
-s5='wget --inet4-only --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
+s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
 
-# dd_oracle='bash <(wget --inet4-only --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 11 -v 64 -a -p  1'
+# dd_oracle='bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 11 -v 64 -a -p  1'
 
 
-dd_oracle='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dd_oracle_arm.sh') -d 11 -v 64 -a -p  1'
+dd_oracle='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dd_oracle_arm.sh') -d 11 -v 64 -a -p  1'
 
-# dd_1='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://git.io/AutoReinstall.sh && bash AutoReinstall.sh'
+# dd_1='wget --no-check-certificate -O AutoReinstall.sh https://git.io/AutoReinstall.sh && bash AutoReinstall.sh'
 
-dd_1='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall2.sh && bash AutoReinstall.sh'
+dd_1='wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall2.sh && bash AutoReinstall.sh'
 
-dd='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall.sh && chmod a+x AutoReinstall.sh && bash AutoReinstall.sh'
+dd='wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall.sh && chmod a+x AutoReinstall.sh && bash AutoReinstall.sh'
 
-# tcpx='wget --inet4-only -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh'
+# tcpx='wget -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh'
 
 tcpx='bash <(curl -fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx_modified.sh)'
 
 
 
-realm='wget --inet4-only -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
+realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xrayMINE)'
 # xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vless.sh)'
 
@@ -193,32 +193,32 @@ trojan='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/
 speed='curl -Lso- -no-check-certificate https://raw.githubusercontent.com/HelloWorldWinning/vps/main/speed5.sh | bash'
 # speed2='bash <(curl -Lso- https://git.io/Jlkmw)'
 speed2='bash <(curl -Lso-  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/speed17.sh) |tee speed2.log'
-#speed3='wget --inet4-only -qO- bench.sh | bash |tee speed3.log'
+#speed3='wget -qO- bench.sh | bash |tee speed3.log'
 speed3='bash <(curl -Lso-  bench.sh) |tee speed3.log'
 
-# wg='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -r && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
-# wg='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf && wg-quick up wg2 && systemctl enable wg-quick@wg2.service'
+# wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -r && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
+# wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf && wg-quick up wg2 && systemctl enable wg-quick@wg2.service'
 
-wg='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh ; chmod 755  ~/wireguard.sh ; bash ~/wireguard.sh -s ; bash  ~/wireguard.sh  -u ; wg-quick down wg0  ; mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111_oringal.conf  ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service; sysctl -p /etc/sysctl.conf '
+wg='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh ; chmod 755  ~/wireguard.sh ; bash ~/wireguard.sh -s ; bash  ~/wireguard.sh  -u ; wg-quick down wg0  ; mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111_oringal.conf  ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service; sysctl -p /etc/sysctl.conf '
 
-wg61='apt update -y && apt upgrade -y && apt install iptables wireguard -y ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.servicei;sysctl -p /etc/sysctl.conf ;  sysctl -p '
+wg61='apt update -y && apt upgrade -y && apt install iptables wireguard -y ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.servicei;sysctl -p /etc/sysctl.conf ;  sysctl -p '
 
-wg_to_wgcf='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
+wg_to_wgcf='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
-wg_after_warp=' wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0  && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
+wg_after_warp=' wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0  && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
 
-wg_for_oracle='wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_enp0s3.conf && wg-quick up wg0  ; wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_enp0s3.conf ; wg-quick up wg1; systemctl enable wg-quick@wg1.service  ; systemctl enable wg-quick@wg0.service'
+wg_for_oracle='wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_enp0s3.conf && wg-quick up wg0  ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_enp0s3.conf ; wg-quick up wg1; systemctl enable wg-quick@wg1.service  ; systemctl enable wg-quick@wg0.service'
 
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
-openvpn2='wget --inet4-only https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh'
+openvpn2='wget https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 
-#kcptun='wget --inet4-only --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
+#kcptun='wget --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
 kcptun='bash <(curl -s -L https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kcptun_modified.sh)'
 
-ss_go='wget --inet4-only -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
+ss_go='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
 ss_latest='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss.sh)'
-ssr='wget --inet4-only -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
+ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
  
 
 
@@ -251,7 +251,7 @@ ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}9${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
-${Red_font_prefix}11${Font_color_suffix} bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
+${Red_font_prefix}11${Font_color_suffix} bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
 ${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
 ${Red_font_prefix}13.1${Font_color_suffix}reaml2 转发
@@ -267,7 +267,7 @@ ${Red_font_prefix}22${Font_color_suffix} P3terx  netflix free
 ${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
 ${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
 ${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
-${Red_font_prefix}26${Font_color_suffix} 安装   wget --inet4-only curl vim tree lsof  sudo htop rsync screen jq net-tools
+${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop rsync screen jq net-tools
 ${Red_font_prefix}27${Font_color_suffix} dd后. /etc/ssh/sshd_config  systemctl restart sshd 新建 ~/.ssh,覆盖安装
 ${Red_font_prefix}28${Font_color_suffix} wg 甲骨文网卡enp0s3专用
 ${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
@@ -286,7 +286,7 @@ ${Red_font_prefix}41${Font_color_suffix} install docker
 ${Red_font_prefix}41.1${Font_color_suffix} install nginx
 ${Red_font_prefix}41.2${Font_color_suffix} docker MySQL MyNodeQuery
 ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
-${Red_font_prefix}43${Font_color_suffix} wget --inet4-only bashrc 。手工输入  source  ~/.bashrc
+${Red_font_prefix}43${Font_color_suffix} wget bashrc 。手工输入  source  ~/.bashrc
 ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
@@ -466,7 +466,7 @@ https://zhile.one/archives/1404.html
 ;;
 
 		76)
-wget --inet4-only -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
+wget -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
 unzip  AWS-Panel-linux-amd64.zip
 chmod 777 AWS-Panel-linux-amd64
 nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
