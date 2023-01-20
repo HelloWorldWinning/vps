@@ -36,7 +36,9 @@ pip install neovim  pynvim jedi
 
 mkdir  -p /root/.config/nvim
 mkdir -p ~/.vim
-git clone https://github.com/tyrannicaltoucan/vim-quantum.git  ~/.vim
+#git clone https://github.com/tyrannicaltoucan/vim-quantum.git  ~/.vim
+
+cd  ~/.vim &&  git clone https://github.com/tyrannicaltoucan/vim-quantum.git
 
 #wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 wget --inet4-only -O  ~/.vimrc  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.sanjose.2023-01-21
