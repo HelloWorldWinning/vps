@@ -75,7 +75,7 @@ set ruler
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
 set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
 "hi statusline ctermbg=red  guibg=red guifg=white
-hi statusline guibg=Magenta guifg=Black
+hi statusline guifg=Magenta guibg=Black
 
 set laststatus=2
 
