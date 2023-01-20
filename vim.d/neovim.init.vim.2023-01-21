@@ -1,0 +1,61 @@
+let g:deoplete#enable_at_startup = 1
+let g:coc_disable_startup_warning = 1
+let g:copilot_enabled = 1
+
+
+"Plug 'ludovicchabant/vim-copilot'
+call plug#begin('~/.local/share/nvim/plugged')
+Plug 'morhetz/gruvbox'
+"colorshceme gruvbox    
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-airline/vim-airline'
+Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter' 
+
+"Plug 'vim-airline/vim-airline'
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+Plug 'kkoomen/vim-doge'
+Plug 'preservim/nerdcommenter' 
+Plug 'jsit/toast.vim' 
+Plug 'sainnhe/everforest'
+
+call plug#end()
+
+
+colorscheme everforest
+"colorscheme gruvbox
+"colorscheme  toast
+
+set background=dark " or light if you want light mode
+"set background=light" or light if you want light mode
+
+
+""""""""""""""""""""""""
+
+
+syntax on
+filetype plugin on
+"set showtabline=2
+set tabline=%F\ %y 
+set number 
+set relativenumber
+set ruler
+"set rulerformat=%l/[%L]:%v
+"let g:rulerformat_filepath_format = '%f'
+
+hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
+set laststatus=2
+
+set cursorline
+"hi CursorLine term=bold cterm=bold guibg=NONE
+hi CursorLine term=none cterm=none
+
+
+set cursorcolumn

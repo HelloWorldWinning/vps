@@ -32,8 +32,9 @@ pip install neovim  pynvim jedi
 
 mkdir  -p /root/.config/nvim
 
-#wget -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
-wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
+#wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
+wget --inet4-only -O  ~/.vimrc  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.sanjose.2023-01-21
+wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/neovim.init.vim.2023-01-21
 
 # cat>/root/.config/nvim/init.vim<<EOF
 # EOF
@@ -45,12 +46,15 @@ wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent
 
 
 cat >>~/.bashrc<<EOF
-#alias n='nvim'
-alias l='ls -lrth'
+
+alias v='vim'
 alias c='clear'
+alias l='ls -lrth'
 alias s='ls -lhSr'
-alias n='/usr/bin/nvim.appimage'
-alias _g='git add . && git commit -m   " `date` " && git push'
+alias p='python'
+alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
+alias n='/root/nvim.appimage'
+
 EOF
 
 source /root/.bashrc
