@@ -5,6 +5,13 @@
 #
 
 
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+
+
+
+
 curl -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 
 chmod u+x /usr/bin/nvim.appimage
@@ -71,17 +78,21 @@ source /root/.bashrc
 
 
 cat  <<- EOF
-
+#######  neovim  install :
 :CocInstall coc-python
 :CocInstall coc-snippets
 :CocInstall coc-bookmark
 :PlugInstall
 :UpdateRemotePlugins
 
-
 https://github.com/Shougo/deoplete.nvim#install
 Write call deoplete#enable() or let g:deoplete#enable_at_startup = 1 in your init.vim
 ~/.config/nvim/init.vim
+
+##########
+vim  install  :
+PlugInstall
+
 EOF
 
 
