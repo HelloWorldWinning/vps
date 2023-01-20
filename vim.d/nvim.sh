@@ -63,7 +63,7 @@ alias l='ls -lrth'
 alias s='ls -lhSr'
 alias p='python'
 alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
-alias n='/root/nvim.appimage'
+alias n='/usr/bin/nvim.appimage'
 
 EOF
 
