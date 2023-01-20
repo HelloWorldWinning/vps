@@ -87,7 +87,12 @@ hi CursorLine term=none cterm=none
 "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 "hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
-hi LineNr term=bold cterm=NONE guifg=#DA70D6
+"hi LineNr term=bold cterm=NONE guifg=#DA70D6
+"hi LineNr term=bold cterm=NONE guifg=#DA70D6
+"hi LineNr term=bold cterm=NONE guifg=#9e888d
+"hi LineNr term=bold cterm=NONE guifg=#78666a
+"hi LineNr term=bold cterm=NONE guifg=#4d3f42
+hi LineNr term=bold cterm=NONE guifg=#606060
 "hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
 "hi CursorLineNr   term=bold ctermfg=15  gui=bold guifg=Yellow
 "hi CursorLineNr   term=bold ctermfg=0  gui=bold guifg=Yellow
