@@ -4,6 +4,7 @@
 # https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/
 #
 
+
 curl -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 
 chmod u+x /usr/bin/nvim.appimage
@@ -15,11 +16,14 @@ curl -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
+
 apt-get update
-apt-get install -y nodejs
+apt-get install -y nodejs git
+
+apt update
 apt install -y node 
 
-apt-get update && apt-get install -y
+#apt-get update && apt-get install -y git
 
 # neovim
 
@@ -31,6 +35,8 @@ pip install neovim  pynvim jedi
 
 
 mkdir  -p /root/.config/nvim
+mkdir -p ~/.vim
+git clone https://github.com/tyrannicaltoucan/vim-quantum.git  ~/.vim
 
 #wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
 wget --inet4-only -O  ~/.vimrc  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.sanjose.2023-01-21
