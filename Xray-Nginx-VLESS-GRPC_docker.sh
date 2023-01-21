@@ -1,7 +1,7 @@
-apt update
-apt install  -y aptitude 
-aptitude update
-aptitude  -y install docker 
+
+bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh )
+
+
 
 
 
