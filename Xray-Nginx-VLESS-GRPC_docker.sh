@@ -1,3 +1,10 @@
+apt update
+apt install  -y aptitude 
+aptitude update
+aptitude  -y install docker 
+
+
+
 mkdir -p /etc/nginx/
 mkdir -p /etc/nginx/conf.d/
 apt install  -y  unzip
