@@ -1,7 +1,9 @@
+result=$(echo $(docker ps -a |cut -d" " -f1)|grep CONTAINER)
+    if [ -z "$result" ]; then
 
 bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh )
-
-
+        exit 1
+    fi
 
 
 
