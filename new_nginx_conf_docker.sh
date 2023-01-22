@@ -163,7 +163,7 @@ read -p "port  default: 9988: " Port
 
 
 
-cat <<EOF > /etc/nginx/conf.d/${Port}.conf
+cat <<EOF > /etc/nginx/conf.d/${Port}.conf.docker
 server {
     listen $Port ; #ssl 
     listen [::]:$Port; #ssl
@@ -265,7 +265,7 @@ read -p "port  default: 443: " Port
 
 
 
-cat <<EOF > /etc/nginx/conf.d/${Port}.conf
+cat <<EOF > /etc/nginx/conf.d/${Port}.conf.docker
 server {
     listen $Port ssl ;
     listen [::]:$Port ssl;
@@ -363,7 +363,7 @@ docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v  /root/d.share/:/root/d.share/  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
--v /etc/nginx/conf.d/${Port}.conf:/etc/nginx/conf.d/default.conf   \
+-v /etc/nginx/conf.d/${Port}.conf.docker:/etc/nginx/conf.d/default.conf   \
 --privileged=true \
 nginx
 
@@ -380,7 +380,7 @@ docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v  /root/d.share/:/root/d.share/  \
 -v /home/rdp/Downloads/:/home/rdp/Downloads/  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
--v /etc/nginx/conf.d/${Port}.conf:/etc/nginx/conf.d/default.conf   \
+-v /etc/nginx/conf.d/${Port}.conf.docker:/etc/nginx/conf.d/default.conf   \
 nginx
 
 docker ps -a
