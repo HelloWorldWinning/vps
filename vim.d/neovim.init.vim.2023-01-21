@@ -11,7 +11,6 @@ Plug 'morhetz/gruvbox'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
 Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -20,10 +19,16 @@ Plug 'preservim/nerdcommenter'
 
 "Plug 'vim-airline/vim-airline'
 "let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+
 Plug 'kkoomen/vim-doge'
 Plug 'preservim/nerdcommenter' 
 Plug 'jsit/toast.vim' 
 Plug 'sainnhe/everforest'
+
+
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'junegunn/vim-easy-align'
+
 
 call plug#end()
 
