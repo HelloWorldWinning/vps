@@ -62,20 +62,19 @@ wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com
 #dpkg -i ripgrep.deb
 
 
-cat >>~/.bashrc<<EOF
+#alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
 
+cat >>~/.bashrc<<EOF
 alias v='vim'
 alias c='clear'
 alias l='ls -lrth'
 alias s='ls -lhSr'
 alias p='python'
-alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
+alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
 alias n='/usr/bin/nvim.appimage'
-
 EOF
 
 source /root/.bashrc
-
 
 cat  <<- EOF
 #######  neovim  install :
