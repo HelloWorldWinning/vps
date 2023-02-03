@@ -50,8 +50,8 @@ cd ~
 
 
 #wget --inet4-only -O  /root/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/init.vim.ulovem
-wget --inet4-only -O  ~/.vimrc  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.sanjose.2023-01-21
-wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/neovim.init.vim.2023-01-21
+wget --inet4-only -O  ~/.vimrc  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.use
+wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.use
 
 # cat>/root/.config/nvim/init.vim<<EOF
 # EOF
