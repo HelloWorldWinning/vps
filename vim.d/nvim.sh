@@ -5,24 +5,24 @@
 #
 
 
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+curl  --ipv4 -fLo ~/.vim/autoload/plug.vim --create-dirs \
   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 pip install neovimo
 pip install pynvim
 
 
-curl -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+curl  --ipv4 -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 
 chmod u+x /usr/bin/nvim.appimage
 #./nvim.appimage
 ln -s /usr/bin/nvim.appimage /usr/bin/nvim
 
 
-curl -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+curl  --ipv4 -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
+curl  --ipv4 -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
 
 apt-get update
 apt-get install -y nodejs git
