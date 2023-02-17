@@ -346,8 +346,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		63) eval $xray;;
 		64) eval $realm;;
 		5) eval $speed;;
-		6.1) eval $wg61 ;;
-		6) eval $wg ;;
+		6.1) eval $wg61 ; /sbin/sysctl -p ;;
+		6) eval $wg ;  /sbin/sysctl -p ;;
 
 		7) eval $openvpn;;
 		7.1) eval $openvpn2;;
