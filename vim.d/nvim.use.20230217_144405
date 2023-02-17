@@ -6,9 +6,6 @@ let g:copilot_enabled = 1
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'morhetz/gruvbox'
-Plug 'habamax/vim-pire'
-Plug  'nicolasacquaviva/better-default'
-Plug 'tyrannicaltoucan/vim-quantum'
 "colorshceme gruvbox    
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -32,26 +29,16 @@ Plug 'sainnhe/everforest'
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'junegunn/vim-easy-align'
 
+
 call plug#end()
 
 
-"set background=dark " or light if you want light mode
-"set background=light" or light if you want light mode
-
-"set background=dark
-"set termguicolors
-"silent! colorscheme pire
-
-
-"colorscheme everforest
+colorscheme everforest
 "colorscheme gruvbox
-colorscheme  toast
+"colorscheme  toast
 
-set termguicolors       " enable true colors support
-"colorscheme  quantum
-set background=dark     " dark theme
-"set background=light  " light theme
-
+set background=dark " or light if you want light mode
+"set background=light" or light if you want light mode
 
 
 """"""""""""""""""""""""
@@ -67,13 +54,13 @@ set ruler
 "set rulerformat=%l/[%L]:%v
 "let g:rulerformat_filepath_format = '%f'
 
-"hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=black gui=bold  guifg=Black guibg=Red
-hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=None guibg=None
+hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=black gui=bold  guifg=Black guibg=Red
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=DarkMagenta  gui=bold  guifg=Black guibg=Red
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=130  gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-"hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
+hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
+set laststatus=2
 
 set cursorline
 "hi CursorLine term=bold cterm=bold guibg=NONE
@@ -85,13 +72,3 @@ set cursorcolumn
 
 hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black 
 
-"hi Normal  ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black      
-"
-hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
-
-set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
-set laststatus=2
-
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
