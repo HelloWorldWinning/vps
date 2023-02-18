@@ -4,6 +4,16 @@ Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
 
+fix_wg_ipv6_RTNETLINK(){
+cat >>/etc/sysctl.conf<<EOF
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+EOF
+sysctl -p
+
+}
+
 
 today_all=$(curl -s --max-time 10 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" | tail -3 | head -n 1 | awk '{print $5,$7}')
 #echo $today_all
@@ -346,8 +356,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		63) eval $xray;;
 		64) eval $realm;;
 		5) eval $speed;;
-		6.1) eval $wg61 ; /sbin/sysctl -p ;;
-		6) eval $wg ;  /sbin/sysctl -p ;;
+		6.1) fix_wg_ipv6_RTNETLINK;eval $wg61 ; /sbin/sysctl -p ;;
+		6) fix_wg_ipv6_RTNETLINK ;eval $wg ;  /sbin/sysctl -p ;;
 
 		7) eval $openvpn;;
 		7.1) eval $openvpn2;;
