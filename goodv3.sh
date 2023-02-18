@@ -4,6 +4,7 @@ Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
 
+#https://bodhilinux.boards.net/thread/450/wireguard-rtnetlink-answers-permission-denied
 fix_wg_ipv6_RTNETLINK(){
 cat >>/etc/sysctl.conf<<EOF
 net.ipv6.conf.all.disable_ipv6 = 0
