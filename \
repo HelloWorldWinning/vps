@@ -1,0 +1,4 @@
+apt-get install iptables-persistent -y
+
+iptables-save -f /etc/iptables/rules.v4
+ip6tables-save -f /etc/iptables/rules.v6
