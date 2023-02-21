@@ -561,6 +561,7 @@ systemctl status xrayR
 #	   get_nginx_port
 #netstat -ltnp  |  grep  $nginx_port
 docker ps -a
+iptables -t nat -L
           systemctl status xrayR
             ;;
 	3)
