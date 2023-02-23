@@ -180,3 +180,6 @@ highlight cursorcolumn ctermbg=black ctermfg=white
 
 "nnoremap <C-d> <D-d>
 "nnoremap <C-D> 20j 
+"
+"
+hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
