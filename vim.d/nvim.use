@@ -222,3 +222,6 @@ lua <<EOF
     capabilities = capabilities
   }
 EOF
+
+
+inoremap <Tab> <C-n>
