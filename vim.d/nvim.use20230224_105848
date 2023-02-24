@@ -1,0 +1,98 @@
+let g:deoplete#enable_at_startup = 1
+let g:coc_disable_startup_warning = 1
+let g:copilot_enabled = 1
+
+
+"Plug 'ludovicchabant/vim-copilot'
+call plug#begin('~/.local/share/nvim/plugged')
+Plug 'morhetz/gruvbox'
+Plug 'habamax/vim-pire'
+Plug  'nicolasacquaviva/better-default'
+Plug 'tyrannicaltoucan/vim-quantum'
+"colorshceme gruvbox    
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-jedi'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator'
+
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter' 
+
+"Plug 'vim-airline/vim-airline'
+"let g:airline_theme='badwolf'  "可以自定义主题，这里使用 badwolf
+
+Plug 'kkoomen/vim-doge'
+Plug 'preservim/nerdcommenter' 
+Plug 'jsit/toast.vim' 
+Plug 'sainnhe/everforest'
+
+
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'junegunn/vim-easy-align'
+
+call plug#end()
+
+
+"set background=dark " or light if you want light mode
+"set background=light" or light if you want light mode
+
+"set background=dark
+"set termguicolors
+"silent! colorscheme pire
+
+
+"colorscheme everforest
+"colorscheme gruvbox
+colorscheme  toast
+
+set termguicolors       " enable true colors support
+"colorscheme  quantum
+set background=dark     " dark theme
+"set background=light  " light theme
+
+
+
+""""""""""""""""""""""""
+
+
+syntax on
+filetype plugin on
+"set showtabline=2
+set tabline=%F\ %y 
+set number 
+set relativenumber
+set ruler
+"set rulerformat=%l/[%L]:%v
+"let g:rulerformat_filepath_format = '%f'
+
+"hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=black gui=bold  guifg=Black guibg=Red
+hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=None guibg=None
+"hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=DarkMagenta  gui=bold  guifg=Black guibg=Red
+"hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=130  gui=bold  guifg=Black guibg=Red
+"hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+"hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
+
+set cursorline
+"hi CursorLine term=bold cterm=bold guibg=NONE
+hi CursorLine term=none cterm=none 
+"hi CursorLine term=none ctermfg=red
+
+
+set cursorcolumn
+
+hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black 
+
+"hi Normal  ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black      
+"
+hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
+
+set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
+set laststatus=2
+
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black

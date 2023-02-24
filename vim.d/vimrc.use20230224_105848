@@ -10,10 +10,10 @@ set termguicolors       " enable true colors support
 colorscheme  quantum
 set background=dark     " dark theme
 "set background=light  " light theme
-"colorscheme quantum
+colorscheme quantum
 "hi Normal     ctermfg=White  guifg=White guifg=Black guibg=#d1cb9f  ctermbg=Black
 "hi Normal     ctermfg=White  guifg=White guifg=Black guibg=#E4E1CF ctermbg=Black
-"hi Normal     ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black
+hi Normal     ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black
 
 "night
 "
@@ -180,4 +180,6 @@ highlight cursorcolumn ctermbg=black ctermfg=white
 
 "nnoremap <C-d> <D-d>
 "nnoremap <C-D> 20j 
+"
+"
 hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black

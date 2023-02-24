@@ -10,7 +10,7 @@ Plug 'habamax/vim-pire'
 Plug  'nicolasacquaviva/better-default'
 Plug 'tyrannicaltoucan/vim-quantum'
 "colorshceme gruvbox    
-
+Plug 'hrsh7th/nvim-cmp'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -32,6 +32,39 @@ Plug 'sainnhe/everforest'
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'junegunn/vim-easy-align'
 
+""""""""""
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+" For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+" For luasnip users.
+" Plug 'L3MON4D3/LuaSnip'
+" Plug 'saadparwaiz1/cmp_luasnip'
+
+" For ultisnips users.
+" Plug 'SirVer/ultisnips'
+" Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+" For snippy users.
+" Plug 'dcampos/nvim-snippy'
+" Plug 'dcampos/cmp-snippy'
+
+
+
+""""""""""""""""
+
+
+
+
+
+
 call plug#end()
 
 
@@ -44,8 +77,8 @@ call plug#end()
 
 
 "colorscheme everforest
-"colorscheme gruvbox
-colorscheme  toast
+colorscheme gruvbox
+"colorscheme  toast
 
 set termguicolors       " enable true colors support
 "colorscheme  quantum
@@ -77,7 +110,8 @@ hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg
 
 set cursorline
 "hi CursorLine term=bold cterm=bold guibg=NONE
-hi CursorLine term=none cterm=none 
+"hi CursorLine term=none cterm=none  guibg=#21282b
+hi CursorLine term=none cterm=none  guibg=#212A2E
 "hi CursorLine term=none ctermfg=red
 
 
@@ -87,12 +121,103 @@ hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black
 
 "hi Normal  ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black      
 "
+"hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
 set laststatus=2
 
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
+
+"hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
+hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
+
+
+"inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"noremap <silent><expr> <Tab>
+"     \ pumvisible() ? "\<C-n>" : "\<TAB>"
+"noremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+
+
+
+lua <<EOF
+  -- Set up nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Set configuration for specific filetype.
+  cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Set up lspconfig.
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['tsserver'].setup {
+    capabilities = capabilities
+  }
+EOF
