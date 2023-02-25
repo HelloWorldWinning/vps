@@ -102,7 +102,8 @@ set ruler
 
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=black gui=bold  guifg=Black guibg=Red
 ""hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=None guibg=None
-hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=darkmagenta guibg=None
+""hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=darkmagenta guibg=None
+hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=#601066 guibg=None
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=DarkMagenta  gui=bold  guifg=Black guibg=Red
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=130  gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
