@@ -73,6 +73,7 @@ alias nm='ls -lh'
 alias p='python'
 alias _GP='git  pull'
 alias _G='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
+alias _F='git pull && git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
 alias n='/usr/bin/nvim.appimage'
 alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
 EOF
