@@ -130,7 +130,7 @@ jupyter_notebook_remote_access='bash <(curl -sL     https://raw.githubuserconten
 install_docker_ccaa='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_ccaa.sh)'
 
 
-install_docker='bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh)'
+install_docker='yes|bash <(curl -sL     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker.sh)'
 
 ping_ip='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ip.sh)'
 
