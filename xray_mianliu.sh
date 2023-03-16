@@ -2557,7 +2557,7 @@ menu() {
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
-    echo -e "  ${GREEN}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED} 不依赖 nignix${PLAIN}   "
+    echo -e "  ${RED}25.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED} 不依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}26.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED}  依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}261.${PLAIN}  安装Xray-${BLUE}VLESS+tls+grpc ${RED} docker nginx  依赖 nignix${PLAIN}   "
     echo -e "  ${GREEN}27.${PLAIN}  安装Xray-${BLUE}Troja-nginx-GRPC 依赖 nginx${PLAIN} ${RED}xtls "
