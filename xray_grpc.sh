@@ -1,4 +1,28 @@
 
+ports_to_one(){
+apt-get install iptables-persistent -y
+
+net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
+
+iptables -t nat -A PREROUTING -i ${net_card} -p tcp --dport 55000:60000 -j DNAT --to-destination :${Port}
+
+ip6tables -t nat -A PREROUTING -i ${net_card} -p tcp --dport 55000:60000 -j DNAT --to-destination :${Port}
+
+
+iptables-save -f /etc/iptables/rules.v4
+ip6tables-save -f /etc/iptables/rules.v6
+
+
+crontab -l > conf && echo  -e "@reboot sleep 13; /usr/sbin/iptables-restore < /etc/iptables/rules.v4" >> conf && crontab conf && rm -f conf
+
+crontab -l > conf && echo  -e "@reboot sleep 14; /usr/sbin/ip6tables-restore < /etc/iptables/rules.v6" >> conf && crontab conf && rm -f conf
+
+}
+
+
+
+
+
 Check_Domain_Resolve () {
 IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
 IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
@@ -134,9 +158,9 @@ mkdir -p /etc/xrayG/
 Get_Key_Path
 
 
-read -p "port  default: 11180: " Port
+read -p "port  default: 65503: " Port
     if   [[ -z "$Port" ]]; then
-            Port=11180
+            Port=65503
 
     fi
 
@@ -357,6 +381,7 @@ read -p " 选择：" answer
             Xray_Grpc
             DownloadxrayGCore
             start
+ports_to_one
             ;;
         2)
            echo "/etc/xrayG/config.json" 
