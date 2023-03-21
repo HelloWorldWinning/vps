@@ -339,6 +339,7 @@ ${Red_font_prefix}79${Font_color_suffix} docker nginx
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
 ${Red_font_prefix}81${Font_color_suffix} neovim and  to install
 ${Red_font_prefix}82${Font_color_suffix} git clone vps
+${Red_font_prefix}83${Font_color_suffix} md file to html
  
 
 
@@ -494,6 +495,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		80)curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 		81) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh ) ;;
 		82)git clone https://github.com/HelloWorldWinning/vps.git ;;
+		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
 		00)eval "exit";;
 		
 		*) echo "wrong input" ;;
