@@ -7,6 +7,7 @@ mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
 mkdir -p  /etc/nginx/
 mkdir -p  /etc/nginx/conf.d/
+sed -i '6i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
 
 
 Un_Links() {

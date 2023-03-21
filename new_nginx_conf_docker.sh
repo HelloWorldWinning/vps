@@ -1,6 +1,8 @@
 
 wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 
+sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
+
 docker pull nginx
 apt  install dnsutils -y
 apt install  net-tools -y
@@ -363,6 +365,7 @@ docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v  /root/d.share/:/root/d.share/  \
 -v /data/ccaaDown/:/data/ccaaDown/  \
+-v /etc/nginx/mime.types:/etc/nginx/mime.types \
 -v /etc/nginx/conf.d/${Port}.conf.docker:/etc/nginx/conf.d/default.conf   \
 --privileged=true \
 nginx
@@ -379,6 +382,7 @@ docker run -d  --name $Port  --restart=always  -p  $Port:$Port  \
 -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v  /root/d.share/:/root/d.share/  \
 -v /home/rdp/Downloads/:/home/rdp/Downloads/  \
+-v /etc/nginx/mime.types:/etc/nginx/mime.types \
 -v /data/ccaaDown/:/data/ccaaDown/  \
 -v /etc/nginx/conf.d/${Port}.conf.docker:/etc/nginx/conf.d/default.conf   \
 nginx
