@@ -14,8 +14,8 @@ new_md_files=[i for i in md_files if i.rsplit(".",1)[0] not in html_files_no_end
 
 if not  new_md_files :
     print("\n\n\n ======== Nothing New ========\n\n\n")
-    return None
-
+#    return None
+exit()
 
 
 def md_to_html(md_file_name):
