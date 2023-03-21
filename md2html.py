@@ -12,6 +12,9 @@ html_files_no_end = [i.rsplit(".",1)[0] for i in all_entries if i.endswith(".htm
 
 new_md_files=[i for i in md_files if i.rsplit(".",1)[0] not in html_files_no_end]
 
+if not  new_md_files :
+    print("nothing now".join(" ========== "))
+
 
 
 def md_to_html(md_file_name):
