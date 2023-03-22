@@ -1,3 +1,5 @@
+
+wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 apt  install dnsutils -y
 apt-get update -y
 apt-get install nginx -y
@@ -402,10 +404,12 @@ read -p " 选择：" answer
     case $answer in
         1)
 	    nginx_conf_func
+wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
             start_func
             ;;
         443)
 	    nginx_conf_func443
+wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
             start_func
             ;;
         2)
