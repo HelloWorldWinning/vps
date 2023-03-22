@@ -67,7 +67,7 @@ wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com
 
 
 read  -p "default OPENAI_API_KEY  belongs to keubahkmc@outlook.com " OPENAI_API_KEY
-[[ -z "${OPENAI_API_KEY}" ]] &&  OPENAI_API_KEY=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
+[[ -z "${OPENAI_API_KEY}" ]] &&  OPENAI_API_KEY=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
 
 cat >>~/.bashrc<<EOF
 alias v='vim'
