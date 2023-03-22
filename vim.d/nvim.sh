@@ -62,7 +62,12 @@ wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com
 #dpkg -i ripgrep.deb
 
 
+#
 #alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
+
+
+read  -p "default OPENAI_API_KEY  belongs to keubahkmc@outlook.com " OPENAI_API_KEY
+[[ -z "${OPENAI_API_KEY}" ]] &&  OPENAI_API_KEY=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
 
 cat >>~/.bashrc<<EOF
 alias v='vim'
@@ -76,6 +81,7 @@ alias _G='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && gi
 alias _F='git pull && git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
 alias n='/usr/bin/nvim.appimage'
 alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
+export OPENAI_API_KEY=${OPENAI_API_KEY}
 EOF
 
 source /root/.bashrc
@@ -95,6 +101,8 @@ Write call deoplete#enable() or let g:deoplete#enable_at_startup = 1 in your ini
 ##########
 vim  install  :
 PlugInstall
+
+
 
 EOF
 

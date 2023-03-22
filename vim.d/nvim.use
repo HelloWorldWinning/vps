@@ -5,6 +5,14 @@ let g:copilot_enabled = 1
 
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
+
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'dpayne/CodeGPT.nvim'
+
+
+
 Plug 'morhetz/gruvbox'
 Plug 'habamax/vim-pire'
 Plug  'nicolasacquaviva/better-default'
