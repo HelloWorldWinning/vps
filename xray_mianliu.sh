@@ -45,7 +45,7 @@ uuid="12345678-1234-1234-1234-123456789012"
 
 Acme_Get(){
 
-curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
+curl -4  -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.ch
 source ~/.bashrc
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
 ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
@@ -83,16 +83,16 @@ fi
 
 
 
-install_80_install='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)'
+install_80_install='bash <(curl -4  -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_install.sh)'
 
 
 
 vlessWSConfig_mianliu_80() {
     #installXray
     CONFIG_FILE="/usr/local/etc/xray/config.json"
-    #NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    #NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
     read -p " 输入vless内部端口[默认11180]：" PORT
                 [[ -z "${PORT}" ]] && PORT=11180
@@ -178,9 +178,9 @@ sleep 2
 vlessWSConfig_mianliu() {
 #installXray
 CONFIG_FILE="/usr/local/etc/xray/config.json"
-#NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+#NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
 read -p " 输入vless免流端口[默认80]：" PORT
             [[ -z "${PORT}" ]] && PORT=80
@@ -282,9 +282,9 @@ sleep 2
 vmessWSConfig_mianliu() {
 #installXray
 CONFIG_FILE="/usr/local/etc/xray/config.json"
-NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
 read -p " 输入xray vmess免流端口[默认80]：" PORT
             [[ -z "${PORT}" ]] && PORT=80
@@ -395,9 +395,9 @@ CONFIG_FILE="/usr/local/etc/xray/config.json"
 OS=`hostnamectl | grep -i system | cut -d: -f2`
 
 V6_PROXY=""
-IP=`curl -sL -4 ip.sb`
+IP=`curl -4  -sL -4 ip.sb`
 if [[ "$?" != "0" ]]; then
-    IP=`curl -sL -6 ip.sb`
+    IP=`curl -4  -sL -6 ip.sb`
     V6_PROXY="https://gh.hijk.art/"
 fi
 
@@ -543,11 +543,11 @@ getVersion() {
     RETVAL=$?
     CUR_VER="$(normalizeVersion "$(echo "$VER" | head -n 1 | cut -d " " -f2)")"
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-#    NEW_VER="$(normalizeVersion "$(curl -s "${TAG_URL}" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)")"
-    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
-#    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]",' |grep -o '".*"'  | tr -d '"'   |  sed 's/.*://'  )"
+#    NEW_VER="$(normalizeVersion "$(curl -4  -s "${TAG_URL}" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)")"
+    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+#    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]",' |grep -o '".*"'  | tr -d '"'   |  sed 's/.*://'  )"
 
-#    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]"' | tr -d '"'   |  sed 's/.*://'  )"
+#    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20 |grep -Po '"tag_name":.*?[^\\]"' | tr -d '"'   |  sed 's/.*://'  )"
 
     if [[ $? -ne 0 ]] || [[ $NEW_VER == "" ]]; then
         colorEcho $RED " 检查Xray版本信息失败，请检查网络"
@@ -648,7 +648,7 @@ getData() {
             CERT_FILE="/usr/local/etc/xray/${DOMAIN}.pem"
             KEY_FILE="/usr/local/etc/xray/${DOMAIN}.key"
         else
-#            resolve=`curl -sL ipget.net/?ip=${DOMAIN}`
+#            resolve=`curl -4  -sL ipget.net/?ip=${DOMAIN}`
 #	    resolve="dig +short ${DOMAIN} @1.1.1.1"	    
 #		resolve="$(dig A  +short ${DOMAIN} @1.1.1.1)"
 
@@ -815,7 +815,7 @@ fi
                     index=`shuf -i0-${len} -n1`
                     PROXY_URL=${SITES[$index]}
                     host=`echo ${PROXY_URL} | cut -d/ -f3`
-                    #ip=`curl -sL https://hijk.art/hostip.php?d=${host}`
+                    #ip=`curl -4  -sL https://hijk.art/hostip.php?d=${host}`
 			
 		    resolve="$(dig A  +short ${host} @1.1.1.1)"
 
@@ -945,7 +945,7 @@ getCert() {
             systemctl start cron
             systemctl enable cron
         fi
-        curl -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.sh
+        curl -4  -sL https://get.acme.sh | sh -s email=hijk.pw@protonmail.sh
         source ~/.bashrc
         ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
         ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
@@ -1388,15 +1388,15 @@ installBBR() {
 
 installXray() {
     CONFIG_FILE="/usr/local/etc/xray/config.json"
-    #NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    #NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
     TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-    NEW_VER="$(curl -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
     rm -rf /tmp/xray
     mkdir -p /tmp/xray
     DOWNLOAD_LINK="${V6_PROXY}https://github.com/XTLS/Xray-core/releases/download/${NEW_VER}/Xray-linux-$(archAffix).zip"
     colorEcho $BLUE " 下载Xray: ${DOWNLOAD_LINK}"
-    curl -L -H "Cache-Control: no-cache" -o /tmp/xray/xray.zip ${DOWNLOAD_LINK}
+    curl -4  -L -H "Cache-Control: no-cache" -o /tmp/xray/xray.zip ${DOWNLOAD_LINK}
     if [ $? != 0 ];then
         colorEcho $RED " 下载Xray文件失败，请检查服务器网络设置"
         exit 1
@@ -2618,44 +2618,44 @@ menu() {
             showInfo
         ;;
 	24) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh )
  ;;
 
 
 	25) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc.sh )
  ;;
 
 	26) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC.sh  )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC.sh  )
  ;;
 	261) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC_docker.sh )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-VLESS-GRPC_docker.sh )
  ;;
 
 	27) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-Trojan-GRPC.sh  )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray-Nginx-Trojan-GRPC.sh  )
  ;;
 	28) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray_No_Nginx_Trojan_Grpc.sh ) 
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Xray_No_Nginx_Trojan_Grpc.sh ) 
  ;;
 	29) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls_http.sh )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls_http.sh )
  ;;
 	30) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic.sh  )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic.sh  )
  ;;
 	31) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic_tls.sh  )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_quic_tls.sh  )
  ;;
 	32) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls-rprx-vision.sh  )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xtls-rprx-vision.sh  )
  ;;
 	275) 
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
  ;;
         33)
-bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh ) 
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh ) 
 ;;
         22)
             installXray
