@@ -244,3 +244,7 @@ inoremap <Tab> <C-n>
 
 
 set viminfo='100000000000,<1000000000000000,s100,h 
+
+map <D-v> "+p
+map <D-c> "+y
+
