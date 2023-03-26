@@ -158,7 +158,7 @@ mkdir -p /etc/xrayG/
 Get_Key_Path
 
 
-read -p "port  default: 65503: " Port
+read -p "Port  default: 65503: "  Port
     if   [[ -z "$Port" ]]; then
             Port=65503
 
@@ -378,10 +378,11 @@ echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 read -p " 选择：" answer
     case $answer in
         1)
-    ports_to_one
+		echo $Port
             Xray_Grpc
             DownloadxrayGCore
         
+    ports_to_one
             start
             ;;
         2)
