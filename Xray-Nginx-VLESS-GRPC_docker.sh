@@ -543,10 +543,10 @@ echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 read -p " 选择：" answer
     case $answer in
         1)
+ports_to_one
             Xray_Grpc_Nginx
             DownloadxrayRCore
             start_docker
-ports_to_one
 
     #     Restart_Ng_under_links
 	    #get_nginx_port

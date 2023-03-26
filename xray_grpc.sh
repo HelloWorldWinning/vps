@@ -378,10 +378,11 @@ echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 read -p " 选择：" answer
     case $answer in
         1)
+    ports_to_one
             Xray_Grpc
             DownloadxrayGCore
+        
             start
-ports_to_one
             ;;
         2)
            echo "/etc/xrayG/config.json" 
