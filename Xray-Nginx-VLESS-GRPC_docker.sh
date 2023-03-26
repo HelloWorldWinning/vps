@@ -543,9 +543,9 @@ echo -e "  ${GREEN}00.${PLAIN} ${BLUE}exit${PLAIN}"
 read -p " 选择：" answer
     case $answer in
         1)
-ports_to_one
             Xray_Grpc_Nginx
             DownloadxrayRCore
+ports_to_one
             start_docker
 
     #     Restart_Ng_under_links
