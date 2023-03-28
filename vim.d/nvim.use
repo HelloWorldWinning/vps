@@ -248,3 +248,8 @@ set viminfo='100000000000,<1000000000000000,s100,h
 map <D-v> "+p
 map <D-c> "+y
 
+nnoremap <A-f> <C-f>
+nnoremap <A-b> <C-b>
+
+nnoremap <D-f> <C-f>
+nnoremap <D-b> <C-b>
