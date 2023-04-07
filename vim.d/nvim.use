@@ -1,3 +1,4 @@
+set term=xterm-256color
 let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
 let g:copilot_enabled = 1
@@ -148,6 +149,7 @@ set laststatus=2
 "hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
 "i Normal     ctermfg=blue  guifg=blue guifg=#07f59e ctermbg=Black guibg=#283237  ctermbg=Black
 "hi Normal     ctermfg=blue  guifg=blue guifg=#0ff51e ctermbg=Black guibg=#283237  ctermbg=Black
+
 hi Normal     ctermfg=blue  guifg=blue guifg=#25f540 ctermbg=Black guibg=#283237  ctermbg=Black
 
 "inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
