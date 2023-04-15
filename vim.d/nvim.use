@@ -7,6 +7,7 @@ let g:copilot_enabled = 1
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'scrooloose/nerdtree'
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
