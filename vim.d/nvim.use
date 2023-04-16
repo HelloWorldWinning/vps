@@ -8,7 +8,7 @@ let g:copilot_enabled = 1
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 
-
+" https://github.com/numirias/semshi    python good colore
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'scrooloose/nerdtree'
