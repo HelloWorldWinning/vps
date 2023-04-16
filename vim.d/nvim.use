@@ -1,4 +1,5 @@
-set term=xterm-256color
+"set term=xterm-256color
+set termguicolors
 let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
 let g:copilot_enabled = 1
