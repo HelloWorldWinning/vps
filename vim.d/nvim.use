@@ -156,7 +156,7 @@ set laststatus=2
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#25f540 ctermbg=Black guibg=#283237  ctermbg=Black
 
-hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  cter    mbg=Black
+hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
 
 "inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
