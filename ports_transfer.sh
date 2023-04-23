@@ -20,9 +20,9 @@ echo "no destination port from"
 	exit
 fi   
 
-#iptables -t nat -A PREROUTING -i $net_card -p $tcp_udp --dport $dport -j DNAT --to-destination :$destination
 
-echo "iptables -t nat -A PREROUTING -i $net_card -p $tcp_udp --dport $dport -j DNAT --to-destination :$destination"
+#echo "iptables -t nat -A PREROUTING -i $net_card -p $tcp_udp --dport $dport -j DNAT --to-destination :$destination"
+iptables -t nat -A PREROUTING -i $net_card -p $tcp_udp --dport $dport -j DNAT --to-destination :$destination
 
 iptables-save -f /etc/iptables/rules.v4
 ip6tables-save -f /etc/iptables/rules.v6
