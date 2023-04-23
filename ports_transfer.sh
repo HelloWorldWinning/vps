@@ -1,5 +1,7 @@
-echo 'iptables -t nat -L PREROUTING --line-numbers'
-iptables -t nat -L
+echo "iptables -t nat -D PREROUTING 3000"
+
+iptables -t nat -L 
+iptables -t nat -L PREROUTING --line-numbers
 
 net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
 
@@ -28,4 +30,4 @@ iptables-save -f /etc/iptables/rules.v4
 ip6tables-save -f /etc/iptables/rules.v6
 
 iptables -t nat -L
-
+iptables -t nat -L PREROUTING --line-numbers
