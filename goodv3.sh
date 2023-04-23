@@ -497,7 +497,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		81) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh ) ;;
 		82)git clone https://github.com/HelloWorldWinning/vps.git ;;
 		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
-		84) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  | bash;;
+		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
 
 		00)eval "exit";;
 		
