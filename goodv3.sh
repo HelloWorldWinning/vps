@@ -44,8 +44,8 @@ sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --rol
 
 #80_VLESS-WSS-Nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh)'
 
-new_nginx_conf='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.sh)'
-new_nginx_conf_docker='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker.sh )'
+new_nginx_conf='bash <(curl -4 -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.sh)'
+new_nginx_conf_docker='bash <(curl -4 -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker.sh )'
 
 tuic='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tuic.sh )'
 hy_mine='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy_mine.sh )'
