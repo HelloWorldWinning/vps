@@ -1,4 +1,4 @@
-#!/bin/bash
+#xray_mianliu.sh!/bin/bash
 # xray一键安装脚本
 # Author: hijk<https://hijk.art>
 #############
@@ -248,33 +248,6 @@ EOF
 
 
 
-#installXray
-#res=`status`
-#if [[ $res -lt 2 ]]; then
-#    colorEcho $RED " Xray未安装，请先安装！"
-#    return
-#fi
-systemctl restart xray
-sleep 2
-
-#port=`grep port $CONFIG_FILE| head -n 1| cut -d: -f2| tr -d \",' '`
-#res=`ss -nutlp| grep ${port} | grep -i xray`
-#if [[ "$res" = "" ]]; then
-#    colorEcho $RED " Xray启动失败，请检查日志或查看端口是否被占用！"
-#else
-#    colorEcho $BLUE " Xray启动成功"
-#fi
-
-
-}
-
-
-
-
-############
-
-
-
 
 
 vmessWSConfig_mianliu_80() {
@@ -374,6 +347,10 @@ sleep 2
 
 
 
+############
+
+
+
 
 
 ##################
@@ -414,6 +391,7 @@ read -p "ws path 需要输入/：" WSPATH
         {
           "id": "$uuid",
           "level": 1,
+	  "security": "auto",
           "alterId": 0
         }
       ],
@@ -2655,8 +2633,8 @@ menu() {
     echo -e "  ${GREEN}9.${PLAIN}   安装${BLUE}trojan${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}10.${PLAIN}  安装${BLUE}trojan+XTLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}211.${PLAIN} 安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${GREEN}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${GREEN}211.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
@@ -2852,4 +2830,4 @@ case "$action" in
         echo " 参数错误"
         echo " 用法: `basename $0` [menu|update|uninstall|start|restart|stop|showInfo|showLog]"
         ;;
-esac
+esac 
