@@ -1,4 +1,4 @@
-#!/bin/bash
+#xray_mianliu.sh!/bin/bash
 # xray一键安装脚本
 # Author: hijk<https://hijk.art>
 #############
@@ -250,7 +250,7 @@ EOF
 
 
 
-vmessWSConfig_mianliu() {
+vmessWSConfig_mianliu_80() {
 #installXray
 CONFIG_FILE="/usr/local/etc/xray/config.json"
 #NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
@@ -391,6 +391,7 @@ read -p "ws path 需要输入/：" WSPATH
         {
           "id": "$uuid",
           "level": 1,
+	  "security": "auto",
           "alterId": 0
         }
       ],
@@ -2698,7 +2699,7 @@ menu() {
         ;;
         211)
             installXray
-            vmessWSConfig_mianliu
+            vmessWSConfig_mianliu_80
             showInfo
         ;;
 	24) 
