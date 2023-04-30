@@ -245,6 +245,85 @@ fi
 }
 EOF
 
+
+
+
+
+
+vmessWSConfig_mianliu() {
+#installXray
+CONFIG_FILE="/usr/local/etc/xray/config.json"
+#NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
+NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+
+read -p " 输入vless免流端口[默认80]：" PORT
+            [[ -z "${PORT}" ]] && PORT=80
+
+read -p "uuid空就固定 ，其他就random:" uuid
+if   [[ -z "$uuid" ]]; then
+        uuid="12345678-1234-1234-1234-123456789012"
+else
+        uuid="$(cat '/proc/sys/kernel/random/uuid')"
+fi
+
+read -p "ws path 需要输入/：" WSPATH
+            [[ -z "${WSPATH}" ]] && WSPATH='/'
+
+read -p "输入nginx fallback_port 8080:" Fallback_PORT
+if   [[ -z "$Fallback_PORT" ]]; then
+        Fallback_PORT=8080
+fi
+
+
+    cat > $CONFIG_FILE<<-EOF
+{
+  "inbounds": [{
+    "port": $PORT,
+    "listen": "0.0.0.0",
+    "protocol": "vmess",
+    "settings": {
+      "decryption": "none",
+      
+    "fallbacks": [
+                {
+                    "dest": ${Fallback_PORT} 
+                }
+            ]
+         ,
+      
+      
+      "clients": [
+        {
+          "id": "$uuid",
+	  "security": "auto",
+          "level": 1,
+          "alterId": 0
+        }
+      ],
+      "disableInsecureEncryption": false
+    },
+    "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+            "path": "$WSPATH"
+        }
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }]
+}
+EOF
+
+
+
+
 #installXray
 #res=`status`
 #if [[ $res -lt 2 ]]; then
@@ -2615,6 +2694,11 @@ menu() {
         21)
             installXray
             vlessWSConfig_mianliu
+            showInfo
+        ;;
+        211)
+            installXray
+            vmessWSConfig_mianliu
             showInfo
         ;;
 	24) 
