@@ -1,7 +1,7 @@
 wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 apt  install dnsutils -y
 apt-get update -y
-apt-get install nginx -y
+#apt-get install nginx -y
 apt update  -y  
 apt install nginx-extras  -y
 
