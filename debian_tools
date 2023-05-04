@@ -9,48 +9,48 @@
 #hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
 #EOF
 
-cat  >~/.vimrc<<EOF 
-syntax on
-filetype plugin on
-"set showtabline=2
-set tabline=%F\ %y 
-set number 
-set ruler
-"set rulerformat=%l/[%L]:%v
-"let g:rulerformat_filepath_format = '%f'
-
-"set statusline+=%F____%l/[%L]:%v
-"set statusline+=______%l:%v_______%F[%L]
-"set statusline+=______%l:%v____%L________%F
-"set statusline+=______%l:%v___%p%%__%L________%F
-set statusline+=\ \ \ \ \ \ %l:%v\ \ \ %p%%\ \ %L\ \ \ \ \ \ \ %F
-set laststatus=2
-
-set cursorline
-"hi CursorLine term=bold cterm=bold guibg=NONE
-hi CursorLine term=none cterm=none
-"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-"nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
-
-"hi Normal     ctermfg=White ctermbg=DarkGray
-"hi Normal     ctermfg=42  ctermbg=DarkGrey
-hi Normal     ctermfg=0  ctermbg=15
-
-highlight LineNr term=bold cterm=NONE guifg=#DA70D6
-highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
-highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
-highlight LineNr term=bold cterm=NONE guifg=#DA70D6
-hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
-"hi CursorLineNr   term=bold ctermfg=15  gui=bold guifg=Yellow
-"hi CursorLineNr   term=bold ctermfg=0  gui=bold guifg=Yellow
-"hi CursorLineNr  ctermbg=Red term=bold ctermfg=0  gui=bold guifg=Yellow
-hi CursorLineNr  ctermbg=Red cterm=bold ctermfg=12  gui=bold guifg=Yellow
-"set background=dark
-"let g:gruvbox_material_background = 'medium'
-"colorscheme gruvbox
-EOF
-
+#cat  >~/.vimrc<<EOF 
+#syntax on
+#filetype plugin on
+#"set showtabline=2
+#set tabline=%F\ %y 
+#set number 
+#set ruler
+#"set rulerformat=%l/[%L]:%v
+#"let g:rulerformat_filepath_format = '%f'
+#
+#"set statusline+=%F____%l/[%L]:%v
+#"set statusline+=______%l:%v_______%F[%L]
+#"set statusline+=______%l:%v____%L________%F
+#"set statusline+=______%l:%v___%p%%__%L________%F
+#set statusline+=\ \ \ \ \ \ %l:%v\ \ \ %p%%\ \ %L\ \ \ \ \ \ \ %F
+#set laststatus=2
+#
+#set cursorline
+#"hi CursorLine term=bold cterm=bold guibg=NONE
+#hi CursorLine term=none cterm=none
+#"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+#"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+#"nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+#
+#"hi Normal     ctermfg=White ctermbg=DarkGray
+#"hi Normal     ctermfg=42  ctermbg=DarkGrey
+#hi Normal     ctermfg=0  ctermbg=15
+#
+#highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+#highlight LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+#highlight CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
+#highlight LineNr term=bold cterm=NONE guifg=#DA70D6
+#hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+#"hi CursorLineNr   term=bold ctermfg=15  gui=bold guifg=Yellow
+#"hi CursorLineNr   term=bold ctermfg=0  gui=bold guifg=Yellow
+#"hi CursorLineNr  ctermbg=Red term=bold ctermfg=0  gui=bold guifg=Yellow
+#hi CursorLineNr  ctermbg=Red cterm=bold ctermfg=12  gui=bold guifg=Yellow
+#"set background=dark
+#"let g:gruvbox_material_background = 'medium'
+#"colorscheme gruvbox
+#EOF
+#
 
 
 echo insecure >> ~/.curlrc
@@ -73,7 +73,7 @@ apt-get upgrade -y
 
 
 ########## nginx ########
-apt install nginx -y
+#apt install nginx -y
 apt install nginx-extras -y
 sed -i '1i \load_module \"modules\/ngx_http_fancyindex_module.so\";'  /etc/nginx/nginx.conf
 
@@ -100,7 +100,7 @@ apt-get install -y sudo wget curl vim tree lsof sudo htop rsync screen jq net-to
 
 apt install fuse -y
 
-aptitude install bc unzip nginx  -y 
+aptitude install bc unzip -y 
 
 curl https://rclone.org/install.sh | sudo bash
 
