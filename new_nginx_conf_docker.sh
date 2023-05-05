@@ -325,6 +325,7 @@ charset utf-8,gbk;
 #fancyindex_localtime on;
 #fancyindex_exact_size off;
 #fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+#fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
 #fancyindex_name_length  1024;
 
 
