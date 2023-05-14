@@ -1,3 +1,5 @@
+"set term=xterm-256color   docker nvim config
+set termguicolors
 let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
 let g:copilot_enabled = 1
@@ -8,10 +10,13 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " https://github.com/numirias/semshi    python good colore
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+
 Plug 'scrooloose/nerdtree'
+
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'dpayne/CodeGPT.nvim'
+
 
 
 Plug 'morhetz/gruvbox'
@@ -143,13 +148,15 @@ set laststatus=2
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
 "hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
-
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
 "hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
 "hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
-"i Normal     ctermfg=blue  guifg=blue guifg=#07f59e ctermbg=Black guibg=#283237  ctermbg=Black
+"hi Normal     ctermfg=blue  guifg=blue guifg=#07f59e ctermbg=Black guibg=#283237  ctermbg=Black
 "hi Normal     ctermfg=blue  guifg=blue guifg=#0ff51e ctermbg=Black guibg=#283237  ctermbg=Black
-hi Normal     ctermfg=blue  guifg=blue guifg=#25f540 ctermbg=Black guibg=#283237  ctermbg=Black
+
+"hi Normal     ctermfg=blue  guifg=blue guifg=#25f540 ctermbg=Black guibg=#283237  ctermbg=Black
+
+hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
 
 "inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
