@@ -6,15 +6,16 @@ let g:copilot_enabled = 1
 
 
 "Plug 'ludovicchabant/vim-copilot'
+" https://github.com/numirias/semshi    python good colore
+
 call plug#begin('~/.local/share/nvim/plugged')
 
-" https://github.com/numirias/semshi    python good colore
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'scrooloose/nerdtree'
+
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'dpayne/CodeGPT.nvim'
-
 
 
 Plug 'morhetz/gruvbox'

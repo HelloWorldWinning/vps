@@ -1,3 +1,4 @@
+"set term=xterm-256color   docker nvim config
 let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
 let g:copilot_enabled = 1
@@ -6,6 +7,8 @@ let g:copilot_enabled = 1
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+Plug 'scrooloose/nerdtree'
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
