@@ -86,6 +86,7 @@ export OPENAI_API_KEY=${OPENAI_API_KEY}
 EOF
 
 source /root/.bashrc
+source ~/.bashrc
 
 cat  <<- EOF
 #######  neovim  install :
