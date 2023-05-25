@@ -16,6 +16,34 @@ apt install -y sudo
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
+
+cat >>~/.bashrc<<EOF
+alias v='vim'
+alias c='clear'
+alias l='ls -lrth'
+alias s='ls -lhSr'
+alias nm='ls -lh'
+alias p='python'
+alias _GP='git  pull'
+alias _G='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
+alias _F='git pull && git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push ;echo " ";date;echo " "'
+alias n='/usr/bin/nvim.appimage'
+alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
+export OPENAI_API_KEY=${OPENAI_API_KEY}
+EOF
+
+source /root/.bashrc
+source ~/.bashrc
+
+
+
+
+
+
+
+
+
+
 sh_ver="100.0.1.4"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 ubuntu_update='wget -O ubuntu-mainline-kernel.sh   https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh   && bash ubuntu-mainline-kernel.sh -i'
