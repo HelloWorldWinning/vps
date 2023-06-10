@@ -158,9 +158,9 @@ mkdir -p /etc/xrayG/
 Get_Key_Path
 
 
-read -p "Port  default: 65503: "  Port
+read -p "Port  default: 11180: "  Port
     if   [[ -z "$Port" ]]; then
-            Port=65503
+            Port=11180
 
     fi
 
