@@ -50,7 +50,7 @@ else
  read -p "输入内网ip:" DD_IP
  read -p "输入网关gate:" DD_GATE
  read -p "输入mask:" DD_MASK
-
+echo "debian 12"
 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"  --ip-mask ${DD_MASK}       --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
 
 
