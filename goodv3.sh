@@ -363,8 +363,13 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		63) eval $xray;;
 		64) eval $realm;;
 		5) eval $speed;;
-		6.1) fix_wg_ipv6_RTNETLINK;eval $wg61 ; /sbin/sysctl -p ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh );;
-		6) fix_wg_ipv6_RTNETLINK ;eval $wg ;  /sbin/sysctl -p ;bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) ;;
+		6.1) fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
+			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
+			/sbin/sysctl -p ;;
+		6) fix_wg_ipv6_RTNETLINK ;eval $wg ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) ; 
+			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
+			/sbin/sysctl -p 
+		       	;;
 
 		7) eval $openvpn;;
 		7.1) eval $openvpn2;;
