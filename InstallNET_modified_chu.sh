@@ -1,5 +1,13 @@
 #!/bin/bash
-
+# https://meledee.com/2022/12/4112.html   一键 DD Linux 系统脚本 2022-12-02
+# https://hostloc.com/thread-1172136-1-1.html   求一键DD脚本！！
+## 
+#萌咖大佬的《一键 DD Linux 系统脚本》
+#https://meledee.com/2022/12/4112.html
+#
+#leitbogioro大佬的
+#https://meledee.com/2023/05/4254.html
+#
 ## License: GPL
 ## It can reinstall Debian, Ubuntu, CentOS system with network.
 ## Default root password: MoeClub.org
@@ -359,7 +367,7 @@ if [[ -n "$tmpDIST" ]]; then
         [[ "$isDigital" == '9' ]] && DIST='stretch';
         [[ "$isDigital" == '10' ]] && DIST='buster';
         [[ "$isDigital" == '11' ]] && DIST='bullseye';
-        # [[ "$isDigital" == '12' ]] && DIST='bookworm';
+        [[ "$isDigital" == '12' ]] && DIST='bookworm';
       }
     }
     LinuxMirror=$(selectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")

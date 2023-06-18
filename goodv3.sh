@@ -74,6 +74,7 @@ ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-R
 
 
 pre_InstallNET_modified_chu='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu.sh)'
+pre_InstallNET_modified_chu_debian12='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu_debian12.sh)'
 
 
 dd_debian11='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
@@ -440,6 +441,7 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
                 2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
                 4)eval "$pre_InstallNET_modified_chu" ;;
+                412)eval "$pre_InstallNET_modified_chu_debian12" ;;
                 65)eval "$ss_rust2" ;;
                 66)eval "$ping_local_fast" ;;
                 67)eval "$html" ;;
