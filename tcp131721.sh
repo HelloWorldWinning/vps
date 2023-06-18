@@ -1278,7 +1278,7 @@ start_menu() {
     startecn
     apt update -y
     apt upgrade -y
-apt install -y  vim  curl wget netcat htop net-tools screen
+    apt install -y  vim  wget htop net-tools screen
     check_sys_official_bbr
     optimizing_system
     ;;
