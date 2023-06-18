@@ -2,6 +2,8 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 apt install -y sudo
+
+# https://blog.ylx.me/archives/783.html   Linux一键安装常见/最新内核脚本 锐速/BBRPLUS/BBR2 [100.0.1.22]  2023year
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
@@ -1916,9 +1918,11 @@ check_sys_official_bbr() {
       echo "deb http://deb.debian.org/debian bookworm-backports main" >/etc/apt/sources.list.d/bookworm-backports.list
       apt update
       if [[ ${bit} == "x86_64" ]]; then
-        apt -t bookworm-backports install linux-image-amd64 linux-headers-amd64 -y
+       #apt -t bookworm-backports install linux-image-amd64 linux-headers-amd64 -y
+        apt install linux-image-amd64 linux-headers-amd64 -y
       elif [[ ${bit} == "aarch64" ]]; then
-        apt -t bookworm-backports install linux-image-arm64 linux-headers-arm64 -y
+       #apt -t bookworm-backports install linux-image-arm64 linux-headers-arm64 -y
+        apt  install linux-image-arm64 linux-headers-arm64 -y
       fi
 
     elif [[ ${version} == "11" ]]; then
