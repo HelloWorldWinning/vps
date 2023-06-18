@@ -1277,8 +1277,8 @@ start_menu() {
     apt update -y
     apt upgrade -y
 apt install -y  vim  curl wget netcat htop net-tools screen
-    check_sys_official_bbr
     optimizing_system
+    check_sys_official_bbr
     ;;
 
   311)
@@ -1902,7 +1902,6 @@ check_sys_official_bbr() {
       elif [[ ${bit} == "aarch64" ]]; then
         apt -t stretch-backports install linux-image-arm64 linux-headers-arm64 -y
       fi
-
     elif [[ ${version} == "10" ]]; then
       echo "deb http://deb.debian.org/debian buster-backports main" >/etc/apt/sources.list.d/buster-backports.list
       apt update
@@ -1911,16 +1910,6 @@ check_sys_official_bbr() {
       elif [[ ${bit} == "aarch64" ]]; then
         apt -t buster-backports install linux-image-arm64 linux-headers-arm64 -y
       fi
-
-    elif [[ ${version} == "12" ]]; then
-      echo "deb http://deb.debian.org/debian bookworm-backports main" >/etc/apt/sources.list.d/bookworm-backports.list
-      apt update
-      if [[ ${bit} == "x86_64" ]]; then
-        apt -t bookworm-backports install linux-image-amd64 linux-headers-amd64 -y
-      elif [[ ${bit} == "aarch64" ]]; then
-        apt -t bookworm-backports install linux-image-arm64 linux-headers-arm64 -y
-      fi
-
     elif [[ ${version} == "11" ]]; then
       echo "deb http://deb.debian.org/debian bullseye-backports main" >/etc/apt/sources.list.d/bullseye-backports.list
       apt update
