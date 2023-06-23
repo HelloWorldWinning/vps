@@ -1,5 +1,5 @@
 
-wget  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
+wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 
 sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
 
