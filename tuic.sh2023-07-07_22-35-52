@@ -132,25 +132,15 @@ function downloadTuicCore(){
     # https://github.com/EAimTY/tuic/releases/download/0.8.5/tuic-server-0.8.5-x86_64-linux-arm64-musl  
     # https://github.com/EAimTY/tuic/releases/download0.8.5/tuic-server0.8.5-x86_64-linux-musl
     if [ $get_arch = "x86_64" ];then
-
-url=$(curl https://api.github.com/repos/EAimTY/tuic/releases/latest | grep x86_64 | grep inux-musl | grep -v sha256sum | awk -F\" '/browser_download_url/{print $4}')
-wget  -4 -O  /usr/bin/Tuic --no-check-certificate $url
-
-#wget  --inet4-only  -O /usr/bin/Tuic   $url
-
+        wget -q -O /usr/bin/Tuic --no-check-certificate https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-"${get_arch}"-linux-musl
         
-
        #  echo "https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-${get_arch}-linux-musl"
          
     elif [ $get_arch = "aarch64" ];then
-#        wget -q -O /usr/bin/Tuic --no-check-certificate https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-"${get_arch}"-linux-musl
-url=$(curl https://api.github.com/repos/EAimTY/tuic/releases/latest | grep aarch64 | grep inux-musl | grep -v sha256sum | awk -F\" '/browser_download_url/{print $4}')
-wget  -4 -O  /usr/bin/Tuic --no-check-certificate $url
+        wget -q -O /usr/bin/Tuic --no-check-certificate https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-"${get_arch}"-linux-musl
    
 	elif [ $get_arch = "i386" ];then
-#       wget -q -O /usr/bin/Tuic --no-check-certificate https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-"${get_arch}"-macos
-url=$(curl https://api.github.com/repos/EAimTY/tuic/releases/latest | grep  i386 | grep inux-musl | grep -v sha256sum | awk -F\" '/browser_download_url/{print $4}')
-wget  -4 -O  /usr/bin/Tuic --no-check-certificate $url
+        wget -q -O /usr/bin/Tuic --no-check-certificate https://github.com/EAimTY/tuic/releases/download/${version}/tuic-server-"${version}"-"${get_arch}"-macos
     else
         echoColor yellowBlack "Error[OS Message]:${get_arch}\nPlease open a issue to https://github.com/EAimTY/tuic/releases/"
         exit
@@ -238,104 +228,23 @@ mkdir -p /etc/tuic/
 #EOF
 #
 
-#{
-#    "port":${ListenPort6},
-#    "token": ["1"],
-#    "certificate": "${cer_path}",
-#    "private_key": "${key_path}",
-#
-#    "ip": "::",
-#    "congestion_controller": "${bbrbbr2}",
-#    "max_idle_time": 15000,
-#    "authentication_timeout": 1000,
-#    "alpn": ["h3"],
-#    "max_udp_relay_packet_size": 1500,
-#    "log_level": "info"
-#}
 
 
-	cat <<EOF > /etc/tuic/config.json
-
+		cat <<EOF > /etc/tuic/config.json
 {
-    // The socket address to listen on
-    "server": "[::]:${ListenPort6}",
+    "port":${ListenPort6},
+    "token": ["1"],
+    "certificate": "${cer_path}",
+    "private_key": "${key_path}",
 
-    // User list, contains user UUID and password
-    "users": {
-        "12345678-1234-1234-1234-123456789012": "1"
-    },
-
-    // The path to the certificate file
-    "certificate":  "${cer_path}",
-
-    // The path to the private key file
-    "private_key": "${key_path}", 
-
-    // Optional. Congestion control algorithm, available options:
-    // "cubic", "new_reno", "bbr"
-    // Default: "cubic"
-    "congestion_control":"${bbrbbr2}",
-
-    // Optional. Application layer protocol negotiation
-    // Default being empty (no ALPN)
-    "alpn": ["h3", "spdy/3.1"],
-
-    // Optional. If the server should create separate UDP sockets for relaying IPv6 UDP packets
-    // Default: true
-    "udp_relay_ipv6": true,
-
-    // Optional. Enable 0-RTT QUIC connection handshake on the server side
-    // This is not impacting much on the performance, as the protocol is fully multiplexed
-    // WARNING: Disabling this is highly recommended, as it is vulnerable to replay attacks. See https://blog.cloudflare.com/even-faster-connection-establishment-with-quic-0-rtt-resumption/#attack-of-the-clones
-    // Default: false
-    "zero_rtt_handshake": false,
-
-    // Optional. Set if the listening socket should be dual-stack
-    // If this option is not set, the socket behavior is platform dependent
-    "dual_stack": true,
-
-    // Optional. How long the server should wait for the client to send the authentication command
-    // Default: 3s
-    "auth_timeout": "3s",
-
-    // Optional. Maximum duration server expects for task negotiation
-    // Default: 3s
-    "task_negotiation_timeout": "3s",
-
-    // Optional. How long the server should wait before closing an idle connection
-    // Default: 10s
-    "max_idle_time": "10s",
-
-    // Optional. Maximum packet size the server can receive from outbound UDP sockets, in bytes
-    // Default: 1500
-    "max_external_packet_size": 1500,
-
-    // Optional. Maximum number of bytes to transmit to a peer without acknowledgment
-    // Should be set to at least the expected connection latency multiplied by the maximum desired throughput
-    // Default: 8MiB * 2
-    "send_window": 16777216,
-
-    // Optional. Maximum number of bytes the peer may transmit without acknowledgement on any one stream before becoming blocked
-    // Should be set to at least the expected connection latency multiplied by the maximum desired throughput
-    // Default: 8MiB
-    "receive_window": 8388608,
-
-    // Optional. Interval between UDP packet fragment garbage collection
-    // Default: 3s
-    "gc_interval": "3s",
-
-    // Optional. How long the server should keep a UDP packet fragment. Outdated fragments will be dropped
-    // Default: 15s
-    "gc_lifetime": "15s",
-
-    // Optional. Set the log level
-    // Default: "warn"
-    "log_level": "warn"
+    "ip": "::",
+    "congestion_controller": "${bbrbbr2}",
+    "max_idle_time": 15000,
+    "authentication_timeout": 1000,
+    "alpn": ["h3"],
+    "max_udp_relay_packet_size": 1500,
+    "log_level": "info"
 }
-
-
-
-
 EOF
 
 
