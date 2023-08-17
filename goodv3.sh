@@ -322,6 +322,7 @@ ${Red_font_prefix}1${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}3${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}4${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
+${Red_font_prefix}412${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD debian12${Font_color_suffix}
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
 ${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
 ${Red_font_prefix}67${Font_color_suffix} html
@@ -343,6 +344,7 @@ ${Red_font_prefix}81${Font_color_suffix} neovim and  to install
 ${Red_font_prefix}82${Font_color_suffix} git clone vps
 ${Red_font_prefix}83${Font_color_suffix} md file to html
 ${Red_font_prefix}84${Font_color_suffix} ports  转发
+${Red_font_prefix}85${Font_color_suffix} clean_footprint
  
 
 
@@ -517,6 +519,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		82)git clone https://github.com/HelloWorldWinning/vps.git ;;
 		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
 		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
+		85) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh  ) ;;
 
 		00)eval "exit";;
 		
