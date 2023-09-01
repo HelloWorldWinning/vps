@@ -345,6 +345,7 @@ ${Red_font_prefix}82${Font_color_suffix} git clone vps
 ${Red_font_prefix}83${Font_color_suffix} md file to html
 ${Red_font_prefix}84${Font_color_suffix} ports  转发
 ${Red_font_prefix}85${Font_color_suffix} clean_footprint
+${Red_font_prefix}86${Font_color_suffix} 融合怪命令
  
 
 
@@ -520,6 +521,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
 		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
 		85) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh  ) ;;
+		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh ;;
 
 		00)eval "exit";;
 		
