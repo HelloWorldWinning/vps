@@ -524,6 +524,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh ;;
 
 		00)eval "exit";;
+		q)eval "exit";;
 		
 		*) echo "wrong input" ;;
 	esac
