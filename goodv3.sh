@@ -38,7 +38,7 @@ get_fraud_score() {
   if [[ -n "$fraud_score" ]]; then
     echo ""
     echo "IP: ${ip_address}"
-    echo "Fraud Score: ${fraud_score}"
+    echo "${fraud_score}"
     echo ""
   else
     echo ""
