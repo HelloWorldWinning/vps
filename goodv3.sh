@@ -11,7 +11,7 @@ resolve_domain_to_ip() {
   local domain="$1"
   local ip_address=$(dig +short "$domain")
   if [[ -n "$ip_address" ]]; then
-    echo ""
+    echo ""  >&2 
     echo "$ip_address"
   else
     echo "Failed to resolve IP for domain $domain."
