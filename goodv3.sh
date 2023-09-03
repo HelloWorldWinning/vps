@@ -33,15 +33,50 @@ get_fraud_score() {
   fi
 
   curl_output=$(curl -s "https://scamalytics.com/ip/${ip_address}")
-  fraud_score=$(echo "$curl_output" | grep -oP 'Fraud Score: \K\d+')
-  
+  fraud_score=$(echo "$curl_output" | perl -nle 'print $& if m{Fraud Score: (\d+)}')
+
   if [[ -n "$fraud_score" ]]; then
+    echo ""
     echo "IP: ${ip_address}"
     echo "Fraud Score: ${fraud_score}"
+    echo ""
   else
+    echo ""
     echo "Fraud Score could not be determined."
+    echo ""
   fi
 }
+
+
+
+
+## Function to get the fraud score
+#get_fraud_score() {
+#  local input="$1"
+#  local curl_output
+#  local fraud_score
+#  local ip_address
+#
+#  if [[ "$input" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    ip_address="$input"
+#  else
+#    ip_address=$(resolve_domain_to_ip "$input")
+#    if [[ -z "$ip_address" ]]; then
+#      echo "Failed to resolve domain to IP."
+#      return 1
+#    fi
+#  fi
+#
+#  curl_output=$(curl -s "https://scamalytics.com/ip/${ip_address}")
+#  fraud_score=$(echo "$curl_output" | grep -oP 'Fraud Score: \K\d+')
+#  
+#  if [[ -n "$fraud_score" ]]; then
+#    echo "IP: ${ip_address}"
+#    echo "Fraud Score: ${fraud_score}"
+#  else
+#    echo "Fraud Score could not be determined."
+#  fi
+#}
 
 
 
