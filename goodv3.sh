@@ -6,6 +6,24 @@ Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
 
+
+prefer_ipv4() {
+  # Check for root privileges
+  if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    return 1
+  fi
+
+  # Add the precedence line to /etc/gai.conf
+  echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
+
+  # Restart the networking service
+  systemctl restart networking
+
+  echo "IPv4 is now preferred over IPv6 and networking service is restarted."
+}
+
+
 #https://bodhilinux.boards.net/thread/450/wireguard-rtnetlink-answers-permission-denied
 fix_wg_ipv6_RTNETLINK(){
 cat >>/etc/sysctl.conf<<EOF
@@ -346,6 +364,7 @@ ${Red_font_prefix}83${Font_color_suffix} md file to html
 ${Red_font_prefix}84${Font_color_suffix} ports  转发
 ${Red_font_prefix}85${Font_color_suffix} clean_footprint
 ${Red_font_prefix}86${Font_color_suffix} 融合怪命令
+${Red_font_prefix}87${Font_color_suffix} prefer_ipv4
  
 
 
@@ -522,6 +541,8 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
 		85) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh  ) ;;
 		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh ;;
+
+		87) prefer_ipv4;;
 
 		00)eval "exit";;
 		q)eval "exit";;
