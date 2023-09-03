@@ -12,6 +12,7 @@ Font_color_suffix="\033[0m"
 resolve_domain_to_ip() {
   local domain="$1"
   local ip_address=$(nslookup "$domain" | awk '/^Address: / { print $2 }')
+  echo ""
   echo "$ip_address"
 }
 
