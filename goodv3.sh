@@ -7,10 +7,11 @@ Font_color_suffix="\033[0m"
 
 
 
-# Function to resolve domain to IP address
+
+# Function to resolve domain to IP address using nslookup
 resolve_domain_to_ip() {
   local domain="$1"
-  local ip_address=$(dig +short "$domain")
+  local ip_address=$(nslookup "$domain" | awk '/^Address: / { print $2 }')
   echo "$ip_address"
 }
 
