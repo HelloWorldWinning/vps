@@ -7,6 +7,55 @@ Font_color_suffix="\033[0m"
 
 
 
+# Function to resolve domain to IP address
+resolve_domain_to_ip() {
+  local domain="$1"
+  local ip_address=$(dig +short "$domain")
+  echo "$ip_address"
+}
+
+# Function to get the fraud score
+get_fraud_score() {
+  local input="$1"
+  local curl_output
+  local fraud_score
+  local ip_address
+
+  if [[ "$input" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    ip_address="$input"
+  else
+    ip_address=$(resolve_domain_to_ip "$input")
+    if [[ -z "$ip_address" ]]; then
+      echo "Failed to resolve domain to IP."
+      return 1
+    fi
+  fi
+
+  curl_output=$(curl -s "https://scamalytics.com/ip/${ip_address}")
+  fraud_score=$(echo "$curl_output" | grep -oP 'Fraud Score: \K\d+')
+  
+  if [[ -n "$fraud_score" ]]; then
+    echo "Fraud Score: ${fraud_score}"
+  else
+    echo "Fraud Score could not be determined."
+  fi
+}
+
+# Function to be triggered by the 88th option
+option_88_function() {
+  echo "Enter IP or Domain (Leave blank for current VPS IP):"
+  read user_input
+
+  if [[ -z "$user_input" ]]; then
+    # Automatically get the IP address of the current VPS
+    user_input=$(curl -s ifconfig.me)
+  fi
+
+  get_fraud_score "$user_input"
+}
+
+
+
 prefer_ipv4() {
   # Check for root privileges
   if [ "$EUID" -ne 0 ]; then
@@ -365,6 +414,7 @@ ${Red_font_prefix}84${Font_color_suffix} ports  转发
 ${Red_font_prefix}85${Font_color_suffix} clean_footprint
 ${Red_font_prefix}86${Font_color_suffix} 融合怪命令
 ${Red_font_prefix}87${Font_color_suffix} prefer_ipv4
+${Red_font_prefix}88${Font_color_suffix} get_fraud_score
  
 
 
@@ -543,6 +593,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh ;;
 
 		87) prefer_ipv4;;
+                88) option_88_function ;;
 
 		00)eval "exit";;
 		q)eval "exit";;
