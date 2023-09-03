@@ -11,6 +11,7 @@ resolve_domain_to_ip() {
   local domain="$1"
   local ip_address=$(dig +short "$domain")
   if [[ -n "$ip_address" ]]; then
+    echo ""
     echo "$ip_address"
   else
     echo "Failed to resolve IP for domain $domain."
@@ -41,8 +42,10 @@ get_fraud_score() {
   fraud_score=$(echo "$curl_output" | perl -nle 'print $& if m{Fraud Score: (\d+)}')
 
   if [[ -n "$fraud_score" ]]; then
+    echo ""
     echo "IP: ${ip_address}"
     echo "${fraud_score}"
+    echo ""
   else
     echo "Fraud Score could not be determined."
   fi
