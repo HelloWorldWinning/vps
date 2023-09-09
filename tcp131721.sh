@@ -2,6 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 apt install -y sudo netcat-openbsd  tree
+sudo timedatectl set-timezone Asia/Shanghai
 
 # https://blog.ylx.me/archives/783.html   Linux一键安装常见/最新内核脚本 锐速/BBRPLUS/BBR2 [100.0.1.22]  2023year
 #=================================================
