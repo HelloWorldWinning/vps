@@ -642,8 +642,8 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
 
                 2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
-                4)eval "$pre_InstallNET_modified_chu" ;;
-                412)eval "$pre_InstallNET_modified_chu_debian12" ;;
+                411)eval "$pre_InstallNET_modified_chu" ;;
+                4)eval "$pre_InstallNET_modified_chu_debian12" ;;
                 65)eval "$ss_rust2" ;;
                 66)eval "$ping_local_fast" ;;
                 67)eval "$html" ;;
