@@ -709,7 +709,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 
 		87) prefer_ipv4;;
                 88) option_88_function ;;
-		89) https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh  ;;
+		89) curl  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh  ;;
 
 		00)eval "exit";;
 		q)eval "exit";;
