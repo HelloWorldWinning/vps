@@ -348,7 +348,8 @@ ss_rust='wget --inet4-only -N --no-check-certificate -c -t3 -T60 -O ss-plugins.s
 
 #nfFree='wget --inet4-only -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh [option] [lisence]'
 #nfFree='wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh'
-nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh'
+#nfFree='wget -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh'
+
 #nf_free2='wget --inet4-only -N https://cdn.jsdelivr.net/gh/kkkyg/CFwarp/CFwarp.sh && bash CFwarp.sh'
 nf_free2='bash <(curl -Ls https://gitlab.com/rwkgyg/CFwarp/raw/main/CFwarp.sh)'
 nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
@@ -573,7 +574,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		13) eval $s5;;
 		13.1) eval $realm2;;
 		14)eval  "${nf}"  | tee netflix.log ;;
-		15) eval $nfFree;;
+#	15) eval $nfFree;;
+        	15) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 ) ;;
                 16) eval $ss_rust;;
 	        17) eval $speed2;;
 	        18) eval $wg_to_wgcf;;
