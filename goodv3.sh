@@ -575,7 +575,8 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		13.1) eval $realm2;;
 		14)eval  "${nf}"  | tee netflix.log ;;
         	15) eval $nfFree;;
-        	155) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 ) ;;
+#       	155) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 ) ;;
+        	155) wget --inet4-only -N --no-check-certificate -O /etc/wireguard/warp3  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 && chmod +x /etc/wireguard/warp3   && sudo ln -s /etc/wireguard/warp3 /usr/bin/warp3   ;;
                 16) eval $ss_rust;;
 	        17) eval $speed2;;
 	        18) eval $wg_to_wgcf;;
