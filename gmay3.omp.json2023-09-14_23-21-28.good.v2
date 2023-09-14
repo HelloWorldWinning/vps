@@ -21,7 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " \ue5ff $(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \"($CONDA_DEFAULT_ENV)\"; fi) $(pwd)       ",
+          "template": " \ue5ff  $(pwd)            ",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -38,9 +38,9 @@
         },
         {
           "background": "#3A86FF",
-          "foreground": "#FFFFFF",
+          "foreground": "#ffffff",
           "style": "powerline",
-          "template": " <b>{{ .UserName }}@{{ .HostName }}</b> ",
+          "template": " {{ .UserName }}@{{ .HostName }} ",
           "type": "session",
           "powerline_symbol": "\ue0b0",
 	  "font-weight":"bold"
