@@ -534,6 +534,7 @@ ${Red_font_prefix}86${Font_color_suffix} 融合怪命令
 ${Red_font_prefix}87${Font_color_suffix} prefer_ipv4
 ${Red_font_prefix}88${Font_color_suffix} get_fraud_score
 ${Red_font_prefix}89${Font_color_suffix} some notes
+${Red_font_prefix}90${Font_color_suffix} ohmyposh.sh
  
 
 
@@ -718,6 +719,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		87) prefer_ipv4;;
                 88) option_88_function ;;
 		89) curl  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh  ;;
+		90) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  ) ;;
 
 		00)eval "exit";;
 		q)eval "exit";;
