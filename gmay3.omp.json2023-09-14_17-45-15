@@ -29,7 +29,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-          "template": " \ue5ff       $(pwd)         ",
+          "template": " \ue5ff $(pwd) ",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -74,7 +74,7 @@
             "always_enabled": true
           },
           "style": "diamond",
-          "template": "  \ueb05 ",
+          "template": " \ueb05 ",
           "trailing_diamond": "\ue0b4",
           "type": "status"
         }
