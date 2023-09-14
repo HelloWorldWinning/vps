@@ -21,7 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " \ue5ff $(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \"($CONDA_DEFAULT_ENV,$(python --version 2>&1 | awk '{print $2}'))\"; fi) $(pwd)      ",
+	  "template": " \ue5ff $(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \"($CONDA_DEFAULT_ENV)\"; fi) $(pwd)       ",
           "type": "path",
 	  "font-weight":"bold"
         },
