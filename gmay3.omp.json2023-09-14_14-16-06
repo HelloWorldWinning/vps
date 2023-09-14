@@ -38,7 +38,7 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "15:04:05 Monday 06-01-02"
+            "time_format": "15:04:05 06-01-02 Monday"
           },
           "style": "powerline",
           "template": " {{ .CurrentDate | date .Format }} ",
