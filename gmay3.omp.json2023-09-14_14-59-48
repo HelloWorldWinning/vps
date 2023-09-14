@@ -8,7 +8,7 @@
           "background": "#3A86FF",
           "foreground": "#ffffff",
           "leading_diamond": "\ue0b6",
-          "style": "diamond",
+          "style": "plain",
           "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
           "type": "os"
         },
@@ -30,8 +30,8 @@
           },
           "style": "powerline",
           "template": " \ue5ff $(pwd) ",
-          "type": "path",
-	  "font-weight":"bold"
+	  "font-weight":"bold",
+          "type": "path"
         },
         {
           "background": "#4caf50",
@@ -70,13 +70,14 @@
             "{{ if gt .Code 0 }}#f1184c{{ end }}"
           ],
           "foreground": "#ffffff",
+          "leading_diamond": "<transparent,background>\ue0b0</>",
           "properties": {
             "always_enabled": true
           },
-          "style": "diamond",
-          "template": " \ueb05 ",
+          "style": "powerline",
+          "template": "  \ueb05  ",
           "trailing_diamond": "\ue0b4",
-          "type": "status"
+          "type": "text"
         }
       ],
       "type": "prompt"
