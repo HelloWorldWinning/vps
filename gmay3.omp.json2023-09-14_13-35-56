@@ -25,11 +25,10 @@
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "style": "full",
-	        "folder_icon": ""
+            "style": "full"
           },
           "style": "powerline",
-          "template": " \ue5ff $(pwd) ",
+          "template": " \ue5ff {{ .Path }} ",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -38,7 +37,7 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "15:04:05 06-01-02 Monday"
+            "time_format": "06-01-02 15:04:05 Monday"
           },
           "style": "powerline",
           "template": " {{ .CurrentDate | date .Format }} ",
@@ -89,7 +88,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "\uf04b",
+          "template": "\uf0a9 ",
           "type": "text"
         }
       ],
