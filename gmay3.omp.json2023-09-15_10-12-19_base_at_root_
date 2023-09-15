@@ -40,7 +40,7 @@
           "background": "#3A86FF",
           "foreground": "#FFFFFF",
           "style": "powerline",
-          "template": "<b>$(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \" ($CONDA_DEFAULT_ENV,$(python --version 2>&1 | awk '{print $2}'))\"; fi) {{ .UserName }}@{{ .HostName }}</b> ",
+          "template": "$(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \" ($CONDA_DEFAULT_ENV,$(python --version 2>&1 | awk '{print $2}'))\"; fi) <b>{{ .UserName }}@{{ .HostName }}</b> ",
           "type": "session",
           "powerline_symbol": "\ue0b0",
 	  "font-weight":"bold"
