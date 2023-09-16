@@ -43,7 +43,7 @@ listen: :50001
 
 acme:
   domains:
-    - $domain
+    - $DOMAIN_INPUT
   email: 123@wardao.eu.org
 
 bandwidth:
