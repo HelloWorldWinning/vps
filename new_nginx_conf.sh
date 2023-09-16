@@ -9,7 +9,13 @@ mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
 mkdir -p  /etc/nginx/
 mkdir -p  /etc/nginx/conf.d/
-sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
+#sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
+
+if ! grep  "text/markdown           md markdown mkd ;" /etc/nginx/mime.types; then
+    sed -i '10i\text/markdown           md markdown mkd ;' /etc/nginx/mime.types
+else
+    echo "The markdown already exists, ignoring."
+fi
 
 
 Un_Links() {
