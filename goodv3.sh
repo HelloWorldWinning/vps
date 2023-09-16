@@ -657,7 +657,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
                 4)eval "$pre_InstallNET_modified_chu_debian12" ;;
                 65)eval "$ss_rust2" ;;
           #     66)eval "$ping_local_fast" ;;
-	        66) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ask.sh ) ;;
+#        66) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ask.sh ) ;;
+                66) bash  <(curl --ipv4 -Ls  http://jingyi.today:9090/ping_ask.sh )  ;;
+
                 67)eval "$html" ;;
 		68)read  -p "$(echo -e "
 1   azure_create
