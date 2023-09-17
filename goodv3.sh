@@ -217,7 +217,8 @@ if [ "$wgcf_card" == "wgcf" ]; then
   wg_card="wgcf"
 elif [ "$warp_card" == "warp" ]; then
   wg_card="warp"
-elif [ -z "$wgcf_card" ] && [ -z "$warp_card" ]; then
+#elif [ -z "$wgcf_card" ] && [ -z "$warp_card" ]; then
+else 
   wg_card=$net_card
 fi
 
