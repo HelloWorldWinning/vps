@@ -23,8 +23,30 @@ crontab -l > conf && echo  -e "@reboot sleep 14; /usr/sbin/ip6tables-restore < /
 
 
 Check_Domain_Resolve () {
-IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
-IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
+
+# Identify the primary network interface (regardless of wg status)
+PRIMARY_NETWORK_INTERFACE=$(ip route | grep default | awk '{print $5}')
+
+# Get the authentic public IP by querying Cloudflare's DNS server 1.1.1.1
+IPV4=$(dig @1.1.1.1 whoami.cloudflare ch txt +short -b $(ip -4 addr show $PRIMARY_NETWORK_INTERFACE | grep -oP '(?<=inet\s)\d+(\.\d+){3}') | tr -d '"')
+
+# Identify the primary network interface (regardless of wg status)
+PRIMARY_NETWORK_INTERFACE_ipv6=$(ip -6 route | grep default | awk '{print $5}'|head -1)
+
+# Get all available IPv6 addresses for the interface
+IPV6_ADDRESSES=$(ip -6 addr show $PRIMARY_NETWORK_INTERFACE_ipv6 | grep -oP '(?<=inet6\s)[0-9a-fA-F:]+')
+
+# Get the authentic public IPv6 by querying Cloudflare's DNS server using available IPv6 addresses
+for IPV6_ADDRESS in $IPV6_ADDRESSES; do
+  IPV6=$(dig @2606:4700:4700::1111 whoami.cloudflare ch txt +short -b $IPV6_ADDRESS | tr -d '"')
+  if [ ! -z "$IPV6" ]; then
+    break
+  fi
+done
+
+
+#IPV4=$(dig  +time=1 +tries=2   @1.1.1.1 +short  txt ch  whoami.cloudflare  |tr -d \")
+#IPV6=$(dig  +time=1 +tries=2  +short @2606:4700:4700::1111 -6 ch txt whoami.cloudflare|tr -d \")
 resolve4="$(dig  +time=1 +tries=2  A  +short ${Domain} @1.1.1.1)"
 resolve6="$(dig  +time=1 +tries=2  AAAA +short ${Domain} @1.1.1.1)"
 res4=`echo -n ${resolve4} | grep $IPV4`
