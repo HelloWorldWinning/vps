@@ -17,14 +17,22 @@ n=4
 declare -a site
 
 # Reading the list of IPs or domains
-echo "Enter the list of IPs or domains line by line"
-echo "(press ENTER  2222222222  to end input):"
-while IFS= read -r line || [[ -n "$line" ]]; do
+echo "Enter the list of IPs or domains line by line:"
+
+#echo "(press ENTER  2222222222  to end input):"
+while IFS= read -r line; do
     if [ -z "$line" ]; then
         break
     fi
     site+=("$line")
 done
+
+#while IFS= read -r line || [[ -n "$line" ]]; do
+#    if [ -z "$line" ]; then
+#        break
+#    fi
+#    site+=("$line")
+#done
 
 
 Green_font_prefix="\033[32m"
