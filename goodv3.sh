@@ -576,10 +576,10 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		64) eval $realm;;
 #	5) eval $speed;;
 		5) wget -qO- bench.sh | bash ;;
-		6.1) fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
+		6.1)   wg-quick down wg0; wg-quick down wg1;wg-quick down wg2  ; fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p ;;
-		6) fix_wg_ipv6_RTNETLINK ;eval $wg ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) ; 
+		6) wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;eval $wg ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) ; 
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p 
 		       	;;
