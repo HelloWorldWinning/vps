@@ -322,7 +322,10 @@ fi
       
       "clients": [
         {
-          "id": "$uuid"
+          "id": "$uuid",
+	  "security": "auto",
+          "level": 1,
+          "alterId": 0
         }
       ],
       "disableInsecureEncryption": false
