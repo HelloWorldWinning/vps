@@ -2680,7 +2680,7 @@ menu() {
     echo -e "  ${GREEN}10.${PLAIN}  安装${BLUE}trojan+XTLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${RED}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}211.${PLAIN} 安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${RED}33.${PLAIN} 安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
@@ -2694,7 +2694,7 @@ menu() {
     echo -e "  ${GREEN}30.${PLAIN}  安装Xray-${BLUE} xray_quic " 
     echo -e "  ${GREEN}31.${PLAIN}  安装Xray-${BLUE} xray_quic_tls"
     echo -e "  ${GREEN}32.${PLAIN}  安装Xray-${BLUE} xtls-rprx-vision.sh "
-    echo -e "  ${GREEN}33.${PLAIN}   restart_nginx_with_socks.sh   "
+    echo -e "  ${GREEN}34.${PLAIN}   restart_nginx_with_socks.sh   "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2744,7 +2744,7 @@ menu() {
             vlessWSConfig_mianliu
             showInfo
         ;;
-        211)
+        33)
             installXray
             vmessWSConfig_mianliu_80
             showInfo
@@ -2786,7 +2786,7 @@ bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 	275) 
 bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_trojan_grpc.sh )
  ;;
-        33)
+        34)
 bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh ) 
 ;;
         22)
