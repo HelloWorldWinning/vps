@@ -51,9 +51,9 @@ else
  read -p "输入网关gate:" DD_GATE
  read -p "输入mask:" DD_MASK
 echo "debian 12"
-bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"  --ip-mask ${DD_MASK}       --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
 
-
+#bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"  --ip-mask ${DD_MASK}       --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322"  --ip-mask ${DD_MASK}   --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
 
 
 #  echo "bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr  "
