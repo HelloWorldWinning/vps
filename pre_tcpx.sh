@@ -1,4 +1,4 @@
-apt install -y sudo netcat-openbsd  tree
+apt install -y sudo netcat-openbsd  tree screen
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
