@@ -65,6 +65,7 @@ volumes:
       o: bind
 EOF
 
+apt update -y
 apt install docker-compose -y
 
 cd $destination_folder && \
