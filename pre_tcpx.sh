@@ -1,3 +1,6 @@
+apt update
+apt-get update
+apt install net-tools
 apt install -y sudo netcat-openbsd  tree screen
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
