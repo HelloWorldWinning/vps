@@ -6,6 +6,7 @@ apt install -y sudo netcat-openbsd  tree screen htop  tmux
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
+alias tls="tmux list-sessions"
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 
