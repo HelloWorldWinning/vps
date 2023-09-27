@@ -2,7 +2,7 @@
 apt update
 apt-get update
 apt install net-tools -y
-apt install -y sudo netcat-openbsd  tree screen htop 
+apt install -y sudo netcat-openbsd  tree screen htop  tmux
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
