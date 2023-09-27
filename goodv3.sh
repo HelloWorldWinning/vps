@@ -198,7 +198,7 @@ prefer_ipv4() {
   cp /etc/gai.conf /etc/gai.conf.bak
 
   # Check if the line already exists to avoid duplicate entries
-  if ! grep -q "precedence ::ffff:0:0/96  100" /etc/gai.conf; then
+  if ! grep -q "^precedence ::ffff:0:0/96  100" /etc/gai.conf; then
     # Add the precedence line to /etc/gai.conf
     echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
   else
