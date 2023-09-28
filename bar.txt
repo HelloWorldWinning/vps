@@ -1,4 +1,0 @@
-1
-text/markdown           md markdown mkd ;
-2
-3

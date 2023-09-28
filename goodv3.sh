@@ -619,7 +619,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		63) eval $xray;;
 		64) eval $realm;;
 #	5) eval $speed;;
-		5) wget -qO- bench.sh | bash ;;
+		5) wget -qO- bench.sh | bash | tee speed.log  ;;
 		6.1)   wg-quick down wg0; wg-quick down wg1;wg-quick down wg2  ; fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p ;;
@@ -783,7 +783,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
 		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
 		85) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh  ) ;;
-		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh ;;
+		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh |tee testvps.log ;;
 
 		87) prefer_ipv4;;
                 88) option_88_function ;;
