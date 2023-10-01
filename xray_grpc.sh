@@ -319,7 +319,7 @@ temp_d=$(mktemp -d)
 
          
     elif [ $get_arch = "aarch64" ];then
-        wget -q -O $temp_f  --no-check-certificate https://github.com/XTLS/xray-core/releases/download/${version}/xray-linux-64.zip
+        wget -q -O $temp_f  --no-check-certificate https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip
         unzip $temp_f -d $temp_d/
         mv -fv $temp_d/xray /usr/bin/xrayG
         mv -fv $temp_d/* /usr/bin/
