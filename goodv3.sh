@@ -298,7 +298,7 @@ install_nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWin
 docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
 
 
-aws_arm_dd='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322" -console ttyS0,115200'
+aws_arm_dd='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322" -console ttyS0,115200'
 
 
 realm2='wget --inet4-only -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
