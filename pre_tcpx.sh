@@ -1,7 +1,8 @@
-
 apt update
 apt-get update
-apt install net-tools -y
+
+apt-get install -y resolvconf
+apt install -y net-tools
 apt install -y sudo netcat-openbsd  tree screen htop  tmux
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
