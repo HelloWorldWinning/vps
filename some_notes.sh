@@ -19,11 +19,16 @@
 ================================================================
 ================================================================
 ================================================================
+优选WARP的EndPoint IP
+https://github.com/getsomecat/GetSomeCats/blob/Surge/优选WARP的EndPoint%20IP，提高本地WARP节点访问性、修改官方客户端的EndPoint%20IP以及解锁ChatGPT.md
+Linux 各发行版
+wget -N https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-yxip.sh && bash warp-yxip.sh
+
+================================================================
 
 https://github.com/P3TERX/warp.sh
 Cloudflare WARP 一键安装脚本 使用教程
 https://p3terx.com/archives/cloudflare-warp-configuration-script.html
-
 
 ================================================================
 root@ja:/etc/wireguard# ip addr
@@ -76,5 +81,3 @@ PostUp =   iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o warp -j MASQUERADE; ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o warp -j MASQUERADE
 
 ================================================================
-
-
