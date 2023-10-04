@@ -2692,6 +2692,7 @@ menu() {
     echo -e "  ${GREEN}31.${PLAIN}  安装Xray-${BLUE} xray_quic_tls"
     echo -e "  ${GREEN}32.${PLAIN}  安装Xray-${BLUE} xtls-rprx-vision.sh "
     echo -e "  ${GREEN}34.${PLAIN}   restart_nginx_with_socks.sh   "
+    echo -e "  ${GREEN}35.${PLAIN}   Reality.sh "
     echo " -------------"
     echo -e "  ${GREEN}11.${PLAIN}  更新Xray"
     echo -e "  ${GREEN}12.  ${RED}卸载Xray${PLAIN}"
@@ -2785,6 +2786,9 @@ bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
  ;;
         34)
 bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_nginx_with_socks.sh ) 
+;;
+        35)
+bash  <(curl -4  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Reality.sh  ) 
 ;;
         22)
             installXray
