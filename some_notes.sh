@@ -18,6 +18,11 @@
 ================================================================
 ================================================================
 ================================================================
+https://github.com/zxcvos/Xray-script
+Xray-REALITY 管理脚本
+wget --no-check-certificate -O ${HOME}/Xray-script.sh https://raw.githubusercontent.com/zxcvos/Xray-script/main/reality.sh && bash ${HOME}/Xray-script.sh
+
+
 ================================================================
 优选WARP的EndPoint IP
 https://github.com/getsomecat/GetSomeCats/blob/Surge/优选WARP的EndPoint%20IP，提高本地WARP节点访问性、修改官方客户端的EndPoint%20IP以及解锁ChatGPT.md
