@@ -260,7 +260,7 @@ User=root
 #CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 #AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 NoNewPrivileges=true
-ExecStart=/usr/bin/xrayReality -c /etc/xrayReality/config.json
+ExecStart=/usr/bin/xrayReality -c /etc/Reality/config.yaml
 Restart=on-failure
 RestartPreventExitStatus=23
 
@@ -291,8 +291,8 @@ start(){
 
 netstat  -lptnu |grep $Port
 
-           echo "/etc/xrayReality/config.json" 
-           cat "/etc/xrayReality/config.json" 
+           echo "/etc/Reality/config.yaml" 
+           cat "/etc/Reality/config.yaml" 
     systemctl daemon-reload
     systemctl enable xrayReality
     systemctl start  xrayReality
@@ -316,8 +316,8 @@ read -p " 选择：" answer
             start
             ;;
         2)
-           echo "/etc/xrayReality/config.json" 
-           cat "/etc/xrayReality/config.json" 
+           echo "/etc/Reality/config.yaml" 
+           cat "/etc/Reality/config.yaml" 
            systemctl status xrayReality
             ;;
 	3)
