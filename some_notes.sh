@@ -17,6 +17,13 @@
 ================================================================
 ================================================================
 ================================================================
+https://www.dongvps.com/2023-05-22/naiveproxy一键脚本更新如何正确的使用naive/
+
+# 安装 naive命令
+curl   https://raw.githubusercontent.com/imajeason/nas_tools/main/NaiveProxy/do.sh | bash
+# 执行naive
+naive
+
 ================================================================
 Private key: YAjoKYIZ601zDTrYJKGoibA0bNTKCboCJNGUH7wgdn4
 Public key: N9IY9bJiPgpe_1exP9LGkNHhqmbBL4tDbXc0lQEr9z8
