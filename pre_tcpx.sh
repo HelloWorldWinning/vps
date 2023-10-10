@@ -9,7 +9,7 @@ apt install -y sudo netcat-openbsd  tree screen htop  tmux
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
-alias tls="tmux list-sessions"
+#alias tls="tmux list-sessions"
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 
@@ -27,6 +27,11 @@ alias _F='git pull && git add . && git commit -m  "`date`" && git push ;echo " "
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
 export OPENAI_API_KEY=${OPENAI_API_KEY}
+alias tx='tmux'
+alias txn='tx new-session -s '
+alias txa='tx attach-session -t '
+alias txl='tmux list-sessions'
+alias txlw='tmux list-windows '
 EOF
 
 source /root/.bashrc
