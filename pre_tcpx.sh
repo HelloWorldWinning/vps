@@ -2,6 +2,7 @@ apt update
 apt-get update
 
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
+echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 #apt-get install -y resolvconf
 apt install -y net-tools
@@ -12,6 +13,9 @@ echo 'inet4_only = on'  >> ~/.wgetrc
 #alias tls="tmux list-sessions"
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+###########
+# ohmyposh.sh
+bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
 
 cat >>~/.bashrc<<EOF
 alias v='vim'
