@@ -21,7 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " <b>$(pwd)</b>  {{ .UserName }}@<b>{{ .HostName }}<\b>  ",
+	  "template": " {{ .UserName }}@{{ .HostName }}  <b>$(pwd)</b>  ",
           "type": "path",
 	  "font-weight":"bold"
         },
