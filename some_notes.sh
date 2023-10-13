@@ -16,6 +16,9 @@
 ================================================================
 ================================================================
 ================================================================
+"template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then exit; else echo \" ($conda_env,$python_version)\"; fi)"
+
+ ex it  style
 ================================================================
 https://www.dongvps.com/2023-05-22/naiveproxy一键脚本更新如何正确的使用naive/
 
