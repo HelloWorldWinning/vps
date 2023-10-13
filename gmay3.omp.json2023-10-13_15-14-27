@@ -21,17 +21,8 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " {{ .UserName }}@{{ .HostName }}  <b>$(pwd)</b>  ",
+	  "template": " \ue5ff  <b>$(pwd)</b>  ",
           "type": "path",
-	  "font-weight":"bold"
-        },
-        {
-          "background": "#3A86FF",
-          "foreground": "#FF869E",
-          "style": "powerline",
-          "template": "$(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \" ($CONDA_DEFAULT_ENV,$(python --version 2>&1 | awk '{print $2}'))\"; fi)  ",
-          "type": "session",
-          "powerline_symbol": "\ue0b0",
 	  "font-weight":"bold"
         },
         {
@@ -44,6 +35,15 @@
           "style": "powerline",
           "template": " {{ .CurrentDate | date .Format }} ",
           "type": "time"
+        },
+        {
+          "background": "#3A86FF",
+          "foreground": "#FF869E",
+          "style": "powerline",
+          "template": "$(if [ -z $CONDA_DEFAULT_ENV ]; then echo ''; else echo \" ($CONDA_DEFAULT_ENV,$(python --version 2>&1 | awk '{print $2}'))\"; fi) {{ .UserName }}@<b>{{ .HostName }}</b> ",
+          "type": "session",
+          "powerline_symbol": "\ue0b0",
+	  "font-weight":"bold"
         },
         {
           "background": "#fffb38",
@@ -89,7 +89,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "  \uf04b  ",
+          "template": "      \uf04b ",
           "type": "text"
         }
       ],
