@@ -189,3 +189,11 @@ set viminfo='100000000000,<1000000000000000,s100,h
 
 map <D-v> "+p
 map <D-c> "+y
+
+nnoremap ff <C-F>
+nnoremap fr <C-B>
+"nnoremap <D-o> <C-o>
+nnoremap <M-o> <C-o>
+"map <D-o> <C-o>
+
+
