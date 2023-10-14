@@ -36,6 +36,9 @@ alias txn='tx new-session -s '
 alias txa='tx attach-session -t '
 alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
+
+alias dc='docker-compose'
+
 EOF
 
 source /root/.bashrc
