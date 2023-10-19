@@ -5,7 +5,7 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 #apt-get install -y resolvconf
-apt install -y net-tools
+apt install -y net-tools unzip
 apt install -y sudo netcat-openbsd  tree screen htop  tmux
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
