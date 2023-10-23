@@ -600,6 +600,7 @@ ${Red_font_prefix}89${Font_color_suffix} some notes
 ${Red_font_prefix}90${Font_color_suffix} ohmyposh.sh
 ${Red_font_prefix}91${Font_color_suffix} hysteria2.sh
 ${Red_font_prefix}92${Font_color_suffix} install_cloudreve.sh
+${Red_font_prefix}93${Font_color_suffix} install_resolvconf.sh
  
 
 
@@ -792,6 +793,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		90) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  ) ;;
 		91) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh ) ;;
 		92) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh ) ;;
+		93) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh  ) ;;
 
 		00)eval "exit";;
 		q)eval "exit";;
