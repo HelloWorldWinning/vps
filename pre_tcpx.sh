@@ -33,6 +33,7 @@ alias n='/usr/bin/nvim.appimage'
 export OPENAI_API_KEY=${OPENAI_API_KEY}
 alias tx='tmux'
 alias txn='tx new-session -s '
+alias txnm='tx new-session -s '
 alias txa='tx attach-session -t '
 alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
