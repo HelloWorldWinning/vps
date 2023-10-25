@@ -39,7 +39,7 @@ alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
 
 alias dc='docker-compose'
-
+l
 EOF
 
 source /root/.bashrc
