@@ -43,8 +43,18 @@
             "time_format": "<b>15:04</b> Monday 06-01-02"
           },
           "style": "powerline",
-          "template": " {{ .CurrentDate | date .Format }} ",
+          "template": " {{ .CurrentDate | date .Format }}",
           "type": "time"
+        },
+	 {
+          "background": "#4caf50",
+          "foreground": "#FFFFFF",
+          "style": "powerline",
+          "template": "$(curl -s 'https://ipinfo.io/json' | grep '\"country\":' | awk -F'\"' '{print $4}')",
+
+          "type": "session",
+          "powerline_symbol": "\ue0b0",
+          "font-weight":"bold"
         },
         {
           "background": "#fffb38",
