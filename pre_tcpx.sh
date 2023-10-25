@@ -39,6 +39,9 @@ alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
 
 alias dc='docker-compose'
+
+
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check2.sh  ) </dev/null
 l
 EOF
 
