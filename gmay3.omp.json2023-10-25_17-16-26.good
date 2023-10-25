@@ -21,22 +21,9 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " <b>$(pwd)</b>      {{ .UserName }}@<b>{{ .HostName }}<\b>",
+	  "template": " <b>$(pwd)</b>      {{ .UserName }}@<b>{{ .HostName }}<\b> ",
           "type": "path",
 	  "font-weight":"bold"
-        },
-	 {
-          "background": "#BF1D69",
-          "foreground": "#ffffff",
-          "style": "powerline",
-
-
-	    "template": "$(country_code=$(curl -s 'https://ipinfo.io/json' | grep '\"country\":' | awk -F'\"' '{print $4}'); if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode $country_code\"; else echo 'Unknown'; fi)",
-
-
-          "type": "session",
-          "powerline_symbol": "\ue0b0",
-          "font-weight":"bold"
         },
         {
           "background": "#4caf50",
@@ -53,11 +40,21 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "<b>15:04</b> Mon 06-01-02 "
+            "time_format": "<b>15:04</b> Mon 06-01-02"
           },
           "style": "powerline",
           "template": " {{ .CurrentDate | date .Format }}",
           "type": "time"
+        },
+	 {
+          "background": "#4caf50",
+          "foreground": "#FFFFFF",
+          "style": "powerline",
+          "template": "$(curl -s 'https://ipinfo.io/json' | grep '\"country\":' | awk -F'\"' '{print $4}')",
+
+          "type": "session",
+          "powerline_symbol": "\ue0b0",
+          "font-weight":"bold"
         },
         {
           "background": "#fffb38",
