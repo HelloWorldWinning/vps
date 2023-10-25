@@ -58,7 +58,7 @@ output+="IP: $ip\n"
 [[ -n "$org" ]] && output+="Org: $org\n"
 
 fraud_score=$(get_fraud_score "$ip")
-output+="\nFraud Score: $fraud_score"
+output+="\n$fraud_score"
 
 echo -e "$output"
 
