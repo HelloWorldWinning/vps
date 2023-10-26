@@ -1,3 +1,6 @@
+echo 'export country_code=$(curl -s "https://ipinfo.io/json?token=6d89f8e7f1a21e" | grep '\"country\":' | awk -F"\""' '{print $4}')" >> ~/.bashrc
+
+
 apt install  -y unzip
 
 curl -4s https://ohmyposh.dev/install.sh | bash -s
