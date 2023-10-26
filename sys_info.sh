@@ -49,19 +49,19 @@ uname -r
 echo -n "TCP CC    : "
 sysctl -n net.ipv4.tcp_congestion_control
 
-# Display Memory Information
-echo -n "RAM       : "
-free -h | awk '/Mem:/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
 
 echo -n "Swap      : "
-free -h | awk '/Swap:/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/Mi/M/g'
+free -h | awk '/Swap:/ {print $2 " (" $3 " used, "   $4 " free)"}' | sed 's/Mi/M/g'
 
-echo -n "Mem       : "
-free -h | awk '/Mem:/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
+# Display Memory Information
+echo -n "RAM       : "
+free -h | awk '/Mem:/ {print $2 " (" $3 " used, "   $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
+#echo -n "Mem       : "
+#free -h | awk '/Mem:/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
 
 # Display Disk Information
 echo -n "Disk      : "
-df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/G/G /g'
+df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " (" $3 " used, "   $4 " free)"}' | sed 's/G/G /g'
 
 #df -h --total | awk '/total/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/G/G /g'
 
