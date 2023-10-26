@@ -60,5 +60,5 @@ output+="IP: $ip\n"
 #fraud_score=$(get_fraud_score "$ip")
 #output+="\n$fraud_score"
 
-#echo -e "$output"
+echo -e "$output"
 
