@@ -265,3 +265,19 @@ nnoremap <D-b> <C-b>
 
 
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+
+
+let g:clipboard = {
+      \   'name': 'xsel',
+      \   'copy': {
+      \      '+': 'xsel --clipboard --input',
+      \      '*': 'xsel --primary --input',
+      \    },
+      \   'paste': {
+      \      '+': 'xsel --clipboard --output',
+      \      '*': 'xsel --primary --output',
+      \    },
+      \   'cache_enabled': 0,
+      \ }
+
