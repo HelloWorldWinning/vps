@@ -38,7 +38,7 @@ else
   fi
 fi
 
-ipinfo=$(curl -s "http://ipinfo.io/$ip")
+ipinfo=$(curl -s "http://ipinfo.io/$ip?token=6d89f8e7f1a21e")
 hostname=$(echo "$ipinfo" | grep -oP '"hostname": "\K[^"]+')
 timezone=$(echo "$ipinfo" | grep -oP '"timezone": "\K[^"]+')
 loc=$(echo "$ipinfo" | grep -oP '"loc": "\K[^"]+')
