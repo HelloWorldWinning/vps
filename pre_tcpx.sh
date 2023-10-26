@@ -42,7 +42,7 @@ alias txlw='tmux list-windows '
 alias dc='docker-compose'
 
 
-export country_code=$(curl -s 'https://ipinfo.io/json' | grep '\"country\":' | awk -F'\"' '{print $4}')
+export country_code=$(curl -s 'https://ipinfo.io/json?token=6d89f8e7f1a21e' | grep '\"country\":' | awk -F'\"' '{print $4}')A
 
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check2.sh  ) </dev/null
 echo ""
