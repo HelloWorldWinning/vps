@@ -1,5 +1,6 @@
 # Clear the screen
 clear
+printf "\033c"
 
 # Display separator
 echo "----------------------------------------------------------------------"
