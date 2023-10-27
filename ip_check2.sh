@@ -23,6 +23,7 @@ get_fraud_score() {
 }
 
 echo -n "Enter an IP or domain: "
+echo ""
 read input
 
 ip=""
