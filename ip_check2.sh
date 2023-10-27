@@ -23,7 +23,7 @@ get_fraud_score() {
 }
 
 #echo -n "Enter an IP or domain: "
-echo ""
+#echo ""
 #read input
 
 ip=""
@@ -50,7 +50,8 @@ city=$(echo "$ipinfo" | grep -oP '"city": "\K[^"]+')
 country=$(echo "$ipinfo" | grep -oP '"country": "\K[^"]+')
 org=$(echo "$ipinfo" | grep -oP '"org": "\K[^"]+')
 
-output+="IP        : $ip\n"
+#output+="IP        : $ip\n"
+output+="IP        : $ip
 [[ -n "$domain" ]] && output+="Domain    : $domain\n"
 [[ -n "$hostname" ]] && output+="Hostname  : $hostname\n"
 [[ -n "$timezone" ]] && output+="Timezone  : $timezone\n"
