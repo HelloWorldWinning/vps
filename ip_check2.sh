@@ -50,9 +50,9 @@ city=$(echo "$ipinfo" | grep -oP '"city": "\K[^"]+')
 country=$(echo "$ipinfo" | grep -oP '"country": "\K[^"]+')
 org=$(echo "$ipinfo" | grep -oP '"org": "\K[^"]+')
 
-#output+="IP        : $ip\n"
 
-output+="IP        : $ip"
+#output+="IP        : $ip"
+output+="IP        : $ip\n"
 [[ -n "$domain" ]] && output+="Domain    : $domain\n"
 [[ -n "$hostname" ]] && output+="Hostname  : $hostname\n"
 [[ -n "$timezone" ]] && output+="Timezone  : $timezone\n"
