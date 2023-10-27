@@ -7,7 +7,7 @@ echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 apt-get install -y xsel  xclip
 
 apt install -y net-tools unzip
-apt install -y sudo netcat-openbsd  tree screen htop  tmux
+apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
