@@ -12,8 +12,6 @@ get_fraud_score() {
 
   curl_output=$(curl -s "https://scamalytics.com/ip/${input}")
   fraud_score=$(echo "$curl_output" | perl -nle 'print $& if m{Fraud Score: (\d+)}')
-    # Extract the last character, which is the numerical fraud score
-  fraud_score=${fraud_score: -1}
 
   if [[ -n "$fraud_score" ]]; then
     echo "${fraud_score}"
@@ -49,18 +47,18 @@ city=$(echo "$ipinfo" | grep -oP '"city": "\K[^"]+')
 country=$(echo "$ipinfo" | grep -oP '"country": "\K[^"]+')
 org=$(echo "$ipinfo" | grep -oP '"org": "\K[^"]+')
 
-output+="IP        : $ip\n"
-[[ -n "$domain" ]] && output+="Domain    : $domain\n"
-[[ -n "$hostname" ]] && output+="Hostname  : $hostname\n"
-[[ -n "$timezone" ]] && output+="Timezone  : $timezone\n"
-[[ -n "$loc" ]] && output+="Loc       : $loc\n"
-[[ -n "$region" ]] && output+="Region    : $region\n"
-[[ -n "$city" ]] && output+="City      : $city\n"
-[[ -n "$country" ]] && output+="Country   : $country\n"
-[[ -n "$org" ]] && output+="Org       : $org\n"
+output+="IP: $ip\n"
+[[ -n "$domain" ]] && output+="Domain: $domain\n"
+[[ -n "$hostname" ]] && output+="Hostname: $hostname\n"
+[[ -n "$timezone" ]] && output+="Timezone: $timezone\n"
+[[ -n "$loc" ]] && output+="Loc: $loc\n"
+[[ -n "$region" ]] && output+="Region: $region\n"
+[[ -n "$city" ]] && output+="City: $city\n"
+[[ -n "$country" ]] && output+="Country: $country\n"
+[[ -n "$org" ]] && output+="Org: $org\n"
 
 fraud_score=$(get_fraud_score "$ip")
-output+="\nFraudScore: $fraud_score"
+output+="\n$fraud_score"
 
 echo -e "$output"
 
