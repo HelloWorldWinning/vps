@@ -52,26 +52,17 @@ sysctl -n net.ipv4.tcp_congestion_control
 
 
 echo -n "Swap      : "
-#free -h | awk '/Swap:/ {print $2 " (" $3 " used, "     $4 " free)"}' | sed 's/Mi/M/g'
-free -m | awk '/Swap:/ {printf "%5s | %5s | %5s M\n", $4, $3, $2}'
-
-
+free -h | awk '/Swap:/ {print $2 " (" $3 " used, "     $4 " free)"}' | sed 's/Mi/M/g'
 
 # Display Memory Information
 echo -n "RAM       : "
-free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; free=$4/1024; printf "%5.3f | %5.1f | %5.1f G\n", free, used, total}'
-
-#free -h | awk '/Mem:/ {print $2 " (" $3 " used, "     $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
+free -h | awk '/Mem:/ {print $2 " (" $3 " used, "     $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
 #echo -n "Mem       : "
 #free -h | awk '/Mem:/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/Gi/G/g' | sed 's/Mi/M/g'
 
 # Display Disk Information
 echo -n "Disk      : "
-df -BG --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {sub(/G/, "", $4); sub(/G/, "", $3); sub(/G/, "", $2); printf "%5s | %5s | %5s G\n", $4, $3, $2}'
-
-#df -BG --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {printf "%5s | %5s | %5s G\n", $4, $3, $2}'
-
-#df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " ("$3"used, "  $4" free)"}' | sed 's/G/G /g'
+df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " ("$3"used, "  $4" free)"}' | sed 's/G/G /g'
 #df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " (" $3" used, "     $4" free)"}' | sed 's/G/G /g'
 
 #df -h --total | awk '/total/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/G/G /g'
