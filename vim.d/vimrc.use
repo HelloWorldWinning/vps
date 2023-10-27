@@ -197,3 +197,15 @@ nnoremap <M-o> <C-o>
 "map <D-o> <C-o>
 
 
+let g:clipboard = {
+      \   'name': 'xsel',
+      \   'copy': {
+      \      '+': 'xsel --clipboard --input',
+      \      '*': 'xsel --primary --input',
+      \    },
+      \   'paste': {
+      \      '+': 'xsel --clipboard --output',
+      \      '*': 'xsel --primary --output',
+      \    },
+      \   'cache_enabled': 0,
+      \ }

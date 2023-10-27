@@ -264,6 +264,13 @@ nnoremap <D-f> <C-f>
 nnoremap <D-b> <C-b>
 
 
+nnoremap ff <C-F>
+nnoremap fr <C-B>
+nnoremap <D-o> <C-o>
+nnoremap <M-o> <C-o>
+"map <D-o> <C-o>
+
+
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 
