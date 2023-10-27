@@ -62,7 +62,7 @@ free -h | awk '/Mem:/ {print $2 " (" $3 " used, "     $4 " free)"}' | sed 's/Gi/
 
 # Display Disk Information
 echo -n "Disk      : "
-df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " (" $3 " used, "     $4" free)"}' | sed 's/G/G /g'
+df -h --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {print $2 " (" $3" used, "     $4" free)"}' | sed 's/G/G /g'
 
 #df -h --total | awk '/total/ {print $2 " (" $3 " used, " $4 " free)"}' | sed 's/G/G /g'
 
