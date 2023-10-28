@@ -40,6 +40,8 @@ alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
 
 alias dc='docker-compose'
+alias cc='bash  <(curl -Ls4  bit.ly/myvpsjingyi)'
+
 
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  )
 
