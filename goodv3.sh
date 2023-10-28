@@ -636,7 +636,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		7.1) eval $openvpn2;;
 		8) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
-		9) eval $kcptun;;
+		99) eval $kcptun;;
 		10) eval $ss_go;;
 		11o) eval $dd;;
 		11) eval $dd_debian11;;
