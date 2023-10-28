@@ -100,5 +100,7 @@ prefer_ipv4
 # ohmyposh.sh
 bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
 
+mkdir -p /root/themes/
+wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 
