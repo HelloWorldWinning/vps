@@ -191,7 +191,7 @@ map <D-v> "+p
 map <D-c> "+y
 
 nnoremap ff <C-F>
-nnoremap fr <C-B>
+nnoremap ee <C-B>
 nnoremap <D-o> <C-o>
 nnoremap <M-o> <C-o>
 "map <D-o> <C-o>
