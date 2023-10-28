@@ -15,8 +15,6 @@ echo 'inet4_only = on'  >> ~/.wgetrc
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 ###########
-# ohmyposh.sh
-bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
 
 cat >>~/.bashrc<<EOF
 alias v='vim'
@@ -98,6 +96,9 @@ prefer_ipv4() {
 prefer_ipv4
 
 
+
+# ohmyposh.sh
+bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
 
 
 
