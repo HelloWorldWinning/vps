@@ -511,7 +511,7 @@ ${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
-${Red_font_prefix}9${Font_color_suffix} kcptun
+${Red_font_prefix}99${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
 ${Red_font_prefix}11${Font_color_suffix} bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
@@ -602,7 +602,7 @@ ${Red_font_prefix}91${Font_color_suffix} hysteria2.sh
 ${Red_font_prefix}92${Font_color_suffix} install_cloudreve.sh
 ${Red_font_prefix}93${Font_color_suffix} install_resolvconf.sh
 ${Red_font_prefix}94${Font_color_suffix} Freqtrade
-${Red_font_prefix}99${Font_color_suffix} ip checker
+${Red_font_prefix}9${Font_color_suffix} ip checker
  
 
 
@@ -797,7 +797,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		92) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh ) ;;
 		93) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh  ) ;;
 		94) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh  ) ;;
-		99)
+		9)
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  ) 			
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh  ) ;;
 
