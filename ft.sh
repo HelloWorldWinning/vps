@@ -13,6 +13,8 @@ else
 fi
 
 
+apt install  -y sudo
+
 #mkdir ft_userdata
 #cd ft_userdata/
 cd  $folder_name/
@@ -27,3 +29,6 @@ docker-compose run --rm freqtrade create-userdir --userdir user_data
 
 # Create configuration - Requires answering interactive questions
 docker-compose run --rm freqtrade new-config --config user_data/config.json
+
+
+sudo chown -R 1000:1000  $folder_name
