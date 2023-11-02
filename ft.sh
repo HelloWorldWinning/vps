@@ -31,4 +31,5 @@ docker-compose run --rm freqtrade create-userdir --userdir user_data
 docker-compose run --rm freqtrade new-config --config user_data/config.json
 
 
+cd ..
 sudo chown -R 1000:1000  $folder_name
