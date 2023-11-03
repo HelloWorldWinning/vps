@@ -67,4 +67,5 @@ output+="\nFraudScore: $fraud_score"
 
 echo -e "$output"
 
+echo
 echo "----------------------------------------------------------------------"
