@@ -21,10 +21,65 @@ fi
 
 
 
+#!/bin/bash
+
+# Get the total uptime in seconds
+total_seconds=$(cat /proc/uptime | awk '{print $1}' | cut -d. -f1)
+
+# Define time constants
+seconds_per_minute=60
+seconds_per_hour=$((60 * seconds_per_minute))
+seconds_per_day=$((24 * seconds_per_hour))
+seconds_per_month=$((30 * seconds_per_day)) # Approximation
+seconds_per_year=$((12 * seconds_per_month)) # Approximation
+
+# Calculate time components
+years=$((total_seconds / seconds_per_year))
+remaining_seconds=$((total_seconds % seconds_per_year))
+months=$((remaining_seconds / seconds_per_month))
+remaining_seconds=$((remaining_seconds % seconds_per_month))
+days=$((remaining_seconds / seconds_per_day))
+remaining_seconds=$((remaining_seconds % seconds_per_day))
+hours=$((remaining_seconds / seconds_per_hour))
+remaining_seconds=$((remaining_seconds % seconds_per_hour))
+minutes=$((remaining_seconds / seconds_per_minute))
+
+# Total days calculation
+total_days=$((years * 12 * 30 + months * 30 + days)) # Approximation using 30 days per month
+
+# Build the output string
+output=""
+if [ $years -gt 0 ]; then
+  output="${years} years, "
+fi
+
+if [ $months -gt 0 ]; then
+  output="${output}${months} months, "
+fi
+
+if [ $days -gt 0 ]; then
+  output="${output}${days} days, "
+fi
+
+if [ $hours -gt 0 ]; then
+  output="${output}${hours} hours, "
+fi
+
+if [ $minutes -gt 0 ]; then
+  output="${output}${minutes} minutes"
+fi
+
+# Append total days to the output
+output="${output} (up ${total_days} days)"
+
+# Trim any trailing comma and whitespace, and output the result
+#echo $output | sed 's/, $//' | xargs
+
 
 # Display uptime
 echo -n "Uptime    : "
-uptime -p | sed 's/up //'
+echo $output | sed 's/, $//' | xargs
+#uptime -p | sed 's/up //'
 
 # Display CPU information
 CPU_MODEL=$(lscpu | grep "Model name:" | sed 's/Model name: *//' | awk '{printf "%s, ", $0}' | sed 's/, $/\n/')
