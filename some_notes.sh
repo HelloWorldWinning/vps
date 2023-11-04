@@ -13,6 +13,11 @@
 ================================================================
 ================================================================
 ================================================================
+*/2 * * * *  cd /root/smart_bots && git pull && git add . && git commit -m  " `date` " && git push
+*/3 * * * *  cd /root/vps && git pull && git add . && git commit -m  " `date` " && git push
+
+@reboot sleep 7 ; bash -c "source ~/.bashrc;export PATH=/root/anaconda3/bin:$PATH; /root/anaconda3/bin/jupyter notebook --port=16666 --ip 0.0.0.0 --no-browser --allow-root --notebook-dir=/"
+
 ================================================================
 
 wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
