@@ -11,6 +11,18 @@
 ================================================================
 ================================================================
 ================================================================
+
+pip install jupyter_ai_magics
+
+%load_ext jupyter_ai_magics
+%reload_ext jupyter_ai_magics
+
+%%ai chatgpt
+who are you
+
+
+
+
 ================================================================
 
 import openai
@@ -42,7 +54,7 @@ def c(string):
 
 
 def cc():
-    try:
+try    try:
         chatgpt.reset()
     except Exception as e:
         print(e)
