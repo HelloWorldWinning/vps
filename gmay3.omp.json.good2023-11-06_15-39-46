@@ -50,10 +50,10 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "<b>15:04</b> Mon 2-1-2006 "
+            "time_format": "<b>15:04</b> Mon 06-01-02 "
           },
           "style": "powerline",
-          "template": " {{ .CurrentDate | date .Format }} $weather_temperature  ",
+          "template": " {{ .CurrentDate | date .Format }}",
           "type": "time"
         },
         {
