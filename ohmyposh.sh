@@ -11,6 +11,6 @@ mkdir -p /root/themes/
 wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json  
 cat >>~/.bashrc<<EOF
 export country_code=\$(curl -s 'https://ipinfo.io/json?token=6d89f8e7f1a21e' | grep '\"country\":' | awk -F'\"' '{print \$4}')
-export weather_temperature=\$(curl -s wttr.in/beijing?format="%C,+%t")
+export weather_temperature=\$(curl -s wttr.in/shapingba?format="%C,+%t")
 eval "\$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 EOF
