@@ -17,6 +17,11 @@ sudo apt-get install net-tools xrdp xfce4 tigervnc-standalone-server -y
 
 sudo service xrdp stop
 
+
+
+
+
+
 read -p 'input rdp port(default 33389)': rdp_port_input
 if [[ -z "${rdp_port_input}" ]] ; then
  rdp_port=33389
@@ -25,6 +30,13 @@ rdp_port=$rdp_port_input
 fi
 
 sudo sed -i "s/port=3389/port=${rdp_port}/g" /etc/xrdp/xrdp.ini
+
+
+# Setup user environment for XRDP
+echo xfce4-session > /home/${rdp_username}/.xsession
+sudo chown ${rdp_username}:${rdp_username} /home/${rdp_username}/.xsession
+sudo chmod 755 /home/${rdp_username}/.xsession
+
 
 sudo service xrdp restart
 
