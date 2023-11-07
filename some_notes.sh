@@ -10,6 +10,20 @@
 ================================================================
 ================================================================
 ================================================================
+import openai
+import os
+
+# Set the API key from the environment variable
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Fetch the list of available models
+available_models = openai.Model.list()
+
+# Filter and print out model names containing "gpt4"
+for model in available_models['data']:
+    if 'gpt' in model['id']:
+        print(model['id'])
+
 ================================================================
 
 pip install jupyter_ai_magics
@@ -19,10 +33,6 @@ pip install jupyter_ai_magics
 
 %%ai chatgpt
 who are you
-
-
-
-
 ================================================================
 
 import openai
