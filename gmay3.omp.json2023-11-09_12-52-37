@@ -36,21 +36,10 @@
           "font-weight":"bold"
         },
         {
-          "background": "#072bf7",
-          "foreground": "#FFFAB2",
-          "powerline_symbol": "\ue0b0",
-          "properties": {
-            "time_format": "3:4:5PM "
-          },
-          "style": "powerline",
-          "template": " <b>{{ .CurrentDate | date .Format }}</b>",
-          "type": "time"
-        },
-        {
-          "background": "#072bf7",
+          "background": "#4caf50",
           "foreground": "#FFFFFF",
           "style": "powerline",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version) \"; fi)",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \" ($conda_env,$python_version)\"; fi)",
 
           "type": "session",
           "powerline_symbol": "\ue0b0",
@@ -61,7 +50,7 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "Mon 2-1-2006 "
+            "time_format": "<b>15:04</b> Mon 2-1-2006 "
           },
           "style": "powerline",
           "template": " {{ .CurrentDate | date .Format }} $weather_temperature  ",
