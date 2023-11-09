@@ -21,20 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " <b>$(pwd)</b>    $(ls |wc -l)  ",
-          "type": "path",
-	  "font-weight":"bold"
-        },
-        {
-          "background": "#4caf50",
-          "foreground": "#FFFAB2",
-          "powerline_symbol": "\ue0b0",
-          "properties": {
-            "style": "full",
-	        "folder_icon": ""
-          },
-          "style": "powerline",
-	  "template": " {{ .UserName }}@<b>{{ .HostName }}<\b> ",
+	  "template": " <b>$(pwd)</b>    $(ls |wc -l)    {{ .UserName }}@<b>{{ .HostName }}<\b>",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -53,10 +40,10 @@
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "<b>3:4</b>:5PM "
+            "time_format": "3:4:5PM "
           },
           "style": "powerline",
-          "template": " {{ .CurrentDate | date .Format }}",
+          "template": " <b>{{ .CurrentDate | date .Format }}</b>",
           "type": "time"
         },
         {
