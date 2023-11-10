@@ -171,3 +171,10 @@ PostUp =   iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o warp -j MASQUERADE; ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING -o warp -j MASQUERADE
 
 ================================================================
+
+down 
+wget -r -np -nH --cut-dirs=3 -R "index.html*" http://backup.jingyi.today/pdf_d/transformer_d2/pdf_txt_folder/
+
+
+
+================================================================
