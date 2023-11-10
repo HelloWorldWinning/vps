@@ -4,7 +4,8 @@ apt-get update
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
-apt-get install -y xsel  xclip git
+apt-get install -y xsel  xclip git poppler-utils
+
 git config --global core.editor "vim"
 
 apt install -y net-tools unzip
