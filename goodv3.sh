@@ -605,7 +605,7 @@ ${Red_font_prefix}94${Font_color_suffix} Freqtrade
 ${Red_font_prefix}95${Font_color_suffix} change Swap
 ${Red_font_prefix}96${Font_color_suffix} pdf_txt.sh
 ${Red_font_prefix}97${Font_color_suffix} tika.sh
-${Red_font_prefix}98${Font_color_suffix} pdf_to_txt_tika.sh
+${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}9${Font_color_suffix} ip checker
  
 
@@ -808,7 +808,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		95) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh  ) ;;
 		96) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_txt.sh  ) ;;
 		97) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tika.sh  ) ;;
-		98) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_txt_tika.sh ) ;;
+		98) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh  ) ;;
 
 #	00)eval "exit";;
 		q)eval "exit";;
