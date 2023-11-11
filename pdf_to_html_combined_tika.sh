@@ -26,7 +26,8 @@ for file in *.pdf; do
     # Format the HTML filename with zero-padded document number and replace hyphens and spaces with underscores
 #   padded_number=$(printf "%02d" $file_counter)
     padded_number=$(printf "%03d" $file_counter)
-    formatted_file_name=$(echo "${padded_number}#_Document_${file}" | sed 's/[- ]/_/g')
+#   formatted_file_name=$(echo "${padded_number}#_Document_${file}" | sed 's/[- ]/_/g')
+    formatted_file_name=$(echo "${padded_number}#_${file}" | sed 's/[- ]/_/g')
     individual_html="${folder_name}/${formatted_file_name%.pdf}.html"
 
     # Echo the conversion progress for separate files
