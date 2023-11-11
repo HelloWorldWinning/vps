@@ -11,8 +11,8 @@ mkdir -p "$folder_name"
 file_counter=1
 
 # Prompt for Tika server URL input
-read -p "Input Tika server URL (format '22t.jingyi.today:9998'): " tika_url_input
-tika_url="http://${tika_url_input:-22t.jingyi.today:9998}"
+read -p "Input Tika server URL (format '2t.jingyi.today:9998'): " tika_url_input
+tika_url="http://${tika_url_input:-2t.jingyi.today:9998}"
 
 # Create the final concatenated HTML file with a timestamp
 timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
