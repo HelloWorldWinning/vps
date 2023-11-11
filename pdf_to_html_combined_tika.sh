@@ -27,7 +27,7 @@ for file in *.pdf; do
     echo "Converting '$file' to HTML format"
 
     # Append a numbered header to the final HTML file
-    echo "<h2>${file_counter}# Document: $file</h2><hr>" >> "$final_html"
+    echo "<h1>${file_counter}# Document: $file</h1><hr>" >> "$final_html"
 
     # Use curl to send the PDF to the Tika server and append the response to the final HTML file
     curl -H "Content-Disposition: attachment; filename=$file" \
