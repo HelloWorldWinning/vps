@@ -44,5 +44,5 @@ done
 
 # Clear the screen and display the folder structure
 clear
-grep -n   "# Document:"  "$final_html"
+grep   "# Document:"  "$final_html"
 
