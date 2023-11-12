@@ -24,6 +24,7 @@ alias we=' curl wttr.in/shapingba'
 
 alias v='vim'
 alias c='clear'
+alias cc='clear'
 alias l='ls -lrth'
 alias s='ls -lhSr'
 alias nm='ls -lh'
@@ -44,7 +45,7 @@ alias txlw='tmux list-windows '
 
 alias dc='docker-compose'
 #alias cc='bash  <(curl -Ls4  bit.ly/myvpsjingyi)'
-alias cc='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/goodv3.sh   )'
+alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/goodv3.sh   )'
 
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  )
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check2.sh  ) 
