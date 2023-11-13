@@ -1,1 +1,5 @@
-ip-cidr, 0.0.0.0/0, proxy
+ip-cidr, 0.0.0.0/0, auto_chose
+host-keyword, *, auto_chose
+host-wildcard, *.*.*, auto_chose
+host-wildcard, *.*, auto_chose
+
