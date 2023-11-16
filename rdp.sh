@@ -1,116 +1,66 @@
-net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
-ip_inet=$(ifconfig $net_card|grep inet|grep  -v inet6| awk '{print $2}')
+#!/bin/bash
+
+# Get network interface and IP address
+net_card=$(ip addr | grep BROADCAST | head -1 | awk '{print $2; exit}' | cut -d ":" -f 1)
+ip_inet=$(ifconfig $net_card | grep inet | grep -v inet6 | awk '{print $2}')
 echo $ip_inet
-cat >>/etc/hosts<<EOF
+cat >> /etc/hosts <<EOF
 $ip_inet  $HOSTNAME
 EOF
 
-
-
+# Update and install necessary packages
 apt update -y
-apt install sudo curl wget  -y
-sudo apt-get update -y
-sudo apt-get install net-tools xrdp xfce4 tigervnc-standalone-server -y
+apt install -y sudo curl wget
+sudo apt-get install -y net-tools xrdp xfce4 tigervnc-standalone-server
 
-
-
-
+# Stop XRDP service
 sudo service xrdp stop
 
+# Ask for RDP username
+read -p 'input rdp user name [rdp for empty]: ' rdp_username_input
+rdp_username=${rdp_username_input:-rdp}
 
-
-
-
-
-read -p 'input rdp port(default 33389)': rdp_port_input
-if [[ -z "${rdp_port_input}" ]] ; then
- rdp_port=33389
-else
-rdp_port=$rdp_port_input
-fi
-
-sudo sed -i "s/port=3389/port=${rdp_port}/g" /etc/xrdp/xrdp.ini
-
-
-# Setup user environment for XRDP
-echo xfce4-session > /home/${rdp_username}/.xsession
-sudo chown ${rdp_username}:${rdp_username} /home/${rdp_username}/.xsession
-sudo chmod 755 /home/${rdp_username}/.xsession
-
-
-sudo service xrdp restart
-
-
-
-read -p 'input rdp user name[rdp for empty]': rdp_username_input
-if [[ -z "${rdp_username_input}" ]] ; then
- rdp_username=rdp
-else
- rdp_username=$rdp_username_input
-fi
+# Create the user
 sudo adduser ${rdp_username}
 sudo adduser ${rdp_username} ssl-cert  
-cat  >>/etc/sudoers<<EOF 
-${rdp_username} ALL=(ALL:ALL) ALL
-EOF
+echo "${rdp_username} ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers
 
+# Ensure the home directory exists
+if [ -d "/home/${rdp_username}" ]; then
+    echo xfce4-session > /home/${rdp_username}/.xsession
+    sudo chown ${rdp_username}:${rdp_username} /home/${rdp_username}/.xsession
+    sudo chmod 755 /home/${rdp_username}/.xsession
+else
+    echo "Home directory for ${rdp_username} not found!"
+fi
 
-
-echo xfce4-session>/home/${rdp_username}/.xsession
-
+# Install Google Chrome
 sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
-
 sudo rm ./google-chrome-stable_current_amd64.deb
 
-sudo apt-get install aptitude  -y 
-sudo aptitude  install  firefox-esr -y
+# Install Firefox ESR
+sudo apt-get install aptitude -y 
+sudo aptitude install firefox-esr -y
 
-
-
-
-
-# https://blog.51cto.com/u_15060545/3936030  Debian 9.5 解决中文显示乱码
- 
+# Configure locales and fonts for Chinese support
 echo "en_US.UTF-8 zh_CN.UTF-8 ← 选择 chose "
 echo "locale zh_CN.UTF-8 ← 选择 chose  "
 
 sleep 3
-
 sudo apt-get install locales -y
+sudo apt-get install ttf-wqy-zenhei -y  # Install fonts
+sudo apt-get install ibus ibus-gtk ibus-pinyin -y  # Install input methods
 
-# 安装字体
-apt-get install ttf-wqy-zenhei -y
-# 安装输入法
-apt-get install ibus ibus-gtk ibus-pinyin -y
-
-
-
-
+# Configure XTerm
 cat >>/etc/X11/app-defaults/XTerm<<EOF
-xterm*faceName: Andale Mone
+xterm*faceName: Andale Mono
 xterm*faceSize: 25
-
 xterm*background: black
-!xterm*background: Grey11
-
 xterm*foreground: Green3
-!xterm*foreground: #2f6941
 EOF
 
- 
-#xterm*faceName: Monospace
-#xterm*faceSize: 22
-#XTerm*background: lightblack
-#XTerm*foreground: lightgreen
-
-
-
- 
-# microsoft-edge  https://www.linuxcapable.com/how-to-install-microsoft-edge-on-debian-11/
-
-
+# Install Microsoft Edge
 sudo apt update && sudo apt upgrade -y
 sudo apt install software-properties-common apt-transport-https wget ca-certificates gnupg2 ubuntu-keyring -y
 sudo wget -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg
@@ -118,89 +68,29 @@ echo 'deb [signed-by=/usr/share/keyrings/microsoft-edge.gpg] https://packages.mi
 sudo apt update
 sudo apt install microsoft-edge-stable -y
 
-
-
-
-cat >>/etc/X11/app-defaults/XTerm<<EOF
-xterm*faceName: Andale Mone
-xterm*faceSize: 22
-XTerm*background: lightblack
-XTerm*foreground: lightgreen
-EOF
-
-  
+# Install Microsoft core fonts
 wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
 sudo dpkg -i ttf-mscorefonts-installer_3.8_all.deb
-sudo apt install  cabextract -y
-sudo apt --fix-broken install  -y
+sudo apt install cabextract -y
+sudo apt --fix-broken install -y
 sudo apt autoremove -y
 sudo apt-get install ttf-mscorefonts-installer -y
 sudo rm ttf-mscorefonts-installer_3.8_all.deb
 
-
-
-
- 
-cat  >/home/${rdp_username}/.vimrc<<EOF 
-
-" Statusline at the top (use tabline)
-" set showtabline=2   " this turns on the tabline
-set tabline=%F\ %y  " only the format
+# Configure Vim for the user
+cat > /home/${rdp_username}/.vimrc <<EOF 
+set tabline=%F\ %y
 set laststatus=2
 set number 
-" highlight LineNr term=bold cterm=NONE guifg=#DA70D6
-hi LineNr         ctermfg=DarkMagenta guifg=#f5713d   guibg=#000000 
+hi LineNr         ctermfg=DarkMagenta guifg=#f5713d guibg=#000000 
 hi CursorLineNr   term=bold ctermfg=Yellow gui=bold guifg=Yellow
 EOF
 
+# Install all locales
+sudo apt-get install locales-all -y
 
-sudo apt-get install locales-all
+# Restart XRDP service
+sudo service xrdp restart
 
+echo "RDP setup complete. You can connect to this server using the username '${rdp_username}'."
 
-
-
-##########################################################################################################################################
-
-
-
-
-
-
-
-#echo gnome-session>/home/${rdp_username}/.xsession 不要这太臃肿
-
-## https://zhuanlan.zhihu.com/p/76991840  安装Debian并开启远程桌面（通过Xorg）
-## https://linuxize.com/post/how-to-install-xrdp-on-debian-10/  How to Install Xrdp Server (Remote Desktop) on Debian 10
-#read -p 'input rdp user name[rdp for empty]': rdp_username 
-#if [[ -z "${rdp_username}" ]] ; then
-# rdp_username=rdp
-#else
-#rdp_username=$rdp_username
-#fi
-#sudo adduser ${rdp_username}
-#sudo adduser ${rdp_username} ssl-cert  
-#
-#sudo sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g"  /etc/ssh/sshd_config
-#sudo systemctl restart sshd
-#
-#sudo apt update -y
-##sudo apt-get install net-tools xrdp xfce4 tigervnc-standalone-server -y
-## sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils -y
-#sudo apt install net-tools  xfce4 tigervnc-standalone-server  xfce4-goodies xorg dbus-x11 x11-xserver-utils   -y
-#sudo apt install xrdp -y
-#
-#
-#echo xfce4-session>/home/${rdp_username}/.xsession
-#
-#sudo wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#
-#sudo apt install ./google-chrome-stable_current_amd64.deb -y
-#
-#sudo cat  >>/etc/sudoers<<EOF 
-#${rdp_username}   ALL=(ALL:ALL) ALL
-#EOF
-#
-#
-#
-#sudo systemctl status xrdp
-#
