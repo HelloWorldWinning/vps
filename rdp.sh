@@ -15,6 +15,8 @@ sudo apt-get install -y net-tools xrdp xfce4 tigervnc-standalone-server
 
 # Stop XRDP service
 sudo service xrdp stop
+# Set default XRDP port to 33389
+sudo sed -i 's/port=3389/port=33389/g' /etc/xrdp/xrdp.ini
 
 # Ask for RDP username
 read -p 'input rdp user name [rdp for empty]: ' rdp_username_input
@@ -92,5 +94,7 @@ sudo apt-get install locales-all -y
 # Restart XRDP service
 sudo service xrdp restart
 
-echo "RDP setup complete. You can connect to this server using the username '${rdp_username}'."
+#echo "RDP setup complete. You can connect to this server using the username '${rdp_username}'."
+echo "RDP setup complete. You can connect to this server using the username '${rdp_username}' on port 33389."
+
 
