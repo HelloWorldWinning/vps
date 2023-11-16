@@ -20,6 +20,9 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 
 cat >>~/.bashrc<<EOF
 
+export EDITOR=/usr/bin/vim
+
+
 alias we=' curl wttr.in/shapingba'
 alias ca='calcurse'
 
