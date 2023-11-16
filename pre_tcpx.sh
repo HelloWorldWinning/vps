@@ -8,7 +8,7 @@ apt-get install -y xsel  xclip git poppler-utils calcurse
 
 git config --global core.editor "vim"
 
-apt install -y net-tools unzip mc
+apt install -y net-tools unzip mc lynx
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
