@@ -606,11 +606,11 @@ ${Red_font_prefix}95${Font_color_suffix} change Swap
 ${Red_font_prefix}96${Font_color_suffix} pdf_txt.sh
 ${Red_font_prefix}97${Font_color_suffix} tika.sh
 ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
-${Red_font_prefix}9${Font_color_suffix} ip checker
+${Red_font_prefix}0${Font_color_suffix} ip checker
  
 
 
-${Red_font_prefix}00${Font_color_suffix} exit
+${Red_font_prefix}q${Font_color_suffix} exit
 
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -802,7 +802,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		92) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh ) ;;
 		93) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh  ) ;;
 		94) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh  ) ;;
-		9)
+		0)
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  ) 			
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh  ) ;;
 
