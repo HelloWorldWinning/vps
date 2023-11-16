@@ -21,6 +21,7 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 cat >>~/.bashrc<<EOF
 
 alias we=' curl wttr.in/shapingba'
+alias ca='calcurse'
 
 alias v='vim'
 alias c='clear'
