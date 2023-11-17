@@ -1,4 +1,8 @@
  
+HOST-SUFFIX,alicdn.com,Direct_IP
+HOST-SUFFIX,alipay.com,Direct_IP
+HOST-SUFFIX,alipayobjects.com,Direct_IP
+HOST-SUFFIX,aliyun.com,Direct_IP
 
 
 HOST-SUFFIX,tmall.com,Direct_IP
