@@ -16,6 +16,6 @@ cfg_editor = vim
 # https://github.com/insanum/sncli
 EOF
 
-
+echo "sncli.sh run successfully: sn to use"
 
 
