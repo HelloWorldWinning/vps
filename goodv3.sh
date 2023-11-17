@@ -511,7 +511,7 @@ ${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}8${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
-${Red_font_prefix}99${Font_color_suffix} kcptun
+${Red_font_prefix}999${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
 ${Red_font_prefix}11${Font_color_suffix} bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
@@ -641,7 +641,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		7.1) eval $openvpn2;;
 		8) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
-		99) eval $kcptun;;
+		999) eval $kcptun;;
 		10) eval $ss_go;;
 		11o) eval $dd;;
 		11) eval $dd_debian11;;
