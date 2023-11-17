@@ -1,7 +1,7 @@
  
 
 
-HOST-SUFFIX,tmall.com,Direct
-HOST-SUFFIX,taobao.com,Direct
-HOST-SUFFIX,alipay.com,Direct
-HOST-SUFFIX,jd.com,Direct
+HOST-SUFFIX,tmall.com,Direct_IP
+HOST-SUFFIX,taobao.com,Direct_IP
+HOST-SUFFIX,alipay.com,Direct_IP
+HOST-SUFFIX,jd.com,Direct_IP
