@@ -1,3 +1,6 @@
+# https://github.com/Hackl0us/SS-Rule-Snippet/blob/main/规则片段集/自选规则集/国内网站广告追踪屏蔽.txt
+
+
 host-suffix,applog.uc.cn, reject_ip
 host-suffix,mmstat.com, reject_ip
 host-suffix, cpro.baidu.com, reject_ip
@@ -9,3 +12,102 @@ host, mobads.baidu.com, reject_ip
 host, mobads-logs.baidu.com, reject_ip
 host, nsclick.baidu.com, reject_ip
 
+## Baidu
+DOMAIN-SUFFIX,a.baidu.com,reject_ip
+DOMAIN-SUFFIX,adm.baidu.com,reject_ip
+DOMAIN-SUFFIX,als.baidu.com,reject_ip
+DOMAIN-SUFFIX,api.youqian.baidu.com,reject_ip
+DOMAIN-SUFFIX,api.share.baidu.com,reject_ip
+DOMAIN-SUFFIX,as.baidu.com,reject_ip
+DOMAIN-SUFFIX,ashifen.com,reject_ip
+DOMAIN-SUFFIX,baidustatic.com,reject_ip
+DOMAIN-SUFFIX,baidutv.baidu.com,reject_ip
+DOMAIN-SUFFIX,baikebcs.bdimg.com,reject_ip
+DOMAIN-SUFFIX,bar.baidu.com,reject_ip
+DOMAIN-SUFFIX,bdimg.share.baidu.com,reject_ip
+DOMAIN-SUFFIX,boscdn.bpc.baidu.com,reject_ip
+DOMAIN-SUFFIX,c.baidu.com,reject_ip
+DOMAIN-SUFFIX,cbjs.baidu.com,reject_ip
+DOMAIN-SUFFIX,cjhq.baidu.com,reject_ip
+DOMAIN-SUFFIX,cpro.baidu.com,reject_ip
+DOMAIN-SUFFIX,cpro.tieba.baidu.com,reject_ip
+DOMAIN-SUFFIX,cpro.zhidao.baidu.com,reject_ip
+DOMAIN-SUFFIX,dcps.nuomi.com,reject_ip
+DOMAIN-SUFFIX,drmcmm.baidu.com,reject_ip
+DOMAIN-SUFFIX,e.baidu.com,reject_ip
+DOMAIN-SUFFIX,eiv.baidu.com,reject_ip
+DOMAIN-SUFFIX,feed.baidu.com,reject_ip
+DOMAIN-SUFFIX,focusbaiduafp.allyes.com,reject_ip
+DOMAIN-SUFFIX,hc.baidu.com,reject_ip
+DOMAIN-SUFFIX,hm.baidu.com,reject_ip
+DOMAIN-SUFFIX,hmma.baidu.com,reject_ip
+DOMAIN-SUFFIX,hpd.baidu.com,reject_ip
+DOMAIN-SUFFIX,idm-su.baidu.com,reject_ip
+DOMAIN-SUFFIX,imageplus.baidu.com,reject_ip
+DOMAIN-SUFFIX,itsdata.map.baidu.com,reject_ip
+DOMAIN-SUFFIX,libs.baidu.com,reject_ip
+DOMAIN-SUFFIX,log.nuomi.com,reject_ip
+DOMAIN-SUFFIX,log.waimai.baidu.com,reject_ip
+DOMAIN-SUFFIX,ma.baidu.com,reject_ip
+DOMAIN-SUFFIX,mobads-logs.baidu.com,reject_ip
+DOMAIN-SUFFIX,mobads.baidu.com,reject_ip
+DOMAIN-SUFFIX,msite.baidu.com,reject_ip
+DOMAIN-SUFFIX,nsclick.baidu.com,reject_ip
+DOMAIN-SUFFIX,qchannel01.cn,reject_ip
+DOMAIN-SUFFIX,rj.baidu.com,reject_ip
+DOMAIN-SUFFIX,shifen.com,reject_ip
+DOMAIN-SUFFIX,spcode.baidu.com,reject_ip
+DOMAIN-SUFFIX,static.map.bdimg.com,reject_ip
+DOMAIN-SUFFIX,static.su.baidu.com,reject_ip
+DOMAIN-SUFFIX,tk.baidu.com,reject_ip
+DOMAIN-SUFFIX,tuisong.baidu.com,reject_ip
+DOMAIN-SUFFIX,ucstat.baidu.com,reject_ip
+DOMAIN-SUFFIX,ufosdk.baidu.com,reject_ip
+DOMAIN-SUFFIX,ulog.imap.baidu.com,reject_ip
+DOMAIN-SUFFIX,union.baidu.com,reject_ip
+DOMAIN-SUFFIX,utility.baidu.com,reject_ip
+DOMAIN-SUFFIX,utk.baidu.com,reject_ip
+DOMAIN-SUFFIX,wangmeng.baidu.com,reject_ip
+DOMAIN-SUFFIX,wm.baidu.com,reject_ip
+DOMAIN-SUFFIX,wn.pos.baidu.com,reject_ip
+DOMAIN-SUFFIX,zhanzhang.baidu.com,reject_ip
+DOMAIN-SUFFIX,znsv.baidu.com,reject_ip
+DOMAIN-SUFFIX,zz.bdstatic.com,reject_ip
+DOMAIN,em.baidu.com,reject_ip
+
+
+
+
+## 360
+DOMAIN-SUFFIX,3600.com,reject_ip
+DOMAIN-SUFFIX,adapi.shouji.360.cn,reject_ip
+DOMAIN-SUFFIX,dev.tg.wan.360.cn,reject_ip
+DOMAIN-SUFFIX,huodong.ios.shouji.360.cn,reject_ip
+DOMAIN-SUFFIX,kuaikan.netmon.360safe.com,reject_ip
+DOMAIN-SUFFIX,leak.360.cn,reject_ip
+DOMAIN-SUFFIX,openbox.mobilem.360.cn,reject_ip
+DOMAIN-SUFFIX,pub.se.360.cn,reject_ip
+DOMAIN-SUFFIX,soft.data.weather.360.cn,reject_ip
+DOMAIN-SUFFIX,stat.360safe.com,reject_ip
+DOMAIN-SUFFIX,stat.m.360.cn,reject_ip
+DOMAIN-SUFFIX,update.360safe.com,reject_ip
+
+## 163
+DOMAIN-SUFFIX,adgeo.163.com,reject_ip
+DOMAIN-SUFFIX,bobo.163.com,reject_ip
+DOMAIN-SUFFIX,fa.163.com,reject_ip
+DOMAIN-SUFFIX,g.163.com,reject_ip
+DOMAIN-SUFFIX,g1.163.com,reject_ip
+DOMAIN-SUFFIX,gb.corp.163.com,reject_ip
+DOMAIN-SUFFIX,haitaoad.nosdn.127.net,reject_ip
+DOMAIN-SUFFIX,img1.126.net,reject_ip
+DOMAIN-SUFFIX,oadz.com,reject_ip
+DOMAIN-SUFFIX,oimagea2.ydstatic.com,reject_ip
+DOMAIN-SUFFIX,pagechoice.net,reject_ip
+DOMAIN-SUFFIX,prom.gome.com.cn,reject_ip
+DOMAIN-SUFFIX,rlogs.youdao.com,reject_ip
+DOMAIN-SUFFIX,static.flv.uuzuonline.com,reject_ip
+DOMAIN-SUFFIX,wanproxy.127.net,reject_ip
+
+## WPS
+DOMAIN-SUFFIX,ksosoft.com,reject_ip
