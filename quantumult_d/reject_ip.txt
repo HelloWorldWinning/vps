@@ -1,0 +1,11 @@
+host-suffix,mmstat.com, reject_ip
+host-suffix,mmstat.com, reject_ip
+host-suffix, cpro.baidu.com, reject_ip
+host-suffix, pos.baidu.com, reject_ip
+host, afd.baidu.com, reject_ip
+host, als.baidu.com, reject_ip
+host, duclick.baidu.com, reject_ip
+host, mobads.baidu.com, reject_ip
+host, mobads-logs.baidu.com, reject_ip
+host, nsclick.baidu.com, reject_ip
+
