@@ -745,3 +745,34 @@ DOMAIN-SUFFIX,jzntxs.com,reject_ip
 
 
 DOMAIN-SUFFIX,bfshan.cn,reject_ip
+
+
+
+ # 常见广告域名屏蔽
+DOMAIN-KEYWORD,admarvel,reject_ipƒ
+DOMAIN-KEYWORD,admaster,reject_ip
+DOMAIN-KEYWORD,adsage,reject_ip
+DOMAIN-KEYWORD,adsmogo,reject_ip
+DOMAIN-KEYWORD,adsrvmedia,reject_ip
+DOMAIN-KEYWORD,adwords,reject_ip
+DOMAIN-KEYWORD,adservice,reject_ip
+DOMAIN-SUFFIX,appsflyer.com,reject_ip
+DOMAIN-KEYWORD,domob,reject_ip
+DOMAIN-SUFFIX,doubleclick.net,reject_ip
+DOMAIN-KEYWORD,duomeng,reject_ip
+DOMAIN-KEYWORD,dwtrack,reject_ip
+DOMAIN-KEYWORD,guanggao,reject_ip
+DOMAIN-KEYWORD,lianmeng,reject_ip
+DOMAIN-SUFFIX,mmstat.com,reject_ip
+DOMAIN-KEYWORD,mopub,reject_ip
+DOMAIN-KEYWORD,omgmta,reject_ip
+DOMAIN-KEYWORD,openx,reject_ip
+DOMAIN-KEYWORD,partnerad,reject_ip
+DOMAIN-KEYWORD,pingfore,reject_ip
+DOMAIN-KEYWORD,supersonicads,reject_ip
+DOMAIN-KEYWORD,uedas,reject_ip
+DOMAIN-KEYWORD,umeng,reject_ip
+DOMAIN-KEYWORD,usage,reject_ip
+DOMAIN-SUFFIX,vungle.com,reject_ip
+DOMAIN-KEYWORD,wlmonitor,reject_ip
+DOMAIN-KEYWORD,zjtoolbar,reject_ip
