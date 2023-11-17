@@ -1,4 +1,4 @@
-host-suffix,mmstat.com, reject_ip
+host-suffix,applog.uc.cn, reject_ip
 host-suffix,mmstat.com, reject_ip
 host-suffix, cpro.baidu.com, reject_ip
 host-suffix, pos.baidu.com, reject_ip
