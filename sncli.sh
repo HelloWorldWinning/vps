@@ -1,3 +1,4 @@
+pip3 install sncli
 cat >>~/.bashrc<<EOF
 alias sn='sncli'
 EOF
