@@ -1,6 +1,39 @@
 
 # ali shit
+DOMAIN-SUFFIX,acjs.aliyun.com,Direct_IP
+DOMAIN-SUFFIX,adash-c.ut.taobao.com,Direct_IP
+DOMAIN-SUFFIX,adash.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,adashbc.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,adashx.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,afp.alicdn.com,Direct_IP
+DOMAIN-SUFFIX,alipaylog.com,Direct_IP
+DOMAIN-SUFFIX,amdc.alipay.com,Direct_IP
+DOMAIN-SUFFIX,amdc.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,apoll.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,appdownload.alicdn.com,Direct_IP
+DOMAIN-SUFFIX,atanx.alicdn.com,Direct_IP
+DOMAIN-SUFFIX,click.aliyun.com,Direct_IP
+DOMAIN-SUFFIX,dorangesource.alicdn.com,Direct_IP
+DOMAIN-SUFFIX,hydra.alibaba.com,Direct_IP
+DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
+DOMAIN-SUFFIX,m-adash.m.taobao.com,Direct_IP
+DOMAIN-SUFFIX,m.simaba.taobao.com,Direct_IP
+DOMAIN-SUFFIX,nbsdk-baichuan.alicdn.com,Direct_IP
+DOMAIN-SUFFIX,nbsdk-baichuan.taobao.com,Direct_IP
+DOMAIN-SUFFIX,pics.taobaocdn.com,Direct_IP
+DOMAIN-SUFFIX,show.re.taobao.com,Direct_IP
+DOMAIN-SUFFIX,strip.taobaocdn.com,Direct_IP
+DOMAIN-SUFFIX,tns.simba.taobao.com,Direct_IP
+DOMAIN-SUFFIX,userimg.qunar.com,Direct_IP
+DOMAIN-SUFFIX,yiliao.hupan.com,Direct_IP
 
+
+ip-cidr, 59.82.112.0/21, Direct_IP
+ip-cidr, 106.11.128.0/20, Direct_IP
+
+
+ip-cidr, 59.82.112.0/21, Direct_IP
+ip-cidr, 106.11.128.0/20, Direct_IP
 ip-cidr, 59.82.11.0/24, Direct_IP
 ip-cidr, 59.82.12.0/24, Direct_IP
 ip-cidr, 59.82.12.0/22, Direct_IP
