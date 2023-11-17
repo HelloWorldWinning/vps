@@ -29,6 +29,8 @@ DOMAIN-SUFFIX,yiliao.hupan.com,Direct_IP
 
 
 ip-cidr, 59.82.112.0/21, Direct_IP
+ip-cidr,116.132.0.0/15, Direct_IP
+
 ip-cidr, 106.11.128.0/20, Direct_IP
 
 
