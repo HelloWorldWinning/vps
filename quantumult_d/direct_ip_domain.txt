@@ -10,6 +10,7 @@ ip-cidr, 59.82.15.0/24, Direct_IP
 ip-cidr, 59.82.16.0/21, Direct_IP
 ip-cidr, 59.82.32.0/21, Direct_IP 
 ip-cidr, 59.82.32.0/20, Direct_IP
+ip-cidr,114.112.204.0/22, Direct_IP
 HOST-SUFFIX,alicdn.com,Direct_IP
 HOST-SUFFIX,aliapp.org,Direct_IP
 HOST-SUFFIX,alipay.com,Direct_IP
