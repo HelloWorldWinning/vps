@@ -15,7 +15,7 @@ DOMAIN-SUFFIX,atanx.alicdn.com,Direct_IP
 DOMAIN-SUFFIX,click.aliyun.com,Direct_IP
 DOMAIN-SUFFIX,dorangesource.alicdn.com,Direct_IP
 DOMAIN-SUFFIX,hydra.alibaba.com,Direct_IP
-DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
+#DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
 DOMAIN-SUFFIX,m-adash.m.taobao.com,Direct_IP
 DOMAIN-SUFFIX,m.simaba.taobao.com,Direct_IP
 DOMAIN-SUFFIX,nbsdk-baichuan.alicdn.com,Direct_IP
