@@ -1,6 +1,9 @@
 # https://github.com/Hackl0us/SS-Rule-Snippet/blob/main/规则片段集/自选规则集/国内网站广告追踪屏蔽.txt
 
 
+DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
+
+
 host-suffix,applog.uc.cn, reject_ip
 host-suffix,mmstat.com, reject_ip
 host-suffix, cpro.baidu.com, reject_ip
