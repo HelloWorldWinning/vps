@@ -1,4 +1,4 @@
-
+#DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
 # ali shit
 DOMAIN-SUFFIX,acjs.aliyun.com,Direct_IP
 DOMAIN-SUFFIX,adash-c.ut.taobao.com,Direct_IP
@@ -15,7 +15,6 @@ DOMAIN-SUFFIX,atanx.alicdn.com,Direct_IP
 DOMAIN-SUFFIX,click.aliyun.com,Direct_IP
 DOMAIN-SUFFIX,dorangesource.alicdn.com,Direct_IP
 DOMAIN-SUFFIX,hydra.alibaba.com,Direct_IP
-#DOMAIN-SUFFIX,ifs.tanx.com,Direct_IP
 DOMAIN-SUFFIX,m-adash.m.taobao.com,Direct_IP
 DOMAIN-SUFFIX,m.simaba.taobao.com,Direct_IP
 DOMAIN-SUFFIX,nbsdk-baichuan.alicdn.com,Direct_IP
@@ -27,12 +26,10 @@ DOMAIN-SUFFIX,tns.simba.taobao.com,Direct_IP
 DOMAIN-SUFFIX,userimg.qunar.com,Direct_IP
 DOMAIN-SUFFIX,yiliao.hupan.com,Direct_IP
 
-
 ip-cidr, 59.82.112.0/21, Direct_IP
 ip-cidr,116.132.0.0/15, Direct_IP
 
 ip-cidr, 106.11.128.0/20, Direct_IP
-
 
 ip-cidr, 59.82.112.0/21, Direct_IP
 ip-cidr, 106.11.128.0/20, Direct_IP
