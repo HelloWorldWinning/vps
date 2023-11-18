@@ -26,6 +26,7 @@ export EDITOR=/usr/bin/vim
 alias we=' curl wttr.in/shapingba'
 alias ca='calcurse'
 
+alias setup_time=`date`
 alias v='vim'
 alias c='clear'
 alias cc='clear'
@@ -35,8 +36,16 @@ alias nm='ls -lh'
 alias ln='ls -lh'
 alias p='python'
 alias _GP='git  pull'
-alias _G='git add . && git commit -m   "`date`"  && git push ;echo " ";date;echo " "'
-alias _F='git pull && git add . && git commit -m  "`date`" && git push ;echo " ";date;echo " "'
+#alias _G='git add . && git commit -m   "`date`"  && git push ;echo " ";date;echo " "'
+#alias _F='git pull && git add . && git commit -m  "`date`" && git push ;echo " ";date;echo " "'
+#alias _G='git add . && git commit -m   "Thu Nov 16 04:01:40 PM CST 2023"  && git push ;echo " ";date;echo " "'
+#alias _F='git pull && git add . && git commit -m  "Thu Nov 16 04:01:40 PM CST 2023" && git push ;echo " ";date;echo " "'
+
+alias _G='git add . && git commit -m  "\$(date)" && git push ;echo " ";date;echo " "'
+alias _F='git pull && git add . && git commit -m "\$(date)"  && git push ;echo " ";date;echo " "'
+
+
+
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
 export OPENAI_API_KEY=${OPENAI_API_KEY}
