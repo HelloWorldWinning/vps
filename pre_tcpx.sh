@@ -21,12 +21,12 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 cat >>~/.bashrc<<EOF
 
 export EDITOR=/usr/bin/vim
+export setup_time="`date`"
 
 
 alias we=' curl wttr.in/shapingba'
 alias ca='calcurse'
 
-alias setup_time="`date`"
 alias v='vim'
 alias c='clear'
 alias cc='clear'
