@@ -26,7 +26,7 @@ export EDITOR=/usr/bin/vim
 alias we=' curl wttr.in/shapingba'
 alias ca='calcurse'
 
-alias setup_time=`date`
+alias setup_time="`date`"
 alias v='vim'
 alias c='clear'
 alias cc='clear'
