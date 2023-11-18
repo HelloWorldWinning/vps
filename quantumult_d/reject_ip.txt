@@ -752,7 +752,7 @@ DOMAIN-SUFFIX,bfshan.cn,reject_ip
 
 
 
- # 常见广告域名屏蔽
+## 常见广告域名屏蔽
 DOMAIN-KEYWORD,admarvel,reject_ip
 DOMAIN-KEYWORD,admaster,reject_ip
 DOMAIN-KEYWORD,adsage,reject_ip
