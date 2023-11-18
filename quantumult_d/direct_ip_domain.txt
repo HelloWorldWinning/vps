@@ -1,6 +1,4 @@
 
-DOMAIN-SUFFIX,tanx.com,Direct_IP
-
 # ali shit
 DOMAIN-SUFFIX,acjs.aliyun.com,Direct_IP
 DOMAIN-SUFFIX,adash-c.ut.taobao.com,Direct_IP
