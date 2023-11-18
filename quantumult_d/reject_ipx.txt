@@ -779,8 +779,8 @@ DOMAIN-KEYWORD,zjtoolbar,reject_ip
 
 
 
-# https://github.com/Kvkzhi/Surge/blob/master/adblock.list,reject_ip
-# AD Block KEYWORD,reject_ip
+###### https://github.com/Kvkzhi/Surge/blob/master/adblock.list,reject_ip
+###AD Block KEYWORD,reject_ip
 DOMAIN-KEYWORD,admarvel,reject_ip
 DOMAIN-KEYWORD,admaster,reject_ip
 DOMAIN-KEYWORD,adsage,reject_ip
