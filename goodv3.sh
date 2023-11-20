@@ -607,6 +607,7 @@ ${Red_font_prefix}96${Font_color_suffix} pdf_txt.sh
 ${Red_font_prefix}97${Font_color_suffix} tika.sh
 ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
+${Red_font_prefix}100${Font_color_suffix} jupyter26666.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
  
 
@@ -812,6 +813,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		97) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tika.sh  ) ;;
 		98) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh  ) ;;
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
+		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
 
 #	00)eval "exit";;
 		q)eval "exit";;
