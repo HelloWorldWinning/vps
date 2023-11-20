@@ -411,7 +411,7 @@ DOMAIN-SUFFIX,anysdk.com,reject_ip
 DOMAIN-SUFFIX,aoodoo.feng.com,reject_ip
 DOMAIN-SUFFIX,api.branch.io,reject_ip
 DOMAIN-SUFFIX,api.mobula.sdk.duapps.com,reject_ip
-#DOMAIN-SUFFIX,api.similarweb.com,reject_ip
+DOMAIN-SUFFIX,api.similarweb.com,reject_ip
 DOMAIN-SUFFIX,api.talkingdata.com,reject_ip
 DOMAIN-SUFFIX,api.userstyles.org,reject_ip
 DOMAIN-SUFFIX,app-measurement.com,reject_ip
@@ -945,7 +945,7 @@ DOMAIN-SUFFIX,anquan.org,reject_ip
 DOMAIN-SUFFIX,anysdk.com,reject_ip
 DOMAIN-SUFFIX,aoodoo.feng.com,reject_ip
 DOMAIN-SUFFIX,api.branch.io,reject_ip
-#DOMAIN-SUFFIX,api.similarweb.com,reject_ip
+DOMAIN-SUFFIX,api.similarweb.com,reject_ip
 DOMAIN-SUFFIX,api.talkingdata.com,reject_ip
 DOMAIN-SUFFIX,api.userstyles.org,reject_ip
 DOMAIN-SUFFIX,app-measurement.com,reject_ip
