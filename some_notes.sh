@@ -9,6 +9,18 @@
 ================================================================
 ================================================================
 ================================================================
+#
+# Correcting /root/.ssh/authorized_keys file permissions
+sudo chown root:root /root/.ssh/authorized_keys
+sudo chmod 600 /root/.ssh/authorized_keys
+
+# Correcting /root directory permissions
+sudo chown root:root /root
+sudo chmod 700 /root
+
+
+
+
 ================================================================
 import openai
 import os
