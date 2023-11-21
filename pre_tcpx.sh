@@ -18,6 +18,8 @@ echo 'inet4_only = on'  >> ~/.wgetrc
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 ###########
 
+mkdir -p /data
+
 cat >>~/.bashrc<<EOF
 
 export EDITOR=/usr/bin/vim
@@ -66,8 +68,11 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 #bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check2_simple.sh  ) </dev/null
 #bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check2.sh  ) </dev/null
 
+cd /data
+
 echo ""
 l
+
 EOF
 
 source /root/.bashrc
