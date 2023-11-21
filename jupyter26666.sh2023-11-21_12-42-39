@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Create a systemd service file for Jupyter Notebook
+cat <<EOF | sudo tee /etc/systemd/system/jupyter.service
+[Unit]
+Description=Jupyter Notebook
+
+[Service]
+Type=simple
+ExecStart=/root/anaconda3/bin/jupyter notebook --port=26666 --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/
+User=root
+Environment="PATH=/root/anaconda3/bin:$PATH"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd to recognize the new service
+sudo systemctl daemon-reload
+
+# Enable the service to start on boot
+sudo systemctl enable jupyter
+
+# Start the service immediately
+sudo systemctl start jupyter
+
+# Display the status of the service
+echo "Service status:"
+sudo systemctl status jupyter | head -n 20
+
+conda install python jupyter
