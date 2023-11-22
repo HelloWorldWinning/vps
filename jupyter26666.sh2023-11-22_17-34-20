@@ -8,7 +8,8 @@ if [ -z "$port" ]; then
   port=26666
 fi
 
-conda install python jupyter
+#conda install python jupyter
+conda install jupyter
 
 # Find Python executable path
 python_exec_path=$(which python)

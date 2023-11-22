@@ -6,6 +6,16 @@ Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
 
+netstat_filter() {
+    read -p "Enter a string to filter: " input_string
+    if [ -z "$input_string" ]; then
+        netstat -lpntuae
+    else
+        netstat -lpntuae | grep "$input_string"
+    fi
+}
+
+
 # Function to resolve domain to IP address
 resolve_domain_to_ip() {
   local domain="$1"
@@ -692,7 +702,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		47)eval "${iptables_rules}";;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
-		50)eval "netstat -lpntu";;
+		50)eval netstat_filter ;;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
