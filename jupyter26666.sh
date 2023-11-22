@@ -8,6 +8,12 @@ read port
 if [ -z "$port" ]; then
   port=26666
 fi
+#
+
+#conda install python jupyter    
+conda install jupyter
+conda install notebook==6.5.4
+
 # Create a systemd service file for Jupyter Notebook with dynamic Conda environment activation and logging
 service_name="jupyter${port}"
 log_file="/var/log/${service_name}.log"
