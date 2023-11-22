@@ -1,5 +1,6 @@
+#!/bin/bash
 
-# number
+# Prompt for port number
 echo "Enter the port number (default is 26666):"
 read port
 
@@ -7,33 +8,44 @@ read port
 if [ -z "$port" ]; then
   port=26666
 fi
+# Create a systemd service file for Jupyter Notebook with dynamic Conda environment activation and logging
+service_name="jupyter${port}"
+log_file="/var/log/${service_name}.log"
+# Capture the current Conda environment name
+conda_env_name=$(echo $CONDA_DEFAULT_ENV)
 
-conda install python jupyter
-
-# Find Python executable path
-python_exec_path=$(which python)
-
-# Ensure that the Python executable path was found
-if [ -z "$python_exec_path" ]; then
-    echo "Error: Python executable not found."
+# Ensure that a Conda environment is active
+if [ -z "$conda_env_name" ]; then
+    echo "Error: No active Conda environment found."
     exit 1
 fi
 
-# Create a systemd service file for Jupyter Notebook
-service_name="jupyter${port}"
+# Find the path to the Conda setup script and the Conda environment's bin directory
+conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
+conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+
+
+
+# Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/${service_name}.service
 [Unit]
 Description=Jupyter Notebook
 
 [Service]
 Type=simple
-ExecStart=$python_exec_path -m jupyter notebook --port=$port --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/
+ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter notebook --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/'
 User=root
-Environment="PATH=$(dirname $python_exec_path):${PATH}"
+Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
+StandardOutput=append:${log_file}
+StandardError=append:${log_file}
 
 [Install]
 WantedBy=multi-user.target
 EOF
+
+# Create log file and set permissions
+sudo touch ${log_file}
+sudo chmod 664 ${log_file}
 
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
