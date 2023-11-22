@@ -8,9 +8,9 @@ Font_color_suffix="\033[0m"
 ps_filter() {
     read -p "Enter a string to filter: " input_string
     if [ -z "$input_string" ]; then
-        ps auxe
+        ps aux
     else
-        ps auxe | grep "$input_string"
+        ps aux | grep "$input_string"
     fi
 }
 
