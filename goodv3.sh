@@ -5,6 +5,14 @@
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
+ps_filter() {
+    read -p "Enter a string to filter: " input_string
+    if [ -z "$input_string" ]; then
+        ps auxe
+    else
+        ps auxe | grep "$input_string"
+    fi
+}
 
 netstat_filter() {
     read -p "Enter a string to filter: " input_string
@@ -703,6 +711,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
 		50)eval netstat_filter ;;
+		500)eval ps_filter ;;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
