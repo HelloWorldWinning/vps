@@ -25,16 +25,16 @@ cat >>~/.bashrc<<EOF
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
 
-# Fetch the HTML content
-#html_content=$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
-## Extract the weather condition and temperature
-#weather=$(echo "$html_content" | grep -oP '(?<=<p title="多云" class="wea">).*?(?=</p>)' |head -n 1)
-#temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
-#
-## Output the results
-##echo "Weather condition: $weather"
-##echo "Temperature: $temperature°C" 
-#we_temp="${temperature}°C ${weather}"
+## Fetch the HTML content
+##html_content=$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
+### Extract the weather condition and temperature
+##weather=$(echo "$html_content" | grep -oP '(?<=<p title="多云" class="wea">).*?(?=</p>)' |head -n 1)
+##temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
+##
+### Output the results
+###echo "Weather condition: $weather"
+###echo "Temperature: $temperature°C" 
+##we_temp="${temperature}°C ${weather}"
 
 
 alias we='curl -m 6  wttr.in/shapingba'
