@@ -14,12 +14,13 @@ ps_filter() {
     fi
 }
 
+#       netstat -lpntuae
 netstat_filter() {
     read -p "Enter a string to filter: " input_string
     if [ -z "$input_string" ]; then
-        netstat -lpntuae
+	    netstat -lpntu
     else
-        netstat -lpntuae | grep "$input_string"
+        netstat -lpntu | grep "$input_string"
     fi
 }
 
