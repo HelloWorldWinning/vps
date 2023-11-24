@@ -21,7 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " <b>$(pwd)</b>    <b>$(ls |wc -l)</b>",
+	  "template": " <b>$(pwd)</b>    <b>$(ls |wc -l)</b> ",
           "type": "path",
 	  "font-weight":"bold"
         },
