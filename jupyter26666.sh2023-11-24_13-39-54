@@ -26,19 +26,9 @@ if [ -z "$conda_env_name" ]; then
     exit 1
 fi
 
-
-
 # Find the path to the Conda setup script and the Conda environment's bin directory
 conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
-
-# Set the path for the Conda environment's bin directory
-if [ "$conda_env_name" == "base" ]; then
-    conda_env_bin_dir="/root/anaconda3/bin"
-else
-    conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
-fi
-
-# conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
 
 
 
