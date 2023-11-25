@@ -7,6 +7,23 @@
 ================================================================
 ================================================================
 ================================================================
+
+ cat t7.yaml
+log:
+  loglevel: info
+inbounds:
+  - port: 7777
+    protocol: trojan
+    settings:
+      clients:
+        - password: '1'
+    streamSettings:
+      network: ws
+      security: none
+      wsSettings:
+        path: /
+outbounds:
+  - protocol: freedom
 ================================================================
 
 # Install NFS Server
