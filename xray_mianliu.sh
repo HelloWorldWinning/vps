@@ -599,7 +599,18 @@ http://www.bequgexs.com/
 http://www.tjwl.com/
 )
 
-CONFIG_FILE="/usr/local/etc/xray/config.json"
+
+# First file to check
+CONFIG_FILE="/usr/local/etc/xray/config.yaml"
+
+# Check if the first file exists
+if [ ! -f "$CONFIG_FILE" ]; then
+    # If the first file doesn't exist, use the second file
+    CONFIG_FILE="/usr/local/etc/xray/config.json"
+fi
+
+#CONFIG_FILE="/usr/local/etc/xray/config.json"
+
 OS=`hostnamectl | grep -i system | cut -d: -f2`
 
 V6_PROXY=""
