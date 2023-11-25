@@ -269,6 +269,53 @@ sleep 2
 }
 
 
+installXray_for_trojan_ws() {
+    CONFIG_FILE="/usr/local/etc/xray/config.yaml"
+    #NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+    TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
+    NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
+
+    rm -rf /tmp/xray
+    mkdir -p /tmp/xray
+    DOWNLOAD_LINK="${V6_PROXY}https://github.com/XTLS/Xray-core/releases/download/${NEW_VER}/Xray-linux-$(archAffix).zip"
+    colorEcho $BLUE " 下载Xray: ${DOWNLOAD_LINK}"
+    curl -4  -L -H "Cache-Control: no-cache" -o /tmp/xray/xray.zip ${DOWNLOAD_LINK}
+    if [ $? != 0 ];then
+        colorEcho $RED " 下载Xray文件失败，请检查服务器网络设置"
+        exit 1
+    fi
+    systemctl stop xray
+    mkdir -p /usr/local/etc/xray /usr/local/share/xray && \
+    unzip /tmp/xray/xray.zip -d /tmp/xray
+    cp /tmp/xray/xray /usr/local/bin
+    cp /tmp/xray/geo* /usr/local/share/xray
+    chmod +x /usr/local/bin/xray || {
+        colorEcho $RED " Xray安装失败"
+        exit 1
+    }
+
+    cat >/etc/systemd/system/xray.service<<-EOF
+[Unit]
+Description=Xray Service
+Documentation=https://github.com/xtls https://hijk.art
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+#User=nobody
+#CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+#AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config ${CONFIG_FILE}
+Restart=on-failure
+RestartPreventExitStatus=23
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl daemon-reload
+    systemctl enable xray.service
+}
 
 
 ############ trojan ws start
@@ -282,7 +329,7 @@ NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name'
 read -p " 输入vless免流端口[默认80]：" PORT
             [[ -z "${PORT}" ]] && PORT=80
 
-read -p "input passwd:" passwd
+read -p "input passwd:default 1" passwd
 if   [[ -z "$passwd" ]]; then
         passwd="1" 
 else
@@ -2811,7 +2858,8 @@ menu() {
             showInfo
         ;;
         333)
-            installXray
+        
+            installXray_for_trojan_ws
 	    TrojanWSConfig_mianliu_80
             showInfo
         ;;
