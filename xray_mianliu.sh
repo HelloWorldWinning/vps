@@ -2787,7 +2787,7 @@ menu() {
     echo "#############################################################"
     echo -e "  ${GREEN}1.${PLAIN}   安装Xray-VMESS"
     echo -e "  ${GREEN}2.${PLAIN}   安装Xray-${BLUE}VMESS+mKCP${PLAIN}"
-    echo -e "  ${GREEN}3.${PLAIN}   安装Xray-VMESS+TCP+TLS"
+    echo -e "  ${GREEN}333.${PLAIN}   安装Xray-VMESS+TCP+TLS"
     echo -e "  ${GREEN}4.${PLAIN}   安装Xray-${BLUE}VMESS+WS+TLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}5.${PLAIN}   安装Xray-${BLUE}VLESS+mKCP${PLAIN}"
     echo -e "  ${GREEN}6.${PLAIN}   安装Xray-VLESS+TCP+TLS"
@@ -2798,7 +2798,7 @@ menu() {
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${RED}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${RED}33.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}333.${PLAIN} 安装Xray-${BLUE}trojan+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${RED}3.${PLAIN} 安装Xray-${BLUE}trojan+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
@@ -2842,7 +2842,7 @@ menu() {
             KCP="true"
             install
             ;;
-        3)
+        333)
             TLS="true"
             install
             ;;
@@ -2868,7 +2868,7 @@ menu() {
             vmessWSConfig_mianliu_80
             showInfo
         ;;
-        333)
+        3)
         
             installXray_for_trojan_ws
 	    TrojanWSConfig_mianliu_80
