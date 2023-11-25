@@ -272,71 +272,10 @@ sleep 2
 
 
 ############ trojan ws start
-TrojanWSConfig_mianliu_80() {
-#installXray
-CONFIG_FILE="/usr/local/etc/xray/config.yaml"
-#NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
-TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
-NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
-
-read -p " 输入vless免流端口[默认80]：" PORT
-            [[ -z "${PORT}" ]] && PORT=80
-
-read -p "input passwd:" passwd
-if   [[ -z "$passwd" ]]; then
-        passwd="1" 
-else
-        passwd="$(openssl rand -base64 8)"
-fi
-
-read -p "ws path 需要输入/：" WSPATH
-            [[ -z "${WSPATH}" ]] && WSPATH='/'
-
-
-
-    cat > $CONFIG_FILE<<-EOF
-log:
-  loglevel: warning
-inbounds:
-  - port: "${PORT}"
-    protocol: trojan
-    settings:
-      clients:
-        - password: "${passwd}"
-    streamSettings:
-      network: ws
-      security: none
-      wsSettings:
-        path: "${WSPATH}"
-outbounds:
-  - protocol: freedom
-EOF
-
-
-
-
-#installXray
-#res=`status`
-#if [[ $res -lt 2 ]]; then
-#    colorEcho $RED " Xray未安装，请先安装！"
-#    return
-#fi
-sleep 2
-systemctl restart xray
-
-#port=`grep port $CONFIG_FILE| head -n 1| cut -d: -f2| tr -d \",' '`
-#res=`ss -nutlp| grep ${port} | grep -i xray`
-#if [[ "$res" = "" ]]; then
-#    colorEcho $RED " Xray启动失败，请检查日志或查看端口是否被占用！"
-#else
-#    colorEcho $BLUE " Xray启动成功"
-#fi
-
-
-}
 
 ############ trojan ws  end
 ############
+
 
 
 vmessWSConfig_mianliu_80() {
@@ -2739,8 +2678,7 @@ menu() {
     echo -e "  ${GREEN}10.${PLAIN}  安装${BLUE}trojan+XTLS${PLAIN}${RED}(推荐)${PLAIN}"
     echo -e "  ${GREEN}20.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${RED}21.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}33.${PLAIN}  安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
-    echo -e "  ${RED}333.${PLAIN} 安装Xray-${BLUE}trojan+WS${PLAIN}${RED}(免流)${PLAIN}"
+    echo -e "  ${RED}33.${PLAIN} 安装Xray-${BLUE}VMESS+WS${PLAIN}${RED}(免流)${PLAIN}"
     echo -e "  ${GREEN}22.${PLAIN}  安装Xray-${BLUE}VLESS+WS${PLAIN}${RED}(免流) 搞定80${PLAIN}"
     echo -e "  ${GREEN}23.${PLAIN}  安装Xray-${BLUE}VLESS+WS+tles${PLAIN}${RED}(免流) 搞定80tls_vless${PLAIN}"
     echo -e "  ${GREEN}24.${PLAIN}  安装Xray-${BLUE}VLESS+WS+vles${PLAIN} ${RED} 80_VLESS-WS-Nginx socket path /xray  "
@@ -2808,11 +2746,6 @@ menu() {
         33)
             installXray
             vmessWSConfig_mianliu_80
-            showInfo
-        ;;
-        333)
-            installXray
-	    TrojanWSConfig_mianliu_80
             showInfo
         ;;
 	24) 
