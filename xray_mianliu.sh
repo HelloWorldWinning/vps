@@ -326,7 +326,7 @@ CONFIG_FILE="/usr/local/etc/xray/config.yaml"
 TAG_URL="${V6_PROXY}https://api.github.com/repos/XTLS/Xray-core/releases/latest"
 NEW_VER="$(curl -4  -fSsL "${TAG_URL}" --connect-timeout 20  | jq -r '.tag_name' )"
 
-read -p " 输入vless免流端口[默认80]：" PORT
+read -p " 输入trojan ws 免流端口[默认80]：" PORT
             [[ -z "${PORT}" ]] && PORT=80
 
 read -p "input passwd:default 1" passwd
