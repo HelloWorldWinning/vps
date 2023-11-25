@@ -343,7 +343,7 @@ read -p "ws path 需要输入/：" WSPATH
 
     cat > $CONFIG_FILE<<-EOF
 log:
-  loglevel: warning
+  loglevel: error
 inbounds:
   - port: "${PORT}"
     protocol: trojan
