@@ -16,3 +16,29 @@ IP-CIDR,108.175.32.0/20,Temp_Select
 IP-CIDR,192.173.64.0/18,Temp_Select
 IP-CIDR,198.38.96.0/19,Temp_Select
 IP-CIDR,198.45.48.0/20,Temp_Select
+
+
+
+# > BBC_iPlayer
+USER-AGENT,Temp_Select*,Temp_Select
+DOMAIN-SUFFIX,bbc.co.uk,Temp_Select
+DOMAIN-SUFFIX,bbci.co.uk,Temp_Select
+DOMAIN-KEYWORD,bbcfmt,Temp_Select
+DOMAIN-KEYWORD,uk-live,Temp_Select
+
+
+
+# https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/Streaming.list
+
+# > discovery+
+USER-AGENT,DPlus*,Temp_Select
+USER-AGENT,discovery+*,Temp_Select
+DOMAIN-SUFFIX,disco-api.com,Temp_Select
+DOMAIN-SUFFIX,discoveryplus.co.uk,Temp_Select
+DOMAIN-SUFFIX,discoveryplus.com,Temp_Select
+DOMAIN-SUFFIX,discoveryplus.in,Temp_Select
+DOMAIN-SUFFIX,dnitv.com,Temp_Select
+# DOMAIN,go-prod-vz.akamaized.net,Temp_Select
+DOMAIN,x-default-stgec.uplynk.com,Temp_Select
+DOMAIN-KEYWORD,discovery.uplynk.com,Temp_Select
+
