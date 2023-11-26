@@ -5,6 +5,21 @@
 ================================================================
 ================================================================
 ================================================================
+
+iptables -t nat --line-numbers -L
+
+
+# Redirect incoming traffic on port 80 to your VPS's IP address:port
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 5.6.7.8:80
+
+# Masquerade (modify source address) for outgoing traffic
+sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+
+
+sudo iptables -t nat -D <chain_name> <rule_number>
+
+
+
 ================================================================
 "outbounds": [
     {
