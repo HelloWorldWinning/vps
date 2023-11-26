@@ -414,6 +414,10 @@ fi
 
     cat > $CONFIG_FILE<<-EOF
 {
+"log":{
+
+  "loglevel": "error"
+},
   "inbounds": [{
     "port": $PORT,
     "listen": "0.0.0.0",
