@@ -1,0 +1,18 @@
+# > Temp_Select
+USER-AGENT,Argo*,Temp_Select
+DOMAIN-SUFFIX,netflix.com,Temp_Select
+DOMAIN-SUFFIX,netflix.net,Temp_Select
+DOMAIN-SUFFIX,nflxext.com,Temp_Select
+DOMAIN-SUFFIX,nflximg.com,Temp_Select
+DOMAIN-SUFFIX,nflximg.net,Temp_Select
+DOMAIN-SUFFIX,nflxso.net,Temp_Select
+DOMAIN-SUFFIX,nflxvideo.net,Temp_Select
+IP-CIDR,23.246.0.0/18,Temp_Select
+IP-CIDR,37.77.184.0/21,Temp_Select
+IP-CIDR,45.57.0.0/17,Temp_Select
+IP-CIDR,64.120.128.0/17,Temp_Select
+IP-CIDR,66.197.128.0/17,Temp_Select
+IP-CIDR,108.175.32.0/20,Temp_Select
+IP-CIDR,192.173.64.0/18,Temp_Select
+IP-CIDR,198.38.96.0/19,Temp_Select
+IP-CIDR,198.45.48.0/20,Temp_Select
