@@ -79,7 +79,7 @@ inbounds:
 outbounds:
   - protocol: freedom
 ================================================================
-
+# 大盘鸡
 # Install NFS Server
 sudo apt update
 sudo apt install nfs-kernel-server
