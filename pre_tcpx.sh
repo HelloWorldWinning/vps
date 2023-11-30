@@ -22,6 +22,8 @@ mkdir -p /data
 
 cat >>~/.bashrc<<EOF
 
+# start pre tcp
+
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
 
@@ -88,6 +90,7 @@ cd /data
 echo ""
 l
 
+# end of pre tcp
 EOF
 
 source /root/.bashrc
