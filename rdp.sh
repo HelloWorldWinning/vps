@@ -19,8 +19,8 @@ sudo service xrdp stop
 sudo sed -i 's/port=3389/port=33389/g' /etc/xrdp/xrdp.ini
 
 # Ask for RDP username
-read -p 'input rdp user name [rdp for empty]: ' rdp_username_input
-rdp_username=${rdp_username_input:-rdp}
+read -p 'input rdp user name [rdp1 for empty]: ' rdp_username_input
+rdp_username=${rdp_username_input:-rdp1}
 
 # Create the user
 sudo adduser ${rdp_username}
