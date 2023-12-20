@@ -17,6 +17,13 @@ else
     echo "The markdown already exists, ignoring."
 fi
 
+if ! grep  "text/py    py ;" /etc/nginx/mime.types; then
+    sed -i '11i\text/py    py ;' /etc/nginx/mime.types
+else
+    echo "The markdown already exists, ignoring."
+fi
+
+
 
 Un_Links() {
 
