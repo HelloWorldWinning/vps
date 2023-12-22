@@ -726,7 +726,8 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
                 582)eval "$hy_mine"  ;;
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
-                61)eval "$jobs_spiders" 
+                61)eval "$jobs_spiders" ;
+		eval "$jupyter_notebook_remote_access" ;
 		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
                 1)
 
