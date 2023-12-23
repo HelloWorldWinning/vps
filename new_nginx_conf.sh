@@ -1,9 +1,15 @@
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
+wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
 apt  install dnsutils -y
 apt-get update -y
 #apt-get install nginx -y
 apt update  -y  
-apt install nginx-extras  -y
+apt install -y  sudo
+sudo apt install nginx-extras  -y
+sudo apt-get install nginx-extras apache2-utils   -y
+
+htpasswd -c /root/passwd.txt 1
+
 
 mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
@@ -11,17 +17,17 @@ mkdir -p  /etc/nginx/
 mkdir -p  /etc/nginx/conf.d/
 #sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
 
-if ! grep  "text/markdown           md markdown mkd ;" /etc/nginx/mime.types; then
-    sed -i '10i\text/markdown           md markdown mkd ;' /etc/nginx/mime.types
-else
-    echo "The markdown already exists, ignoring."
-fi
-
-if ! grep  "text/py    py ;" /etc/nginx/mime.types; then
-    sed -i '11i\text/py    py ;' /etc/nginx/mime.types
-else
-    echo "The markdown already exists, ignoring."
-fi
+#if ! grep  "text/markdown           md markdown mkd ;" /etc/nginx/mime.types; then
+#    sed -i '10i\text/markdown           md markdown mkd ;' /etc/nginx/mime.types
+#else
+#    echo "The markdown already exists, ignoring."
+#fi
+#
+#if ! grep  "text/py    py ;" /etc/nginx/mime.types; then
+#    sed -i '11i\text/py    py ;' /etc/nginx/mime.types
+#else
+#    echo "The markdown already exists, ignoring."
+#fi
 
 
 
@@ -222,21 +228,22 @@ autoindex_localtime on;
 }
 
 
-location /f {
+location / {
   
- alias  /root/d.share/;
+#alias  /root/d.share/;
+ alias  / ;
 
-autoindex on;
-autoindex_exact_size off; 
-autoindex_localtime on;     
+#autoindex on;
+#autoindex_exact_size off; 
+#autoindex_localtime on;     
 charset utf-8,gbk;
 
-#fancyindex on;
-#fancyindex_localtime on;
-#fancyindex_exact_size off;
+fancyindex on;
+fancyindex_localtime on;
+fancyindex_exact_size off;
 #fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-#fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
-#fancyindex_name_length  1024;
+fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
+fancyindex_name_length  1024;
 
 
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
@@ -245,8 +252,8 @@ charset utf-8,gbk;
 #  htpasswd -c /root/passwd.txt 1
 #   chmod o+r /root/passwd.txt
 #
-#auth_basic_user_file    /root/passwd.txt;
-#auth_basic            "Restricted Area";
+auth_basic_user_file    /root/passwd.txt;
+auth_basic            "Restricted Area";
 
 }
 
@@ -261,15 +268,15 @@ charset utf-8,gbk;
 
 
 
-    location / {
-        proxy_ssl_server_name on;
-        proxy_pass https://www.google.com;
-        proxy_set_header Accept-Encoding '';
-        sub_filter "www.google.com" "$Domain";
-        sub_filter_once off;
- #include /root/Nginx-Fancyindex-Theme/ ;
-    }
-    
+#    location / {
+#        proxy_ssl_server_name on;
+#        proxy_pass https://www.google.com;
+#        proxy_set_header Accept-Encoding '';
+#        sub_filter "www.google.com" "\$Domain";
+#        sub_filter_once off;
+# #include /root/Nginx-Fancyindex-Theme/ ;
+#    }
+#    
         location = /robots.txt {}
 }
 
@@ -304,8 +311,8 @@ read -p "port  default: 443: " Port
 
 cat <<EOF > /etc/nginx/conf.d/${Port}.conf
 server {
-    listen $Port ssl ;
-    listen [::]:$Port ssl;
+    listen $Port ssl  http2 ;
+    listen [::]:$Port ssl http2  ;
     server_name  $Domain;
 
     charset utf-8;
@@ -343,21 +350,22 @@ autoindex_localtime on;
 }
 
 
-location /f {
+location / {
   
- alias  /root/d.share/;
+ alias  / ;
+#alias  /root/d.share/;
 
-autoindex on;
-autoindex_exact_size off; 
-autoindex_localtime on;     
+#autoindex on;
+#autoindex_exact_size off; 
+#autoindex_localtime on;     
 charset utf-8,gbk;
 
-#fancyindex on;
-#fancyindex_localtime on;
-#fancyindex_exact_size off;
+fancyindex on;
+fancyindex_localtime on;
+fancyindex_exact_size off;
 #fancyindex_time_format "%Y-%m-%d %H:%M:%S";
-#fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
-#fancyindex_name_length  1024;
+fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
+fancyindex_name_length  1024;
 
 
 # find . -name "*.txt"|xargs -I {} iconv -f utf8 -tgb18030 {} -o {}
@@ -365,21 +373,21 @@ charset utf-8,gbk;
 # apt-get install apache2-utils
 #  htpasswd -c /root/passwd.txt 1
 #   chmod o+r /root/passwd.txt
-#
-#auth_basic_user_file    /root/passwd.txt;
-#auth_basic            "Restricted Area";
+
+auth_basic_user_file    /root/passwd.txt;
+auth_basic            "Restricted Area";
 
 }
 
 
-    location / {
-        proxy_ssl_server_name on;
-        proxy_pass https://www.google.com;
-        proxy_set_header Accept-Encoding '';
-        sub_filter "www.google.com" "$Domain";
-        sub_filter_once off;
- #include /root/Nginx-Fancyindex-Theme/ ;
-    }
+#    location / {
+#        proxy_ssl_server_name on;
+#        proxy_pass https://www.google.com;
+#        proxy_set_header Accept-Encoding '';
+#        sub_filter "www.google.com" "\$Domain";
+#        sub_filter_once off;
+# #include /root/Nginx-Fancyindex-Theme/ ;
+#    }
     
         location = /robots.txt {}
 }
