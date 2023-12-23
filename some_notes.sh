@@ -3,6 +3,7 @@
 ================================================================
 ================================================================
 
+@reboot sleep 4 ; bash -c "source ~/.bashrc;export PATH=/root/anaconda3/envs/Freqtrade/bin:$PATH; /root/anaconda3/envs/Freqtrade/bin/python  /etc/nginx/conf.d/1666.py "
 ================================================================
 
 
