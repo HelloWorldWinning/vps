@@ -50,24 +50,24 @@
         },
         {
           "background": "#072bf7",
-          "foreground": "#FFFFFF",
-          "style": "powerline",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version)\"; fi)",
-
-          "type": "session",
-          "powerline_symbol": "\ue0b0",
-	  "font-weight":"bold"
-        },
-        {
-          "background": "#072bf7",
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "<b>3:4</b>:5PM"
           },
           "style": "powerline",
-          "template": "{{ .CurrentDate | date .Format }}",
+          "template": " {{ .CurrentDate | date .Format }}",
           "type": "time"
+        },
+        {
+          "background": "#072bf7",
+          "foreground": "#FFFFFF",
+          "style": "powerline",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version) \"; fi)",
+
+          "type": "session",
+          "powerline_symbol": "\ue0b0",
+	  "font-weight":"bold"
         },
         {
           "background": "#BF1D69",
@@ -89,7 +89,7 @@
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "$weather_temperature",
+          "template": " $weather_temperature",
           "type": "time"
         },
         {
@@ -122,7 +122,7 @@
             "always_enabled": true
           },
           "style": "diamond",
-          "template": " \ueb05",
+          "template": "  \ueb05 ",
           "trailing_diamond": "\ue0b4",
           "type": "status"
         }
