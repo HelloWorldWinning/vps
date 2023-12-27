@@ -47,6 +47,7 @@ export weather_temperature=$we_temp
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
 
+alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
 alias cc='clear'
