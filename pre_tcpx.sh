@@ -31,6 +31,18 @@ cat >>~/.bashrc<<EOF
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
 
+function check_setup_time() {
+    setup_time_seconds=\$(date -d "\$setup_time" +%s)
+    current_time_seconds=\$(date +%s)
+    time_difference=\$((current_time_seconds - setup_time_seconds))
+    days=\$((time_difference / 86400))
+    hours=\$(( (time_difference % 86400) / 3600 ))
+    minutes=\$(( (time_difference % 3600) / 60 ))
+    seconds=\$((time_difference % 60))
+    echo "\$days days, \$hours hours, \$minutes minutes, \$seconds seconds"
+}
+
+
 ## Fetch the HTML content
 html_content=\$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
 ### Extract the weather condition and temperature
