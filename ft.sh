@@ -1,7 +1,8 @@
 #!/bin/bash
-#
+apt install  -y sudo
+
 # Ask for folder name and set default to 'ft_userdata'
-apt install docker-compose
+sudo  apt install docker-compose
 
 read -p "Enter the folder name (default is ft_userdata): " folder_name
 folder_name=${folder_name:-ft_userdata}
@@ -16,14 +17,17 @@ else
 fi
 
 
-apt install  -y sudo
 
 #mkdir ft_userdata
 #cd ft_userdata/
 cd  $folder_name/
 # Download the docker-compose file from the repository
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
-
+#sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
+# Ask for user input for the port
+read -p "Enter the port number you want to use: " port
+# Replace the port in the docker-compose.yml file
+sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
 # Pull the freqtrade image
 docker-compose pull
 
@@ -36,3 +40,6 @@ docker-compose run --rm freqtrade new-config --config user_data/config.json
 
 cd ..
 sudo chown -R 1000:1000  $folder_name
+
+echo " $folder_name folder created "
+cd $folder_name
