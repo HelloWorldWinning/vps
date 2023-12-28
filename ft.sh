@@ -2,7 +2,7 @@
 apt install  -y sudo
 
 # Ask for folder name and set default to 'ft_userdata'
-sudo  apt install docker-compose
+sudo  apt install docker-compose -y
 
 read -p "Enter the folder name (default is ft_userdata): " folder_name
 folder_name=${folder_name:-ft_userdata}
