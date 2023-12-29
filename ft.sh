@@ -1,10 +1,18 @@
 #!/bin/bash
+RED="\033[31m"      # Error message
+GREEN="\033[32m"    # Success message
+YELLOW="\033[33m"   # Warning message
+BLUE="\033[36m"     # Info message
+PLAIN='\033[0m'
+
 apt install  -y sudo
 
 # Ask for folder name and set default to 'ft_userdata'
 sudo  apt install docker-compose -y
 
-read -p "Enter the folder name (default is ft_userdata): " folder_name
+#read -p "Enter the folder name (default is ft_userdata): " folder_name
+echo -en "Enter ${RED}folder name $PLAIN{}(default is ft_userdata): "
+read folder_name
 folder_name=${folder_name:-ft_userdata}
 
 # Check if folder exists
@@ -25,7 +33,9 @@ cd  $folder_name/
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
 #sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 # Ask for user input for the port
-read -p "Enter the port number you want to use: " port
+echo -en "Enter the ${RED}port ${PLAIN}number you want to use: " 
+read port
+
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
 sed -i "s/container_name: freqtrade/container_name: ${folder_name}_${port}/" docker-compose.yml
