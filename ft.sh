@@ -28,7 +28,7 @@ curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose
 read -p "Enter the port number you want to use: " port
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
-sed -i "s/container_name: freqtrade/container_name: ft_${port}/" docker-compose.yml
+sed -i "s/container_name: freqtrade/container_name: ${folder_name}_${port}/" docker-compose.yml
 
 
 # Pull the freqtrade image
@@ -41,9 +41,9 @@ docker-compose run --rm freqtrade create-userdir --userdir user_data
 docker-compose run --rm freqtrade new-config --config user_data/config.json
 
 
-cd ..
-sudo chown -R 1000:1000  $folder_name
-cd $folder_name/
+# cd ..
+sudo chown -R 1000:1000  ../$folder_name
+# cd $folder_name/
 
-echo " $folder_name folder created "
+echo " ${folder_name}_${port} created "
 
