@@ -59,7 +59,7 @@
 	  "font-weight":"bold"
         },
         {
-          "background": "#4caf50",
+          "background": "#072bf7",
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
