@@ -53,7 +53,7 @@ docker-compose run --rm freqtrade new-config --config user_data/config.json
 
 # cd ..
 sudo chown -R 1000:1000  ../$folder_name
-# cd $folder_name/
+#cd $folder_name/
 
 echo " ${folder_name}_${port} created "
 
