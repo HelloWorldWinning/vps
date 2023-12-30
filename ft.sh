@@ -48,7 +48,53 @@ docker-compose pull
 docker-compose run --rm freqtrade create-userdir --userdir user_data
 
 # Create configuration - Requires answering interactive questions
-docker-compose run --rm freqtrade new-config --config user_data/config.json
+#docker-compose run --rm freqtrade new-config --config user_data/config.json
+
+
+#!/bin/bash
+
+# Prompt the user to choose a method, with a default of 1
+echo "Select a method to execute (default is 1):"
+echo "1. Download configuration file with wget"
+echo "2. Create a new configuration with docker-compose"
+#read -p "Enter your choice (1 or 2), press Enter for default: " choice
+read -p "Enter your choice (1 or 2),default 1: " choice
+
+# Default to 1 if no input is given
+if [ -z "$choice" ]; then
+    choice=1
+fi
+
+case $choice in
+    1)
+        # Method 1: Download the configuration file
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+        if [ $? -eq 0 ]; then
+            echo "Configuration file downloaded successfully."
+        else
+            echo "Failed to download the configuration file."
+        fi
+        ;;
+
+    2)
+        # Method 2: Create a new configuration with docker-compose
+        docker-compose run --rm freqtrade new-config --config user_data/config.json
+        ;;
+
+    *)
+      # echo "Invalid choice. Defaulting to method 1."
+        echo "Defaulting to method 1."
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+        if [ $? -eq 0 ]; then
+            echo "Configuration file downloaded successfully."
+        else
+            echo "Failed to download the configuration file."
+        fi
+        ;;
+esac
+
+
+
 
 
 # cd ..
