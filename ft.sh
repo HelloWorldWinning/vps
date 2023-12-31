@@ -36,6 +36,16 @@ curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose
 echo -en "Enter the ${RED}port ${PLAIN}number you want to use: " 
 read port
 
+# Check if the port is already in use
+if lsof -i :$port > /dev/null; then
+    echo "Error: Port $port is already in use."
+    exit 1
+fi
+
+# Continue with the rest of your script if the port is not in use
+echo "Port $port is available."
+
+
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
 sed -i "s/container_name: freqtrade/container_name: ${folder_name}_${port}/" docker-compose.yml
