@@ -7,9 +7,10 @@ types {
     image/jpeg                            jpeg jpg;
     application/javascript                js;
     application/atom+xml                  atom;
-    text/markdown           md markdown mkd ;
-    text/python                py;
-    text/sh                  sh ;
+  text/markdown           md markdown mkd ;
+  text/python                py;
+  text/ipynb                   ipynb;
+  text/sh                  sh ;
     application/rss+xml                   rss;
 
     text/mathml                           mml;
