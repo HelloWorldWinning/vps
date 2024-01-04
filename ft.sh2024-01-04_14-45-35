@@ -15,6 +15,23 @@ echo -en "Enter ${RED}folder name ${PLAIN}(default is ft_userdata): "
 read folder_name
 folder_name=${folder_name:-ft_userdata}
 
+# Check if folder exists
+if [ -d "$folder_name" ]; then
+    echo "Error: Folder already exists."
+    exit 1
+else
+    mkdir "$folder_name"
+    echo "Folder $folder_name created."
+fi
+
+
+
+#mkdir ft_userdata
+#cd ft_userdata/
+cd  $folder_name/
+# Download the docker-compose file from the repository
+curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
+#sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 # Ask for user input for the port
 echo -en "Enter the ${RED}port ${PLAIN}number you want to use: " 
 read port
@@ -28,21 +45,6 @@ fi
 # Continue with the rest of your script if the port is not in use
 echo "Port $port is available."
 
-# Check if folder exists
-if [ -d "$folder_name" ]; then
-    echo "Error: Folder already exists."
-    exit 1
-else
-    mkdir "$folder_name"
-    echo "Folder $folder_name created."
-fi
-
-#mkdir ft_userdata
-#cd ft_userdata/
-cd  $folder_name/
-# Download the docker-compose file from the repository
-curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
-#sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
@@ -109,5 +111,5 @@ esac
 sudo chown -R 1000:1000  ../$folder_name
 #cd $folder_name/
 
-echo " ${folder_name} :  ${port} created "
+echo " ${folder_name}_${port} created "
 
