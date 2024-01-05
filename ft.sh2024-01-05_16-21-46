@@ -28,8 +28,6 @@ fi
 # Continue with the rest of your script if the port is not in use
 echo "Port $port is available."
 
-folder_name="${folder_name}_${port}"
-
 # Check if folder exists
 if [ -d "$folder_name" ]; then
     echo "Error: Folder already exists."
