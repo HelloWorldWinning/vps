@@ -5,7 +5,7 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#072bf7",
+          "background": "#3A86FF",
           "foreground": "#ffffff",
           "leading_diamond": "\ue0b6",
           "style": "diamond",
@@ -21,7 +21,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": "$(pwd)   <b>$(ls |wc -l)</b>",
+	  "template": " <b>$(pwd)</b>    <b>$(ls |wc -l)</b> ",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -59,14 +59,14 @@
 	  "font-weight":"bold"
         },
         {
-          "background": "#000000",
+          "background": "#4caf50",
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "<b>3:4</b>:5PM"
           },
           "style": "powerline",
-          "template": "{{.CurrentDate | date .Format }}",
+          "template": "{{ .CurrentDate | date .Format }}",
           "type": "time"
         },
         {
@@ -74,7 +74,7 @@
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "Mon 2-1-2006"
+            "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
           "template": "{{ .CurrentDate | date .Format }}",
