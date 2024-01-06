@@ -9,7 +9,7 @@
           "foreground": "#ffffff",
           "leading_diamond": "\ue0b6",
           "style": "diamond",
-          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}}",
           "type": "os"
         },
         {
@@ -34,7 +34,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": " {{ .UserName }}@<b>{{ .HostName }}<\b> ",
+	  "template": "{{.UserName }}@{{ .HostName }}",
           "type": "path",
 	  "font-weight":"bold"
         },
