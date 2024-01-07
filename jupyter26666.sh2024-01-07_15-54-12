@@ -63,9 +63,6 @@ EOF
 sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
-
-conda install -c conda-forge cchardet chardet
-
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
 
