@@ -12,7 +12,7 @@ apt-get install apache2-utils -y
 
 git config --global core.editor "vim"
 
-apt install -y net-tools unzip mc lynx telnet
+apt install -y net-tools unzip mc lynx telnet zip
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
