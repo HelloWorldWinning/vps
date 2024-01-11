@@ -8,11 +8,11 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
-apt-get install apache2-utils -y
+apt-get install apache2-utils lsof -y
 
 git config --global core.editor "vim"
 
-apt install -y net-tools unzip mc lynx telnet zip
+apt install -y net-tools unzip mc lynx telnet zip lsof
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
@@ -52,6 +52,7 @@ weather_temperature="\${temperature}°C \${weather}"
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
 
+alias zz='du  -sh * |sort -h'
 alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
