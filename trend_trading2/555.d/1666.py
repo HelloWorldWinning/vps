@@ -1,4 +1,4 @@
-ifrom flask import Flask, render_template_string, request, session, redirect, url_for
+from flask import Flask, render_template_string, request, session, redirect, url_for
 import nbformat
 import nbconvert
 import os
