@@ -7,7 +7,8 @@
 mkdir -p /data/trend_trading2/555.d/
 
 # Download the Python script to the specified location
-wget -4 -O bar.py https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trend_trading2/555.d/1666.py
+wget -4 -O /data/trend_trading2/555.d/1666.py https://raw.githubusercontent.com/HelloWorldWinning/vps/main/trend_trading2/555.d/1666.py
+
 
 
 # Define service name and log file path
