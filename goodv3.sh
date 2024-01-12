@@ -628,6 +628,8 @@ ${Red_font_prefix}97${Font_color_suffix} tika.sh
 ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
 ${Red_font_prefix}100${Font_color_suffix} jupyter26666.sh
+${Red_font_prefix}101${Font_color_suffix} jupyter1666.sh
+${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}0${Font_color_suffix} ip checker
  
 
@@ -836,7 +838,8 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		98) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh  ) ;;
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
-		101) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh )  ;;
+		101) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh)  ;;
+		102) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh )  ;;
 
 #	00)eval "exit";;
 		q)eval "exit";;
