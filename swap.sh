@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Prompt user for size of the new swap file with a default value
-read -p "Enter like:'5G' of the swap file (default is 10G): " SWAP_SIZE
-SWAP_SIZE=${SWAP_SIZE:-10G}
+read -p "Enter like:'5G' of the swap file (default is 5G): " SWAP_SIZE
+SWAP_SIZE=${SWAP_SIZE:-5G}
 
 # Identify the active swap partition(s)
 SWAP_PARTITIONS=$(swapon --show=NAME --noheadings)
