@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+#@reboot sleep 4 ; bash -c "source ~/.bashrc;export PATH=/root/anaconda3/envs/smart_bots/bin:$PATH; /root/anaconda3/envs/smart_bots/bin/python   /data/trend_trading2/555.d/1666.py"
+#
 
 # Create the necessary directory
 mkdir -p /data/trend_trading2/555.d/
