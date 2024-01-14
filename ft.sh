@@ -106,7 +106,6 @@ docker-compose pull
 docker-compose run --rm freqtrade create-userdir --userdir user_data
 
 
-
 # cd ..
 sudo chown -R 1000:1000  ../$folder_name
 #cd $folder_name/
