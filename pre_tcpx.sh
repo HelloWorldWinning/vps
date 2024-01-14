@@ -12,6 +12,8 @@ apt-get install apache2-utils lsof -y
 
 git config --global core.editor "vim"
 
+
+apt install docker-compose -y
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
