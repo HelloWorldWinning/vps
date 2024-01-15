@@ -16,7 +16,7 @@ if [ -n "$SSH_CLIENT" ]; then
   cur_date=$(date "+%Y-%m-%d %H:%M:%S %a")
 
   # Display modified 'Last login' line
-  echo "Last login: from $ip $cur_date"
+  echo "Last login: $ip  $cur_date"
 fi
 
 
