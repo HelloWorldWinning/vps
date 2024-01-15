@@ -114,7 +114,7 @@ free -m | awk '/Swap:/ {printf "%5s | %5s | %5s M\n", $4, $3, $2}'
 
 # Display Memory Information
 echo -n "RAM       : "
-free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; available=$7/1024; printf "%5.3f | %5.1f | %5.1f G\n", available, used, total}'
+free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; available=$7/1024; printf "%5.2f | %5.1f | %5.1f G\n", available, used, total}'
 
 #free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; free=$4/1024; printf "%5.3f | %5.1f | %5.1f G\n", free, used, total}'
 
