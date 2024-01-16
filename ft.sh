@@ -71,7 +71,8 @@ fi
 case $choice in
     1)
         # Method 1: Download the configuration file
-        wget -4O "config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+	mkdir -p user_data
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
         if [ $? -eq 0 ]; then
             echo "Configuration file downloaded successfully."
         else
@@ -87,6 +88,7 @@ case $choice in
     *)
       # echo "Invalid choice. Defaulting to method 1."
         echo "Defaulting to method 1."
+	mkdir -p user_data
         wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
         if [ $? -eq 0 ]; then
             echo "Configuration file downloaded successfully."
