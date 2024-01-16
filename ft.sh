@@ -71,7 +71,7 @@ fi
 case $choice in
     1)
         # Method 1: Download the configuration file
-        wget -O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+        wget -4O "config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
         if [ $? -eq 0 ]; then
             echo "Configuration file downloaded successfully."
         else
