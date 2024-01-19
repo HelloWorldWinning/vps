@@ -11,6 +11,7 @@ apt install  -y sudo lsof
 sudo  apt install docker-compose -y
 
 #read -p "Enter the folder name (default is ft_userdata): " folder_name
+clear
 echo -en "Enter ${RED}folder name ${PLAIN}(default is ft_userdata): "
 read folder_name
 folder_name=${folder_name:-ft_userdata}
