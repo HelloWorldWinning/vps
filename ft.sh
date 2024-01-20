@@ -50,6 +50,7 @@ curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
 sed -i "s/container_name: freqtrade/container_name: ${folder_name}_${port}/" docker-compose.yml
+sed -i "s/SampleStrategy//"  docker-compose.yml
 
 # Create configuration - Requires answering interactive questions
 #docker-compose run --rm freqtrade new-config --config user_data/config.json
