@@ -124,6 +124,7 @@ set ruler
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
+hi  LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=#53656e 
 
 set cursorline
 "hi CursorLine term=bold cterm=bold guibg=NONE
