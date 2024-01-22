@@ -11,7 +11,7 @@
           "properties": {
             "time_format": "<b>03:04</b>:05PM"
           },
-          "template": "{{.CurrentDate | date .Format }} <b>{{ .HostName }}<\b> ",
+          "template": "{{.CurrentDate | date .Format }}",
           "type": "time"
         },
         {
@@ -23,7 +23,7 @@
 	        "folder_icon": ""
           },
           "style": "diamond",
-	  "template": "$(pwd)   <b>$(ls |wc -l) </b>",
+	  "template": " $(pwd)   <b>$(ls |wc -l) </b>",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -36,7 +36,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": "{{.UserName }}",
+	  "template": "{{.UserName }}@<b> {{ .HostName }}<\b> ",
           "type": "path",
 	  "font-weight":"bold"
         },
