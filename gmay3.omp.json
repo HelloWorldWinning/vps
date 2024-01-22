@@ -5,6 +5,16 @@
       "alignment": "left",
       "segments": [
         {
+          "background": "#000000",
+          "foreground": "#FFFAB2",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "time_format": "<b>03:04</b>:05PM"
+          },
+          "template": "{{.CurrentDate | date .Format }}",
+          "type": "time"
+        },
+        {
           "background": "#BF1D69",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
@@ -13,7 +23,7 @@
 	        "folder_icon": ""
           },
           "style": "diamond",
-	  "template": "  $(pwd)   <b>$(ls |wc -l) </b>",
+	  "template": " $(pwd)   <b>$(ls |wc -l) </b>",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -49,17 +59,6 @@
           "type": "session",
           "powerline_symbol": "\ue0b0",
 	  "font-weight":"bold"
-        },
-        {
-          "background": "#000000",
-          "foreground": "#FFFAB2",
-          "powerline_symbol": "\ue0b0",
-          "properties": {
-            "time_format": "<b>3:4</b>:5PM"
-          },
-          "style": "powerline",
-          "template": "{{.CurrentDate | date .Format }}",
-          "type": "time"
         },
         {
           "background": "#BF1D69",
@@ -128,7 +127,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "\uf04b",
+          "template": "          \uf04b",
           "type": "text"
         }
       ],
