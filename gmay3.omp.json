@@ -27,22 +27,9 @@
           "type": "path",
 	  "font-weight":"bold"
         },
-        {
+	 {
           "background": "#000000",
           "foreground": "#FFFAB2",
-          "powerline_symbol": "\ue0b0",
-          "properties": {
-            "style": "full",
-	        "folder_icon": ""
-          },
-          "style": "powerline",
-	  "template": "{{.UserName }}",
-          "type": "path",
-	  "font-weight":"bold"
-        },
-	 {
-          "background": "#BF1D69",
-          "foreground": "#ffffff",
           "style": "powerline",
 	  "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
 
@@ -58,6 +45,19 @@
 
           "type": "session",
           "powerline_symbol": "\ue0b0",
+	  "font-weight":"bold"
+        },
+        {
+          "background": "#072bf7",
+          "foreground": "#FFFFFF",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "style": "full",
+	        "folder_icon": ""
+          },
+          "style": "powerline",
+	  "template": "{{.UserName }}",
+          "type": "path",
 	  "font-weight":"bold"
         },
         {
