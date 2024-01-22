@@ -5,6 +5,14 @@
       "alignment": "left",
       "segments": [
         {
+          "background": "#072bf7",
+          "foreground": "#ffffff",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": "{{ if .WSL }}WSL at {{ end }}{{.Icon}}",
+          "type": "os"
+        },
+        {
           "background": "#BF1D69",
           "foreground": "#ffffff",
           "powerline_symbol": "\ue0b0",
@@ -12,8 +20,8 @@
             "style": "full",
 	        "folder_icon": ""
           },
-          "style": "diamond",
-	  "template": "  $(pwd)   <b>$(ls |wc -l) </b>",
+          "style": "powerline",
+	  "template": " $(pwd)   <b>$(ls |wc -l) </b>",
           "type": "path",
 	  "font-weight":"bold"
         },
@@ -128,7 +136,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "  \uf04b",
+          "template": "    \uf04b",
           "type": "text"
         }
       ],
