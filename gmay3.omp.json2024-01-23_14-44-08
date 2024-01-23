@@ -9,7 +9,7 @@
           "foreground": "#FFFFFF",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "time_format": "<b>15:04</b>:05"
+            "time_format": "03:04:05PM"
           },
           "template": "{{.CurrentDate | date .Format }}",
           "type": "time"
