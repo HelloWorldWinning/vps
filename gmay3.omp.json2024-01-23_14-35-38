@@ -5,23 +5,13 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#072bf7",
-          "foreground": "#FFFFFF",
-          "powerline_symbol": "\ue0b0",
-          "properties": {
-            "time_format": "03:04:05PM"
-          },
-          "template": "{{.CurrentDate | date .Format }}",
-          "type": "time"
-        },
-        {
           "background": "#000000",
           "foreground": "#FFFAB2",
           "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "<b>03:04</b>:05PM"
           },
-          "template": " <b>{{ .HostName }}<\b> ",
+          "template": "{{.CurrentDate | date .Format }} <b>{{ .HostName }}<\b> ",
           "type": "time"
         },
         {
@@ -137,7 +127,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "         \uf04b",
+          "template": "          \uf04b",
           "type": "text"
         }
       ],
