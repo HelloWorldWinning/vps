@@ -60,7 +60,6 @@
         {
           "background": "#072bf7",
           "foreground": "#FFFFFF",
-          "powerline_symbol": "\ue0b0",
           "properties": {
             "style": "full",
 	        "folder_icon": ""
