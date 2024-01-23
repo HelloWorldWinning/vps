@@ -145,7 +145,8 @@ hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
-set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %{expand('%:p')}
+"set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %{expand('%:p')}
+set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ %p%%/%L\ \ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
 set laststatus=2
 
 
