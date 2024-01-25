@@ -14,4 +14,5 @@ sudo make install
 
 pip install TA-Lib
 pip install freqtrade
+pip install    plotly   scipy
 
