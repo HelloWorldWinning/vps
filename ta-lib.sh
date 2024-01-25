@@ -12,3 +12,4 @@ cd ta-lib/
 make
 sudo make install
 
+pip install TA-Lib
