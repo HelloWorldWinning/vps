@@ -16,3 +16,4 @@ pip install TA-Lib
 pip install freqtrade
 pip install    plotly   scipy
 
+pip3 install -U scikit-learn
