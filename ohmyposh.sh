@@ -1,7 +1,7 @@
 
 
-apt install  -y unzip
-
+apt install  -y unzip jq
+clear
 curl -4s https://ohmyposh.dev/install.sh | bash -s
 mkdir -p ~/themes/
 wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json  
