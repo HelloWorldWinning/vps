@@ -528,7 +528,7 @@ ${Red_font_prefix}6${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
 ${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
-${Red_font_prefix}8${Font_color_suffix} v2ray
+${Red_font_prefix}50${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}999${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
@@ -575,7 +575,7 @@ ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemc
 ${Red_font_prefix}47${Font_color_suffix} iptables -P  INPUT/OUTPUT/FORWARD  ACCEPT
 ${Red_font_prefix}48${Font_color_suffix} Misaka Linux VPS tools
 ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun...)
-${Red_font_prefix}50${Font_color_suffix} eval "netstat -lpntu"
+${Red_font_prefix}8${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} (amd64)一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
@@ -664,7 +664,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 
 		7) eval $openvpn;;
 		7.1) eval $openvpn2;;
-		8) eval $v2ray;;
+		50) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
 		999) eval $kcptun;;
 		10) eval $ss_go;;
@@ -716,7 +716,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		47)eval "${iptables_rules}";;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
-		50)eval netstat_filter ;;
+		8)eval netstat_filter ;;
 		500)eval ps_filter ;;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
