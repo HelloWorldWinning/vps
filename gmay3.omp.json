@@ -65,7 +65,7 @@
 	        "folder_icon": ""
           },
           "style": "powerline",
-	  "template": "{{.UserName }}",
+	  "template": "{{.UserName }} $(bash ~/themes/cpu_usage.sh)",
           "type": "path",
 	  "font-weight":"bold"
         },
