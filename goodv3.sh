@@ -526,7 +526,7 @@ ${Red_font_prefix}64${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
 ${Red_font_prefix}6${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
-${Red_font_prefix}7${Font_color_suffix} openvpn angristan/openvpn-install/
+${Red_font_prefix}7.0${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}50${Font_color_suffix} v2ray
 ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
@@ -599,8 +599,8 @@ ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd ${Red_font_prefix}ARM${Font_
 ${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
 ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
 ${Red_font_prefix}72${Font_color_suffix} rename vps
-${Red_font_prefix}73${Font_color_suffix} receive on 9
-${Red_font_prefix}74${Font_color_suffix} send on 9
+${Red_font_prefix}7${Font_color_suffix} receive on 9
+${Red_font_prefix}9${Font_color_suffix} send on 9
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel ip:8888  1 19860826
 ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
 ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin123456
@@ -662,7 +662,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 			/sbin/sysctl -p 
 		       	;;
 
-		7) eval $openvpn;;
+		7.0) eval $openvpn;;
 		7.1) eval $openvpn2;;
 		50) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
@@ -783,9 +783,9 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
 
-		73)nc -l 9  -q 1  | tar xfvz - ;;
+		7)nc -l 9  -q 1  | tar xfvz - ;;
  #		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
-  		74) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
+  		9) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 19860826 ;;
 		75.1)
 echo '
