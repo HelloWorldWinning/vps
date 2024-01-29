@@ -7,7 +7,7 @@
         {
           "background": "#072bf7",
           "foreground": "#FFFFFF",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "<b>15:04</b>:05"
           },
@@ -17,74 +17,62 @@
         {
           "background": "#000000",
           "foreground": "#FFFAB2",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "<b>03:04</b>:05PM"
           },
-          "template": " <b>{{ .HostName }}<\b> ",
+          "template": " {{ .HostName }} ",
           "type": "time"
         },
         {
           "background": "#BF1D69",
           "foreground": "#ffffff",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "style": "full",
-            "folder_icon": ""
+	        "folder_icon": ""
           },
           "style": "diamond",
-          "template": "$(pwd)   <b>$(ls |wc -l) </b>",
+	  "template": "$(pwd)   <b>$(ls |wc -l) </b>",
           "type": "path",
-          "font-weight": "bold"
+	  "font-weight":"bold"
         },
-        {
+	 {
           "background": "#000000",
           "foreground": "#FFFAB2",
           "style": "powerline",
-          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
+	  "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
+
           "type": "session",
-          "powerline_symbol": "",
-          "font-weight": "bold"
+          "powerline_symbol": "\ue0b0",
+          "font-weight":"bold"
         },
         {
           "background": "#072bf7",
           "foreground": "#FFFFFF",
           "style": "powerline",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version)\"; fi)",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env \" ] && [ -z \"$python_version \" ]; then echo ''; else echo \"($conda_env,$python_version) \"; fi)",
+
           "type": "session",
-          "powerline_symbol": "",
-          "font-weight": "bold"
-        },
-        {
-          "background": "#000000",
-          "foreground": "#FFFAB2",
-          "properties": {
-            "style": "full",
-            "folder_icon": ""
-          },
-          "style": "powerline",
-          "template": "$(bash ~/themes/cpu_usage.sh)",
-          "type": "path",
-          "font-weight": "bold",
-          "powerline_symbol": ""
+          "powerline_symbol": "\ue0b0",
+	  "font-weight":"bold"
         },
         {
           "background": "#072bf7",
           "foreground": "#FFFFFF",
           "properties": {
             "style": "full",
-            "folder_icon": ""
+	        "folder_icon": ""
           },
           "style": "powerline",
-          "powerline_symbol": "",
-          "template": "{{.UserName }}",
+	  "template": "{{.UserName }} $(bash ~/themes/cpu_usage.sh)",
           "type": "path",
-          "font-weight": "bold"
+	  "font-weight":"bold"
         },
         {
           "background": "#BF1D69",
           "foreground": "#ffffff",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "Mon 2-1-2006"
           },
@@ -92,10 +80,11 @@
           "template": "{{ .CurrentDate | date .Format }}",
           "type": "time"
         },
+
         {
           "background": "#4caf50",
           "foreground": "#FFFAB2",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "time_format": "Mon 2-1-2006 "
           },
@@ -106,21 +95,21 @@
         {
           "background": "#fffb38",
           "foreground": "#193549",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "properties": {
             "fetch_stash_count": true,
             "fetch_upstream_icon": true
           },
           "style": "powerline",
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
           "type": "git"
         },
         {
           "background": "#6CA35E",
           "foreground": "#ffffff",
-          "powerline_symbol": "",
+          "powerline_symbol": "\ue0b0",
           "style": "powerline",
-          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
           "type": "node"
         },
         {
@@ -133,8 +122,8 @@
             "always_enabled": true
           },
           "style": "diamond",
-          "template": " ",
-          "trailing_diamond": "",
+          "template": " \ueb05",
+          "trailing_diamond": "\ue0b4",
           "type": "status"
         }
       ],
@@ -147,7 +136,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "          ➤",
+          "template": "       \uf04b",
           "type": "text"
         }
       ],
