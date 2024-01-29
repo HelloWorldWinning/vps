@@ -5,8 +5,8 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#FFDE57",
-          "foreground": "#000000",
+          "background": "#072bf7",
+          "foreground": "#FFFFFF",
           "powerline_symbol": "",
           "properties": {
             "time_format": "<b>15:04</b>:05"
@@ -47,6 +47,15 @@
           "font-weight": "bold"
         },
         {
+          "background": "#072bf7",
+          "foreground": "#FFFFFF",
+          "style": "powerline",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version)\"; fi)",
+          "type": "session",
+          "powerline_symbol": "",
+          "font-weight": "bold"
+        },
+        {
           "background": "#000000",
           "foreground": "#FFFAB2",
           "properties": {
@@ -58,15 +67,6 @@
           "type": "path",
           "font-weight": "bold",
           "powerline_symbol": ""
-        },
-        {
-          "background": "#072bf7",
-          "foreground": "#FFFFFF",
-          "style": "powerline",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version)\"; fi)",
-          "type": "session",
-          "powerline_symbol": "",
-          "font-weight": "bold"
         },
         {
           "background": "#072bf7",
@@ -147,7 +147,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "            ➤",
+          "template": "          ➤",
           "type": "text"
         }
       ],
