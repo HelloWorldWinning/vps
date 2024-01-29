@@ -60,12 +60,12 @@
           "powerline_symbol": ""
         },
         {
-          "background": "#6806c4",
+          "background": "#072bf7",
           "foreground": "#FFFFFF",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version)\"; fi)",
+          "style": "powerline",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"($conda_env,$python_version) \"; fi)",
           "type": "session",
           "powerline_symbol": "",
-          "style": "powerline",
           "font-weight": "bold"
         },
         {
@@ -76,7 +76,6 @@
             "folder_icon": ""
           },
           "style": "powerline",
-          "powerline_symbol": "",
           "template": "{{.UserName }}",
           "type": "path",
           "font-weight": "bold"
