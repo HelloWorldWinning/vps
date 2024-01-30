@@ -23,5 +23,5 @@ idle_cpu=$((100 * (idle_time) / total_time))
 ram=$(free -h | grep Mem | awk '{sub("i", "", $7); print $7}')
 disk=$(df -h | grep '/$' | awk '{print $4}')
 
-echo "$idle_cpu $ram $disk"
+echo "$idle_cpu% $ram $disk"
 
