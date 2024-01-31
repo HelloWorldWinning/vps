@@ -164,5 +164,6 @@ mkdir -p /root/themes/
 
 wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
-
+mkdir -p ~/.vscode-server/data/Machine/
+wget --inet4-only -O  ~/.vscode-server/data/Machine/settings.json   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
 
