@@ -1,0 +1,186 @@
+{
+  "workbench.statusBar.alignment": "left",
+  "zenMode.centerLayout": false,
+  "editor.lineNumbers": "relative",
+  "workbench.colorCustomizations": {
+	   "tab.activeForeground": "#aa0000",
+    "editor.background": "#32302f",
+    "activityBar.background": "#32302f",
+    "sideBar.background": "#32302f",
+    "titleBar.activeBackground": "#32302f",
+    "statusBar.background": "#32302f",
+    "tab.inactiveBackground": "#32302f",
+    "tab.activeBackground": "#32302f",
+    "editorGroupHeader.tabsBackground": "#32302f",
+    //  "panelTitle.activeBackground": "#32302f",
+    //  "panelTitle.inactiveBackground": "#32302f",
+    "panel.background": "#32302f",
+    "sideBarSectionHeader.background": "#32302f",
+    "editor.lineHighlightBackground": "#32302f",
+    "editorSuggestWidget.selectedBackground": "#78130D",
+    "editorCursor.foreground": "#FF2511",
+    "terminalCursor.foreground": "#FF2511",
+    "terminal.foreground": "#00ee00",
+    "terminal.integrated.fontFamily": "Andale Mono, monospace",
+    "terminal.integrated.fontSize": 28,
+    "editor.wordHighlightStrongBackground": "#a81980",
+    "editor.wordHighlightBackground": "#a81980",
+    "editor.wordHighlightStrongForeground": "#FFFFFF",
+    "editor.wordHighlightForeground": "#FFFFFF",
+    "editorLineNumber.activeForeground": "#ff0000",
+    // "editorLineNumber.activeForeground": "#ffffff",
+    // "editorLineNumber.activeBackground": "#ff0000",
+    "terminal.background": "#32302f",
+    "settings": {
+      "fontStyle": "bold"
+    }
+  },
+  // "editor.fontFamily": "Andale Mono, monospace",
+  //  "editor.fontFamily": "zapfino",
+  //"editor.fontFamily": "fira mono",
+  // "editor.fontFamily": "Fira Sans",
+//  "editor.fontFamily": "Inconsolata",
+// "editor.fontFamily": "DroidSansM Nerd Font Mono",
+ "editor.fontFamily": "DroidSansM Nerd Font",
+
+//"editor.fontVariations": false,
+  "editor.fontVariations": true,
+  "editor.fontSize": 17,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "lineNumber.current",
+        "settings": {
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": [
+          "storage.type.class.python",
+          "meta.class.python",
+          "storage.type.function.python",
+          "meta.function.python",
+          "source.python"
+        ],
+        "settings": {
+          "foreground": "#ee0000"
+        }
+      },
+      {
+        "scope": [
+          "entity.name.type.class",
+          "entity.name.type.class.python",
+          "meta.class.python"
+        ],
+        "settings": {
+          "foreground": "#ffffff"
+        }
+      },
+      {
+        "scope": [
+          "entity.name.function.member",
+          "entity.name.function.python",
+          "source.python"
+        ],
+        "settings": {
+          //"foreground": "#fafa5f"
+       // "foreground": "#FFFF00"
+          "foreground": "#FFFF54"
+        }
+      },
+      {
+        "name": "functions and variables",
+        "scope": [
+          "variable.python",
+          "support.function.python",
+          "variable.other.readwrite",
+          "variable.parameter.function",
+          "meta.function-call.generic.python",
+          "support.class.python",
+          "entity.name.import.python",
+          "variable.other.readwrite.alias.python",
+          "variable.other.module.python",
+          "support.function.python"
+        ],
+        "settings": {
+          "foreground": "#eeeb54"
+        }
+      },
+      {
+        "name": "variables and functions",
+        "scope": [
+          "support.function.python"
+        ],
+        "settings": {
+          "foreground": "#710e67"
+        }
+      },
+      {
+        "name": "User-defined functions and variables",
+        "scope": [
+          "meta.parameter.type.variable",
+          "variable.parameter",
+          "variable.name",
+          "variable.other",
+          "variable",
+          "string.constant.other.placeholder",
+          "source.python",
+          "entity.name.namespace",
+          "entity.static",
+          "entity.name.class.static.function",
+          "entity.name.function",
+          "entity.name.type",
+          "variable.python",
+          "support.function.python",
+          "variable.other.readwrite",
+          "variable.parameter.function",
+          "meta.function-call.generic.python",
+          "support.class.python",
+          "entity.name.import.python",
+          "variable.other.readwrite.alias.python",
+          "variable.other.module.python",
+          "support.function.python"
+        ],
+        "settings": {
+          "foreground": "#09f418"
+        }
+      },
+      {
+        "scope": [
+          "constant.other.caps.python"
+        ],
+        "settings": {
+          "foreground": "#83a598"
+        }
+      },
+      {
+        "name": "Bold active line number",
+        "scope": "line.number.active",
+        "settings": {
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": [
+          "entity.name.function",
+          "entity.name.function.python",
+          "source.python"
+        ],
+        "settings": {
+       // "foreground": "#f724f5"
+          "foreground": "#fa05fa"
+        }
+      }
+    ]
+  },
+  "python.defaultInterpreterPath": "/root/anaconda3/envs/FT/bin/python",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  //"editor.fontLigatures": false,
+  "editor.fontLigatures": true,
+  "workbench.editor.centeredLayoutFixedWidth": true,
+  "terminal.integrated.fontFamily": "DroidSansM Nerd Font Mono",
+  "vim.digraphs": {}
+}
