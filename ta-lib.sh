@@ -1,3 +1,6 @@
+git clone https://github.com/freqtrade/freqtrade-strategies.git
+
+
 # Install necessary tools
 sudo apt-get update
 sudo apt-get install build-essential
