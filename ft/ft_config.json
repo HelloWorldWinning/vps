@@ -13,9 +13,9 @@
 
 
     "unfilledtimeout": {
-        "entry": 5,
-        "exit": 10,
-        "exit_timeout_count": 0,
+        "entry": 25,
+        "exit": 25,
+        "exit_timeout_count": 10,
         "unit": "minutes"
     },
     "entry_pricing": {
