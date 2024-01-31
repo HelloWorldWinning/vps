@@ -1,5 +1,6 @@
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
+
 apt  install dnsutils -y
 apt-get update -y
 #apt-get install nginx -y
@@ -424,6 +425,9 @@ netstat -ltnpu |grep nginx
 
 }
 
+
+wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
+wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
 
 echo -e "  ${GREEN}1.${PLAIN} 安装 ${BLUE}new_nginx_conf.sh${PLAIN}"
 echo -e "  ${GREEN}443.${PLAIN} 安装 ${BLUE}nginx_conf_func443 ${PLAIN}"
