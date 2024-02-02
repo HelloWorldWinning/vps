@@ -25,9 +25,8 @@
           "type": "time"
         },
         {
-"background": "#000000",
-"foreground": "#fc2189",
-
+          "background": "#BF1D69",
+          "foreground": "#ffffff",
           "powerline_symbol": "",
           "properties": {
             "style": "full",
