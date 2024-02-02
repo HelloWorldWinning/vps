@@ -421,7 +421,8 @@ start_func(){
     systemctl reload  nginx
     systemctl restart nginx
 netstat -ltnpu |grep nginx
-    systemctl status nginx
+#    systemctl status nginx
+    systemctl  status nginx  --no-pager -q
 
 }
 
