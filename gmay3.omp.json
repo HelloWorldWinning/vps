@@ -21,7 +21,7 @@
           "properties": {
             "time_format": "<b>03:04</b>:05PM"
           },
-          "template": " {{ .HostName }} ",
+          "template": " <b>{{ .HostName }}</b> ",
           "type": "time"
         },
         {
