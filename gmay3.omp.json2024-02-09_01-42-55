@@ -35,18 +35,6 @@
           "font-weight": "bold"
         },
         {
-          "background": "#fffb38",
-          "foreground": "#193549",
-          "powerline_symbol": "",
-          "properties": {
-            "fetch_stash_count": true,
-            "fetch_upstream_icon": true
-          },
-          "style": "powerline",
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
-          "type": "git"
-        },
-        {
           "background": "#000000",
           "foreground": "#FFFAB2",
           "style": "powerline",
@@ -111,6 +99,18 @@
           "style": "powerline",
           "template": "$weather_temperature",
           "type": "time"
+        },
+        {
+          "background": "#fffb38",
+          "foreground": "#193549",
+          "powerline_symbol": "",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "type": "git"
         },
         {
           "background": "#6CA35E",
