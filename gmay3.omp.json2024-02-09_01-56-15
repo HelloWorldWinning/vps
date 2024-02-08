@@ -35,8 +35,8 @@
           "font-weight": "bold"
         },
         {
-          "background": "#f5f26e",
-          "foreground": "#000000",
+          "background": "#b3b140",
+          "foreground": "#193549",
           "powerline_symbol": "",
           "properties": {
             "fetch_stash_count": true,
