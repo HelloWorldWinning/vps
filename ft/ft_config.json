@@ -13,9 +13,9 @@
 
 
     "unfilledtimeout": {
-        "entry": 25,
-        "exit": 25,
-        "exit_timeout_count": 10,
+        "entry": 30,
+        "exit": 30,
+        "exit_timeout_count": 30,
         "unit": "minutes"
     },
     "entry_pricing": {
@@ -320,7 +320,7 @@
         "username": "f",
         "password": "t"
     },
-    "bot_name": "winx",
+    "bot_name": "Not_Loss",
     "initial_state": "running",
     "force_entry_enable": false,
     "internals": {
