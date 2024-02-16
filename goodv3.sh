@@ -622,6 +622,7 @@ ${Red_font_prefix}91${Font_color_suffix} hysteria2.sh
 ${Red_font_prefix}92${Font_color_suffix} install_cloudreve.sh
 ${Red_font_prefix}93${Font_color_suffix} install_resolvconf.sh
 ${Red_font_prefix}94${Font_color_suffix} ${Red_font_prefix}freqtrade ${Font_color_suffix} install folder 
+${Red_font_prefix}944${Font_color_suffix} docker_path.sh
 ${Red_font_prefix}95${Font_color_suffix} change Swap
 ${Red_font_prefix}96${Font_color_suffix} pdf_txt.sh
 ${Red_font_prefix}97${Font_color_suffix} tika.sh
@@ -831,6 +832,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		92) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh ) ;;
 		93) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh  ) ;;
 		94) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh  ) ;;
+		944) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh ) ;;
 		0)
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  ) 			
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh  ) ;;
