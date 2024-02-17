@@ -32,7 +32,7 @@ mkdir -p /data
 cat >>~/.bashrc<<EOF
 ###### _pre start
 
-#if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+#if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
 if true; then
     # Check if a tmux session named "doing" exists
     tmux has-session -t doing &>/dev/null
