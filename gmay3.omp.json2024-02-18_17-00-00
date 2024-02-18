@@ -15,8 +15,8 @@
           "type": "time"
         },
         {
-	"background": "#BF1D69",
-        "foreground": "#FFFFFF",
+          "background": "#0C0119",
+          "foreground": "#EEFFFF",
           "powerline_symbol": "",
           "template": " {{ .HostName }} ",
           "type": "time"
