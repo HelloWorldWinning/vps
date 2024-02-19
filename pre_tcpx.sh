@@ -101,6 +101,8 @@ export OPENAI_API_KEY=${OPENAI_API_KEY}
 alias tx='tmux'
 alias txn='tx new-session -s '
 alias txnm='tx new-session -s '
+alias txnw='tmux new-window -t '
+
 alias txa='tx attach-session -t '
 alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
