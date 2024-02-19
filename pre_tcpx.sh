@@ -104,8 +104,8 @@ alias txnm='tx new-session -s '
 alias txnw='tmux new-window -t '
 
 alias txa='tx attach-session -t '
-alias txls='tmux list-sessions'
-alias txl='tmux list-windows '
+alias txl='tmux list-sessions'
+alias txlw='tmux list-windows '
 
 alias dc='docker-compose'
 #alias cc='bash  <(curl -Ls4  bit.ly/myvpsjingyi)'
