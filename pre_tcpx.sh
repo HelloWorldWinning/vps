@@ -32,23 +32,8 @@ mkdir -p /data
 cat >>~/.bashrc<<EOF
 ###### _pre start
 
-#if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
-if true; then
-    # Check if a tmux session named "doing" exists
-    tmux has-session -t doing &>/dev/null
-    if [ \$? -ne 0 ]; then
-        # If the session does not exist, create it
-        tmux new-session -s doing -d
-    fi
-    # If we are not already inside a tmux session, attach to the "doing" session
-    if [ -z "\$TMUX" ]; then
-        tmux attach -t doing
-    fi
-fi
 
 
-
-# start pre tcp
 
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
@@ -125,6 +110,20 @@ cd /data
 
 echo ""
 l
+
+#if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
+if true; then
+    # Check if a tmux session named "doing" exists
+    tmux has-session -t doing &>/dev/null
+    if [ \$? -ne 0 ]; then
+        # If the session does not exist, create it
+        tmux new-session -s doing -d
+    fi
+    # If we are not already inside a tmux session, attach to the "doing" session
+    if [ -z "\$TMUX" ]; then
+        tmux attach -t doing
+    fi
+fi
 
 ###### _pre end
 EOF
