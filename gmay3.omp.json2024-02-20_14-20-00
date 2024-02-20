@@ -78,17 +78,6 @@
           "font-weight": "bold"
         },
         {
-          "background": "#BF1D69",
-          "foreground": "#ffffff",
-          "powerline_symbol": "",
-          "properties": {
-            "time_format": "Mon 2-1-2006"
-          },
-          "style": "powerline",
-          "template": "{{ .CurrentDate | date .Format }}",
-          "type": "time"
-        },
-        {
           "background": "#072bf7",
           "foreground": "#FFFFFF",
           "properties": {
@@ -100,6 +89,17 @@
           "template": "{{.UserName }}",
           "type": "path",
           "font-weight": "bold"
+        },
+        {
+          "background": "#BF1D69",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006"
+          },
+          "style": "powerline",
+          "template": "{{ .CurrentDate | date .Format }}",
+          "type": "time"
         },
         {
           "background": "#4caf50",
