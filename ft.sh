@@ -45,6 +45,9 @@ fi
 cd  $folder_name/
 # Download the docker-compose file from the repository
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
+
+wget -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_info.txt
+
 #sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 
 # Replace the port in the docker-compose.yml file

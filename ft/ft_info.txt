@@ -1,0 +1,3 @@
+https://www.freqtrade.io/en/stable/telegram-usage/
+https://www.freqtrade.io/en/stable/configuration/
+https://www.freqtrade.io/en/stable/freqai/#usage-with-docker
