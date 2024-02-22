@@ -350,6 +350,7 @@
           ["/weekly","/daily", "/monthly","/performance"],
           ["/status table","/balance","/stats", "/profit" ],
           [ "/logs","/show_config","/stop","/start"],
+	  ["/forcelong","/forceshort"],
           [ "/count", "/logs","/reload_config"]
       ]
     }
