@@ -74,27 +74,25 @@ fi
 
 case $choice in
 3)
-    # Method 3: Download the AI configuration file and update the docker image
-    mkdir -p user_data
-    wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config_freqai.json
-    if [ $? -eq 0 ]; then
-        echo "AI configuration file downloaded successfully."
-
-        # Now comment out the existing image line and add the new image line
-        awk '/image: freqtradeorg\/freqtrade:stable/ {
-            print "   image: freqtradeorg/freqtrade:develop_freqai" # Insert new line above
-            print "#"$0 # Comment out the original line
-            next # Skip to next line to avoid printing the original line again
-        }
-        { print }' docker-compose.yml > temp.yml && mv temp.yml docker-compose.yml
-
-        echo "Docker image updated to AI version."
-    else
-        echo "Failed to download the AI configuration file."
-    fi
-    ;;
-
-
+        # Method 3: Download the AI configuration file and update the docker image
+        mkdir -p user_data
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config_freqai.json
+        if [ $? -eq 0 ]; then
+            echo "AI configuration file downloaded successfully."
+            # Now comment out the existing image line and add the new image line
+            awk '/image: freqtradeorg\/freqtrade:stable/ {
+                print "    image: freqtradeorg/freqtrade:develop_freqai" # Adjust indentation as needed
+                print "#   image: freqtradeorg/freqtrade:develop_freqaitorch" 
+                print "#   image: freqtradeorg/freqtrade:develop_freqairl" 
+                print "    #"$0 # Ensure this matches the file s indentation style
+                next
+            }
+            { print }' docker-compose.yml > temp.yml && mv temp.yml docker-compose.yml
+            echo "Docker image updated to AI version."
+        else
+            echo "Failed to download the AI configuration file."
+        fi
+        ;;
     1)
         # Method 1: Download the configuration file
 	mkdir -p user_data
