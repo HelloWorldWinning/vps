@@ -139,5 +139,6 @@ sudo chown -R 1000:1000  ../$folder_name
 #cd $folder_name/
 
 sed -i "s/SampleStrategy//"  docker-compose.yml
+echo '      --freqaimodel  ' >> docker-compose.yml
 
 echo -en "       ${RED}${folder_name}${PLAIN} on ${RED}${port}${PLAIN} created "
