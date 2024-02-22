@@ -86,8 +86,8 @@ case $choice in
             echo "AI configuration file downloaded successfully."
             # Now comment out the existing image line and add the new image line
             awk '/image: freqtradeorg\/freqtrade:stable/ {
-                print "    image: freqtradeorg/freqtrade:develop_freqai" # Adjust indentation as needed
-                print "#   image: freqtradeorg/freqtrade:develop_freqaitorch" 
+                print "#   image: freqtradeorg/freqtrade:develop_freqai" # Adjust indentation as needed
+                print "    image: freqtradeorg/freqtrade:develop_freqaitorch" 
                 print "#   image: freqtradeorg/freqtrade:develop_freqairl" 
                 print "    #"$0 # Ensure this matches the file s indentation style
                 next
