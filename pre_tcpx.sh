@@ -112,7 +112,9 @@ echo ""
 l
 
 #if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
-if true; then
+#if true; then
+
+if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" != "vscode" ]; then
     # Check if a tmux session named "doing" exists
     tmux has-session -t doing &>/dev/null
     if [ \$? -ne 0 ]; then
