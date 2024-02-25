@@ -6,7 +6,7 @@
         "train_period_days": 40,
         "backtest_period_days": 7,
         "live_retrain_hours": 0,
-        "identifier": "2024-02-25_23-27-55",
+        "identifier": "2024-02-22_00-29-59",
         "feature_parameters": {
             "include_corr_pairlist": [],
             "include_shifted_candles": 2,
@@ -33,7 +33,7 @@
             "plot_feature_importances": 0
         },
         "data_split_parameters": {
-            "test_size": 0.10,
+            "test_size": 0.05,
             "random_state": 42
         },
         "model_training_parameters": {}
@@ -44,7 +44,7 @@
     "tradable_balance_ratio": 1,
     "fiat_display_currency": "USD",
     "dry_run": true,
-    "dry_run_wallet": 10000,
+    "dry_run_wallet": 5000,
     "max_open_trades": 100,
     "stake_amount": "unlimited",
     "cancel_open_orders_on_exit": false,
@@ -325,7 +325,7 @@
             "method": "StaticPairList"
         }
     ],
-    "bot_name": "CatboostClassifierMultiTarget  Not_Loss_AI",
+    "bot_name": "AI_Not_Loss",
     "force_entry_enable": true,
     "initial_state": "running",
     "internals": {
@@ -347,33 +347,11 @@
         "token": "",
         "chat_id": "",
         "keyboard": [
-            [
-                "/weekly",
-                "/daily",
-                "/monthly",
-                "/performance"
-            ],
-            [
-                "/status table",
-                "/balance",
-                "/stats",
-                "/profit"
-            ],
-            [
-                "/logs",
-                "/show_config",
-                "/stop",
-                "/start"
-            ],
-            [
-                "/forcelong",
-                "/forceshort"
-            ],
-            [
-                "/count",
-                "/logs",
-                "/reload_config"
-            ]
-        ]
+          ["/weekly","/daily", "/monthly","/performance"],
+          ["/status table","/balance","/stats", "/profit" ],
+          [ "/logs","/show_config","/stop","/start"],
+	  ["/show_config","/forcelong","/forceshort"],
+          [ "/count", "/logs","/reload_config"]
+      ]
     }
 }
