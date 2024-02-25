@@ -325,7 +325,7 @@
             "method": "StaticPairList"
         }
     ],
-    "bot_name": "Not_Loss_AI",
+    "bot_name": "AI_Not_Loss",
     "force_entry_enable": true,
     "initial_state": "running",
     "internals": {
@@ -350,7 +350,7 @@
           ["/weekly","/daily", "/monthly","/performance"],
           ["/status table","/balance","/stats", "/profit" ],
           [ "/logs","/show_config","/stop","/start"],
-	  ["/forcelong","/forceshort"],
+	  ["/show_config","/forcelong","/forceshort"],
           [ "/count", "/logs","/reload_config"]
       ]
     }
