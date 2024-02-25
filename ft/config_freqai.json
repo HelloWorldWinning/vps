@@ -33,7 +33,7 @@
             "plot_feature_importances": 0
         },
         "data_split_parameters": {
-            "test_size": 0.10,
+            "test_size": 0.05,
             "random_state": 42
         },
         "model_training_parameters": {}
