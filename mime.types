@@ -11,7 +11,7 @@ types {
  text/python                py;
  text/ipynb                   ipynb;
  text/sh                  sh ;
- text/json                 json ;
+#### text/json                 json ;
  text/yaml                 yaml yml;
     application/rss+xml                   rss;
 
