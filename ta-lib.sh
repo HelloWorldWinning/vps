@@ -3,8 +3,8 @@ git clone https://github.com/freqtrade/freqtrade.git
 git clone https://github.com/freqtrade/freqtrade-strategies.git
 
 # Install necessary tools
-sudo apt-get update
-sudo apt-get install build-essential
+sudo apt-get update -y
+sudo apt-get install -y build-essential 
 # Download TA-Lib
 # wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
 wget --inet4-only -O  ta-lib-0.4.0-src.tar.gz  http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
