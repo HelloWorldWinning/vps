@@ -728,7 +728,7 @@ tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		47)eval "${iptables_rules}";;
 		48)eval "$Linux_tools";;
 		49)eval "$ss_rust";;
-		8)eval netstat_filter ;;
+		7)eval netstat_filter ;;
 		500)eval ps_filter ;;
                 tt)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
@@ -795,7 +795,7 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
 
-		7)nc -l 9  -q 1  | tar xfvz - ;;
+		8)nc -l 9  -q 1  | tar xfvz - ;;
  #		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
   		9) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 19860826 ;;
