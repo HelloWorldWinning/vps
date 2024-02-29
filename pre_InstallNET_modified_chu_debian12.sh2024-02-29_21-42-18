@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 #dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"'
-dd_debian12='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322"'
+dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322"'
 
 
 function getInterface(){
@@ -44,39 +44,14 @@ function netmask() {
   echo "mask:" $ipMask
 
 
-# read -p "重点关注mask 默认DD进行，其他情况手工输入:" DD_GO
-#if   [[ -z "$DD_GO" ]]; then
-#         eval ${dd_debian12}
-#else
-# read -p "输入内网ip:" DD_IP
-# read -p "输入网关gate:" DD_GATE
-# read -p "输入mask:" DD_MASK
-#echo "debian 12"
-
-
-read -p "重点关注mask 默认DD进行。其他情况手工输入内网ip:" DD_IP
-if [[ -z "$DD_IP" ]]; then
-    eval ${dd_debian12}
+ read -p "重点关注mask 默认DD进行，其他情况手工输入:" DD_GO
+if   [[ -z "$DD_GO" ]]; then
+         eval ${dd_debian11}
 else
-    read -p "输入网关gate (直接回车将使用默认值):" DD_GATE
-    if [[ -z "$DD_GATE" ]]; then
-        # Extract the first three segments of DD_IP and append .1 for the default gateway
-        IFS='.' read -r -a ip_parts <<< "$DD_IP"
-        DD_GATE="${ip_parts[0]}.${ip_parts[1]}.${ip_parts[2]}.1"
-    fi
-
-    read -p "输入mask (直接回车将使用默认值):" DD_MASK
-    if [[ -z "$DD_MASK" ]]; then
-        DD_MASK="255.255.255.0"
-    fi
-
-    echo "debian 12"
-    # Example command using DD_IP, DD_GATE, and DD_MASK
-    echo "IP: $DD_IP, Gate: $DD_GATE, Mask: $DD_MASK"
-fi
-
-
-
+ read -p "输入内网ip:" DD_IP
+ read -p "输入网关gate:" DD_GATE
+ read -p "输入mask:" DD_MASK
+echo "debian 12"
 
 #bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"  --ip-mask ${DD_MASK}       --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322"  --ip-mask ${DD_MASK}   --ip-gate ${DD_GATE}    --ip-addr  ${DD_IP}
