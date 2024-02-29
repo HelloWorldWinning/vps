@@ -83,7 +83,5 @@ bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/Hello
 
 
 #  echo "bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr  "
-fi
-
-
+#fi
 
