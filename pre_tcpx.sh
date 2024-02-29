@@ -11,7 +11,7 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
-apt-get install -y  apache2-utils lsof  wget curl
+apt-get install -y  apache2-utils lsof  wget curl  nmap
 
 git config --global core.editor "vim"
 
