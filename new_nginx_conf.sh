@@ -301,11 +301,13 @@ nginx_conf_func443() {
 
 Get_Key_Path
 
-read -p "port  default: 443: " Port
-    if   [[ -z "$Port" ]]; then
-            Port=443
+Port=443
 
-    fi
+#read -p "port  default: 443: " Port
+#    if   [[ -z "$Port" ]]; then
+#            Port=443
+#
+#    fi
 
 
 
