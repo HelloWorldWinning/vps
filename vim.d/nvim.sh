@@ -12,6 +12,8 @@ curl  --ipv4 -fLo ~/.vim/autoload/plug.vim --create-dirs \
 pip install neovim
 pip install pynvim
 
+pip3 install neovim
+pip3 install pynvim
 
 curl  --ipv4 -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 
