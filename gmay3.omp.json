@@ -30,7 +30,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "$(pwd)   <b>$(ls |wc -l)  </b>",
+          "template": " $(pwd)   <b>$(ls |wc -l)  </b>",
           "type": "path",
           "font-weight": "bold"
         },
