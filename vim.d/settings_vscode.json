@@ -42,9 +42,8 @@
 //  "editor.fontFamily": "Inconsolata",
 // "editor.fontFamily": "DroidSansM Nerd Font Mono",
 //"editor.fontFamily": "DroidSansM Nerd Font",
-  "editor.fontFamily": "source code pro",
 //"editor.fontFamily": "Roboto Mono",
-
+  "editor.fontFamily": "source code pro",
 //"editor.fontVariations": false,
   "editor.fontVariations": true,
   "editor.fontSize": 17,
