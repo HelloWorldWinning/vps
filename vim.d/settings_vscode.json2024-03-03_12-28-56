@@ -41,8 +41,7 @@
   // "editor.fontFamily": "Fira Sans",
 //  "editor.fontFamily": "Inconsolata",
 // "editor.fontFamily": "DroidSansM Nerd Font Mono",
-//"editor.fontFamily": "DroidSansM Nerd Font",
- "editor.fontFamily": "Inconsolata",
+ "editor.fontFamily": "DroidSansM Nerd Font",
 
 //"editor.fontVariations": false,
   "editor.fontVariations": true,
