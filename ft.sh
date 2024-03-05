@@ -145,6 +145,7 @@ sed -i "s/SampleStrategy//"  docker-compose.yml
 
 if [ "$choice" -eq 3 ]; then
   echo '      --freqaimodel  ' >> docker-compose.yml
+  bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
 fi
 
 
