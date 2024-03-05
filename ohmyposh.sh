@@ -1,6 +1,6 @@
 
 
-apt install  -y unzip jq
+apt install  -y unzip jq wget
 clear
 curl -4s https://ohmyposh.dev/install.sh | bash -s
 mkdir -p ~/themes/
