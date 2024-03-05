@@ -20,10 +20,12 @@
                 72,
                 144,
                 288,
-                576
+                576,
+                864,
+                1152
             ],
             "label_period_candles": 20,
-            "DI_threshold": 20,
+            "DI_threshold": 19,
             "weight_factor": 0.9,
             "principal_component_analysis": false,
             "use_SVM_to_remove_outliers": false,
@@ -47,8 +49,8 @@
     "stake_amount": "unlimited",
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
-        "entry": 20,
-        "exit": 20
+        "entry": 30,
+        "exit": 30
     },
     "exchange": {
         "name": "binance",
