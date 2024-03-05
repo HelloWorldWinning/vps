@@ -18,4 +18,4 @@ export country_code=\$(curl -s 'https://ipinfo.io/json?token=6d89f8e7f1a21e' | g
 eval "\$(oh-my-posh init bash --config ~/themes/gmay3.omp.json)"
 EOF
 
-wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+#wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
