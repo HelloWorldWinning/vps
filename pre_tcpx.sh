@@ -216,4 +216,4 @@ wget --inet4-only -O  ~/.vscode-server/data/Machine/settings.json   https://raw.
 bash  <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh )
 
 
-
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  )
