@@ -58,7 +58,7 @@ read -p "重点关注mask 默认DD进行。其他情况手工输入内网ip:" DD
 if [[ -z "$DD_IP" ]]; then
     eval ${dd_debian12}
 else
-    read -p "输入网关gate (直接回车将使用默认值):" DD_GATE
+    read -p "输入网关gate (直接回车将使用默认值):\n" DD_GATE
     if [[ -z "$DD_GATE" ]]; then
         # Extract the first three segments of DD_IP and append .1 for the default gateway
         IFS='.' read -r -a ip_parts <<< "$DD_IP"
