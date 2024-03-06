@@ -1315,9 +1315,9 @@ start_menu() {
     startbbrcake
     check_sys_official_bbr
     startecn
-  # startbbrcake
     optimizing_system_johnrosen1
     optimizing_system
+    startbbrcake
     ;;
   99)
     exit 1
