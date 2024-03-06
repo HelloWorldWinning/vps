@@ -75,7 +75,7 @@ else
 
     echo "debian 12"
     # Example command using DD_IP, DD_GATE, and DD_MASK
-    echo -e "IP: $DD_IP, \nGate: $DD_GATE, \nMask: $DD_MASK"
+    echo -e 'IP: $DD_IP, \nGate: $DD_GATE, \nMask: $DD_MASK'
     read -t 4 -n 1 -s -p "Press any key to continue immediately..."
 fi
 
