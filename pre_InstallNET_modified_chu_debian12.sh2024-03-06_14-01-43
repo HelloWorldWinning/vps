@@ -54,28 +54,25 @@ function netmask() {
 #echo "debian 12"
 
 
-echo -e  "重点关注mask 默认DD进行。其他情况手工输入内网ip:\n" 
-read DD_IP
+read -p "重点关注mask 默认DD进行。其他情况手工输入内网ip:\n" DD_IP
 if [[ -z "$DD_IP" ]]; then
     eval ${dd_debian12}
 else
-    echo -e  "输入网关gate (直接回车将使用默认值):\n" 
-    read DD_GATE
+    read -p "输入网关gate (直接回车将使用默认值):\n" DD_GATE
     if [[ -z "$DD_GATE" ]]; then
         # Extract the first three segments of DD_IP and append .1 for the default gateway
         IFS='.' read -r -a ip_parts <<< "$DD_IP"
         DD_GATE="${ip_parts[0]}.${ip_parts[1]}.${ip_parts[2]}.1"
     fi
 
-    echo -e  "输入mask (直接回车将使用默认值):\n"
-    read DD_MASK
+    read -p "输入mask (直接回车将使用默认值):\n" DD_MASK
     if [[ -z "$DD_MASK" ]]; then
         DD_MASK="255.255.255.0"
     fi
 
     echo "debian 12"
     # Example command using DD_IP, DD_GATE, and DD_MASK
-    echo "IP: $DD_IP, \nGate: $DD_GATE, \nMask: $DD_MASK"
+    echo "IP: $DD_IP, Gate: $DD_GATE, Mask: $DD_MASK"
     read -t 4 -n 1 -s -p "Press any key to continue immediately..."
 fi
 
