@@ -77,8 +77,9 @@ wget --inet4-only -O  ~/.config/nvim/init.vim  https://raw.githubusercontent.com
 #alias _g='git add . && git commit -m   " Sun 15 Jan 2023 05:27:01 PM CST " && git push'
 
 
-read  -p "default OPENAI_API_KEY  belongs to keubahkmc@outlook.com " OPENAI_API_KEY
-[[ -z "${OPENAI_API_KEY}" ]] &&  OPENAI_API_KEY=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
+#read  -p "default OPENAI_API_KEY  belongs to keubahkmc@outlook.com " OPENAI_API_KEY
+#[[ -z "${OPENAI_API_KEY}" ]] &&  OPENAI_API_KEY=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
+OPENAI_API_KEY=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
 
 cat >>~/.bashrc<<EOF
 alias v='vim'
