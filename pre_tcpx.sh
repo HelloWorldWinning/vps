@@ -136,19 +136,32 @@ if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" != "vscode" ]; then
     fi
 fi
 
+#if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" = "vscode" ]; then
+#    # Check if a tmux session named "vscode" exists
+#    tmux has-session -t vscode &>/dev/null
+#    if [ \$? -ne 0 ]; then
+#        # If the session does not exist, create it
+#        tmux new-session -s vscode -d
+#    fi
+#    # If we are not already inside a tmux session, attach to the "vscode" session
+#    if [ -z "\$TMUX" ]; then
+#        tmux attach -t vscode
+#    fi
+#fi
+#
+
 if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" = "vscode" ]; then
     # Check if a tmux session named "vscode" exists
     tmux has-session -t vscode &>/dev/null
-    if [ \$? -ne 0 ]; then
+    if [ \$? -ne 0 ]; then # Fixed the condition to properly check the exit status
         # If the session does not exist, create it
         tmux new-session -s vscode -d
     fi
     # If we are not already inside a tmux session, attach to the "vscode" session
-    if [ -z "\$TMUX" ]; then
+    if [ -z "\$TMUX" ]; then # Correctly check the $TMUX variable to ensure not already in a session
         tmux attach -t vscode
     fi
 fi
-
 
 
 
