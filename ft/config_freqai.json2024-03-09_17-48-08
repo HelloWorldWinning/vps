@@ -3,19 +3,20 @@
         "reverse_train_test_order": false,
         "enabled": true,
         "purge_old_models": 1,
-        "train_period_days": 45,
+        "train_period_days": 60,
         "backtest_period_days": 7,
         "live_retrain_hours": 0,
-        "identifier": "2024-03-09_17-53-35",
+        "identifier": "2024-03-08_22-31-13",
         "feature_parameters": {
             "include_corr_pairlist": [],
-            "include_shifted_candles": 0,
+            "include_shifted_candles": 1,
             "include_timeframes": [
                 "5m"
             ],
             "indicator_periods_candles": [
                 12,
                 24,
+                36,
                 72,
                 144,
                 288,
