@@ -1,6 +1,26 @@
 ================================================================
 ================================================================
+# Create the missing nginx log directory
+sudo mkdir -p /var/log/nginx
+
+# Create the missing error.log file
+sudo touch /var/log/nginx/error.log
+
+# Set appropriate permissions for the error.log file
+sudo chmod 644 /var/log/nginx/error.log
+# Adjust user and group if your setup differs
+
+sudo chown nginx:nginx /var/log/nginx/error.log 
+# Test nginx configuration
+nginx -t
+
+# If the test is successful, restart nginx
+# sudo systemctl restart nginx.service
 ================================================================
+
+
+
+
 ================================================================
 
 @reboot sleep 4 ; bash -c "source ~/.bashrc;export PATH=/root/anaconda3/envs/Freqtrade/bin:$PATH; /root/anaconda3/envs/Freqtrade/bin/python  /etc/nginx/conf.d/1666.py "
