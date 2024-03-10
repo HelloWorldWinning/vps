@@ -79,9 +79,6 @@ fi
 
 case $choice in
 3)
-sed -i "s/SampleStrategy//"  docker-compose.yml
-bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
-
         # Method 3: Download the AI configuration file and update the docker image
         mkdir -p user_data
         wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config_freqai.json
@@ -144,12 +141,12 @@ docker-compose run --rm freqtrade create-userdir --userdir user_data
 sudo chown -R 1000:1000  ../$folder_name
 #cd $folder_name/
 
-#sed -i "s/SampleStrategy//"  docker-compose.yml
+sed -i "s/SampleStrategy//"  docker-compose.yml
 
-#if [ "$choice" -eq 3 ]; then
-#  echo '      --freqaimodel  ' >> docker-compose.yml
-#  bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
-#fi
-#
+if [ "$choice" -eq 3 ]; then
+  echo '      --freqaimodel  ' >> docker-compose.yml
+  bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
+fi
+
 
 echo -en "       ${RED}${folder_name}${PLAIN} on ${RED}${port}${PLAIN} created "
