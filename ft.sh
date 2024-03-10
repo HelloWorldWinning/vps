@@ -41,7 +41,6 @@ else
 fi
 
 #mkdir ft_userdata
-#cd ft_userdata/
 cd  $folder_name/
 # Download the docker-compose file from the repository
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
@@ -80,6 +79,7 @@ fi
 case $choice in
 3)
 sed -i "s/SampleStrategy//"  docker-compose.yml
+echo '      --freqaimodel  ' >> docker-compose.yml
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
 
         # Method 3: Download the AI configuration file and update the docker image
@@ -140,9 +140,7 @@ docker-compose pull
 docker-compose run --rm freqtrade create-userdir --userdir user_data
 
 
-# cd ..
 sudo chown -R 1000:1000  ../$folder_name
-#cd $folder_name/
 
 #sed -i "s/SampleStrategy//"  docker-compose.yml
 
