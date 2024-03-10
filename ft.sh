@@ -46,6 +46,7 @@ cd  $folder_name/
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
 
 wget -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_info.txt
+wget -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/update_bot_name.sh
 
 #sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 
