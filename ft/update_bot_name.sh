@@ -11,3 +11,6 @@ if [[ -n $model_name ]]; then
 else
     echo "Failed to extract model name from docker-compose.yml"
 fi
+
+
+chown -R 1000:1000 *
