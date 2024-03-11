@@ -124,15 +124,15 @@ l
 #if true; then
 
 if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" != "vscode" ]; then
-    # Check if a tmux session named "doing" exists
-    tmux has-session -t doing &>/dev/null
+    # Check if a tmux session named "do" exists
+    tmux has-session -t do &>/dev/null
     if [ \$? -ne 0 ]; then
         # If the session does not exist, create it
-        tmux new-session -s doing -d
+        tmux new-session -s do -d
     fi
-    # If we are not already inside a tmux session, attach to the "doing" session
+    # If we are not already inside a tmux session, attach to the "do" session
     if [ -z "\$TMUX" ]; then
-        tmux attach -t doing
+        tmux attach -t do
     fi
 fi
 
