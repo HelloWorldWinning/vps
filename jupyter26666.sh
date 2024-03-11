@@ -67,6 +67,8 @@ sudo chmod 664 ${log_file}
 conda install -c conda-forge cchardet chardet jupyter26666.sh
 conda install -c conda-forge notebook==6.5.4
 
+jupyter notebook password
+
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
 
