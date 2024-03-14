@@ -21,7 +21,7 @@
                 864
             ],
             "label_period_candles": 20,
-            "DI_threshold": 20,
+            "DI_threshold": 5 ,
             "weight_factor": 0.9,
             "principal_component_analysis": false,
             "use_SVM_to_remove_outliers": false,
