@@ -74,7 +74,6 @@ def login():
         </div>
     '''
 
-
 @app.route('/<path:subpath>')
 def navigate(subpath):
     if not session.get('logged_in'):
@@ -82,102 +81,46 @@ def navigate(subpath):
     path = '/' + subpath
     files_and_dirs = list_files_and_dirs(path)
     return render_template_string("""
-        <html>
-        <head>
-            <title>{{ '/' + subpath + '/' }}</title>
-            <style>
-                table {
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-                th, td {
-                    border: 1px solid black;
-                    padding: 10px;
-                    text-align: center;
-                }
-                th {
-                    background-color: #f2f2f2;
-                }
-                .item-col {
-                    text-align: left;
-                }
-            </style>
-        </head>
-        <body>
-            <table>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 10px;
+                text-align: center;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .item-col {
+                text-align: left;
+            }
+        </style>
+        <table>
+            <tr>
+                <th>No</th>
+                <th class="item-col">Item</th>
+                <th>Size</th>
+                <th>Modified</th>
+            </tr>
+            {% for idx, (item, size, modified_time) in files_and_dirs %}
                 <tr>
-                    <th>No</th>
-                    <th class="item-col">Item</th>
-                    <th>Size</th>
-                    <th>Modified</th>
+                    <td>{{ idx }}</td>
+                    {% if item.endswith('.ipynb') %}
+                        <td class="item-col"><a href="{{ url_for('notebooks', path=item[1:]) }}">{{ item }}</a></td>
+                    {% elif item.endswith('.py') %}
+                        <td class="item-col"><a href="{{ url_for('python_files', path=item[1:]) }}">{{ item }}</a></td>
+                    {% else %}
+                        <td class="item-col"><a href="{{ url_for('navigate', subpath=item[1:]) }}">{{ item }}</a></td>
+                    {% endif %}
+                    <td>{{ size }}</td
+                    ><td>{{ modified_time }}</td>
                 </tr>
-                {% for idx, (item, size, modified_time) in files_and_dirs %}
-                    <tr>
-                        <td>{{ idx }}</td>
-                        {% if item.endswith('.ipynb') %}
-                            <td class="item-col"><a href="{{ url_for('notebooks', path=item[1:]) }}">{{ item.split('/')[-1] }}</a></td>
-                        {% elif item.endswith('.py') %}
-                            <td class="item-col"><a href="{{ url_for('python_files', path=item[1:]) }}">{{ item.split('/')[-1] }}</a></td>
-                        {% else %}
-                            <td class="item-col"><a href="{{ url_for('navigate', subpath=item[1:]) }}">{{ item.split('/')[-1] }}</a></td>
-                        {% endif %}
-                        <td>{{ size }}</td>
-                        <td>{{ modified_time }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </body>
-        </html>
-    """, subpath=subpath, files_and_dirs=files_and_dirs)
-
-
-#@app.route('/<path:subpath>')
-#def navigate(subpath):
-#    if not session.get('logged_in'):
-#        return redirect(url_for('login'))
-#    path = '/' + subpath
-#    files_and_dirs = list_files_and_dirs(path)
-#    return render_template_string("""
-#        <style>
-#            table {
-#                border-collapse: collapse;
-#                width: 100%;
-#            }
-#            th, td {
-#                border: 1px solid black;
-#                padding: 10px;
-#                text-align: center;
-#            }
-#            th {
-#                background-color: #f2f2f2;
-#            }
-#            .item-col {
-#                text-align: left;
-#            }
-#        </style>
-#        <table>
-#            <tr>
-#                <th>No</th>
-#                <th class="item-col">Item</th>
-#                <th>Size</th>
-#                <th>Modified</th>
-#            </tr>
-#            {% for idx, (item, size, modified_time) in files_and_dirs %}
-#                <tr>
-#                    <td>{{ idx }}</td>
-#                    {% if item.endswith('.ipynb') %}
-#                        <td class="item-col"><a href="{{ url_for('notebooks', path=item[1:]) }}">{{ item }}</a></td>
-#                    {% elif item.endswith('.py') %}
-#                        <td class="item-col"><a href="{{ url_for('python_files', path=item[1:]) }}">{{ item }}</a></td>
-#                    {% else %}
-#                        <td class="item-col"><a href="{{ url_for('navigate', subpath=item[1:]) }}">{{ item }}</a></td>
-#                    {% endif %}
-#                    <td>{{ size }}</td
-#                    ><td>{{ modified_time }}</td>
-#                </tr>
-#            {% endfor %}
-#        </table>
-#    """, files_and_dirs=files_and_dirs)
+            {% endfor %}
+        </table>
+    """, files_and_dirs=files_and_dirs)
 
 @app.route('/py/<path:path>')
 @app.route('/python/<path:path>')
