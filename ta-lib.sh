@@ -18,6 +18,14 @@ sudo make install
 
 pip install TA-Lib
 pip install freqtrade
+pip install datasieve
 pip install    plotly   scipy matplotlib
+pip install -U scikit-learn
+
 
 pip3 install -U scikit-learn
+pip3 install datasieve
+
+
+
+
