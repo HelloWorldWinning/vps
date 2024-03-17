@@ -251,6 +251,7 @@ def edit(path):
 
 
 
+@app.route('/ipynb/<path:path>')
 @app.route('/nb/<path:path>')
 @app.route('/notebook/<path:path>')
 @app.route('/notebooks/<path:path>')
