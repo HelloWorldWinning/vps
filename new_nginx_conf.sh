@@ -380,6 +380,10 @@ fancyindex_name_length  1024;
 auth_basic_user_file    /root/passwd.txt;
 auth_basic            "Restricted Area";
 
+
+    # Set cache-control header to instruct browsers to cache the content for 1 week
+add_header Cache-Control "private, max-age=604800";
+
 }
 
 
