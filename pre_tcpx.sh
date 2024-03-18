@@ -68,8 +68,9 @@ weather_temperature="\${temperature}°C \${weather}"
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
 
+# find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h
 #alias zz='du  -sh * |sort -h'
-alias zz='du -sh .[!.]* * | sort -h'
+alias zz='du -sh ./* ./.??* | sort -h'
 alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
