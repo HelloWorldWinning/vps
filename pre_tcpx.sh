@@ -70,7 +70,8 @@ alias ca='calcurse'
 
 # find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h
 #alias zz='du  -sh * |sort -h'
-alias zz='du -sh ./* ./.??* | sort -h'
+#alias zz='du -sh ./* ./.??* | sort -h'
+alias zz='find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h'
 alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
