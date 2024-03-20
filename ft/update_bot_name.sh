@@ -7,7 +7,9 @@ model_name=$(awk '/--freqaimodel/ { print $NF }' docker-compose.yml)
 if [[ -n $model_name ]]; then
     # Use jq to update bot_name in config.json, ensuring atomic update
     jq --arg model_name "$model_name" '.bot_name = $model_name' user_data/config.json > user_data/tmp.config.json && mv user_data/tmp.config.json user_data/config.json
-    echo "bot_name updated to $model_name in config.json"
+  # echo "bot_name updated to $model_name in config.json"
+#   echo "$model_name is updated to bot_name in config.json"
+    echo -e "    \033[31m$model_name\033[0m     is updated to bot_name in config.json"
 else
     echo "Failed to extract model name from docker-compose.yml"
 fi
