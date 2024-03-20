@@ -859,7 +859,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		103) bash  <(curl -sLk  yabs.sh  ) -i ;;
 		104) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
 		105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh  )  ;;
-		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh)  ;;
+		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
 		q)eval "exit";;
