@@ -356,7 +356,6 @@
                 "/profit"
             ],
             [
-                "/logs",
                 "/show_config",
                 "/stop",
                 "/start"
