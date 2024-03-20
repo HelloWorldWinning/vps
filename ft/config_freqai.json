@@ -335,8 +335,8 @@
         "enable_openapi": false,
         "jwt_secret_key": "73a5d418ef03ca2e646fa0ae15a391e7fe0e53f29ffb4cfaace9d7aa4d34d6a5",
         "CORS_origins": [],
-        "username": "f",
-        "password": "t"
+        "username": "1",
+        "password": "1"
     },
     "telegram": {
         "enabled": false,
