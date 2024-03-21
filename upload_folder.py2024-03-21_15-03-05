@@ -37,15 +37,6 @@ def index():
     <html>
     <head>
         <title>Upload File or Folder</title>
-        <style>
-            #loading {
-                display: none;
-                font-size: 300%;       /* Make text 3 times bigger */
-                color: white;          /* Change font color to white */
-                background-color: red; /* Set background color to red */
-                padding: 10px;         /* Add some padding for better visibility */
-            }
-        </style>
         <script>
         function uploadFiles() {
             document.getElementById('uploadForm').submit();
@@ -72,16 +63,12 @@ def index():
             <input type="file" id="folderInput" name="files" multiple webkitdirectory style="display: none;" onchange="uploadFiles()">
             <button type="button" id="uploadButton" onclick="triggerFileUpload()">Choose Files</button>
             <button type="button" id="folderButton" onclick="triggerFolderUpload()">Choose Folder</button>
-            <div id="loading">Uploading, please wait...</div>
+            <div id="loading" style="display: none;">Uploading, please wait...</div>
         </form>
     </body>
     </html>
     '''
     return render_template_string(html_content)
-
-
-
-
 
 @app.route('/upload', methods=['POST'])
 @requires_auth
