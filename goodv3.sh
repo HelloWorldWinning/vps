@@ -641,7 +641,8 @@ ${Red_font_prefix}101${Font_color_suffix} jupyter1666.sh
 ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
-${Red_font_prefix}105${Font_color_suffix} new branch.sh 
+${Red_font_prefix}105${Font_color_suffix} git new branch.sh 
+${Red_font_prefix}106${Font_color_suffix} upload_folder.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
  
@@ -859,6 +860,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		103) bash  <(curl -sLk  yabs.sh  ) -i ;;
 		104) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
 		105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh  )  ;;
+		106) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.sh )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
