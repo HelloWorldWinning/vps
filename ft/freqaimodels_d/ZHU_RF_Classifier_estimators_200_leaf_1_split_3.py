@@ -39,7 +39,8 @@ class ZHU_RF_Classifier_estimators_200_leaf_1_split_3(BaseClassifierModel):
         train_weights = data_dictionary["train_weights"]
 
         model = RandomForestClassifier(
-            n_estimators=200,
+            n_jobs=-1,     
+            n_estimators=300,
             min_samples_split=3,
             **self.model_training_parameters)
         model.fit(X=X, y=y, sample_weight=train_weights)
