@@ -1,34 +1,32 @@
 #!/bin/bash
 
 port=777
-# Download the upload_folder.py script
-wget -4 -O /root/upload_folder.py https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.py
+wget -4O /root/upload_folder.py  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.py
 
-#####sed -i 's/port=777/port=${port}/' /root/upload_folder.py
+
 sed -i "s/port=777/port=${port}/" /root/upload_folder.py
 
-# Install Flask and Werkzeug
-pip install flask werkzeug
 
-# Define the port number
 
-# Define service name and log file path
+
+pip install flask werkzeug 
+
+# Create a systemd service file for the upload service with dynamic Conda environment activation and logging
 service_name="upload${port}"
 log_file="/var/log/${service_name}.log"
+# Capture the current Conda environment name
+conda_env_name=$(echo $CONDA_DEFAULT_ENV)
 
-# Check if a Conda environment is active
-if [ -z "$CONDA_DEFAULT_ENV" ]; then
+# Ensure that a Conda environment is active
+if [ -z "$conda_env_name" ]; then
     echo "Error: No active Conda environment found."
     exit 1
 fi
 
-# Capture the current Conda environment name
-conda_env_name=$(echo $CONDA_DEFAULT_ENV)
-
-# Determine the Conda setup script path
+# Find the path to the Conda setup script and the Conda environment's bin directory
 conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
 
-# Set the Conda environment's bin directory path
+# Set the path for the Conda environment's bin directory
 if [ "$conda_env_name" == "base" ]; then
     conda_env_bin_dir="/root/anaconda3/bin"
 else
@@ -38,11 +36,11 @@ fi
 # Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/${service_name}.service
 [Unit]
-Description=Jupyter Notebook Service on Port ${port}
+Description=Upload Folder Service
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter notebook --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/'
+ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/python /root/upload_folder.py --port=${port}'
 User=root
 Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 StandardOutput=append:${log_file}
@@ -52,7 +50,7 @@ StandardError=append:${log_file}
 WantedBy=multi-user.target
 EOF
 
-# Create the log file and set appropriate permissions
+# Create log file and set permissions
 sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
