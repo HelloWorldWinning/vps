@@ -6,7 +6,7 @@
         "train_period_days": 65,
         "backtest_period_days": 7,
         "live_retrain_hours": 0,
-        "identifier": "2024-03-22_13-01-10",
+        "identifier": "2024-03-14_15-00-21",
         "feature_parameters": {
             "include_corr_pairlist": [],
             "include_shifted_candles": 0,
@@ -45,8 +45,8 @@
     "stake_amount": "unlimited",
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
-        "entry": 25,
-        "exit": 25
+        "entry": 20,
+        "exit": 20
     },
     "exchange": {
         "name": "binance",
@@ -174,6 +174,7 @@
             "CHZ/USDT:USDT",
             "ASTR/USDT:USDT",
             "KLAY/USDT:USDT",
+            "STRAX/USDT:USDT",
             "FLOW/USDT:USDT",
             "BIGTIME/USDT:USDT",
             "CVX/USDT:USDT",
