@@ -1,3 +1,11 @@
+
+"n_estimators" : 300,
+"n_jobs": -1,
+"min_samples_leaf": 1,
+"min_samples_split" : 3,
+"criterion" :"entropy"
+
+
 https://www.freqtrade.io/en/stable/telegram-usage/
 https://www.freqtrade.io/en/stable/configuration/
 https://www.freqtrade.io/en/stable/freqai/#usage-with-docker
