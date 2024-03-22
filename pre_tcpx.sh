@@ -244,7 +244,11 @@ bash <(curl  --ipv4  -sL https://raw.githubusercontent.com/HelloWorldWinning/vps
 #
 #
 ##### vim 
-bash  <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh )
+bash  <(curl       -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh )
+
+
+
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap7G.sh
 
 
 
