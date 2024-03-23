@@ -8,6 +8,15 @@ model_name=$(awk '/--freqaimodel/ { print $NF }' docker-compose.yml)
 # Get the current time tag in the desired format
 time_tag=$(date "+%Y-%m-%d_%H-%M-%S")
 
+# Extract the --strategy value using awk
+strategy=$(awk '/--strategy/ { print $NF }' docker-compose.yml)
+
+# Combine model_name and strategy
+if [[ -n $strategy ]]; then
+  model_name="${strategy}===${model_name}"
+fi
+
+#
 # Check if the model_name variable is not empty
 if [[ -n $model_name ]]; then
     # Use jq to update bot_name and identifier in config.json, ensuring atomic update
