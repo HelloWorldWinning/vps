@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/bash
+###########
+####!/bin/bash
 
 # Extract the --freqaimodel value using awk
 model_name=$(awk '/--freqaimodel/ { print $NF }' docker-compose.yml)
