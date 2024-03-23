@@ -151,4 +151,9 @@ sudo chown -R 1000:1000  ../$folder_name
 #fi
 #
 
+chmod -R 777  *
 echo -en "       ${RED}${folder_name}${PLAIN} on ${RED}${port}${PLAIN} created "
+
+
+
+
