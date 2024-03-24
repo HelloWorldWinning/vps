@@ -13,7 +13,7 @@ strategy=$(awk '/--strategy/ { print $NF }' docker-compose.yml)
 
 # Combine model_name and strategy
 if [[ -n $strategy ]]; then
-  model_name="${strategy}===${model_name}"
+  model_name="${strategy} === ${model_name}"
 fi
 
 #
