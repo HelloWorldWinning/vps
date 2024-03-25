@@ -21,9 +21,9 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 #background_color_hex="#474544"
 #background_color_hex="#32302f"
 
-#background_color_hex="0c2a35"
-#background_color_hex="103a4a"
-background_color_hex="154659"
+#background_color_hex="#0c2a35"
+#background_color_hex="#103a4a"
+background_color_hex="#154659"
 
 
 
