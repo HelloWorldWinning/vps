@@ -21,13 +21,30 @@ echo -en "Enter the ${RED}port ${PLAIN}number you want to use: "
 read port
 
 # Check if the port is already in use
-if lsof -i :$port > /dev/null; then
-    echo "Error: Port $port is already in use."
-    exit 1
+#if lsof -i :$port > /dev/null; then
+#    echo "Error: Port $port is already in use."
+#    exit 1
+#fi
+
+# Check if netstat is available on the system
+if command -v netstat &> /dev/null; then
+    # Check using netstat for listening sockets and associated programs
+    if netstat -tulpn 2>/dev/null | grep -q ":$port\b"; then
+        echo "Error: Port $port is already in use by the following listening service(s):"
+        netstat -tulpn 2>/dev/null | grep ":$port\b" | awk '{print $7}' | sort -u
+        exit 1
+    fi
+else
+    echo "Error: netstat is not available on the system."
+    exit 2
 fi
 
+#echo "Port $port is free to use."
+
+
+
 # Continue with the rest of your script if the port is not in use
-echo -en "Port ${RED}$port is available.${PLAIN}"
+echo -en "Port ${RED}$port is free available.${PLAIN}"
 
 folder_name="${folder_name}_${port}"
 
