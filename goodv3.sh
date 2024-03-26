@@ -856,8 +856,12 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
 		101) 
-			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
-			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh )  ;;
+bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
+bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
+	netstat -tulnp |grep 1666	       
+			;;
+
+
 		102) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh )  ;;
 		103) bash  <(curl -sLk  yabs.sh  ) -i ;;
 		104) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
