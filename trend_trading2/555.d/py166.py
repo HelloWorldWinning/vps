@@ -12,9 +12,6 @@ from flask import send_from_directory
 
 from datetime import timedelta
 
-style_name = "gruvbox-light"
-
-
 
 app = Flask(__name__)
 app.secret_key = '1'
@@ -29,6 +26,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 background_color_hex = "#154659"
 
 
+style_name = "gruvbox-light"
 
 
 @app.route('/favicon.ico')
