@@ -858,7 +858,8 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		101) 
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
-	netstat -tulnp |grep 1666	       
+echo "======================================="
+	netstat -tulnp |grep 166	       
 			;;
 
 
