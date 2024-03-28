@@ -17,6 +17,7 @@ from freqtrade.freqai.torch.PyTorchTrainerInterface import PyTorchTrainerInterfa
 # Get the number of available CPU cores
 num_cores = os.cpu_count() or 0
 num_cores = int(min(num_cores, 8))
+num_cores = 0
 
 
 logger = logging.getLogger(__name__)
