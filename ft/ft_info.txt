@@ -1,3 +1,11 @@
+      download-data
+      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --config /freqtrade/user_data/config.json
+      --timeframe 1m
+      --timerange 20100101-20241231
+
+
+
 
 "n_estimators" : 300,
 "n_jobs": -1,
