@@ -251,4 +251,4 @@ fi
 ###### _pre end
 EOF
 
-source ~/.bashrc
+#source ~/.bashrc
