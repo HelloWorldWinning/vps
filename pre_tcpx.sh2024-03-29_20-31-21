@@ -39,84 +39,6 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 
 mkdir -p /data
 
-
-#source /root/.bashrc
-
-
-
-
-prefer_ipv4() {
-  # Check for root privileges
-  if [ "$EUID" -ne 0 ]; then
-    echo "Please run as root"
-    return 1
-  fi
-
-  # Backup the original gai.conf file
-  cp /etc/gai.conf /etc/gai.conf.bak
-
-  # Check if the line already exists to avoid duplicate entries
-  if ! grep -q "^precedence ::ffff:0:0/96  100" /etc/gai.conf; then
-    # Add the precedence line to /etc/gai.conf
-    echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
-  else
-    echo "The precedence line already exists in /etc/gai.conf"
-  fi
-
-  # Validate if networking service exists and is active
-  if systemctl is-active --quiet networking; then
-    # Custom pre-check: Ensure that network interfaces are up
-    if ip link show | grep -q "state UP"; then
-      # Actual restart of the networking service
-      systemctl restart networking
-      echo "IPv4 is now preferred over IPv6 and networking service is restarted."
-    else
-      echo "Network interfaces are not up. Aborting restart to avoid potential loss of connection."
-      return 1
-    fi
-  else
-    echo "Networking service is not active. Manually restart to apply changes."
-  fi
-
-  # If something goes wrong, instruct the user to restore the backup
-  echo "If you encounter issues, restore the original gai.conf using 'cp /etc/gai.conf.bak /etc/gai.conf' and restart networking."
-}
-
-prefer_ipv4
-
-
-
-# ohmyposh.sh
-
-mkdir -p /root/themes/
-
-#wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
-
-#bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
-
-wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
-
-mkdir -p ~/.vscode-server/data/Machine/
-sleep 1
-wget --inet4-only -O  ~/.vscode-server/data/Machine/settings.json   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
-
-
-
-bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  )
-
-
-
-# ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )'
-bash <(curl  --ipv4  -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )
-#
-#
-##### vim 
-bash  <(curl       -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh )
-
-
-bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap7G.sh )
-
-
 cat >>~/.bashrc<<EOF
 ###### _pre start
 
@@ -251,4 +173,81 @@ fi
 ###### _pre end
 EOF
 
+source /root/.bashrc
 source ~/.bashrc
+
+
+
+
+prefer_ipv4() {
+  # Check for root privileges
+  if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    return 1
+  fi
+
+  # Backup the original gai.conf file
+  cp /etc/gai.conf /etc/gai.conf.bak
+
+  # Check if the line already exists to avoid duplicate entries
+  if ! grep -q "^precedence ::ffff:0:0/96  100" /etc/gai.conf; then
+    # Add the precedence line to /etc/gai.conf
+    echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
+  else
+    echo "The precedence line already exists in /etc/gai.conf"
+  fi
+
+  # Validate if networking service exists and is active
+  if systemctl is-active --quiet networking; then
+    # Custom pre-check: Ensure that network interfaces are up
+    if ip link show | grep -q "state UP"; then
+      # Actual restart of the networking service
+      systemctl restart networking
+      echo "IPv4 is now preferred over IPv6 and networking service is restarted."
+    else
+      echo "Network interfaces are not up. Aborting restart to avoid potential loss of connection."
+      return 1
+    fi
+  else
+    echo "Networking service is not active. Manually restart to apply changes."
+  fi
+
+  # If something goes wrong, instruct the user to restore the backup
+  echo "If you encounter issues, restore the original gai.conf using 'cp /etc/gai.conf.bak /etc/gai.conf' and restart networking."
+}
+
+prefer_ipv4
+
+
+
+# ohmyposh.sh
+
+mkdir -p /root/themes/
+
+#wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+
+#bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh )
+
+wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+
+mkdir -p ~/.vscode-server/data/Machine/
+sleep 1
+wget --inet4-only -O  ~/.vscode-server/data/Machine/settings.json   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
+
+
+
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  )
+
+
+
+# ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )'
+bash <(curl  --ipv4  -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )
+#
+#
+##### vim 
+bash  <(curl       -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh )
+
+
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap7G.sh )
+
+
