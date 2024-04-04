@@ -862,6 +862,7 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ju
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
 echo "======================================="
 	netstat -tulnp |grep 166	       
+	netstat -tulnp |grep 166 | wc -l	       
 			;;
 
 
