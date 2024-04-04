@@ -644,7 +644,8 @@ ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
 ${Red_font_prefix}105${Font_color_suffix} git new branch.sh 
 ${Red_font_prefix}106${Font_color_suffix} upload_folder.sh
 ${Red_font_prefix}107${Font_color_suffix} curl -sL yabs.sh | bash -s -- -i
-${Red_font_prefix}108${Font_color_suffix} ddp_master.sh
+${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution  computing
+${Red_font_prefix}109${Font_color_suffix} ray_install2.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
  
@@ -874,6 +875,7 @@ echo "======================================="
 		107) curl -sL yabs.sh | bash -s -- -i ;;
 
 		108) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ddp_master.sh )  ;;
+		109) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ray_install2.sh )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
