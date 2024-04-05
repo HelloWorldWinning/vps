@@ -1,4 +1,11 @@
 #!/bin/bash
+# Calculate total memory in bytes
+total_mem_bytes=$(awk '/MemTotal/ {print $2 * 1024}' /proc/meminfo)
+# Calculate 50% of total memory for shm_size, convert to gigabytes
+shm_size_gb=$(awk -v mem=$total_mem_bytes 'BEGIN {printf "%.2f", mem * 0.5 / (1024^3)}')
+
+
+
 
 # Step 1: Ask user to choose between Ray worker or Ray head
 read -p "Do you want to install Ray worker or Ray head? [default worker: head/0] (default: worker): " choice
@@ -35,7 +42,7 @@ services:
     container_name: $node_type
     command: >
       /bin/bash -c "$command"
-    shm_size: '6gb'
+    shm_size: '${shm_size_gb}gb'
     environment:
       - RAY_ADDRESS=$RAY_ADDRESS
     restart: always
