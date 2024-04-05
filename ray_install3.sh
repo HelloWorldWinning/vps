@@ -5,12 +5,21 @@ sudo apt-get -y install dnsutils
 rm -r /tmp/ray/
 clear
 
+
+
+
 total_mem_bytes=$(awk '/MemTotal/ {print $2 * 1024}' /proc/meminfo)
-# Calculate 50% of total memory for shm_size, convert to gigabytes
-shm_size_gb=$(awk -v mem=$total_mem_bytes 'BEGIN {printf "%.2f", mem * 0.5 / (1024^3)}')
+
+shm_size_gb=$(awk -v mem=$total_mem_bytes 'BEGIN {printf "%.2f", mem * 0.9 / (1024^3)}')
+
+# Calculate shm_size in bytes
+shm_size_bytes=$(awk -v shm_gb=$shm_size_gb 'BEGIN {printf "%.0f", shm_gb * (1024^3)}')
 
 # Calculate a percentage of shm_size for object-store-memory, e.g., 80% of shm_size
-object_store_mem_bytes=$(awk -v shm_bytes=$shm_size_bytes 'BEGIN {printf "%.0f", shm_bytes * 0.8}')
+object_store_mem_bytes=$(awk -v shm_bytes=$shm_size_bytes 'BEGIN {printf "%.0f", shm_bytes * 0.9}')
+
+
+
 
 
 
@@ -46,7 +55,7 @@ if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
     image="rayproject/ray:latest"
     RAY_ADDRESS="auto"
   # RAY_ADDRESS="$public_ip:6379"
-    command="ray start --head --port=6379 --object-manager-port=8076  --node-ip-address=$public_ip    --node-manager-port=8077 --dashboard-host=0.0.0.0 && tail -f /dev/null"
+    command="ray start --head --object-store-memory=$object_store_mem_bytes  --port=6379 --object-manager-port=8076  --node-ip-address=$public_ip    --node-manager-port=8077 --dashboard-host=0.0.0.0 && tail -f /dev/null"
 else
     node_type="ray-worker"
     image="rayproject/ray-ml:latest"
@@ -79,7 +88,7 @@ else
             echo "Invalid RAY_ADDRESS input."
         fi
     fi
-    command="ray start --address=$RAY_ADDRESS    --node-ip-address=$public_ip  && tail -f /dev/null"
+    command="ray start --address=$RAY_ADDRESS   --object-store-memory=$object_store_mem_bytes    --node-ip-address=$public_ip  && tail -f /dev/null"
 fi
 
 
