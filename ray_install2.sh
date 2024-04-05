@@ -48,7 +48,7 @@ services:
     restart: always
     volumes:
       - /data/ray:/ray
-      - /tmp/ray:/tmp/ray
+# #   - /tmp/ray:/tmp/ray
 EOF
 
 # Conditional network mode based on RAY_ADDRESS
