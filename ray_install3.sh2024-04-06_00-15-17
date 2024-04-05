@@ -45,28 +45,9 @@ else
         # Automatically detect the primary network interface's IP
         primary_interface=$(ip route | grep default | awk '{print $5}' | head -n 1)
         RAY_ADDRESS=$(ip addr show $primary_interface | grep 'inet\b' | awk '{print $2}' | cut -d/ -f1):6379
-    else
-        IP=""
-        PORT="6379" # Default port
-        if [[ "$RAY_ADDRESS" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(:[0-9]+)?$ ]]; then
-            # It's an IP address, optionally with a port
-            IP=${RAY_ADDRESS%:*}  # Extract IP
-            PORT=${RAY_ADDRESS#*:}  # Extract port if it exists
-            [ "$IP" = "$PORT" ] && PORT="6379"  # If no port was found, use default
-        else
-            # Assume it's a domain, possibly with a port
-            DOMAIN=${RAY_ADDRESS%:*}  # Extract domain
-            PORT=${RAY_ADDRESS#*:}  # Extract port if it exists
-            [ "$DOMAIN" = "$PORT" ] && PORT="6379"  # If no port was found, use default
-            IP=$(dig +short $DOMAIN | head -n 1)  # Convert domain to IP
-        fi
-    
-        if [ -n "$IP" ]; then
-            RAY_ADDRESS="$IP:$PORT"
-            echo "Converted RAY_ADDRESS to $RAY_ADDRESS"
-        else
-            echo "Invalid RAY_ADDRESS input."
-        fi
+    elif [[ "$RAY_ADDRESS" != *:* ]]; then
+     #  RAY_ADDRESS="$RAY_ADDRESS:6379"
+        RAY_ADDRESS="$public_ip:6379"
     fi
     command="ray start --address=$RAY_ADDRESS    --node-ip-address=$public_ip  && tail -f /dev/null"
 fi
