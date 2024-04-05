@@ -16,7 +16,7 @@ shm_size_gb=$(awk -v mem=$total_mem_bytes 'BEGIN {printf "%.2f", mem * 0.9 / (10
 shm_size_bytes=$(awk -v shm_gb=$shm_size_gb 'BEGIN {printf "%.0f", shm_gb * (1024^3)}')
 
 # Calculate a percentage of shm_size for object-store-memory, e.g., 80% of shm_size
-object_store_mem_bytes=$(awk -v shm_bytes=$shm_size_bytes 'BEGIN {printf "%.0f", shm_bytes * 0.5}')
+object_store_mem_bytes=$(awk -v shm_bytes=$shm_size_bytes 'BEGIN {printf "%.0f", shm_bytes * 0.9}')
 
 
 
