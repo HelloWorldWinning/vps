@@ -75,13 +75,14 @@ services:
     restart: always
     volumes:
       - /tmp/ray:/tmp/ray
+    network_mode: host
 EOF
 
-if  [ "$comment" = "yes" ]; then
-    echo "    # network_mode: host" >> docker-compose.yml
-else
-    echo "    network_mode: host" >> docker-compose.yml
-fi
+#if  [ "$comment" = "yes" ]; then
+#    echo "    # network_mode: host" >> docker-compose.yml
+#else
+#    echo "    network_mode: host" >> docker-compose.yml
+#fi
 
 # Step 4: Start docker-compose
 docker-compose up -d
