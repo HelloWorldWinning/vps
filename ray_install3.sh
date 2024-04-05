@@ -34,7 +34,8 @@ public_ip=$(get_public_ip)
 
 
 # Step 1: Ask user to choose between Ray worker or Ray head
-read -p "Do you want to install Ray worker or Ray head? [default worker: head/0] (default: worker): " choice
+#read -p "Do you want to install Ray worker or Ray head? [default worker: head/0] (default: worker): " choice
+read -p "[default worker: head|0] (default: worker): " choice
 if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
     node_type="ray-head"
     image="rayproject/ray:latest"
