@@ -2,6 +2,7 @@
 # Calculate total memory in bytes
 
 sudo apt-get -y install dnsutils
+rm -r /tmp/ray/
 clear
 
 total_mem_bytes=$(awk '/MemTotal/ {print $2 * 1024}' /proc/meminfo)
