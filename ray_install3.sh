@@ -1,5 +1,9 @@
 #!/bin/bash
 # Calculate total memory in bytes
+
+sudo apt-get -y install dnsutils
+clear
+
 total_mem_bytes=$(awk '/MemTotal/ {print $2 * 1024}' /proc/meminfo)
 # Calculate 50% of total memory for shm_size, convert to gigabytes
 shm_size_gb=$(awk -v mem=$total_mem_bytes 'BEGIN {printf "%.2f", mem * 0.5 / (1024^3)}')
