@@ -175,8 +175,7 @@
       }
     ]
   },
-//"python.defaultInterpreterPath": "/root/anaconda3/envs/FT/bin/python",
-  "python.defaultInterpreterPath": "/root/anaconda3/envs/ray/bin/python",
+  "python.defaultInterpreterPath": "/root/anaconda3/envs/FT/bin/python",
   "editor.formatOnSave": true,
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8"
