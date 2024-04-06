@@ -862,6 +862,8 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
 echo "======================================="
+        echo "sleep 5 seconds..."
+        sleep 5
 	netstat -tulnp |grep 166	       
 	netstat -tulnp |grep 166 | wc -l	       
 			;;
