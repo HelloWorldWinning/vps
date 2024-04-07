@@ -81,6 +81,7 @@ if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
     command="ray start --head --object-store-memory=$object_store_mem_bytes  --port=6379 --object-manager-port=8076  --node-ip-address=$public_ip    --node-manager-port=8077 --dashboard-host=0.0.0.0 && tail -f /dev/null"
 else
     node_type="ray-worker"
+    rm -r /tmp/ray/
     image="rayproject/ray-ml:latest"
     read -p "Enter RAY_ADDRESS (default: auto detect): " RAY_ADDRESS
     if [ -z "$RAY_ADDRESS" ]; then
