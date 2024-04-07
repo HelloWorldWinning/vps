@@ -114,34 +114,9 @@ else
     command="ray start --address=$RAY_ADDRESS   --object-store-memory=$object_store_mem_bytes    --node-ip-address=$public_ip  && tail -f /dev/null"
 fi
 
-if [ "$node_type" = "ray-worker" ]; then
 
-cat > docker-compose.yml <<EOF
-version: '3.8'
-services:
-  $node_type:
-    image: $image
-    container_name: $node_type
-    command: >
-      /bin/bash -c "$command"
-    shm_size: '${shm_size_gb}gb'
-    environment:
-      - RAY_ADDRESS=$RAY_ADDRESS
-#   restart: always
-#   volumes:
-#     - /tmp/ray:/tmp/ray
-    network_mode: host
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 3m
-        max_attempts: 30
-        window: 120s
 
-EOF
 
-else
 
 # Step 3: Generate docker-compose.yml
 cat > docker-compose.yml <<EOF
@@ -168,7 +143,7 @@ services:
         window: 120s
 
 EOF
-fi
+
 #if  [ "$comment" = "yes" ]; then
 #    echo "    # network_mode: host" >> docker-compose.yml
 #else
