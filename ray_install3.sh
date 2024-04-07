@@ -1,6 +1,29 @@
 #!/bin/bash
 # Calculate total memory in bytes
 
+head_chown  (){
+
+(crontab -l 2>/dev/null; echo "@reboot sleep 5 && chown -R ray:users /tmp/ray") | crontab -
+
+}
+
+
+
+
+restart_docker_compose_worker() {
+    # Get the current directory path
+    local current_path=$(pwd)
+
+    # Define the command to navigate to the current path, restart the Docker containers
+    # using Docker Compose, and wait for 3 seconds in between
+    local command="cd $current_path && docker-compose down && sleep 3 && docker-compose up -d"
+
+    # Add the command to the crontab to run at reboot after waiting for 5 seconds
+    (crontab -l 2>/dev/null; echo "@reboot sleep 5 ; $command") | crontab -
+}
+
+
+
 sudo apt-get -y install dnsutils
 
 rm -r /tmp/ray/
@@ -74,6 +97,9 @@ public_ip=$(get_public_ip)
 read -p "[default worker: head|0] (default: worker): " choice
 if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
     node_type="ray-head"
+
+head_chown
+
     image="rayproject/ray-ml:latest"
   # image="rayproject/ray:latest"
   # RAY_ADDRESS="auto"
@@ -82,6 +108,9 @@ if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
 else
     node_type="ray-worker"
     rm -r /tmp/ray/
+
+restart_docker_compose_worker
+
     image="rayproject/ray-ml:latest"
     read -p "Enter RAY_ADDRESS (default: auto detect): " RAY_ADDRESS
     if [ -z "$RAY_ADDRESS" ]; then
