@@ -2,10 +2,10 @@
 # Calculate total memory in bytes
 
 sudo apt-get -y install dnsutils
-
 rm -r /tmp/ray/
-mkdir -p /tmp/ray 
-chmod -R 777 /tmp/ray  
+
+mkdir -p /tmp/ray #  /data/ray
+chmod -R 777 /tmp/ray  # /data/ray
 
 # Check if the 'ray' user exists; if not, create it
 if ! id -u ray > /dev/null 2>&1; then
@@ -131,8 +131,8 @@ services:
     environment:
       - RAY_ADDRESS=$RAY_ADDRESS
 #   restart: always
-    volumes:
-      - /tmp/ray:/tmp/ray
+#   volumes:
+#     - /tmp/ray:/tmp/ray
     network_mode: host
     restart: on-failure
     deploy:
