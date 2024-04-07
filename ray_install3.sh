@@ -11,6 +11,7 @@ head_chown  (){
 
 
 restart_docker_compose_worker() {
+	echo ""
 #    # Get the current directory path
 #    local current_path=$(pwd)
 #
