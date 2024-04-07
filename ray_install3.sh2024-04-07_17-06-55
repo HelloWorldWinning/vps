@@ -3,28 +3,6 @@
 
 sudo apt-get -y install dnsutils
 rm -r /tmp/ray/
-
-mkdir -p /tmp/ray #  /data/ray
-chmod -R 777 /tmp/ray  # /data/ray
-
-# Check if the 'ray' user exists; if not, create it
-if ! id -u ray > /dev/null 2>&1; then
-    sudo useradd ray
-    echo "User 'ray' created."
-fi
-
-# Check if the 'users' group exists; if not, create it
-if ! getent group users > /dev/null 2>&1; then
-    sudo groupadd users
-    echo "Group 'users' created."
-fi
-
-# Change ownership of /tmp/ray to user 'ray' and group 'users'
-sudo chown -R ray:users /tmp/ray
-echo "Ownership of /tmp/ray changed to user 'ray' and group 'users'."
-
-
-
 clear
 
 
@@ -116,6 +94,10 @@ fi
 
 
 
+
+# Step 2: Create directories and set permissions
+mkdir -p /tmp/ray #  /data/ray
+chmod -R 777 /tmp/ray  # /data/ray
 
 # Step 3: Generate docker-compose.yml
 cat > docker-compose.yml <<EOF
