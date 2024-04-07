@@ -130,18 +130,10 @@ services:
     shm_size: '${shm_size_gb}gb'
     environment:
       - RAY_ADDRESS=$RAY_ADDRESS
-#   restart: always
+    restart: always
 #   volumes:
 #     - /tmp/ray:/tmp/ray
     network_mode: host
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 3m
-        max_attempts: 30
-        window: 120s
-
 EOF
 
 #if  [ "$comment" = "yes" ]; then
