@@ -211,7 +211,7 @@ docker-compose up -d
 # Step 5: Check running status
 docker ps -a | grep $node_type
 
-sleep  7
+sleep  5
 # Step 6: Show logs
 docker logs $node_type
 
