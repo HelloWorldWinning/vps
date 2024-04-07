@@ -21,7 +21,7 @@
     "editorCursor.foreground": "#FF2511",
     "terminalCursor.foreground": "#FF2511",
     "terminal.foreground": "#00ee00",
-//  "terminal.integrated.fontFamily": "Andale Mono, monospace",
+    "terminal.integrated.fontFamily": "Andale Mono, monospace",
     "terminal.integrated.fontSize": 28,
     "editor.wordHighlightStrongBackground": "#a81980",
     "editor.wordHighlightBackground": "#a81980",
@@ -184,8 +184,6 @@
   //"editor.fontLigatures": false,
   "editor.fontLigatures": true,
   "workbench.editor.centeredLayoutFixedWidth": true,
-// "terminal.integrated.fontFamily": "DroidSansM Nerd Font Mono",
-// "terminal.integrated.fontFamily": "Noto Sans Mono",
-   "terminal.integrated.fontFamily": "Source Code Pro",
+  "terminal.integrated.fontFamily": "DroidSansM Nerd Font Mono",
   "vim.digraphs": {}
 }
