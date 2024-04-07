@@ -11,15 +11,15 @@ head_chown  (){
 
 
 restart_docker_compose_worker() {
-    # Get the current directory path
-    local current_path=$(pwd)
-
-    # Define the command to navigate to the current path, restart the Docker containers
-    # using Docker Compose, and wait for 3 seconds in between
-    local command="cd $current_path && docker-compose down && sleep 3 && docker-compose up -d"
-
-    # Add the command to the crontab to run at reboot after waiting for 5 seconds
-    (crontab -l 2>/dev/null; echo "@reboot sleep 5 ; $command") | crontab -
+#    # Get the current directory path
+#    local current_path=$(pwd)
+#
+#    # Define the command to navigate to the current path, restart the Docker containers
+#    # using Docker Compose, and wait for 3 seconds in between
+#    local command="cd $current_path && docker-compose down && sleep 3 && docker-compose up -d"
+#
+#    # Add the command to the crontab to run at reboot after waiting for 5 seconds
+#    (crontab -l 2>/dev/null; echo "@reboot sleep 5 ; $command") | crontab -
 }
 
 
