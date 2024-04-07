@@ -166,9 +166,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 2m
+        delay: 3m
         max_attempts: 100
-        window: 120s
+        window: 180s
 
 EOF
 
@@ -194,9 +194,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 2m
+        delay: 3m
         max_attempts: 100
-        window: 120s
+        window: 180s
 
 EOF
 fi
