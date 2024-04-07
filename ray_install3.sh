@@ -131,8 +131,8 @@ services:
     environment:
       - RAY_ADDRESS=$RAY_ADDRESS
     restart: always
-    volumes:
-      - /tmp/ray:/tmp/ray
+#   volumes:
+#     - /tmp/ray:/tmp/ray
     network_mode: host
 EOF
 
