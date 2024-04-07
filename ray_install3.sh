@@ -74,9 +74,10 @@ public_ip=$(get_public_ip)
 read -p "[default worker: head|0] (default: worker): " choice
 if [[ $choice == "head" ]] || [[ $choice == "0" ]]; then
     node_type="ray-head"
-    image="rayproject/ray:latest"
-    RAY_ADDRESS="auto"
-  # RAY_ADDRESS="$public_ip:6379"
+    image="rayproject/ray-ml:latest"
+  # image="rayproject/ray:latest"
+  # RAY_ADDRESS="auto"
+    RAY_ADDRESS="$public_ip:6379"
     command="ray start --head --object-store-memory=$object_store_mem_bytes  --port=6379 --object-manager-port=8076  --node-ip-address=$public_ip    --node-manager-port=8077 --dashboard-host=0.0.0.0 && tail -f /dev/null"
 else
     node_type="ray-worker"
