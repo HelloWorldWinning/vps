@@ -866,7 +866,7 @@ echo "======================================="
         echo "sleep 3 seconds..."
         sleep 3
 	netstat -tulnp |grep 166	       
-	netstat -tulnp |grep 166 | wc -l	       
+#netstat -tulnp |grep 166 | wc -l	       
 			;;
 
 
