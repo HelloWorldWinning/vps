@@ -72,7 +72,7 @@ output+="IP        : $ip\n"
 [[ -n "$loc" ]] && output+="Loc       : $loc\n"
 [[ -n "$region" ]] && output+="Region    : $region\n"
 [[ -n "$city" ]] && output+="City      : $city\n"
-output+="\n"
+output+="------------------------------------------\n"
 [[ -n "$org" ]] && output+="Org       : $org\n"
 [[ -n "$country" ]] && output+="Country   : $country\n"
 
