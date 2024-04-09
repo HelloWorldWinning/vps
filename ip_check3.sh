@@ -72,8 +72,9 @@ output+="IP        : $ip\n"
 [[ -n "$loc" ]] && output+="Loc       : $loc\n"
 [[ -n "$region" ]] && output+="Region    : $region\n"
 [[ -n "$city" ]] && output+="City      : $city\n"
-[[ -n "$country" ]] && output+="Country   : $country\n"
+output+="\n"
 [[ -n "$org" ]] && output+="Org       : $org\n"
+[[ -n "$country" ]] && output+="Country   : $country\n"
 
 fraud_score=$(get_fraud_score "$ip")
 output+="\nFraudScore: $fraud_score"
