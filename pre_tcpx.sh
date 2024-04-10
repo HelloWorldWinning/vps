@@ -22,7 +22,7 @@ echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 git config http.postBuffer 524288000
-apt-get install -y  apache2-utils lsof  wget curl  nmap
+apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch
 
 git config --global core.editor "vim"
 
@@ -144,6 +144,7 @@ weather_temperature="\${temperature}°C \${weather}"
 
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
+alias nf='neofetch'
 
 # find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h
 #alias zz='du  -sh * |sort -h'
@@ -256,4 +257,4 @@ curl -4s https://ohmyposh.dev/install.sh | bash -s
 
 mkdir -p /root/.config/neofetch
 
-wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh 
+wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
