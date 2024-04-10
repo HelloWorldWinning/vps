@@ -593,6 +593,7 @@ ${Red_font_prefix}582${Font_color_suffix} install_hysteria mine
 ${Red_font_prefix}59${Font_color_suffix} superspeed_uxh.sh 
 ${Red_font_prefix}60${Font_color_suffix} ping_local
 ${Red_font_prefix}61${Font_color_suffix} 一键工作爬虫搞定 source ~/.bashrc  jobs_spiders  jupyter notebook password
+${Red_font_prefix}611${Font_color_suffix} mini_conda.sh
 ${Red_font_prefix}1111${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}1${Font_color_suffix} tcpc 脚本
 ${Red_font_prefix}2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
@@ -747,8 +748,9 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
                 582)eval "$hy_mine"  ;;
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
+                611) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mini_conda.sh )  ;
                 61)eval "$jobs_spiders" ;
-		eval "$jupyter_notebook_remote_access" ;
+#	eval "$jupyter_notebook_remote_access" ;
 		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
                 1111)
 
