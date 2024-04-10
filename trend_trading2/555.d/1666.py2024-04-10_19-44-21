@@ -17,16 +17,14 @@ app = Flask(__name__)
 app.secret_key = '1'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
- #32302f
-background_color_hex="#474544"
+# #32302f
+#background_color_hex="#474544"
 #background_color_hex="#32302f"
 
 #background_color_hex="#0c2a35"
 #background_color_hex="#103a4a"
-#background_color_hex="#061b24"
+background_color_hex="#154659"
 
-#font_color_hex="#57E857"
-font_color_hex="#55f255"
 
 
 @app.route('/favicon.ico')
@@ -214,9 +212,7 @@ def python_files(path):
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
             custom_css = 'body, pre { font-family: "Andale Mono", monospace; }'
-            custom_css += f'.highlight .n {{ color: {font_color_hex}; }}'
-
-
+            custom_css += '.highlight .n { color: #57E857; }'  # Setting color for class=n
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
             return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {background_color_hex};">{highlighted_code}</body></html>'
 
@@ -251,7 +247,7 @@ def edit(path):
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
             custom_css = 'body, pre { font-family: "Andale Mono", monospace; }'
-            custom_css += f'.highlight .n {{ color: {font_color_hex}; }}'
+            custom_css += '.highlight .n { color: #57E857; }'  # Setting color for class=n
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
             return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {background_color_hex};">{highlighted_code}</body></html>'
 
@@ -296,7 +292,7 @@ def notebooks(path):
 #           return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
             custom_css = 'body, pre { font-family: "Andale Mono", monospace; }'
-            custom_css += f'.highlight .n {{ color: {font_color_hex}; }}'
+            custom_css += '.highlight .n { color: #57E857; }'  # Setting color for class=n
 #           return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
             return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {background_color_hex};">{highlighted_code}</body></html>'
     else:
