@@ -649,20 +649,21 @@ ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution
 ${Red_font_prefix}109${Font_color_suffix} ray_install3.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
+ 
+
+
 ${Red_font_prefix}q${Font_color_suffix} exit
+
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
-nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9 
+nc -l 9  | tar xfvz - 
+tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9 
 
-
-
-
-`echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[1;38;2;252;33;137m$(pwd)\e[0m            "
+`echo -e "        \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[1;38;2;252;33;137m$(pwd)\e[0m            "
   `  今天运行/总运行 $today_hit / $all_hit
 
 
-
-\r\n       
+\r\n
 ")"  choose
 	case $choose in
 		222) eval $tcpx  ;;
