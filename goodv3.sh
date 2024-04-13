@@ -659,9 +659,6 @@ nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 
 `echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[1;38;2;252;33;137m$(pwd)\e[0m            "
   `  今天运行/总运行 $today_hit / $all_hit
-
-
-
 \r\n       
 ")"  choose
 	case $choose in
