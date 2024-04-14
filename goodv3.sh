@@ -649,6 +649,7 @@ ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution
 ${Red_font_prefix}109${Font_color_suffix} ray_install3.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
+${Red_font_prefix}a${Font_color_suffix} markdown.sh
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -877,6 +878,7 @@ echo "======================================="
 
 		108) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ddp_master.sh )  ;;
 		109) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ray_install3.sh )  ;;
+		a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
