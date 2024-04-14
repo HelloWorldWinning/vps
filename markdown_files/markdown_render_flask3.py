@@ -1,24 +1,23 @@
 from flask import Flask, render_template_string, request, Response, send_from_directory, abort
 import markdown2
 import os
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()  # Initialize auth right after the app
 
 # Define the base directory from where markdown files can be accessed
 MARKDOWN_DIR = '/'
 
 # Define your user credentials
 users = {
-    "1": "1"
+    "user": "password"
 }
-
 
 @auth.verify_password
 def verify_password(username, password):
     if username in users and users[username] == password:
         return username
-
-
 
 def is_markdown_file(filename):
     """Check if a file is a markdown file by its extension."""
@@ -30,6 +29,7 @@ def is_image_file(filename):
 
 @app.route('/')
 @app.route('/<path:subpath>')
+@auth.login_required
 def list_markdown_files(subpath=''):
     """List all files and directories in the specified path."""
     current_dir = os.path.join(MARKDOWN_DIR, subpath)
@@ -67,10 +67,10 @@ def list_markdown_files(subpath=''):
             <li style="font-size: 130%;"><a href="{{ url_for('list_markdown_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
             {% endfor %}
         </ul>
-    ''', files=files, directories=directories, subpath=subpath, filename=filename)
-
+    ''', files=files, directories=directories, subpath=subpath)
 
 @app.route('/md/<path:subpath>/<filename>')
+@auth.login_required
 def serve_file(subpath, filename):
     """Serve a file, either as markdown-rendered HTML or as binary data."""
     file_path = os.path.join(MARKDOWN_DIR, subpath, filename)

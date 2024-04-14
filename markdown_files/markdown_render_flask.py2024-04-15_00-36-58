@@ -7,19 +7,6 @@ app = Flask(__name__)
 # Define the base directory from where markdown files can be accessed
 MARKDOWN_DIR = '/'
 
-# Define your user credentials
-users = {
-    "1": "1"
-}
-
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in users and users[username] == password:
-        return username
-
-
-
 def is_markdown_file(filename):
     """Check if a file is a markdown file by its extension."""
     return filename.endswith(('.md', '.markdown', '.mkd'))
