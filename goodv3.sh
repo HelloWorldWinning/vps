@@ -638,7 +638,7 @@ ${Red_font_prefix}97${Font_color_suffix} tika.sh
 ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
 ${Red_font_prefix}100${Font_color_suffix} jupyter26666.sh
-${Red_font_prefix}101${Font_color_suffix} jupyter1666.sh jupyter166.sh 
+${Red_font_prefix}101${Font_color_suffix} jupyter1666.sh jupyter166.sh  markdown.sh
 ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
@@ -861,10 +861,13 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		101) 
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh )  
 echo "======================================="
         echo "sleep 3 seconds..."
         sleep 3
-	netstat -tulnp |grep 166	       
+#netstat -tulnp |grep 166	       
+netstat -tulnp | grep -E '166|155'
+
 #netstat -tulnp |grep 166 | wc -l	       
 			;;
 
