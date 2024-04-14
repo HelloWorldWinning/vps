@@ -11,7 +11,7 @@ MARKDOWN_DIR = '/'
 
 # Define your user credentials
 users = {
-    "user": "password"
+    "1": "1"
 }
 
 @auth.verify_password
@@ -58,13 +58,13 @@ def list_markdown_files(subpath=''):
         <h2>Files:</h2>
         <ul>
             {% for file in files %}
-            <li style="font-size: 160%;" ><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+            <li style="font-size: 170%;" ><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
             {% endfor %}
         </ul>
         <h2>Directories:</h2>
         <ul>
             {% for directory in directories %}
-            <li style="font-size: 130%;"><a href="{{ url_for('list_markdown_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
+            <li style="font-size: 120%;"><a href="{{ url_for('list_markdown_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
             {% endfor %}
         </ul>
     ''', files=files, directories=directories, subpath=subpath)
