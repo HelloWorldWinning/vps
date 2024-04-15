@@ -50,15 +50,15 @@ def list_markdown_files(subpath=''):
     directories.sort()
 
     filename = request.args.get('filename')
-   #        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+          # <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
     return render_template_string('''
         <!DOCTYPE html>
         <html>
         <head>
             <title>Markdown Files</title>
-            <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400&display=swap" rel="stylesheet">
             <style>
-                body { font-family: 'Source Code Pro', monospace; }
+                body { font-family: 'Noto Sans Mono', monospace; }
                 ul { list-style-type: none; padding: 0; }
                 li { margin: 5px 0; }
             </style>
@@ -144,7 +144,7 @@ def serve_file(subpath, filename):
                         <title>{file_title}</title>  <!-- Use file_title for the document title -->
                         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
                         <style>
-                            body {{ font-family: 'Source Code Pro', monospace; }}
+                            body {{ font-family: 'Noto Sans Mono', monospace; }}
                             pre {{ background-color: #f4f4f4; padding: 10px; }}
                         </style>
                     </head>
