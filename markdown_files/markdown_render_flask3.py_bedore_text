@@ -20,9 +20,6 @@ def verify_password(username, password):
 def is_markdown_file(filename):
     return filename.endswith(('.md', '.markdown', '.mkd'))
 
-def is_text_file(filename):
-    return filename.endswith('.txt')
-
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
 
@@ -30,70 +27,102 @@ def is_image_file(filename):
 @app.route('/')
 @app.route('/<path:subpath>')
 @auth.login_required
-def list_files(subpath=''):
+def list_markdown_files(subpath=''):
     current_dir = os.path.join(MARKDOWN_DIR, subpath)
     if not os.path.abspath(current_dir).startswith(MARKDOWN_DIR):
         return 'Unauthorized access', 403
 
     current_dir = os.path.normpath(current_dir)
 
-    markdown_files = []
-    text_files = []
+    files = []
     directories = []
     try:
         with os.scandir(current_dir) as entries:
             for entry in entries:
-                if entry.is_file():
-                    if is_markdown_file(entry.name):
-                        markdown_files.append(entry.name)
-                    elif is_text_file(entry.name):
-                        text_files.append(entry.name)
+                if entry.is_file() and (is_markdown_file(entry.name) or is_image_file(entry.name)):
+                    files.append(entry.name)
                 elif entry.is_dir():
                     directories.append(entry.name)
     except FileNotFoundError:
         return 'Directory not found', 404
 
-    markdown_files.sort()
-    text_files.sort()
+    files.sort()
     directories.sort()
 
+    filename = request.args.get('filename')
+   #        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     return render_template_string('''
         <!DOCTYPE html>
         <html>
         <head>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-            <title>Files and Directories</title>
+            <title>Markdown Files</title>
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
             <style>
                 body { font-family: 'Source Code Pro', monospace; }
                 ul { list-style-type: none; padding: 0; }
                 li { margin: 5px 0; }
-                pre { background-color: #f4f4f4; padding: 10px; font-family: 'Source Code Pro', monospace; }
             </style>
         </head>
         <body>
-            <h2>Markdown:</h2>
+            <h2>Files:</h2>
             <ul>
-                {% for file in markdown_files %}
-                <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
-                {% endfor %}
-            </ul>
-            <h2>Text:</h2>
-            <ul>
-                {% for file in text_files %}
-                <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+                {% for file in files %}
+                <li style="font-size: 170%;" ><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                 {% endfor %}
             </ul>
             <h2>Directories:</h2>
             <ul>
                 {% for directory in directories %}
-                <li><a href="{{ url_for('list_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
+                <li style="font-size: 120%;"><a href="{{ url_for('list_markdown_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
                 {% endfor %}
             </ul>
         </body>
         </html>
-    ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath)
+    ''', files=files, directories=directories, subpath=subpath)
 
+
+
+#@app.route('/')
+#@app.route('/<path:subpath>')
+#@auth.login_required
+#def list_markdown_files(subpath=''):
+#    current_dir = os.path.join(MARKDOWN_DIR, subpath)
+#    if not os.path.abspath(current_dir).startswith(MARKDOWN_DIR):
+#        return 'Unauthorized access', 403
+#
+#    current_dir = os.path.normpath(current_dir)
+#
+#    files = []
+#    directories = []
+#    try:
+#        with os.scandir(current_dir) as entries:
+#            for entry in entries:
+#                if entry.is_file() and (is_markdown_file(entry.name) or is_image_file(entry.name)):
+#                    files.append(entry.name)
+#                elif entry.is_dir():
+#                    directories.append(entry.name)
+#    except FileNotFoundError:
+#        return 'Directory not found', 404
+#
+#    files.sort()
+#    directories.sort()
+#
+#    filename = request.args.get('filename')
+#    return render_template_string('''
+#        <h2>Files:</h2>
+#        <ul>
+#            {% for file in files %}
+#            <li style="font-size: 170%;" ><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+#            {% endfor %}
+#        </ul>
+#        <h2>Directories:</h2>
+#        <ul>
+#            {% for directory in directories %}
+#            <li style="font-size: 120%;"><a href="{{ url_for('list_markdown_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
+#            {% endfor %}
+#        </ul>
+#    ''', files=files, directories=directories, subpath=subpath)
 
 @app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
@@ -102,32 +131,28 @@ def serve_file(subpath, filename):
     if not os.path.abspath(file_path).startswith(MARKDOWN_DIR):
         return "Unauthorized access", 403
     
-    file_title, file_extension = os.path.splitext(filename)
+    file_title, _ = os.path.splitext(filename)  # Split the filename to remove the extension
 
-    if is_markdown_file(filename) or is_text_file(filename):
+    if is_markdown_file(filename):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                if is_text_file(filename):
-                    content = '<pre>' + content + '</pre>'
-                else:
-                    content = markdown2.markdown(content, extras=["fenced-code-blocks"])
+                html = markdown2.markdown(content, extras=["fenced-code-blocks"])
                 full_html = f'''
                     <!DOCTYPE html>
                     <html>
                     <head>
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-                        <title>{file_title}</title>
+                        <title>{file_title}</title>  <!-- Use file_title for the document title -->
                         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
                         <style>
                             body {{ font-family: 'Source Code Pro', monospace; }}
-                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', monospace; }}
+                            pre {{ background-color: #f4f4f4; padding: 10px; }}
                         </style>
                     </head>
-                    <body>{content}</body>
+                    <body>{html}</body>
                     </html>
                 '''
-                          # pre {{ background-color: #f4f4f4; padding: 10px; font-family: 'Source Code Pro', monospace; }}
                 return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
