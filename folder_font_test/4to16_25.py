@@ -11,7 +11,7 @@ if not os.path.exists(target_path):
 
 # Iterate through all files in the source directory
 for file_name in os.listdir(source_path):
-    if file_name.endswith('.ttf'):
+    if file_name.lower().endswith('.ttf'):
         source_file_path = os.path.join(source_path, file_name)
         target_file_path = os.path.join(target_path, file_name)
 
