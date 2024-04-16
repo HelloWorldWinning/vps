@@ -95,7 +95,6 @@ def list_files(subpath=''):
     ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath)
 
 
-
 @app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
 def serve_file(subpath, filename):
@@ -121,12 +120,8 @@ def serve_file(subpath, filename):
                         <title>{file_title}</title>
                         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
                         <style>
-                            @font-face {{
-                                font-family: 'FZFangJunHeiS';
-                                src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-                            }}
-                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
-                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
+                            body {{ font-family: 'Source Code Pro', monospace; }}
+                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', monospace; white-space: pre-wrap; word-wrap: break-word; }}
                             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
                         </style>
                     </head>
@@ -140,7 +135,6 @@ def serve_file(subpath, filename):
         return send_from_directory(os.path.dirname(file_path), filename)
     else:
         return abort(404)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=155)
