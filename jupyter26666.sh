@@ -82,7 +82,8 @@ sudo chmod 664 ${log_file}
 conda install -y -c conda-forge cchardet chardet 
 #jupyter26666.sh
 conda install  -y  -c conda-forge notebook==6.5.4
-conda update nbconvert
+
+conda update -y nbconvert
 $conda_env_bin_dir/pip install --upgrade nbconvert
 
 jupyter notebook password
