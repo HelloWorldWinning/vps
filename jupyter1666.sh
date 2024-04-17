@@ -28,14 +28,46 @@ fi
 conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
 
 # Set the path for the Conda environment's bin directory
-if [ "$conda_env_name" == "base" ]; then
-    conda_env_bin_dir="/root/anaconda3/bin"
+#if [ "$conda_env_name" == "base" ]; then
+#    conda_env_bin_dir="/root/anaconda3/bin"
+#else
+#    conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+#fi
+
+# Install required Python packages
+#$conda_env_bin_dir/pip install flask nbformat nbconvert pygments
+#pip install flask nbformat nbconvert pygments
+
+# Determine the correct Python path
+python_path=$(which python)
+
+# Check if the Python path contains 'miniconda3'
+if [[ $python_path == *miniconda3* ]]; then
+    # Set the path for Conda environment's bin directory to miniconda3
+    conda_env_bin_dir="/root/miniconda3/bin"
+#   conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
+    conda_setup_script="/root/miniconda3/etc/profile.d/conda.sh"
 else
-    conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+    # Set the path for Conda environment's bin directory based on the current environment
+    if [ "$conda_env_name" == "base" ]; then
+        conda_env_bin_dir="/root/anaconda3/bin"
+    else
+        conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+    fi
 fi
+
+
 
 # Install required Python packages
 $conda_env_bin_dir/pip install flask nbformat nbconvert pygments
+#pip install flask nbformat nbconvert pygments
+
+
+
+
+
+
+
 
 # Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/${service_name}.service
