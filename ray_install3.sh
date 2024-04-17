@@ -211,9 +211,11 @@ fi
 docker-compose up -d
 
 # Step 5: Check running status
-docker ps -a | grep $node_type
-
+#docker ps -a | grep $node_type
+docker ps -a | grep  ray
+ehco "sleep 5s ...."
 sleep  5
 # Step 6: Show logs
-docker logs $node_type
+#docker logs $node_type
+docker logs  ray
 
