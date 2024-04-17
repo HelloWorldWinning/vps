@@ -146,13 +146,13 @@ restart_docker_compose_worker
 fi
 
 if [ "$node_type" = "ray-worker" ]; then
-#   container_name: $node_type
+
 cat > docker-compose.yml <<EOF
 version: '3.8'
 services:
   $node_type:
     image: $image
-    container_name: ray
+    container_name: $node_type
     command: >
       /bin/bash -c "$command"
     shm_size: '${shm_size_gb}gb'
@@ -175,13 +175,12 @@ EOF
 else
 
 # Step 3: Generate docker-compose.yml
-#   container_name: $node_type
 cat > docker-compose.yml <<EOF
 version: '3.8'
 services:
   $node_type:
     image: $image
-    container_name: ray
+    container_name: $node_type
     command: >
       /bin/bash -c "$command"
     shm_size: '${shm_size_gb}gb'
