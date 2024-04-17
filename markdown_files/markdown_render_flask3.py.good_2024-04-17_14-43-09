@@ -110,7 +110,6 @@ def list_files(subpath=''):
 
 
 
-
 @app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
 def serve_file(subpath, filename):
@@ -127,9 +126,6 @@ def serve_file(subpath, filename):
                 if is_text_file(filename):
                     content = '<pre>' + content + '</pre>'
                 else:
-                    # Convert checkbox syntax to HTML
-                    content = content.replace('- [ ]', '<input type="checkbox" disabled>')
-                    content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
                     content = markdown2.markdown(content, extras=["fenced-code-blocks"])
                 full_html = f'''
                     <!DOCTYPE html>
@@ -158,7 +154,6 @@ def serve_file(subpath, filename):
         return send_from_directory(os.path.dirname(file_path), filename)
     else:
         return abort(404)
-
 
 
 if __name__ == '__main__':
