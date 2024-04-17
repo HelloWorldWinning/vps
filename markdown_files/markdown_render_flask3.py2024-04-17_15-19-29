@@ -111,9 +111,6 @@ def list_files(subpath=''):
 
 
 
-@app.route('/text/<path:subpath>/<filename>')
-@app.route('/txt/<path:subpath>/<filename>')
-@app.route('/markdown/<path:subpath>/<filename>')
 @app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
 def serve_file(subpath, filename):
