@@ -11,8 +11,8 @@ fi
 #
 
 #conda install python jupyter    
-conda install jupyter
-conda install notebook==6.5.4
+conda install  -y  jupyter
+conda install  -y   notebook==6.5.4
 
 # Create a systemd service file for Jupyter Notebook with dynamic Conda environment activation and logging
 service_name="jupyter${port}"
@@ -79,8 +79,9 @@ sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
 
-conda install -c conda-forge cchardet chardet jupyter26666.sh
-conda install -c conda-forge notebook==6.5.4
+conda install -y -c conda-forge cchardet chardet 
+#jupyter26666.sh
+conda install  -y  -c conda-forge notebook==6.5.4
 conda update nbconvert
 $conda_env_bin_dir/pip install --upgrade nbconvert
 
