@@ -236,7 +236,7 @@ location /share {
     # Restrict access to only the specified directory
     location ~ ^/share/(.*)$ {
         allow all;
-        try_files $uri $uri/ =404;
+        try_files \$uri \$uri/ =404;
     }
 
     # Deny access to other directories
