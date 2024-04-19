@@ -11,13 +11,13 @@ sudo apt-get install nginx-extras apache2-utils   -y
 
 htpasswd -c /root/passwd.txt 1
 
-
+mkdir -p  /data/d.share/
 mkdir -p  /home/rdp/Downloads/
 mkdir -p  /data/ccaaDown/
 mkdir -p  /etc/nginx/
 mkdir -p  /etc/nginx/conf.d/
-#sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
 
+#sed -i '10i\text/markdown           md markdown mkd ;'    /etc/nginx/mime.types
 #if ! grep  "text/markdown           md markdown mkd ;" /etc/nginx/mime.types; then
 #    sed -i '10i\text/markdown           md markdown mkd ;' /etc/nginx/mime.types
 #else
@@ -228,7 +228,7 @@ autoindex_localtime on;
 }
 
 location /share {
-    alias /root/d.share/;
+    alias /data/d.share/;
     autoindex on;
     autoindex_exact_size off;
     autoindex_localtime on;
