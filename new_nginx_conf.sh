@@ -210,24 +210,26 @@ server {
 
 
 
-location /rdp {
+#location /rdp {
+#
+#    alias /home/rdp/Downloads/; 
+#    autoindex on;
+#autoindex_exact_size off;
+#autoindex_localtime on; 
+#}
 
-    alias /home/rdp/Downloads/; 
-    autoindex on;
-autoindex_exact_size off;
-autoindex_localtime on; 
-}
 
+#location /ccaa {
+#
+#    alias  /data/ccaaDown/;
+#    autoindex on;
+#autoindex_exact_size off;
+#autoindex_localtime on; 
+#}
 
-location /ccaa {
+#location /share {
 
-    alias  /data/ccaaDown/;
-    autoindex on;
-autoindex_exact_size off;
-autoindex_localtime on; 
-}
-
-location /share {
+location / {
     alias /data/d.share/;
     autoindex on;
     autoindex_exact_size off;
@@ -244,7 +246,6 @@ location /share {
         deny all;
     }
 }
-
 
 
 #location / {
