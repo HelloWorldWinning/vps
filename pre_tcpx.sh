@@ -250,7 +250,8 @@ get_git_branch_name() {
         return 1
     fi
 
-    # Use Git to determine if we're in a Git repository    if ! git rev-parse --is-inside-work-tree &> /dev/null; then
+    # Use Git to determine if we're in a Git repository
+    if ! git rev-parse --is-inside-work-tree &> /dev/null; then
        #echo "Error: Not a git repository."
         echo ""
         return 0
@@ -262,12 +263,13 @@ get_git_branch_name() {
     branch_name=\${branch_name##refs/heads/}
 
     # Check if we got a branch name
-    if [ -n "\$branch_name" ]; then        echo "\$branch_name"
+    if [ -n "\$branch_name" ]; then
+        echo "\$branch_name"
     else
-        echo "Error: Currently not on any branch."        return 1
-    fi}
-
-
+        echo "Error: Currently not on any branch."
+        return 1
+    fi
+}
 ###### _pre end
 EOF
 
