@@ -242,31 +242,6 @@ fi
 
 
 
-###############
-get_git_branch_name() {
-    # Check if Git command exists
-    if ! command -v git &> /dev/null; then
-        echo "Error: Git is not installed."
-        return 1
-    fi
-
-    # Use Git to determine if we're in a Git repository    if ! git rev-parse --is-inside-work-tree &> /dev/null; then
-       #echo "Error: Not a git repository."
-        echo ""
-        return 0
-    fi
-
-    # Use git symbolic-ref or git describe to retrieve the current branch name
-    local branch_name=\$(git symbolic-ref -q HEAD || git describe --tags --exact-match 2>/dev/null)
-    # Remove the 'refs/heads/' from the full ref name
-    branch_name=\${branch_name##refs/heads/}
-
-    # Check if we got a branch name
-    if [ -n "\$branch_name" ]; then        echo "\$branch_name"
-    else
-        echo "Error: Currently not on any branch."        return 1
-    fi}
-
 
 ###### _pre end
 EOF
