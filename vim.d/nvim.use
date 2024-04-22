@@ -4,11 +4,17 @@ let g:deoplete#enable_at_startup = 1
 let g:coc_disable_startup_warning = 1
 let g:copilot_enabled = 1
 
+let g:fzf_vim = {}
+
 
 "Plug 'ludovicchabant/vim-copilot'
 " https://github.com/numirias/semshi    python good colore
 
 call plug#begin('~/.local/share/nvim/plugged')
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 
 "Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'scrooloose/nerdtree'

@@ -617,7 +617,7 @@ ${Red_font_prefix}77${Font_color_suffix} tuic
 ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
 ${Red_font_prefix}79${Font_color_suffix} docker nginx 
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
-${Red_font_prefix}81${Font_color_suffix} neovim and  to install
+${Red_font_prefix}81${Font_color_suffix} neovim and  to install: :PlugInstall :UpdateRemotePlugins ~/.config/nvim/init.vim
 ${Red_font_prefix}82${Font_color_suffix} git clone vps
 ${Red_font_prefix}83${Font_color_suffix} md file to html
 ${Red_font_prefix}84${Font_color_suffix} ports  转发
