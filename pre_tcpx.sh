@@ -27,6 +27,10 @@ apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch
 git config --global core.editor "vim"
 
 
+
+apt install fzf -y
+
+
 apt install docker-compose -y
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
