@@ -25,7 +25,8 @@ cat >> ~/.bashrc <<EOF
 
 ##### fzf  ##### 
 
-export FZF_DEFAULT_COMMAND='fdfind --hidden --follow -E ".git" -E "node_modules" . \$HOME'
+
+export FZF_DEFAULT_COMMAND='fdfind --hidden --follow -E ".git" -E "node_modules" . '
 export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | /data/.fzf_d/file_preview.py"  --preview-window=down'
 
 # use fzf in bash and zsh
@@ -40,11 +41,11 @@ export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:u
 # - The first argument to the function (\$1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fdfind --hidden --follow -E ".git" -E "node_modules" . \$HOME
+  fdfind --hidden --follow -E ".git" -E "node_modules" . 
 }
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fdfind --type d --hidden --follow -E ".git" -E "node_modules" . \$HOME
+  fdfind --type d --hidden --follow -E ".git" -E "node_modules" . 
 }
 ### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
   #####   #####   ##### 
