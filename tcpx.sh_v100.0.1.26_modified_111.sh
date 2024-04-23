@@ -1460,11 +1460,11 @@ BBR_grub() {
     fi
   elif [[ "${OS_type}" == "Debian" ]]; then
     if _exists "update-grub"; then
-  DEBIAN_FRONTEND=noninteractive      update-grub
+  update-grub
     elif [ -f "/usr/sbin/update-grub" ]; then
       /usr/sbin/update-grub
     else
-  DEBIAN_FRONTEND=noninteractive    apt install grub2-common -y
+  apt install grub2-common -y
       update-grub
     fi
     #exit 1
@@ -1869,7 +1869,6 @@ check_sys_official_bbr() {
       echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
     fi
   elif [[ "${release}" == "debian" ]]; then
-    export DEBIAN_FRONTEND=noninteractive
 
     case ${os_version} in
     9)
@@ -1891,7 +1890,7 @@ check_sys_official_bbr() {
 
     apt update -y
     if [[ ${os_arch} == "x86_64" ]]; then
-  DEBIAN_FRONTEND=noninteractive  apt -t "$(lsb_release -cs)-backports" install \
+  apt -t "$(lsb_release -cs)-backports" install \
         linux-image-amd64 \
         linux-headers-amd64 \
         -y -o Dpkg::Options::="--force-confnew"
