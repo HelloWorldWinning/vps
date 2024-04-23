@@ -55,3 +55,4 @@ _fzf_compgen_dir() {
 EOF
 
 
+echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
