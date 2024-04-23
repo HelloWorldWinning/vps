@@ -291,7 +291,6 @@ EOF
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  )
 curl -4s https://ohmyposh.dev/install.sh | bash -s  
 
-
 mkdir -p /root/.config/neofetch
 
 wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf

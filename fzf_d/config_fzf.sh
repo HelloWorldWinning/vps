@@ -1,7 +1,7 @@
 apt-get -y  git
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 #~/.fzf/install
-yes | ~/.fzf/install
+sudo yes | ~/.fzf/install
 
 apg-get update
 apt-get -y install sudo fd-find ripgrep ranger  
@@ -70,10 +70,10 @@ echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autoju
 echo "export FZF_COMPLETION_TRIGGER='~~'" >> ~/.fzf.bash
 
 
-
-curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-cat << 'EOF' >> ~/.bashrc
-export PATH="\$PATH:/root/.local/bin"
-eval "\$(zoxide init bash)"
-EOF
-
+#
+#curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+#cat << 'EOF' >> ~/.bashrc
+#export PATH="\$PATH:/root/.local/bin"
+#eval "\$(zoxide init bash)"
+#EOF
+#
