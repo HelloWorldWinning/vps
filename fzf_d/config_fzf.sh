@@ -70,10 +70,12 @@ echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autoju
 echo "export FZF_COMPLETION_TRIGGER='~~'" >> ~/.fzf.bash
 
 
-#
-#curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-#cat << 'EOF' >> ~/.bashrc
-#export PATH="\$PATH:/root/.local/bin"
-#eval "\$(zoxide init bash)"
-#EOF
-#
+
+curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+##cat << 'EOF' >> ~/.bashrc
+##export PATH="$PATH:/root/.local/bin"
+##eval "$(zoxide init bash)"
+##EOF
+
