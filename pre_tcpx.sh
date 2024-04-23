@@ -190,6 +190,9 @@ alias txnw='tmux new-window -t '
 alias txa='tx attach-session -t '
 alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
+alias txkill='tmux kill-session -t'
+
+
 
 alias dc='docker-compose'
 #alias cc='bash  <(curl -Ls4  bit.ly/myvpsjingyi)'
