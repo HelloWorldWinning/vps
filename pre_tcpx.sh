@@ -32,7 +32,7 @@ git config --global core.editor "vim"
 
 
 apt install docker-compose -y
-apt install -y net-tools unzip mc lynx telnet zip lsof  vim
+apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
