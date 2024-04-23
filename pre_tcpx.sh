@@ -28,7 +28,7 @@ git config --global core.editor "vim"
 
 
 
-apt install fzf -y
+#apt install fzf -y
 
 
 apt install docker-compose -y
