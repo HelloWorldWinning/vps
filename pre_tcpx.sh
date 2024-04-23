@@ -22,7 +22,7 @@ echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 git config http.postBuffer 524288000
-apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch
+apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch exa
 
 git config --global core.editor "vim"
 
@@ -158,17 +158,27 @@ alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
 alias cc='clear'
-alias l='ls -lrth'
-alias s='ls -lhSr'
-alias nm='ls -lh'
-alias ln='ls -lh'
+
+
+alias l='exa -la --sort=changed '
+alias nm='exa -la'
+alias ls='exa -a'
+alias tree='exa -T'
+alias t='exa -lT -L 2'
+
+
+#alias l='ls -lrth'
+#alias s='ls -lhSr'
+#alias nm='ls -lh'
+#alias ln='ls -lh'
+
+
+
 alias p='python'
 alias _GP='git  pull'
 
 alias _G='git add . && git commit -m  "\$(date)" && git push ;echo " ";date;echo " "'
 alias _F='git pull && git add . && git commit -m "\$(date)"  && git push ;echo " ";date;echo " "'
-
-
 
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
@@ -177,7 +187,6 @@ alias tx='tmux'
 alias txn='tx new-session -s '
 alias txnm='tx new-session -s '
 alias txnw='tmux new-window -t '
-
 alias txa='tx attach-session -t '
 alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
@@ -194,12 +203,10 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 
 
-
-
 cd /data
 
 echo ""
-l
+exa -la --sort=changed
 
 #if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
 #if true; then
