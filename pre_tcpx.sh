@@ -5,10 +5,10 @@
 (crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" --force  > /root/acme-cron.log 2>&1; systemctl start nginx ; systemctl start xray") | crontab -
 
 
-read -p 'host name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
-cat >>/etc/hosts<<EOF
-$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
-EOF
+#read -p 'host name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
+#cat >>/etc/hosts<<EOF
+#$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
+#EOF
 
 
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" && systemctl start nginx > /dev/null") | crontab -
