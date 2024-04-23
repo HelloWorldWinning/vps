@@ -761,7 +761,7 @@ EOF
 	echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdbCXW2H3AwV6g9N1FXJp1/8EfWQbSJUuIbdHPoBgMU" >> ~/.ssh/authorized_keys; 
 yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh ) 
 #bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh ) 
-yes |  bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) 
+bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) 
 		;;
                 1) bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh )  ;;
                 1.1)
