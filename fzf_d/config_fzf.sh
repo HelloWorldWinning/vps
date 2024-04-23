@@ -56,3 +56,14 @@ EOF
 
 
 echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
+
+
+
+git clone https://github.com/wting/autojump.git
+cd autojump
+./install.py
+cd ..
+rm -r autojump
+
+echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc
+
