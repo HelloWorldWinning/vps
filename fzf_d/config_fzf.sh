@@ -1,7 +1,7 @@
 apt-get -y  git
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
-
+#~/.fzf/install
+yes | ~/.fzf/install
 
 apg-get update
 apt-get -y install sudo fd-find ripgrep ranger  
