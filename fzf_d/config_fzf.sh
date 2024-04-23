@@ -4,9 +4,12 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 
 apg-get update
-apt-get -y install sudo fd-find ripgrep bat ranger  
+apt-get -y install sudo fd-find ripgrep ranger  
 
-sudo chmod 777  /usr/share/lintian/overrides/bat
+sudo apt install bat -y
+sudo ln -s /usr/bin/batcat /usr/bin/bat
+
+#sudo chmod 777  /usr/share/lintian/overrides/bat
 
 sudo mkdir  -p  /data/.fzf_d
 
