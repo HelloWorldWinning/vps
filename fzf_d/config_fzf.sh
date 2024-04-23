@@ -67,3 +67,4 @@ rm -r autojump
 
 echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc
 
+echo "export FZF_COMPLETION_TRIGGER='~~'" >> ~/.fzf.bash
