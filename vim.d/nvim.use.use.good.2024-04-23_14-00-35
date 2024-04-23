@@ -297,13 +297,3 @@ let g:clipboard = {
       \   'cache_enabled': 0,
       \ }
 
-
-command! -bang -nargs=* Rg
-             \ call fzf#vim#grep(
-             \ "rg --column --line-number --no-heading --color=always --smart-case --hidden -g '!**/.git/**' -- ".shellescape(<q-args>), 1, <bang>0)
-
-" https://www.jianshu.com/p/aeebaee1dd2b
-" --hidden: 显示隐藏文件
-"   -g '!**/.git/**': 排除所有.git文件夹
-
-
