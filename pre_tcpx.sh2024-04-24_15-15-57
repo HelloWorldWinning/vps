@@ -183,6 +183,45 @@ alias _F='git pull && git add . && git commit -m "\$(date)"  && git push ;echo "
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
 export OPENAI_API_KEY=${OPENAI_API_KEY}
+alias tx='tmux'
+alias txn='tmux new-session -s '
+alias txnm='tmux new-session -s '
+alias txnw='tmux new-window -t '
+alias txa='tmux attach-session -t '
+alias txl='tmux list-sessions'
+alias txlw='tmux list-windows '
+alias txkill='tmux kill-session -t'
+
+
+# List all sessions
+alias tls='tmux list-sessions'
+
+# Attach or switch to session
+# usage: ts session_old
+alias ts='tmux attach-session -t'
+
+# Create a new session
+# usage: tsn session_new
+alias tns='tmux new-session -s'
+
+# List all windows
+alias tlw='tmux list-windows'
+
+# Attach or switch to window
+# usage: tw window_old
+alias tw='tmux select-window -t'
+
+# Create a new window
+# usage: twn window_new
+alias tnw='tmux new-window -n'
+# Kill a specific window
+
+# usage: tkw window_old
+alias tkw='tmux kill-window -t'
+
+# Kill a specific session
+# usage: tks session_old
+alias tks='tmux kill-session -t'
 
 
 
