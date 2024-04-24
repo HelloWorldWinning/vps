@@ -293,3 +293,4 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf
 
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
+reboot
