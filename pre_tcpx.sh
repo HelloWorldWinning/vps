@@ -289,3 +289,5 @@ wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
 
+
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
