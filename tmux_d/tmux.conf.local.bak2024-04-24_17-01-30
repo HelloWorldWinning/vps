@@ -285,19 +285,7 @@ tmux_conf_theme_right_separator_sub="|"
 tmux_conf_theme_status_left="#S"
 
 #tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b | #{username}#{root} | #{hostname} "
-
-   #       "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env,$python_version\"; fi)",
-
-
-
-#tmux_conf_theme_status_right=" #{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b| #{username}#{root} |#{hostname}"
-
-
-#tmux_conf_theme_status_right="#(bash /data/.oh-my-tmux_d/python_version.sh) #{mouse}#{pairing}    #{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b| #{username}#{root} |#{hostname}"
-
-tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/.config/tmux/python_version.sh),%R,%a %d %b| #{username}#{root} |#{hostname}"
-#tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash /data/.oh-my-tmux_d/python_version.sh),%R,%a %d %b| #{username}#{root} |#{hostname}"
-#tmux_conf_theme_status_right=" #{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b| #{username}#{root} |#{hostname}"
+tmux_conf_theme_status_right=" #{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b| #{username}#{root} |#{hostname}"
 
 
 

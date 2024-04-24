@@ -18,6 +18,8 @@ sudo ln -sf  /data/.oh-my-tmux_d/.tmux.conf ~/.config/tmux/tmux.conf
 
 wget -4 -O ~/.config/tmux/tmux.conf.local  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux.conf.local
 
+wget -4 -O ~/.config/tmux/python_version.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/python_version.sh
+
 echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
 
 # Reload the tmux configuration
