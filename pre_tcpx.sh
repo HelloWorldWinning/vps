@@ -25,6 +25,9 @@ apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-
 git config http.postBuffer 524288000
 
 apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch exa btop
+sudo apt-get -y install fd-find  httpie
+
+
 
 git config --global core.editor "vim"
 
