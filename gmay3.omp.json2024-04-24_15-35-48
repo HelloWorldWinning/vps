@@ -46,8 +46,8 @@
           "font-weight": "bold"
         },
         {
-          "background": "#630e36",
-          "foreground": "#cccccc",
+          "background": "#680e38",
+          "foreground": "#ffffff",
           "properties": {
             "style": "full",
             "folder_icon": ""
@@ -59,8 +59,8 @@
           "powerline_symbol": ""
         },
         {
-          "background": "#111111",
-          "foreground": "#cccccc",
+          "background": "#6806c4",
+          "foreground": "#FFFFFF",
           "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env,$python_version\"; fi)",
           "type": "session",
           "powerline_symbol": "",
@@ -69,7 +69,7 @@
         },
         {
           "background": "#19381a",
-          "foreground": "#bbbbbb",
+          "foreground": "#FFFAB2",
           "powerline_symbol": "",
           "properties": {
             "time_format": "Mon 2-1-2006 "
@@ -91,7 +91,7 @@
           "background_templates": [
             "{{ if gt .Code 0 }}#f1184c{{ end }}"
           ],
-          "foreground": "#dddddd",
+          "foreground": "#ffffff",
           "properties": {
             "always_enabled": true
           },
