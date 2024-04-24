@@ -5,8 +5,18 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#777777",
+          "background": "#d4ac0d",
           "foreground": "#000000",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "<b>15:04</b>:05"
+          },
+          "template": "{{.CurrentDate | date .Format }}",
+          "type": "time"
+        },
+        {
+          "background": "#BF1D69",
+          "foreground": "#FFFFFF",
           "powerline_symbol": "",
           "template": " {{ .HostName }} ",
           "type": "time"
@@ -20,7 +30,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "     $(pwd)               <b>$(ls |wc -l)  </b>         ",
+          "template": "             $(pwd)               <b>$(ls |wc -l)  </b>         ",
           "type": "path",
           "font-weight": "bold"
         },
@@ -46,7 +56,7 @@
           "font-weight": "bold"
         },
         {
-          "background": "#680e38",
+          "background": "#BF1D69",
           "foreground": "#ffffff",
           "properties": {
             "style": "full",
@@ -68,7 +78,31 @@
           "font-weight": "bold"
         },
         {
-          "background": "#19381a",
+          "background": "#000000",
+          "foreground": "#FFFAB2",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006"
+          },
+          "style": "powerline",
+          "template": "{{ .CurrentDate | date .Format }}",
+          "type": "time"
+        },
+        {
+          "background": "#072bf7",
+          "foreground": "#FFFFFF",
+          "properties": {
+            "style": "full",
+            "folder_icon": ""
+          },
+          "style": "powerline",
+          "powerline_symbol": "",
+          "template": "{{.UserName }}",
+          "type": "path",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#4caf50",
           "foreground": "#FFFAB2",
           "powerline_symbol": "",
           "properties": {
@@ -110,7 +144,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "       ➤",
+          "template": "            ➤",
           "type": "text"
         }
       ],

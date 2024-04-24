@@ -5,8 +5,8 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#777777",
-          "foreground": "#000000",
+          "background": "#BF1D69",
+          "foreground": "#FFFFFF",
           "powerline_symbol": "",
           "template": " {{ .HostName }} ",
           "type": "time"
@@ -68,7 +68,7 @@
           "font-weight": "bold"
         },
         {
-          "background": "#19381a",
+          "background": "#4caf50",
           "foreground": "#FFFAB2",
           "powerline_symbol": "",
           "properties": {
