@@ -24,5 +24,6 @@ echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
 tmux source-file ~/.config/tmux/tmux.conf
 
 # Start a new tmux session
-#tmux new-session
 
+curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/bashrc_alias.txt >> ~/.bashrc
+tmux new-session
