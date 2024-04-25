@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo -e "\n==================\n"
+GREEN='\033[1;32m'
 MAGENTA_BACKGROUND='\033[1;45m'
 MAGENTA='\033[1;35m'
 CYAN='\033[1;35m' # You may choose another color for image_name if you wish
@@ -43,9 +44,9 @@ else
         port_bindings=$(get_port_bindings "$container_name")
         path=$(get_docker_compose_path "$container_name")
         if [[ -z "$port_bindings" ]]; then
-            echo -e "${YELLOW}$image_name${NC}---${CYAN}$container_name${NC}---${YELLOW}$path${NC}"
+            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${YELLOW}$path${NC}"
         else
-            echo -e "${YELLOW}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---${YELLOW}$path${NC}"
+            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---${YELLOW}$path${NC}"
         fi
         echo " "
     done
