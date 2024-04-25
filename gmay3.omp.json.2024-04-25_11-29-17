@@ -1,0 +1,114 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#000000",
+          "foreground": "#fc2189",
+          "powerline_symbol": "",
+          "properties": {
+            "style": "full",
+            "folder_icon": ""
+          },
+          "style": "diamond",
+          "template": "       $(pwd)               <b>$(ls |wc -l)  </b>         ",
+          "type": "path",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#000000",
+          "foreground": "#FFFAB2",
+          "style": "powerline",
+          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
+          "type": "session",
+          "powerline_symbol": "",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#000000",
+          "foreground": "#c70643",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "template": "<b>{{ .HostName }}</b> ",
+          "type": "time"
+        },
+        {
+          "background": "#f5f26e",
+          "foreground": "#000000",
+          "powerline_symbol": "",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": " {{ .UpstreamIcon }}{{`$(get_git_branch_name)`}}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "type": "git"
+        },
+        {
+          "background": "#630e36",
+          "foreground": "#cccccc",
+          "properties": {
+            "style": "full",
+            "folder_icon": ""
+          },
+          "style": "powerline",
+          "template": "$(bash ~/themes/cpu_usage.sh)",
+          "type": "path",
+          "font-weight": "bold",
+          "powerline_symbol": ""
+        },
+        {
+          "background": "#19381a",
+          "foreground": "#bbbbbb",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006 "
+          },
+          "style": "powerline",
+          "template": "$weather_temperature",
+          "type": "time"
+        },
+        {
+          "background": "#6CA35E",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "style": "powerline",
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "type": "node"
+        },
+        {
+          "background": "#2e9599",
+          "background_templates": [
+            "{{ if gt .Code 0 }}#f1184c{{ end }}"
+          ],
+          "foreground": "#dddddd",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": " ",
+          "trailing_diamond": "",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#f1184c",
+          "style": "plain",
+          "template": "     ➤",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}
