@@ -1,4 +1,5 @@
 from flask import Flask, render_template_string, request, Response, send_from_directory, abort, url_for
+#from flask import Flask, render_template_string, request, Response, send_from_directory, abort
 import markdown2
 import os
 from flask_httpauth import HTTPBasicAuth
@@ -20,8 +21,13 @@ def verify_password(username, password):
 def is_markdown_file(filename):
     return filename.endswith(('.md', '.markdown', '.mkd'))
 
+def is_text_file(filename):
+    return filename.endswith('.txt')
+
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
+
+
 
 @app.route('/')
 @app.route('/<path:subpath>')
@@ -70,7 +76,6 @@ def list_files(subpath=''):
             <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
             <title>Files and Directories</title>
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
-            <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
             <style>
                 body { font-family: 'Source Code Pro', monospace; }
                 ul { list-style-type: none; padding: 0; }
@@ -89,7 +94,7 @@ def list_files(subpath=''):
             <h2>Text:</h2>
             <ul>
                 {% for file in text_files %}
-                <li><a href="{{ url_for('txt_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+                <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                 {% endfor %}
             </ul>
             <h2>Directories:</h2>
@@ -102,6 +107,12 @@ def list_files(subpath=''):
         </html>
     ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath, path_str=path_str)
 
+
+
+
+
+@app.route('/text/<path:subpath>/<filename>')
+@app.route('/txt/<path:subpath>/<filename>')
 @app.route('/markdown/<path:subpath>/<filename>')
 @app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
@@ -112,13 +123,17 @@ def serve_file(subpath, filename):
     
     file_title, file_extension = os.path.splitext(filename)
 
-    if is_markdown_file(filename):
+    if is_markdown_file(filename) or is_text_file(filename):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                content = content.replace('- [ ]', '<input type="checkbox" disabled>')
-                content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
-                content = markdown2.markdown(content, extras=["fenced-code-blocks"])
+                if is_text_file(filename):
+                    content = '<pre>' + content + '</pre>'
+                else:
+                    # Convert checkbox syntax to HTML
+                    content = content.replace('- [ ]', '<input type="checkbox" disabled>')
+                    content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
+                    content = markdown2.markdown(content, extras=["fenced-code-blocks"])
                 full_html = f'''
                     <!DOCTYPE html>
                     <html>
@@ -126,7 +141,6 @@ def serve_file(subpath, filename):
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
                         <title>{file_title}</title>
                         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-                        <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
                         <style>
                             @font-face {{
                                 font-family: 'FZFangJunHeiS';
@@ -148,50 +162,7 @@ def serve_file(subpath, filename):
     else:
         return abort(404)
 
-def is_text_file(filename):
-    return filename.endswith('.txt')
 
-@app.route('/text/<path:subpath>/<filename>')
-@app.route('/txt/<path:subpath>/<filename>')
-@auth.login_required
-def txt_file(subpath, filename):
-    file_path = os.path.join(MARKDOWN_DIR, subpath, filename)
-    if not os.path.abspath(file_path).startswith(MARKDOWN_DIR):
-        return "Unauthorized access", 403
-
-    file_title, file_extension = os.path.splitext(filename)
-
-    if is_text_file(filename):
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-                content = content.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                content = '<pre>' + content + '</pre>'
-                full_html = f'''
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>{file_title}</title>
-                        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-                        <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
-                        <style>
-                            @font-face {{
-                                font-family: 'FZFangJunHeiS';
-                                src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-                            }}
-                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
-                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
-                        </style>
-                    </head>
-                    <body>{content}</body>
-                    </html>
-                '''
-                return Response(full_html, mimetype='text/html')
-        except FileNotFoundError:
-            return "File not found", 404
-    else:
-        return abort(404)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=177)
-
