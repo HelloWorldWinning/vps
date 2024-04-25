@@ -5,6 +5,13 @@
       "alignment": "left",
       "segments": [
         {
+          "background": "#777777",
+          "foreground": "#000000",
+          "powerline_symbol": "",
+          "template": " {{ .HostName }} ",
+          "type": "time"
+        },
+        {
           "background": "#000000",
           "foreground": "#fc2189",
           "powerline_symbol": "",
@@ -13,26 +20,9 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "       $(pwd)               <b>$(ls |wc -l)  </b>         ",
+          "template": "     $(pwd)               <b>$(ls |wc -l)  </b>         ",
           "type": "path",
           "font-weight": "bold"
-        },
-        {
-          "background": "#000000",
-          "foreground": "#FFFAB2",
-          "style": "powerline",
-          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
-          "type": "session",
-          "powerline_symbol": "",
-          "font-weight": "bold"
-        },
-        {
-          "background": "#000000",
-          "foreground": "#c70643",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "template": "<b>{{ .HostName }}</b> ",
-          "type": "time"
         },
         {
           "background": "#f5f26e",
@@ -45,6 +35,15 @@
           "style": "powerline",
           "template": " {{ .UpstreamIcon }}{{`$(get_git_branch_name)`}}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
           "type": "git"
+        },
+        {
+          "background": "#000000",
+          "foreground": "#FFFAB2",
+          "style": "powerline",
+          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)",
+          "type": "session",
+          "powerline_symbol": "",
+          "font-weight": "bold"
         },
         {
           "background": "#630e36",
@@ -102,7 +101,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "     ➤",
+          "template": "       ➤",
           "type": "text"
         }
       ],
