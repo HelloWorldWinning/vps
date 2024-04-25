@@ -1,4 +1,3 @@
-
 alias tx='tmux'
 alias txn='tmux new-session -s '
 alias txnm='tmux new-session -s '
@@ -8,7 +7,6 @@ alias txl='tmux list-sessions'
 alias txlw='tmux list-windows '
 alias txkill='tmux kill-session -t'
 
-
 # List all sessions
 alias tl='tmux list-sessions'
 
@@ -17,7 +15,7 @@ alias tl='tmux list-sessions'
 alias ts='tmux attach-session -t'
 
 # Create a new session
-# usage: tsn session_new
+# usage: ns session_new
 alias ns='tmux new-session -s'
 
 # List all windows
@@ -29,7 +27,8 @@ alias tw='tmux select-window -t'
 
 # Create a new window
 # usage: twn window_new
-alias nw='tmux new-window -n'
+##alias nw='tmux new-window -n'
+alias nw='tmux new-window -c "#{pane_current_path}" -n'
 # Kill a specific window
 
 # usage: tkw window_old
