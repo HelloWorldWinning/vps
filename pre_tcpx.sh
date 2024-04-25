@@ -172,10 +172,10 @@ alias tree='exa -T'
 alias t='exa -lT -L 2'
 
 
-#alias l='ls -lrth'
-#alias s='ls -lhSr'
-#alias nm='ls -lh'
-#alias ln='ls -lh'
+##alias l='ls -lrth'
+##alias s='ls -lhSr'
+##alias nm='ls -lh'
+##alias ln='ls -lh'
 
 
 
