@@ -81,6 +81,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable $service_name
 
 # Start the service immediately
+sudo systemctl stop  $service_name
 sudo systemctl start $service_name
 
 # Display the status of the service
