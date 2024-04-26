@@ -22,14 +22,14 @@
           "foreground": "#c70643",
           "style": "powerline",
           "powerline_symbol": "",
-          "template": "<b>{{ .HostName }}</b>   ",
+          "template": "<b>{{ .HostName }}</b>",
           "type": "time"
         },
         {
           "background": "#000000",
           "foreground": "#FFFAB2",
           "style": "powerline",
-          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi)   ",
+          "template": "$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) ",
           "type": "session",
           "powerline_symbol": "",
           "font-weight": "bold"
@@ -45,6 +45,30 @@
           "style": "powerline",
           "template": " {{ .UpstreamIcon }}{{`$(get_git_branch_name)`}}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
           "type": "git"
+        },
+        {
+          "background": "#630e36",
+          "foreground": "#cccccc",
+          "properties": {
+            "style": "full",
+            "folder_icon": ""
+          },
+          "style": "powerline",
+          "template": "$(bash ~/themes/cpu_usage.sh)",
+          "type": "path",
+          "font-weight": "bold",
+          "powerline_symbol": ""
+        },
+        {
+          "background": "#19381a",
+          "foreground": "#bbbbbb",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006 "
+          },
+          "style": "powerline",
+          "template": "$weather_temperature",
+          "type": "time"
         },
         {
           "background": "#6CA35E",
