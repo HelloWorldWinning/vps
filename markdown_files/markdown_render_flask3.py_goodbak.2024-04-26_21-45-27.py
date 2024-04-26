@@ -67,58 +67,37 @@ def list_files(subpath=''):
         <!DOCTYPE html>
         <html>
         <head>
-            <!-- ... -->
-            <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+            <title>Files and Directories</title>
+            <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
             <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
             <style>
-                @font-face {
-                    font-family: 'FZFangJunHeiS';
-                    src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-                }
-                body { font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }
-                pre { background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }
-                .card-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-                }
-                .card {
-                    width: 30%;
-                    padding: 10px;
-                    margin-bottom: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }
+                body { font-family: 'Source Code Pro', monospace; }
+                ul { list-style-type: none; padding: 0; }
+                li { margin: 5px 0; }
+                pre { background-color: #f4f4f4; padding: 10px; font-family: 'Source Code Pro', monospace; }
             </style>
         </head>
         <body>
             <p>{{ path_str|safe }}</p>
-            <div class="card-container">
-                <div class="card">
-                    <h3>Directories:</h3>
-                    <ul>
-                        {% for directory in directories %}
-                        <li><a href="{{ url_for('list_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Markdown:</h3>
-                    <ul>
-                        {% for file in markdown_files %}
-                        <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Text:</h3>
-                    <ul>
-                        {% for file in text_files %}
-                        <li><a href="{{ url_for('txt_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+            <h2>Markdown:</h2>
+            <ul>
+                {% for file in markdown_files %}
+                <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+                {% endfor %}
+            </ul>
+            <h2>Text:</h2>
+            <ul>
+                {% for file in text_files %}
+                <li><a href="{{ url_for('txt_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
+                {% endfor %}
+            </ul>
+            <h2>Directories:</h2>
+            <ul>
+                {% for directory in directories %}
+                <li><a href="{{ url_for('list_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
+                {% endfor %}
+            </ul>
         </body>
         </html>
     ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath, path_str=path_str)
