@@ -219,3 +219,6 @@ let g:clipboard = {
       \    },
       \   'cache_enabled': 0,
       \ }
+
+
+nnoremap <F3> :let @/=@/ <Bar> %s//&/gn<CR>
