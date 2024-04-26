@@ -13,7 +13,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "       $(pwd)               $(ls |wc -l)           ",
+          "template": "       $(pwd)               <b>$(ls |wc -l)  </b>         ",
           "type": "path",
           "font-weight": "bold"
         },
