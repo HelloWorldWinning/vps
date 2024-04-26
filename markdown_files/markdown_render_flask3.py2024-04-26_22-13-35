@@ -62,6 +62,7 @@ def list_files(subpath=''):
             link = f'<a href="{url_for("list_files", subpath=path)}">{path_parts[i]}</a>'
             path_links.append(link)
     path_str = f'{hostname} /{"/".join(path_links)}'
+
     return render_template_string('''
         <!DOCTYPE html>
         <html>
@@ -95,33 +96,32 @@ def list_files(subpath=''):
             <div class="card-container">
                 <div class="card">
                     <h3>Directories:</h3>
-                    <ol>
+                    <ul>
                         {% for directory in directories %}
                         <li><a href="{{ url_for('list_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
                 <div class="card">
                     <h3>Markdown:</h3>
-                    <ol>
+                    <ul>
                         {% for file in markdown_files %}
                         <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
                 <div class="card">
                     <h3>Text:</h3>
-                    <ol>
+                    <ul>
                         {% for file in text_files %}
                         <li><a href="{{ url_for('txt_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
             </div>
         </body>
         </html>
     ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath, path_str=path_str)
-
 
 @app.route('/markdown/<path:subpath>/<filename>')
 @app.route('/md/<path:subpath>/<filename>')
