@@ -170,7 +170,7 @@ alias cc='clear'
 alias l='exa -la --sort=changed '
 alias nm='exa -la'
 alias ls='exa -a'
-alias tree='exa -T'
+alias tree='exa -Tla'
 alias t='exa -lT -L 2'
 
 
