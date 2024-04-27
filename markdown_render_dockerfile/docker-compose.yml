@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  markdown-app:
+    image: oklove/markdown:latest   # Use the image you built
+    ports:
+      - "177:177"                  # Map port 177 of the host to port 5000 of the container
+    volumes:
+      - /data:/00data
+        # Map the current directory on the host to /usr/src/app in the container
