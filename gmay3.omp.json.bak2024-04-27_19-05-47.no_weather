@@ -47,16 +47,6 @@
           "type": "git"
         },
         {
-          "background": "#19381a",
-          "foreground": "#bbbbbb",
-          "powerline_symbol": "",          "properties": {
-            "time_format": "Mon 2-1-2006 "
-          },
-          "style": "powerline",
-          "template": "$weather_temperature",
-          "type": "time"
-        },
-        {
           "background": "#6CA35E",
           "foreground": "#ffffff",
           "powerline_symbol": "",
