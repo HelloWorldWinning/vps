@@ -7,6 +7,7 @@ MAGENTA_BACKGROUND='\033[0;45m'
 MAGENTA='\033[0;35m'
 CYAN='\033[0;36m' # You can choose another color for image_name if you wish
 RED='\033[0;31m'
+#RED='\033[0;91m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
