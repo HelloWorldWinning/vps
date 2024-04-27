@@ -1,6 +1,5 @@
 from flask import Flask, render_template_string, request, Response, send_from_directory, abort, url_for
 import markdown2
-import markdown
 import os
 from flask_httpauth import HTTPBasicAuth
 
@@ -9,38 +8,9 @@ auth = HTTPBasicAuth()
 
 MARKDOWN_DIR = '/'
 
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
-
-# Check if username and password are provided
-if username and password:
-    users = {username: password}
-else:
-    users = {"1": "1"}  # Default users if username and password
-
-
-
-from markdown.extensions import Extension
-
-from markdown.extensions import Extension
-from markdown.preprocessors import Preprocessor
-
-
-class CheckboxPreprocessor(Preprocessor):
-    def run(self, lines):
-        new_lines = []
-        for line in lines:
-            line = line.replace('- [ ]', '<input type="checkbox" disabled>')
-            line = line.replace('- [x]', '<input type="checkbox" checked disabled>')
-            new_lines.append(line)
-        return new_lines
-
-class CheckboxExtension(Extension):
-    def extendMarkdown(self, md):
-        md.preprocessors.register(CheckboxPreprocessor(), 'checkbox', 25)
-
-
-
+users = {
+    "1": "1"
+}
 
 @auth.verify_password
 def verify_password(username, password):
@@ -92,6 +62,7 @@ def list_files(subpath=''):
             link = f'<a href="{url_for("list_files", subpath=path)}">{path_parts[i]}</a>'
             path_links.append(link)
     path_str = f'{hostname} /{"/".join(path_links)}'
+
     return render_template_string('''
         <!DOCTYPE html>
         <html>
@@ -125,33 +96,32 @@ def list_files(subpath=''):
             <div class="card-container">
                 <div class="card">
                     <h3>Directories:</h3>
-                    <ol>
+                    <ul>
                         {% for directory in directories %}
                         <li><a href="{{ url_for('list_files', subpath=subpath + '/' + directory if subpath else directory) }}">{{ directory }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
                 <div class="card">
                     <h3>Markdown:</h3>
-                    <ol>
+                    <ul>
                         {% for file in markdown_files %}
                         <li><a href="{{ url_for('serve_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
                 <div class="card">
                     <h3>Text:</h3>
-                    <ol>
+                    <ul>
                         {% for file in text_files %}
                         <li><a href="{{ url_for('txt_file', subpath=subpath, filename=file) }}">{{ file }}</a></li>
                         {% endfor %}
-                    </ol>
+                    </ul>
                 </div>
             </div>
         </body>
         </html>
     ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath, path_str=path_str)
-
 
 @app.route('/markdown/<path:subpath>/<filename>')
 @app.route('/md/<path:subpath>/<filename>')
@@ -166,64 +136,31 @@ def serve_file(subpath, filename):
     if is_markdown_file(filename):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
-#               content = f.read()
-#               content = markdown.markdown(content, extensions=['toc', 'fenced_code', 'tables'])
-#               content = content.replace('- [ ]', '<input type="checkbox" disabled>')
-#               content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
                 content = f.read()
-                content = markdown.markdown(content, extensions=[CheckboxExtension(), 'toc', 'fenced_code', 'tables'])
-              # content = markdown.markdown(content, extensions=['fenced_code', 'tables'])
                 content = content.replace('- [ ]', '<input type="checkbox" disabled>')
                 content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
-              # content = markdown.markdown(content, extensions=['toc'])
-#               content = markdown2.markdown(content, extras=["fenced-code-blocks"])
-#               content = markdown.markdown(content, extensions=['toc', 'fenced_code'])
-
-              # print(content)
+                content = markdown2.markdown(content, extras=["fenced-code-blocks"])
                 full_html = f'''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
-        <title>{file_title}</title>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-        <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
-        <style>
-            @font-face {{
-                font-family: 'FZFangJunHeiS';
-                src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-            }}
-            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
-            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
-            img, pre, table {{ max-width: 100%; overflow-x: auto; }}
-
-            /* TOC styles */
-            .toc {{
-                background-color: #f9f9f9;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 20px;
-            }}
-            .toc ul {{
-                list-style-type: none;
-                padding-left: 20px;
-            }}
-            .toc li {{
-                margin-bottom: 5px;
-            }}
-            .toc a {{
-                text-decoration: none;
-                color: #333;
-            }}
-            .toc a:hover {{
-                text-decoration: underline;
-            }}
-        </style>
-    </head>
-    <body>{content}</body>
-    </html>
-'''
-
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
+                        <title>{file_title}</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+                        <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
+                        <style>
+                            @font-face {{
+                                font-family: 'FZFangJunHeiS';
+                                src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+                            }}
+                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
+                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
+                            img, pre, table {{ max-width: 100%; overflow-x: auto; }}
+                        </style>
+                    </head>
+                    <body>{content}</body>
+                    </html>
+                '''
                 return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404

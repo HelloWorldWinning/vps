@@ -1,4 +1,3 @@
 flask 
 markdown2 
-markdown 
 flask_httpauth

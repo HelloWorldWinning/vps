@@ -5,11 +5,6 @@ get_host_name=$(hostname)
 
 echo "Starting setup on host: $get_host_name"
 
-# Prompt for username and password
-read -p "Enter username (leave empty for 1): " username
-read -p "Enter password (leave empty for 1): " password
-echo
-
 # Create a new directory for the markdown render docker compose file
 mkdir markdown_render_docker
 
@@ -29,13 +24,8 @@ services:
       - "177:177"
     volumes:
       - /data:/data
-    environment:
-      - USERNAME=${username:-1}
-      - PASSWORD=${password:-1}
 EOF
 
-docker-compose down
 docker-compose up -d
 
 echo "Docker compose setup for markdown-app has been created successfully."
-
