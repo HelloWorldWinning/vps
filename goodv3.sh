@@ -650,7 +650,8 @@ ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution
 ${Red_font_prefix}109${Font_color_suffix} ray_install3.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
-${Red_font_prefix}a${Font_color_suffix} markdown.sh 177 render
+${Red_font_prefix}a${Font_color_suffix}  177 docker  markdown_render_dockerfile/markdown_render_docker.sh
+${Red_font_prefix}ax${Font_color_suffix} markdown.sh 177 render
 ${Red_font_prefix}b${Font_color_suffix} config_fzf.sh   install fzf
 ${Red_font_prefix}c${Font_color_suffix} tmux_d/tmux_install.sh
 ${Red_font_prefix}q${Font_color_suffix} exit
@@ -892,7 +893,9 @@ netstat -tulnp | grep -E '166|155'
 
 		108) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ddp_master.sh )  ;;
 		109) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ray_install3.sh )  ;;
-		a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh )  ;;
+		ax) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh )  ;;
+		a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh)  ;;
+
 		b) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  )  ;;
 		c) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
