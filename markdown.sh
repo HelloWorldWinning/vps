@@ -32,7 +32,8 @@ fi
 
 # Install required Python packages for markdown_render_flask3.py
 #conda_env_bin_dir/
-pip install flask markdown2 flask_httpauth
+pip install flask markdown2 flask_httpauth markdown
+pip3 install flask markdown2 flask_httpauth markdown
 
 
 
