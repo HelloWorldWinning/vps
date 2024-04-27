@@ -8,7 +8,7 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m' # You can choose another color for image_name if you wish
 #RED='\033[0;31m'
 RED='\033[1;31m'
-RED='\033[0;91m'
+#RED='\033[0;91m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
@@ -54,7 +54,7 @@ else
         if [[ -z "$port_bindings" ]]; then
             echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${YELLOW}$path${NC}"
         else
-            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}  $port_bindings  ${NC}---${YELLOW}$path${NC}"
+            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED} 【  $port_bindings  】 ${NC}---${YELLOW}$path${NC}"
         fi
         echo " "
     done
