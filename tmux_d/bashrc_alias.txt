@@ -4,6 +4,7 @@ alias txnm='tmux new-session -s '
 alias txnw='tmux new-window -t '
 alias txa='tmux attach-session -t '
 alias txl='tmux list-sessions'
+alias tls='tmux list-sessions'
 alias txlw='tmux list-windows '
 alias txkill='tmux kill-session -t'
 
