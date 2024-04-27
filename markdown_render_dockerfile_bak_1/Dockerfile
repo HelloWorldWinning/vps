@@ -4,8 +4,8 @@
 FROM python:3.9.15-alpine
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
-#WORKDIR /data
+#WORKDIR /usr/src/app
+WORKDIR /
 
 # Copy the requirements file into the container at /usr/src/app
 COPY requirements.txt ./
