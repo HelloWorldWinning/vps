@@ -19,6 +19,7 @@ services:
   markdown-app:
     image: oklove/markdown:latest
     hostname: $get_host_name
+    restart: unless-stopped
     ports:
       - "177:177"
     volumes:
