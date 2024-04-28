@@ -3,39 +3,21 @@ import markdown2
 import markdown
 import os
 from flask_httpauth import HTTPBasicAuth
-from markdown.extensions import Extension
-from markdown.preprocessors import Preprocessor
-from markdown.inlinepatterns import InlineProcessor
-from xml.etree import ElementTree as etree
-
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 MARKDOWN_DIR = '/'
 
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
+users = {
+    "1": "1"
+}
 
-# Check if username and password are provided
-if username and password:
-    users = {username: password}
-else:
-    users = {"1": "1"}  # Default users if username and password
+from markdown.extensions import Extension
 
+from markdown.extensions import Extension
+from markdown.preprocessors import Preprocessor
 
-
-
-
-class StrikethroughExtension(Extension):
-    def extendMarkdown(self, md):
-        md.inlinePatterns.register(StrikethroughInlineProcessor(r'~~(.+?)~~'), 'strikethrough', 175)
-
-class StrikethroughInlineProcessor(InlineProcessor):
-    def handleMatch(self, m, data):
-        el = etree.Element('del')
-        el.text = m.group(1)
-        return el, m.start(0), m.end(0)
 
 class CheckboxPreprocessor(Preprocessor):
     def run(self, lines):
@@ -49,8 +31,6 @@ class CheckboxPreprocessor(Preprocessor):
 class CheckboxExtension(Extension):
     def extendMarkdown(self, md):
         md.preprocessors.register(CheckboxPreprocessor(), 'checkbox', 25)
-
-
 
 
 
@@ -179,17 +159,19 @@ def serve_file(subpath, filename):
     if is_markdown_file(filename):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
+#               content = f.read()
+#               content = markdown.markdown(content, extensions=['toc', 'fenced_code', 'tables'])
+#               content = content.replace('- [ ]', '<input type="checkbox" disabled>')
+#               content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
                 content = f.read()
-                content = markdown.markdown(content, extensions=[
-                    CheckboxExtension(),
-                    'toc',
-                    'fenced_code',
-                    'tables',
-                    StrikethroughExtension()
-                ])
-
+                content = markdown.markdown(content, extensions=[CheckboxExtension(), 'toc', 'fenced_code', 'tables'])
+              # content = markdown.markdown(content, extensions=['fenced_code', 'tables'])
                 content = content.replace('- [ ]', '<input type="checkbox" disabled>')
                 content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
+              # content = markdown.markdown(content, extensions=['toc'])
+#               content = markdown2.markdown(content, extras=["fenced-code-blocks"])
+#               content = markdown.markdown(content, extensions=['toc', 'fenced_code'])
+
               # print(content)
                 full_html = f'''
     <!DOCTYPE html>
