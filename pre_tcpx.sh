@@ -178,6 +178,11 @@ alias tree='exa -Tla'
 alias t='exa -lT -L 2'
 
 
+
+alias nu='ncdu'
+
+
+
 ##alias l='ls -lrth'
 ##alias s='ls -lhSr'
 ##alias nm='ls -lh'
