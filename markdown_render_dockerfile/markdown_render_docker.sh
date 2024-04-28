@@ -6,8 +6,8 @@ get_host_name=$(hostname)
 echo "Starting setup on host: $get_host_name"
 
 # Prompt for username and password
-read -p "Enter username (leave empty for 1): " username
-read -p "Enter password (leave empty for 1): " password
+read -p "Enter username (leave empty for a): " username
+read -p "Enter password (leave empty for a): " password
 echo
 
 # Create a new directory for the markdown render docker compose file
@@ -30,8 +30,8 @@ services:
     volumes:
       - /data:/data
     environment:
-      - USERNAME=${username:-1}
-      - PASSWORD=${password:-1}
+      - USERNAME=${username:-a}
+      - PASSWORD=${password:-a}
 EOF
 
 docker-compose down

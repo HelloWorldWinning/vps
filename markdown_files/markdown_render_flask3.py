@@ -10,7 +10,7 @@ auth = HTTPBasicAuth()
 MARKDOWN_DIR = '/'
 
 users = {
-    "1": "1"
+    "a": "a"
 }
 
 from markdown.extensions import Extension
@@ -101,7 +101,7 @@ def list_files(subpath=''):
         <html>
         <head>
             <!-- ... -->
-            <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;800&display=swap" rel="stylesheet">
             <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
             <style>
                 @font-face {
@@ -188,7 +188,7 @@ def serve_file(subpath, filename):
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
         <title>{file_title}</title>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;800&display=swap" rel="stylesheet">
         <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
         <style>
             @font-face {{
@@ -258,7 +258,7 @@ def txt_file(subpath, filename):
                     <html>
                     <head>
                         <title>{file_title}</title>
-                        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;800&display=swap" rel="stylesheet">
                         <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
                         <style>
                             @font-face {{
