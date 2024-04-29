@@ -224,14 +224,14 @@ exa -la --sort=changed
 
 if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" != "vscode" ]; then
     # Check if a tmux session named "do" exists
-    tmux has-session -t do &>/dev/null
+    tmux has-session -t "do" &>/dev/null
     if [ \$? -ne 0 ]; then
         # If the session does not exist, create it
-        tmux new-session -s do -d
+        tmux new-session -s "do" -d
     fi
     # If we are not already inside a tmux session, attach to the "do" session
     if [ -z "\$TMUX" ]; then
-        tmux attach -t do
+        tmux attach -t "do"
     fi
 fi
 
