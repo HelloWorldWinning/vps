@@ -317,8 +317,8 @@ tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status
 #tmux_conf_theme_status_right=" #{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R ,%a %d %b| #{username}#{root} |#{hostname}"
 
 #here
-tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
-tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_9"
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_17,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
+tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_9"
 #tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_11"
 
 # status left style
