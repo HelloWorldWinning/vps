@@ -155,7 +155,8 @@ weather=\$(echo \$weather | tr ';' '_')
 temperature=\$(echo "\$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
 we_temp="\${temperature}°C \${weather}"
 ##weather_temperature="\${temperature}°C \${weather}"
-export weather_temperature="\${temperature}°C \${weather}"
+##export weather_temperature="\${temperature}°C \${weather}"
+export weather_temperature="\${temperature}\${weather}"
 
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
