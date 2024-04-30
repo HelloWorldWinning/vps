@@ -172,7 +172,8 @@ alias c='clear'
 alias cc='clear'
 
 
-alias l='exa -la --sort=changed '
+alias l='exa -la --sort=changed'
+alias s='exa -la --sort=size'
 alias nm='exa -la'
 alias ls='exa -a'
 alias tree='exa -Tla'
