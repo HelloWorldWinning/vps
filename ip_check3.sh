@@ -56,14 +56,25 @@ else
   fi
 fi
 
-ipinfo=$(curl -s "http://ipinfo.io/$ip?token=6d89f8e7f1a21e")
-hostname=$(echo "$ipinfo" | grep -oP '"hostname": "\K[^"]+')
-timezone=$(echo "$ipinfo" | grep -oP '"timezone": "\K[^"]+')
-loc=$(echo "$ipinfo" | grep -oP '"loc": "\K[^"]+')
-region=$(echo "$ipinfo" | grep -oP '"region": "\K[^"]+')
-city=$(echo "$ipinfo" | grep -oP '"city": "\K[^"]+')
-country=$(echo "$ipinfo" | grep -oP '"country": "\K[^"]+')
-org=$(echo "$ipinfo" | grep -oP '"org": "\K[^"]+')
+
+
+ipinfo=$(curl -s "http://ip-api.com/json/$ip?fields=country,regionName,city,timezone,org,reverse")
+
+country=$(echo "$ipinfo" | jq -r '.country')
+region=$(echo "$ipinfo" | jq -r '.regionName')
+city=$(echo "$ipinfo" | jq -r '.city')
+timezone=$(echo "$ipinfo" | jq -r '.timezone')
+org=$(echo "$ipinfo" | jq -r '.org')
+hostname=$(echo "$ipinfo" | jq -r '.reverse')
+
+#ipinfo=$(curl -s "http://ipinfo.io/$ip?token=6d89f8e7f1a21e")
+#hostname=$(echo "$ipinfo" | grep -oP '"hostname": "\K[^"]+')
+#timezone=$(echo "$ipinfo" | grep -oP '"timezone": "\K[^"]+')
+#loc=$(echo "$ipinfo" | grep -oP '"loc": "\K[^"]+')
+#region=$(echo "$ipinfo" | grep -oP '"region": "\K[^"]+')
+#city=$(echo "$ipinfo" | grep -oP '"city": "\K[^"]+')
+#country=$(echo "$ipinfo" | grep -oP '"country": "\K[^"]+')
+#org=$(echo "$ipinfo" | grep -oP '"org": "\K[^"]+')
 
 output+="IP        : $ip\n"
 [[ -n "$domain" ]] && output+="Domain    : $domain\n"
