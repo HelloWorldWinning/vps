@@ -3,20 +3,29 @@ import markdown2
 import markdown
 import os
 from flask_httpauth import HTTPBasicAuth
+from markdown.extensions import Extension
+from markdown.preprocessors import Preprocessor
+from markdown.inlinepatterns import InlineProcessor
+from xml.etree import ElementTree as etree
+
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 MARKDOWN_DIR = '/'
 
-users = {
-    "a": "a"
-}
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
-from markdown.extensions import Extension
-from markdown.preprocessors import Preprocessor
-from markdown.inlinepatterns import InlineProcessor
-from xml.etree import ElementTree as etree
+# Check if username and password are provided
+if username and password:
+    users = {username: password}
+else:
+    users = {"a": "a"}  # Default users if username and password
+
+
+
+
 
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
@@ -122,12 +131,6 @@ def list_files(subpath=''):
                     border: 1px solid #ccc;
                     border-radius: 5px;
                 }
-                .card li {
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                }
-
-
             </style>
         </head>
         <body>

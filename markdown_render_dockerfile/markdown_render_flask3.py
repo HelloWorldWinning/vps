@@ -131,6 +131,12 @@ def list_files(subpath=''):
                     border: 1px solid #ccc;
                     border-radius: 5px;
                 }
+
+                .card li {
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+                
             </style>
         </head>
         <body>
