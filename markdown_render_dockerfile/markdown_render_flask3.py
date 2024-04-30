@@ -137,6 +137,8 @@ def list_files(subpath=''):
                     overflow-wrap: break-word;
                 }
                 
+                a {     text-decoration: none; }
+
             </style>
         </head>
         <body>
