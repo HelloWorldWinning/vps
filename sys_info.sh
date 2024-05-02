@@ -82,7 +82,13 @@ echo $output | sed 's/, $//' | xargs
 #uptime -p | sed 's/up //'
 
 # Display CPU information
-CPU_MODEL=$(lscpu | grep "Model name:" | sed 's/Model name: *//' | awk '{printf "%s, ", $0}' | sed 's/, $/\n/')
+# CPU_MODEL=$(lscpu | grep "Model name:" | sed 's/Model name: *//' | awk '{printf "%s, ", $0}' | sed 's/, $/\n/')
+
+CPU_MODEL=$(echo "CPU Model : $(cat /proc/cpuinfo | awk -F: '/model name/ {print $2; exit}' | sed 's/^ *//')" \
+           "| cpu MHz : $(cat /proc/cpuinfo | awk -F: '/cpu MHz/ {print $2; exit}' | sed 's/^ *//')" \
+           "| Thread(s)/core: $(lscpu | awk '/Thread\(s\) per core:/ {print $4}')")
+
+
 CPU_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
 L1_CACHE=$(lscpu | grep "L1d cache:" | awk '{print $3 " " $4}')
 L2_CACHE=$(lscpu | grep "L2 cache:" | awk '{print $3 " " $4}')
