@@ -12,8 +12,7 @@ from flask import send_from_directory
 
 from datetime import timedelta
 
-#style_name = "gruvbox-light"
-style_name = "manni"
+style_name = "gruvbox-light"
 
 
 
@@ -104,7 +103,6 @@ def navigate(subpath):
             <title>{{ '/' + subpath + '/' }}</title>
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
             <style>
-            a {  text-decoration: none; }
                 table {
                     border-collapse: collapse;
                     width: 100%;
