@@ -61,7 +61,7 @@ def verify_password(username, password):
         return username
 
 def is_markdown_file(filename):
-    return filename.endswith(('.md', '.markdown', '.mkd'))
+    return filename.endswith(('.md','.mdx' ,'.markdown', '.mkd'))
 
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
