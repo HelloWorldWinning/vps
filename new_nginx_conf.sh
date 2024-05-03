@@ -10,7 +10,16 @@ apt install -y  sudo
 sudo apt install nginx-extras  -y
 sudo apt-get install nginx-extras apache2-utils   -y
 
-htpasswd -c /root/passwd.txt 1
+#htpasswd -c /root/passwd.txt 1
+#
+read -p "Enter username (default: a): " username
+
+if [ -z "$username" ]; then
+    username="a"
+fi
+
+htpasswd -c /root/passwd.txt "$username"
+
 
 mkdir -p  /data/d.share/
 mkdir -p  /home/rdp/Downloads/
