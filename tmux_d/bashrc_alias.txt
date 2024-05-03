@@ -29,8 +29,8 @@ alias tw='tmux select-window -t'
 # Create a new window
 # usage: twn window_new
 ##alias nw='tmux new-window -n'
-alias nw='tmux new-window -c "#{pane_current_path}" -n'
-alias nwp='tmux new-window -c "#{pane_current_path}" -n "$(basename $(pwd))"'
+alias nww='tmux new-window -c "#{pane_current_path}" -n'
+alias nw='tmux new-window -c "#{pane_current_path}" -n "$(basename $(pwd))"'
 
 
 # Kill a specific window
