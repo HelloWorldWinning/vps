@@ -1,0 +1,29 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: 'FZFangJunHeiS';
+  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+}
+
+body, html * {
+  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+}
+
+pre,pre * {
+  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/***
+ *
+ *
+  background-color: #ffffff;
+ *
+ *
+ * **/
