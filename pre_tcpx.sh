@@ -294,6 +294,13 @@ get_git_branch_name() {
         return 1
     fi
 }
+
+
+
+
+alias nbc='jupyter nbconvert --to script --no-prompt --ClearOutputPreprocessor.enabled=True '
+alias pyc='sed -i -e '/^#/d' -e '/^$/d''
+
 ###### _pre end
 EOF
 
