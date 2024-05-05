@@ -16,15 +16,20 @@
 apt update
 apt-get update
 
-apt install -y ncdu duf
-
-
 
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
-
+apt install  -y sudo 
 apt-get install -y  silversearcher-ag  fd-find  ripgrep
+
+
+sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
+
+
+
+apt install -y ncdu duf
+
 
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
