@@ -5,7 +5,6 @@
 (crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" --force  > /root/acme-cron.log 2>&1; systemctl start nginx ; systemctl start xray") | crontab -
 
 
-
 #cat >>/etc/hosts<<EOF
 #$(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 #EOF
@@ -23,6 +22,10 @@ apt install -y ncdu duf
 
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
+
+
+apt-get install -y  silversearcher-ag  fd-find  ripgrep
+
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 
