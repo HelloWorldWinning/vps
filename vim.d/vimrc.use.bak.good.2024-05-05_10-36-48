@@ -222,25 +222,3 @@ let g:clipboard = {
 
 
 nnoremap <F3> :let @/=@/ <Bar> %s//&/gn<CR>
-
-
-"""""""""""""""""""""""""
-
-let g:ackprg = 'ag --nogroup --nocolor --column'
-
-
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" add your plugins here
-Plugin 'mileszs/ack.vim'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
