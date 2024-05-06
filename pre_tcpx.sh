@@ -187,6 +187,7 @@ alias ls='exa -a'
 alias tree='exa -Tla'
 alias t='exa -lT -L 2'
 
+alias fdw='/usr/lib/cargo/bin/fd --changed-within   '
 
 
 alias nu='ncdu'
