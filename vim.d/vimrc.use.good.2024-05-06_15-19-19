@@ -7,8 +7,6 @@ let g:fzf_vim = {}
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'sainnhe/sonokai'
-
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -80,10 +78,16 @@ Plug 'hrsh7th/vim-vsnip'
 " Plug 'dcampos/nvim-snippy'
 " Plug 'dcampos/cmp-snippy'
 
+
+
 """"""""""""""""
 
+
+
+
+
+
 call plug#end()
-set termguicolors       " enable true colors support
 
 
 "set background=dark " or light if you want light mode
@@ -93,19 +97,20 @@ set termguicolors       " enable true colors support
 "set termguicolors
 "silent! colorscheme pire
 
-"colorscheme everforest
-"colorscheme gruvbox
-colorscheme  toast
-""colorscheme  quantum
-"colorscheme sonokai
 
+"colorscheme everforest
+colorscheme gruvbox
+"colorscheme  toast
+
+set termguicolors       " enable true colors support
+"colorscheme  quantum
 set background=dark     " dark theme
 "set background=light  " light theme
 
-"let g:gruvbox_contrast_dark = 'soft'
-"let g:gruvbox_contrast_dark = 'hard'
+
 
 """"""""""""""""""""""""
+
 
 syntax on
 filetype plugin on
@@ -166,7 +171,6 @@ set laststatus=2
 "hi Normal     ctermfg=blue  guifg=blue guifg=#25f540   ctermbg=None guibg=NONE  ctermbg=None
 "
 "hi Normal     ctermfg=blue  guifg=blue guifg=#25f540   ctermbg=None guibg=#283237  ctermbg=None
-"2024-05-06_14-51-31 here
 hi Normal     ctermfg=blue  guifg=blue guifg=#09F418 ctermbg=None guibg=#283237  ctermbg=None
 
 "inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -219,26 +223,8 @@ let g:clipboard = {
 
 nnoremap <F3> :let @/=@/ <Bar> %s//&/gn<CR>
 
-"""   https://github.com/linuxnomas/linux_scripts/blob/main/.vimrc  """
-" enable mouse support "
-"set mouse=a
 
-
-set hlsearch
-set ignorecase
-set smartcase
-set showmatch
-" remove trailing whitespace from Python and Fortran files "
-autocmd BufWritePre *.py :%s/\s\+$//e
-autocmd BufWritePre *.f90 :%s/\s\+$//e
-autocmd BufWritePre *.f95 :%s/\s\+$//e
-autocmd BufWritePre *.for :%s/\s\+$//e
-
-
-
-
-
-
+"""""""""""""""""""""""""
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
