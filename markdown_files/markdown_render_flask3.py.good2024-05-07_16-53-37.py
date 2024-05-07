@@ -206,19 +206,18 @@ def serve_file(subpath, filename):
             }}
             body {{
                   font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                padding: 20px;
-                line-height: 1.6;
-                text-align: justify;
-                text-justify: inter-word;
+                  padding: 20px;
+            text-align: justify;
+             line-height: 1.6;
+            text-justify: inter-word;
                   }}
             pre {{
             background-color: #ffffff;
-                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                white-space: pre-wrap;
-                word-wrap: break-word;
-
-                text-align: justify;
-                text-justify: inter-word;
+            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: justify;
+            text-justify: inter-word;
             }}
 
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
@@ -291,22 +290,21 @@ def txt_file(subpath, filename):
                             }}
                             body {{
                                 font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                      line-height: 1.6;
-                      padding: 25px;
-                      text-align: justify;
-                      text-justify: inter-word;
-                      white-space: pre-wrap;
-                      word-wrap: break-word;
+                                 line-height: 1.6;
+                                 padding: 25px;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            text-align: justify;
+                            text-justify: inter-word;
                             }}
 
                             pre {{
                             background-color: #ffffff;
-                               font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                               white-space: pre-wrap;
-                               word-wrap: break-word;
-
-                               text-align: justify;
-                               text-justify: inter-word;
+                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            text-align: justify;
+                            text-justify: inter-word;
                             }}
                         </style>
                     </head>
