@@ -3,29 +3,20 @@ import markdown2
 import markdown
 import os
 from flask_httpauth import HTTPBasicAuth
-from markdown.extensions import Extension
-from markdown.preprocessors import Preprocessor
-from markdown.inlinepatterns import InlineProcessor
-from xml.etree import ElementTree as etree
-
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 MARKDOWN_DIR = '/'
 
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
+users = {
+    "a": "a"
+}
 
-# Check if username and password are provided
-if username and password:
-    users = {username: password}
-else:
-    users = {"a": "a"}  # Default users if username and password
-
-
-
-
+from markdown.extensions import Extension
+from markdown.preprocessors import Preprocessor
+from markdown.inlinepatterns import InlineProcessor
+from xml.etree import ElementTree as etree
 
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
@@ -61,7 +52,7 @@ def verify_password(username, password):
         return username
 
 def is_markdown_file(filename):
-    return filename.endswith(('.md','.mdx' ,'.markdown', '.mkd'))
+    return filename.endswith(('.md', '.mdx', '.markdown', '.mkd'))
 
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
@@ -131,13 +122,13 @@ def list_files(subpath=''):
                     border: 1px solid #ccc;
                     border-radius: 5px;
                 }
-
                 .card li {
                     word-wrap: break-word;
                     overflow-wrap: break-word;
                 }
-                
-                a {     text-decoration: none; }
+                a {
+    text-decoration: none;
+        }
 
             </style>
         </head>
@@ -198,6 +189,7 @@ def serve_file(subpath, filename):
 
                 content = content.replace('- [ ]', '<input type="checkbox" disabled>')
                 content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
+              # print(content)
                 full_html = f'''
     <!DOCTYPE html>
     <html>
@@ -211,22 +203,8 @@ def serve_file(subpath, filename):
                 font-family: 'FZFangJunHeiS';
                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
             }}
-            body {{
-                  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                  padding: 20px;
-            text-align: justify;
-             line-height: 1.6;
-            text-justify: inter-word;
-                  }}
-            pre {{
-            background-color: #ffffff;
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            text-align: justify;
-            text-justify: inter-word;
-            }}
-
+            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
+            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
 
             /* TOC styles */
@@ -255,6 +233,7 @@ def serve_file(subpath, filename):
     <body>{content}</body>
     </html>
 '''
+
                 return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
@@ -294,24 +273,8 @@ def txt_file(subpath, filename):
                                 font-family: 'FZFangJunHeiS';
                                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                             }}
-                            body {{
-                                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                                 line-height: 1.6;
-                                 padding: 25px;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
-                            text-align: justify;
-                            text-justify: inter-word;
-                            }}
-
-                            pre {{
-                            background-color: #ffffff;
-                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
-                            text-align: justify;
-                            text-justify: inter-word;
-                            }}
+                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
+                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
                         </style>
                     </head>
                     <body>{content}</body>

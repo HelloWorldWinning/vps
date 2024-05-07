@@ -52,7 +52,7 @@ def verify_password(username, password):
         return username
 
 def is_markdown_file(filename):
-    return filename.endswith(('.md', '.mdx', '.markdown', '.mkd'))
+    return filename.endswith(('.md', '.markdown', '.mkd'))
 
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
@@ -123,12 +123,13 @@ def list_files(subpath=''):
                     border-radius: 5px;
                 }
                 .card li {
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                }
-                a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+a {
     text-decoration: none;
-        }
+}
 
             </style>
         </head>
@@ -172,7 +173,7 @@ def serve_file(subpath, filename):
     file_path = os.path.join(MARKDOWN_DIR, subpath, filename)
     if not os.path.abspath(file_path).startswith(MARKDOWN_DIR):
         return "Unauthorized access", 403
-    
+
     file_title, file_extension = os.path.splitext(filename)
 
     if is_markdown_file(filename):
@@ -203,8 +204,22 @@ def serve_file(subpath, filename):
                 font-family: 'FZFangJunHeiS';
                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
             }}
-            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
-            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
+            body {{
+                  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                  padding: 20px;
+            text-align: justify;
+             line-height: 1.6;
+            text-justify: inter-word;
+                  }}
+            pre {{
+            background-color: #ffffff;
+            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: justify;
+            text-justify: inter-word;
+            }}
+
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
 
             /* TOC styles */
@@ -273,8 +288,24 @@ def txt_file(subpath, filename):
                                 font-family: 'FZFangJunHeiS';
                                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                             }}
-                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
-                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
+                            body {{
+                                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                                 line-height: 1.6;
+                                 padding: 25px;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            text-align: justify;
+                            text-justify: inter-word;
+                            }}
+
+                            pre {{
+                            background-color: #ffffff;
+                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            text-align: justify;
+                            text-justify: inter-word;
+                            }}
                         </style>
                     </head>
                     <body>{content}</body>

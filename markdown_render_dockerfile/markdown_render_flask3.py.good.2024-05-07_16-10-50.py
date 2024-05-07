@@ -198,6 +198,7 @@ def serve_file(subpath, filename):
 
                 content = content.replace('- [ ]', '<input type="checkbox" disabled>')
                 content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
+              # print(content)
                 full_html = f'''
     <!DOCTYPE html>
     <html>
@@ -211,22 +212,8 @@ def serve_file(subpath, filename):
                 font-family: 'FZFangJunHeiS';
                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
             }}
-            body {{
-                  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                  padding: 20px;
-            text-align: justify;
-             line-height: 1.6;
-            text-justify: inter-word;
-                  }}
-            pre {{
-            background-color: #ffffff;
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            text-align: justify;
-            text-justify: inter-word;
-            }}
-
+            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
+            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
 
             /* TOC styles */
@@ -255,6 +242,7 @@ def serve_file(subpath, filename):
     <body>{content}</body>
     </html>
 '''
+
                 return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
@@ -294,24 +282,8 @@ def txt_file(subpath, filename):
                                 font-family: 'FZFangJunHeiS';
                                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                             }}
-                            body {{
-                                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                                 line-height: 1.6;
-                                 padding: 25px;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
-                            text-align: justify;
-                            text-justify: inter-word;
-                            }}
-
-                            pre {{
-                            background-color: #ffffff;
-                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
-                            text-align: justify;
-                            text-justify: inter-word;
-                            }}
+                            body {{ font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }}
+                            pre {{ background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }}
                         </style>
                     </head>
                     <body>{content}</body>

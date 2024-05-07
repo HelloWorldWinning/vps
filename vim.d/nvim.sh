@@ -99,6 +99,9 @@ OPENAI_API_KEY=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
 #source /root/.bashrc
 #source ~/.bashrc
 
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+#cd ~/.vim/bundle
+
 cat  <<- EOF
 #######  neovim  install :
 :CocInstall coc-python

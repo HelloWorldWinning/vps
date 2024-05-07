@@ -128,15 +128,15 @@ set ruler
 "hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
 hi  LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=#53656e 
 
-"set cursorline
+set cursorline
 "hi CursorLine term=bold cterm=bold guibg=NONE
 "hi CursorLine term=none cterm=none  guibg=#21282b
 "hi CursorLine term=none cterm=none  guibg=#212A2E
-"hi CursorLine term=none cterm=none  guibg=#333f45
+hi CursorLine term=none cterm=none  guibg=#333f45
 "hi CursorLine term=none ctermfg=red
 
 
-"set cursorcolumn
+set cursorcolumn
 
 hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black 
 
@@ -234,10 +234,7 @@ autocmd BufWritePre *.f90 :%s/\s\+$//e
 autocmd BufWritePre *.f95 :%s/\s\+$//e
 autocmd BufWritePre *.for :%s/\s\+$//e
 
-set cursorline
-set cursorcolumn
-hi CursorLine guibg=#505050 ctermbg=NONE
-hi CursorColumn guibg=#505050 ctermbg=NONE
+
 
 
 
