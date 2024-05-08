@@ -11,8 +11,8 @@ case $choice in
     read -p "Enter the IP address of the VPS $(tput bold)$(tput setaf 1)Accessor$(tput sgr0) to grant access to the NFS server: " accessor_vps_ip
 
     # Install NFS Server
-    sudo apt update
-    sudo apt install nfs-kernel-server
+    sudo apt update -y
+    sudo apt install -y  nfs-kernel-server
 
     # Configure NFS Exports
     echo "/ ${accessor_vps_ip}(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
@@ -45,8 +45,8 @@ case $choice in
     sudo mkdir -p "$mount_point"
 
     # Install NFS Client
-    sudo apt update
-    sudo apt install nfs-common
+    sudo apt update -y
+    sudo apt -y  install nfs-common
 
     # Add Mount Entry in /etc/fstab
     echo "${data_vps_ip}:/ $mount_point nfs defaults 0 0" | sudo tee -a /etc/fstab
