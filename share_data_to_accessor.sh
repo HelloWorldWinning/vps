@@ -33,15 +33,38 @@ case $choice in
   # read -p "Enter the IP address of the NFS Server VPS (VPS A) to mount its shared resources: " server_vps_ip
     read -p "Enter the IP address of the NFS Server VPS \e[1;31mData\e[0m to mount its shared resources: " server_vps_ip
 
+echo "Existing mount points:"
+find /mnt -maxdepth 1 -type d -name "vps_provider_shared_data_*" -print 2>/dev/null
+
+# Step 2: Prompt for custom string input
+read -p "Enter a custom string for the remote data server (leave blank for default): " custom_string
+
+
+if [ -z "$custom_string" ]; then
+  mount_point="/mnt/vps_provider_shared_data_"
+else
+  mount_point="/mnt/vps_provider_shared_data_${custom_string}"
+fi
+
+    # Create Mount Point
+    sudo mkdir -p "$mount_point"
+
+
+
+
+
     # Install NFS Client
     sudo apt update
     sudo apt install nfs-common
 
-    # Create Mount Point
-    sudo mkdir -p /mnt/vps_a_shared_resources
+       # Create Mount Point
+    sudo mkdir -p "$mount_point"
 
     # Add Mount Entry in /etc/fstab
-    echo "${server_vps_ip}:/ /mnt/vps_a_shared_resources nfs defaults 0 0" | sudo tee -a /etc/fstab
+#   echo "${server_vps_ip}:/ /mnt/vps_a_shared_resources nfs defaults 0 0" | sudo tee -a /etc/fstab
+
+        # Add Mount Entry in /etc/fstab
+    echo "${server_vps_ip}:/ $mount_point nfs defaults 0 0" | sudo tee -a /etc/fstab
 
     # Mount Manually for the First Time
     sudo mount -a
