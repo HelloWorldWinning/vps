@@ -654,6 +654,7 @@ ${Red_font_prefix}a${Font_color_suffix}  177 docker  markdown_render_dockerfile/
 ${Red_font_prefix}ax${Font_color_suffix} markdown.sh 177 render
 ${Red_font_prefix}b${Font_color_suffix} config_fzf.sh   install fzf
 ${Red_font_prefix}c${Font_color_suffix} tmux_d/tmux_install.sh
+${Red_font_prefix}d${Font_color_suffix} share_data_to_accessor.sh
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -897,6 +898,7 @@ netstat -tulnp | grep -E '166|155'
 
 		b) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  )  ;;
 		c) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh )  ;;
+		d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh  )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
