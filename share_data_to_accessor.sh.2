@@ -2,13 +2,13 @@
 
 # Display menu options
 echo "Select an option:"
-echo "1. Configure NFS Server (VPS $(tput bold)$(tput setaf 1)Data$(tput sgr0))"
-echo "2. Configure NFS Client (VPS $(tput bold)$(tput setaf 1)Accessor$(tput sgr0))"
+echo "1. Configure NFS Server (VPS \e[1;31mData\e[0m)"
+echo "2. Configure NFS Client (VPS \e[1;31mAccessor\e[0m)"
 read -p "Enter your choice (1 or 2): " choice
 case $choice in
   1)
     # Prompt for the IP address of the client VPS that will access this server
-    read -p "Enter the IP address of the VPS $(tput bold)$(tput setaf 1)Accessor$(tput sgr0) to grant access to the NFS server: " accessor_vps_ip
+    read -p "Enter the IP address of the VPS \e[1;31mAccessor\e[0m to grant access to the NFS server: " accessor_vps_ip
 
     # Install NFS Server
     sudo apt update
@@ -27,7 +27,7 @@ case $choice in
     ;;
   2)
     # Prompt for the IP address of the NFS server VPS
-    read -p "Enter the IP address of the NFS Server VPS $(tput bold)$(tput setaf 1)Data$(tput sgr0) to mount its shared resources: " data_vps_ip
+    read -p "Enter the IP address of the NFS Server VPS \e[1;31mData\e[0m to mount its shared resources: " data_vps_ip
 
     echo "Existing mount points:"
     find /mnt -maxdepth 1 -type d -name "vps_provider_shared_data_*" -print 2>/dev/null
