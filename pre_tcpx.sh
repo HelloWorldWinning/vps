@@ -145,7 +145,7 @@ cat >>~/.bashrc<<EOF
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
 
-function check_setup_time() {
+function setup_time() {
     setup_time_seconds=\$(date -d "\$setup_time" +%s)
     current_time_seconds=\$(date +%s)
     time_difference=\$((current_time_seconds - setup_time_seconds))
