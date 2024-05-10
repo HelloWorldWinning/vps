@@ -198,7 +198,6 @@ def serve_file(subpath, filename):
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
         <title>{file_title}</title>
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
         <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
         <style>
             @font-face {{
@@ -207,17 +206,19 @@ def serve_file(subpath, filename):
             }}
             body {{
                   font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            padding: 25px;
-            line-height: 1.6;
-            text-align: justify;
-            text-justify: inter-word;
+                padding: 20px;
+                line-height: 1.6;
+                text-align: justify;
+                text-justify: inter-word;
                   }}
             pre {{
             background-color: #ffffff;
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                white-space: pre-wrap;
+                word-wrap: break-word;
 
+                text-align: justify;
+                text-justify: inter-word;
             }}
 
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
@@ -243,15 +244,6 @@ def serve_file(subpath, filename):
             .toc a:hover {{
                 text-decoration: underline;
             }}
-                h1 {{
-                color:   #ffffff;
-        background-color: #7b1682;
-            padding: 5px 20px;
-    border-radius: 5px;
-    text-align: center;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500 ;
-    }}
         </style>
     </head>
     <body>{content}</body>
@@ -299,19 +291,22 @@ def txt_file(subpath, filename):
                             }}
                             body {{
                                 font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                                 line-height: 1.6;
-            padding: 25px;
-            line-height: 1.6;
-            text-align: justify;
-            text-justify: inter-word;
+                      line-height: 1.6;
+                      padding: 25px;
+                      text-align: justify;
+                      text-justify: inter-word;
+                      white-space: pre-wrap;
+                      word-wrap: break-word;
                             }}
 
                             pre {{
                             background-color: #ffffff;
-                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                            white-space: pre-wrap;
-                            word-wrap: break-word;
+                               font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                               white-space: pre-wrap;
+                               word-wrap: break-word;
 
+                               text-align: justify;
+                               text-justify: inter-word;
                             }}
                         </style>
                     </head>

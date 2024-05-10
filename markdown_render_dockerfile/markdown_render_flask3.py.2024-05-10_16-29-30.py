@@ -3,20 +3,29 @@ import markdown2
 import markdown
 import os
 from flask_httpauth import HTTPBasicAuth
+from markdown.extensions import Extension
+from markdown.preprocessors import Preprocessor
+from markdown.inlinepatterns import InlineProcessor
+from xml.etree import ElementTree as etree
+
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 MARKDOWN_DIR = '/'
 
-users = {
-    "a": "a"
-}
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
-from markdown.extensions import Extension
-from markdown.preprocessors import Preprocessor
-from markdown.inlinepatterns import InlineProcessor
-from xml.etree import ElementTree as etree
+# Check if username and password are provided
+if username and password:
+    users = {username: password}
+else:
+    users = {"a": "a"}  # Default users if username and password
+
+
+
+
 
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
@@ -52,7 +61,7 @@ def verify_password(username, password):
         return username
 
 def is_markdown_file(filename):
-    return filename.endswith(('.md', '.markdown', '.mkd'))
+    return filename.endswith(('.md','.mdx' ,'.markdown', '.mkd'))
 
 def is_image_file(filename):
     return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
@@ -122,14 +131,13 @@ def list_files(subpath=''):
                     border: 1px solid #ccc;
                     border-radius: 5px;
                 }
-                .card li {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
 
-a {
-    text-decoration: none;
-}
+                .card li {
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+
+                a {     text-decoration: none; }
 
             </style>
         </head>
@@ -190,7 +198,6 @@ def serve_file(subpath, filename):
 
                 content = content.replace('- [ ]', '<input type="checkbox" disabled>')
                 content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
-              # print(content)
                 full_html = f'''
     <!DOCTYPE html>
     <html>
@@ -198,7 +205,6 @@ def serve_file(subpath, filename):
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
         <title>{file_title}</title>
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
         <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
         <style>
             @font-face {{
@@ -207,17 +213,19 @@ def serve_file(subpath, filename):
             }}
             body {{
                   font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            padding: 25px;
+            padding: 20px;
             line-height: 1.6;
             text-align: justify;
             text-justify: inter-word;
                   }}
             pre {{
             background-color: #ffffff;
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                white-space: pre-wrap;
+                word-wrap: break-word;
 
+                text-align: justify;
+                text-justify: inter-word;
             }}
 
             img, pre, table {{ max-width: 100%; overflow-x: auto; }}
@@ -243,21 +251,11 @@ def serve_file(subpath, filename):
             .toc a:hover {{
                 text-decoration: underline;
             }}
-                h1 {{
-                color:   #ffffff;
-        background-color: #7b1682;
-            padding: 5px 20px;
-    border-radius: 5px;
-    text-align: center;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500 ;
-    }}
         </style>
     </head>
     <body>{content}</body>
     </html>
 '''
-
                 return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
@@ -299,11 +297,12 @@ def txt_file(subpath, filename):
                             }}
                             body {{
                                 font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                                 line-height: 1.6;
-            padding: 25px;
-            line-height: 1.6;
-            text-align: justify;
-            text-justify: inter-word;
+                            line-height: 1.6;
+                            padding: 25px;
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                            text-align: justify;
+                            text-justify: inter-word;
                             }}
 
                             pre {{
@@ -312,6 +311,8 @@ def txt_file(subpath, filename):
                             white-space: pre-wrap;
                             word-wrap: break-word;
 
+                            text-align: justify;
+                            text-justify: inter-word;
                             }}
                         </style>
                     </head>
