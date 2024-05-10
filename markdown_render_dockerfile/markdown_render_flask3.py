@@ -263,6 +263,16 @@ def serve_file(subpath, filename):
     font-weight: 500 ;
 
     }}
+h2  {{
+    display: inline;
+    padding: 5px  30px;
+    background-color: #1826e9;
+    color: #ffffff;
+    border-radius: 5px;
+    font-weight:400;
+}}
+
+
         </style>
         </style>
     </head>
