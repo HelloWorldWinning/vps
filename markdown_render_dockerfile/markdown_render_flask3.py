@@ -255,7 +255,7 @@ def serve_file(subpath, filename):
             }}
    h1 {{
     color:   #ffffff;
-    background-color: #7b1682;
+    background-color:  #AC083F   ;
     padding: 5px 20px;
     border-radius: 5px;
     text-align: center;
