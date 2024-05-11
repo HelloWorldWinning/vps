@@ -246,6 +246,10 @@ location / {
     autoindex_exact_size off;
     autoindex_localtime on;
 
+fancyindex_css_href "/etc/nginx/conf.d/custom.css";
+sub_filter '</head>' '<link rel="stylesheet" href="/etc/nginx/conf.d/custom.css"></head>';
+sub_filter_once on;
+    
     # Restrict access to only the specified directory
     location ~ ^/share/(.*)$ {
         allow all;
