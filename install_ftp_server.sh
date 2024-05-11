@@ -12,8 +12,9 @@ sudo mkdir -p /home/$ftpuser/ftp
 
 # Set ownership and permissions for the FTP directory
 #sudo chown nobody:nogroup /home/$ftpuser/ftp
-sudo chown nobody:nogroup /home/$ftpuser
-sudo chmod a-w /home/$ftpuser/ftp
+sudo chown nobody:nogroup  "/home/$ftpuser"
+sudo chmod a-w "/home/$ftpuser/ftp"
+
 
 # Remove any existing vsftpd package
 sudo apt remove vsftpd -y
