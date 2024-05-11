@@ -14,15 +14,6 @@ apt install -y  sudo
 sudo apt install nginx-extras  -y
 sudo apt-get install nginx-extras apache2-utils   -y
 
-#htpasswd -c /root/passwd.txt 1
-#
-read -p "Enter username (default: a): " username
-
-if [ -z "$username" ]; then
-    username="a"
-fi
-
-htpasswd -c /root/passwd.txt "$username"
 
 
 mkdir -p  /data/d.share/
@@ -502,6 +493,13 @@ wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldW
             start_func
             ;;
         443)
+#htpasswd -c /root/passwd.txt 1
+read -p "Enter username (default: a): " username
+if [ -z "$username" ]; then
+    username="a"
+fi
+htpasswd -c /root/passwd.txt "$username"
+
 	    nginx_conf_func443
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
             start_func
