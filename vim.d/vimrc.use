@@ -261,3 +261,6 @@ Plugin 'mileszs/ack.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+
+highlight Visual cterm=none ctermbg=yellow  guibg=#faf4be
