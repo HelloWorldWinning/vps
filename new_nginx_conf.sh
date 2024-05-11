@@ -1,7 +1,10 @@
 mkdir -p  /etc/nginx/conf.d/
+mkdir -p  /data/d.share/
+mkdir -p  /data/d.share/.css
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
 wget -4  -O /etc/nginx/conf.d/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
+wget -4  -O /data/.css/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
 
 apt  install dnsutils -y
 apt-get update -y
@@ -251,8 +254,8 @@ fancyindex_exact_size off;
 fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
 fancyindex_name_length  1024;
 
-fancyindex_css_href "/etc/nginx/conf.d/custom.css";
-sub_filter '</head>' '<link rel="stylesheet" href="/etc/nginx/conf.d/custom.css"></head>';
+fancyindex_css_href "/.css/custom.css";
+sub_filter '</head>' '<link rel="stylesheet" href="/.css/custom.css"></head>';
 sub_filter_once on;
 
 ##    autoindex on;
