@@ -4,7 +4,7 @@ mkdir -p  /data/d.share/.css
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
 wget -4  -O /etc/nginx/conf.d/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
-wget -4  -O /data/.css/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
+wget -4  -O /data/d.share/.css/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
 
 apt  install dnsutils -y
 apt-get update -y
