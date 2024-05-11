@@ -4,7 +4,6 @@
 read -p "Enter the username for the FTP user (default: ftpuser): " ftpuser
 ftpuser=${ftpuser:-ftpuser}
 
-apt install -y  ftp
 # Create the FTP user
 sudo adduser --home /home/$ftpuser --shell /bin/false $ftpuser
 
@@ -36,6 +35,7 @@ pam_service_name=ftp
 EOF
 
 
+sudo apt install -y  ftp
 
 # Restart vsftpd service
 sudo systemctl restart vsftpd
