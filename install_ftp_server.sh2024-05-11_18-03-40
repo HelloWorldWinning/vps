@@ -4,7 +4,7 @@
 read -p "Enter the username for the FTP user (default: ftpuser): " ftpuser
 ftpuser=${ftpuser:-ftpuser}
 
-apt install -y  ftp
+apt install -y apt
 # Create the FTP user
 sudo adduser --home /home/$ftpuser --shell /bin/false $ftpuser
 
@@ -13,8 +13,8 @@ sudo mkdir -p /home/$ftpuser/ftp
 
 # Set ownership and permissions for the FTP directory
 #sudo chown nobody:nogroup /home/$ftpuser/ftp
-sudo chown  -R ftpuser:ftpuser "/home/$ftpuser"
-sudo chmod -R 777  "/home/$ftpuser"
+sudo chown nobody:nogroup  "/home/$ftpuser"
+sudo chmod a-w "/home/$ftpuser/ftp"
 
 
 # Remove any existing vsftpd package
