@@ -1,3 +1,4 @@
+mkdir -p  /etc/nginx/conf.d/
 wget -4  -O /etc/nginx/nginx.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_etc_nginx_nginx.conf
 wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mime.types
 wget -4  -O /etc/nginx/conf.d/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
