@@ -242,13 +242,26 @@ server {
 
 location / {
     alias /data/d.share/;
-    autoindex on;
-    autoindex_exact_size off;
-    autoindex_localtime on;
+
+charset utf-8,gbk;
+fancyindex on;
+fancyindex_localtime on;
+fancyindex_exact_size off;
+#fancyindex_time_format "%Y-%m-%d %H:%M:%S";
+fancyindex_time_format "%H:%M:%S &nbsp&nbsp&nbsp %Y-%m-%d";
+fancyindex_name_length  1024;
 
 fancyindex_css_href "/etc/nginx/conf.d/custom.css";
 sub_filter '</head>' '<link rel="stylesheet" href="/etc/nginx/conf.d/custom.css"></head>';
 sub_filter_once on;
+
+##    autoindex on;
+##    autoindex_exact_size off;
+##    autoindex_localtime on;
+##
+##fancyindex_css_href "/etc/nginx/conf.d/custom.css";
+##sub_filter '</head>' '<link rel="stylesheet" href="/etc/nginx/conf.d/custom.css"></head>';
+##sub_filter_once on;
     
     # Restrict access to only the specified directory
     location ~ ^/share/(.*)$ {
