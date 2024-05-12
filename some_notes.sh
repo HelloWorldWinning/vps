@@ -1,3 +1,4 @@
+pip install -U huggingface_hub
 ================================================================
 pip install --upgrade nbconvert  jupyter
 pip install mistune==0.8.4
