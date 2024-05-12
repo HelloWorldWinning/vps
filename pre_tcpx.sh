@@ -21,7 +21,7 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt install  -y sudo  ftp
-apt-get install -y  silversearcher-ag  fd-find  ripgrep
+apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs
 
 
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
@@ -166,6 +166,7 @@ we_temp="\${temperature}°C \${weather}"
 ##export weather_temperature="\${temperature}°C \${weather}"
 export weather_temperature="\${temperature}\${weather}"
 
+alias hfc='huggingface-cli'
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
 alias nf='neofetch'
