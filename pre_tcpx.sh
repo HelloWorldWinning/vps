@@ -210,7 +210,9 @@ alias _F='git pull && git add . && git commit -m "\$(date)"  && git push ;echo "
 
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
+
 export OPENAI_API_KEY=${OPENAI_API_KEY}
+export HF_TOKEN=""
 
 
 
