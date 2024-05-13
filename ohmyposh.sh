@@ -10,7 +10,7 @@ wget   --inet4-only  -O  ~/themes/hostname_length_adjuster.sh https://raw.github
 
 wget   --inet4-only  -O  ~/themes/cpu_usage.sh  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cpu_usage.sh
 
-#####bash  ~/themes/hostname_length_adjuster.sh
+bash  ~/themes/hostname_length_adjuster.sh
 
 #cat >>~/.bashrc<<EOF
 #export country_code=$(curl -s http://ip-api.com/line/?fields=countryCode)
