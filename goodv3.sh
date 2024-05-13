@@ -657,6 +657,7 @@ ${Red_font_prefix}c${Font_color_suffix} tmux_d/tmux_install.sh
 ${Red_font_prefix}d${Font_color_suffix} share_data_to_accessor.sh
 ${Red_font_prefix}e${Font_color_suffix} install_ftp_server.sh
 ${Red_font_prefix}f${Font_color_suffix} do_zip.sh zip to /data 
+${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -903,6 +904,7 @@ netstat -tulnp | grep -E '166|155'
 		d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh  )  ;;
 		e) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_ftp_server.sh   )  ;;
 		f) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh  )  ;;
+		g) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/distri.sh )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
