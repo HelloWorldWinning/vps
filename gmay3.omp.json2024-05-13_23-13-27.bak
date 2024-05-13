@@ -6,6 +6,13 @@
       "segments": [
         {
           "background": "#000000",
+          "foreground": "#c70643",
+          "style": "powerline",
+          "template": " <b>{{ .HostName }}</b>   ",
+          "type": "time"
+        },
+        {
+          "background": "#000000",
           "foreground": "#fc2189",
           "powerline_symbol": "",
           "properties": {
@@ -13,7 +20,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "      $(pwd)          {{ .HostName }}          $(ls |wc -l)           ",
+          "template": "  $(pwd)               $(ls |wc -l)           ",
           "type": "path",
           "font-weight": "bold"
         },
@@ -81,7 +88,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "    ➤",
+          "template": "     ➤",
           "type": "text"
         }
       ],
