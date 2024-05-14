@@ -262,9 +262,23 @@ h2  {{
     font-weight:400;
 }}
 
+
+
 li > ul > li > ul > li * {{
-opacity: 0.57;
+opacity: 0.7;
 }}
+
+
+body > div > ul > li > a  {{
+	color : #d41e5b!important;
+}}
+body > div > ul > li> ul > li > a  {{
+	color : #2b36d6!important ;
+}}
+
+
+
+
         </style>
     </head>
     <body>{content}</body>
