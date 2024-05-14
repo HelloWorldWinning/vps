@@ -272,9 +272,8 @@ h2  {{
     font-weight:400;
 }}
 
-li > ul > li > ul > li * {{
-opacity: 0.57;
-}}
+
+        </style>
         </style>
     </head>
     <body>{content}</body>

@@ -243,10 +243,10 @@ def serve_file(subpath, filename):
             .toc a:hover {{
                 text-decoration: underline;
             }}
-  h1 {{
-    color:   #ffffff;
-    background-color: #AC083F;
-    padding: 5px 20px;
+                h1 {{
+                color:   #ffffff;
+        background-color: #AC083F;
+            padding: 5px 20px;
     border-radius: 5px;
     text-align: center;
     font-family: 'Roboto Mono', monospace;
@@ -262,6 +262,9 @@ h2  {{
     font-weight:400;
 }}
 
+li > ul > li > ul > li * {{
+opacity: 0.57;
+}}
         </style>
     </head>
     <body>{content}</body>
