@@ -1,0 +1,26 @@
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+        <link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_files/my_logo/favicon.ico" type="image/x-icon">
+        <style>
+            @font-face {
+                font-family: 'FZFangJunHeiS';
+                src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+            }
+            body {
+                  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+            padding: 25px;
+            line-height: 1.6;
+            text-align: justify;
+            text-justify: inter-word;
+                  }
+            pre {
+            background-color: #ffffff;
+            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+
+            }
+            a {
+                text-decoration: none;
+            }
