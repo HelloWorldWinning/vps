@@ -30,15 +30,15 @@ case $choice in
     read -p "Enter the IP address of the NFS Server VPS $(tput bold)$(tput setaf 1)Data$(tput sgr0) to mount its shared resources: " data_vps_ip
 
     echo "Existing mount points:"
-    find /mnt -maxdepth 1 -type d -name "vps_shared_data_*" -print 2>/dev/null
+    find /mnt -maxdepth 1 -type d -name "vps_provider_shared_data_*" -print 2>/dev/null
 
     # Step 2: Prompt for custom string input
     read -p "Enter a custom string for the remote data server (leave blank for default): " custom_string
 
     if [ -z "$custom_string" ]; then
-      mount_point="/mnt/vps_shared_data_"
+      mount_point="/mnt/vps_provider_shared_data_"
     else
-      mount_point="/mnt/vps_shared_data_${custom_string}"
+      mount_point="/mnt/vps_provider_shared_data_${custom_string}"
     fi
 
     # Create Mount Point
