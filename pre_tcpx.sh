@@ -20,7 +20,7 @@ apt-get update
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
-apt install  -y sudo  ftp
+apt install  -y sudo
 apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs
 
 
@@ -28,7 +28,7 @@ sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
 
 
-apt install -y ncdu duf
+sudo apt install -y ncdu duf ftp  dfc
 
 
 
