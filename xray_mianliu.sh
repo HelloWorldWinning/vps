@@ -22,6 +22,8 @@
 #}
 #######
 
+
+apt update
 apt install dnsutils vim unzip  jq  net-tools  -y
 
 RED="\033[31m"      # Error message
