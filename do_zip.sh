@@ -29,7 +29,8 @@ if [ -n "$exclude_list" ]; then
 fi
 
 # Create the archive using zip with the specified compression option and exclude list
-eval "zip -r$compression_option \"$destination_dir/$generated_name\" * $exclude_option"
+####eval "zip -r$compression_option \"$destination_dir/$generated_name\" * $exclude_option"
+eval "zip -r$compression_option \"$destination_dir/$generated_name\" . $exclude_option"
 
 # Check if the zip command completed successfully
 if [ $? -eq 0 ]; then
