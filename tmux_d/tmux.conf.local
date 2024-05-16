@@ -319,7 +319,7 @@ tmux_conf_theme_right_separator_sub="|"
 #tmux_conf_theme_status_left="#{hostname}|%I:%M|#S"
 tmux_conf_theme_status_left="%I:%M|#{hostname}|#S"
 
-tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh)|#{username}|%b %d %a"
+tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh)|#{username}|%b-%d-%a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username},%b %d %a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username}#{root},%b %d %a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username}#{root},%a %d %b,%R"
