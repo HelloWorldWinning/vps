@@ -166,6 +166,9 @@ we_temp="\${temperature}°C \${weather}"
 ##export weather_temperature="\${temperature}°C \${weather}"
 export weather_temperature="\${temperature}\${weather}"
 
+alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'
+
+
 alias hfc='huggingface-cli'
 alias we='curl -m 6  wttr.in/shapingba'
 alias ca='calcurse'
