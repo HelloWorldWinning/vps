@@ -4,3 +4,4 @@ weather=$(echo $weather | tr ';' '_')
 temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
 export we_temp="${temperature}°C ${weather}"
 export weather_temperature="${temperature}${weather}"
+echo $weather_temperature
