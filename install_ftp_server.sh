@@ -39,6 +39,7 @@ write_enable=YES
 local_umask=0000
 file_open_mode=0777
 local_enable=YES
+listen_port=54321
 
 EOF
 
@@ -46,8 +47,9 @@ EOF
 sudo apt install -y  ftp
 
 # Restart vsftpd service
+sudo systemctl stop vsftpd
 sudo systemctl restart vsftpd
-sleep 1
+sleep 2
 
 sudo systemctl status vsftpd
 
