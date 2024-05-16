@@ -319,8 +319,7 @@ tmux_conf_theme_right_separator_sub="|"
 #tmux_conf_theme_status_left="#{hostname}|%I:%M|#S"
 tmux_conf_theme_status_left="%I:%M|#{hostname}|#S"
 
-tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh)|%b-%d-%a"
-#tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh)|#{username}|%b-%d-%a"
+tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh)|#{username}|%b-%d-%a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username},%b %d %a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username}#{root},%b %d %a"
 #tmux_conf_theme_status_right="#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},}#(bash ~/themes/cpu_usage.sh) #(bash ~/.config/tmux/python_version.sh),#{username}#{root},%a %d %b,%R"
@@ -351,12 +350,10 @@ tmux_conf_theme_status_left_attr="bold,none,none"
 
 # status right style
 #tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14"
-#tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_4,#888888,#000000"
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_4,#000000"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_4,#888888,#000000"
 #tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17"
-#tmux_conf_theme_status_right_bg="#000000,#000000,$purple"
-tmux_conf_theme_status_right_bg="#000000,$purple"
-tmux_conf_theme_status_right_attr="none,bold"
+tmux_conf_theme_status_right_bg="#000000,#000000,$purple"
+tmux_conf_theme_status_right_attr="none,none,bold"
 
 # pairing indicator
 tmux_conf_theme_pairing="⚇"                 # U+2687
