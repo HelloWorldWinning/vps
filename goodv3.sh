@@ -905,6 +905,8 @@ netstat -tulnp | grep -E '166|155'
 		e) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_ftp_server.sh   )  ;;
 		f) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh  )  ;;
 		g) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/distri.sh )  ;;
+		w) source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)
+			;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 
 #	00)eval "exit";;
