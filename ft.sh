@@ -70,7 +70,17 @@ wget -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/update_
 # Replace the port in the docker-compose.yml file
 sed -i "s/127.0.0.1:8080:8080/${port}:8080/" docker-compose.yml
 #sed -i "s/container_name: freqtrade/container_name: ft_${folder_name}_${port}/" docker-compose.yml
-sed -i "s/container_name: freqtrade/container_name: ft_${folder_name}/" docker-compose.yml
+### sed -i "s/container_name: freqtrade/container_name: ft_${folder_name}/" docker-compose.yml
+
+if [[ "${folder_name}" =~ ^[a-zA-Z] ]]; then
+  sed -i "s/container_name: freqtrade/container_name: ${folder_name}/" docker-compose.yml
+else
+  sed -i "s/container_name: freqtrade/container_name: ft_${folder_name}/" docker-compose.yml
+fi
+
+
+
+
 
 # Create configuration - Requires answering interactive questions
 #docker-compose run --rm freqtrade new-config --config user_data/config.json
