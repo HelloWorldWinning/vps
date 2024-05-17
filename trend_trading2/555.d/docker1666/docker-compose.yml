@@ -1,0 +1,8 @@
+version: '3'
+services:
+  jupyter1666:
+    image: oklove/jupyter1666
+    ports:
+      - "1666:1666"
+    volumes:
+      - /data:/data

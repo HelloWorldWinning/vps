@@ -1,0 +1,4 @@
+flask
+nbformat
+nbconvert
+pygments
