@@ -638,8 +638,8 @@ ${Red_font_prefix}96${Font_color_suffix} pdf_txt.sh
 ${Red_font_prefix}97${Font_color_suffix} tika.sh
 ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
-${Red_font_prefix}100${Font_color_suffix} jupyter26666.sh
-${Red_font_prefix}101${Font_color_suffix} jupyter1666.sh jupyter166.sh  markdown.sh
+${Red_font_prefix}100${Font_color_suffix} jupyter: jupyter26666.sh
+${Red_font_prefix}101${Font_color_suffix} docker: jupyter1666.sh jupyter166.sh  markdown.sh
 ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
@@ -874,8 +874,9 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
 		101) 
-bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
-bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
+#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
+#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
+bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh ) 
 
 		 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
 
