@@ -565,4 +565,4 @@ bind-key n next-window
 bind-key p previous-window
 bind-key h new-session
 bind-key j command-prompt -p "Enter new session name:" "new-session -s '%%'"
-bind-key k confirm-before -p "kill-window #W? (y/n)" kill-window
+bind-key y confirm-before -p "kill-window #W? (y/n)" kill-window
