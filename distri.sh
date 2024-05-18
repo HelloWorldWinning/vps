@@ -17,13 +17,18 @@ do
 done
 
 # Get a list of files and folders, excluding the created folders
-file_list=$(find . -maxdepth 1 \( -type f -o -type d \) -print0 | grep -zv "^./${current_folder_name}_segment_part_")
+file_list=$(find . -maxdepth 1 \( -type f -o -type d \) -not -name "${current_folder_name}_segment_part_*" -print0)
 
 # Initialize a counter for distributing files and folders
 counter=1
 
 # Distribute files and folders into the smaller folders
 while IFS= read -r -d $'\0' item; do
+    # Skip the current directory and the script itself
+    if [[ "$item" == "." || "$item" == "$0" ]]; then
+        continue
+    fi
+
     # Get the folder name based on the counter
     folder_name="${current_folder_name}_segment_part_$counter"
 
