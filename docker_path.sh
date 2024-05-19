@@ -43,7 +43,7 @@ if [ "$#" -eq 1 ]; then
     image_name=$(echo "$details" | cut -d: -f1)
     port_bindings=$(get_port_bindings "$container_name")
     path=$(get_docker_compose_path "$container_name")
-    echo -e "${CYAN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---${YELLOW}$path${NC}"
+    echo -e "${CYAN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---    ${YELLOW}$path${NC}"
 else
     # If no container name is provided, list all running containers and their details
     docker ps --format "{{.Names}}" | while read container_name; do
@@ -52,9 +52,9 @@ else
         port_bindings=$(get_port_bindings "$container_name")
         path=$(get_docker_compose_path "$container_name")
         if [[ -z "$port_bindings" ]]; then
-            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${YELLOW}$path${NC}"
+            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---   ${YELLOW}$path${NC}"
         else
-            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED} 【  $port_bindings  】 ${NC}---${YELLOW}$path${NC}"
+            echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED} 【  $port_bindings  】 ${NC}---   ${YELLOW}$path${NC}"
         fi
         echo " "
     done
