@@ -1,3 +1,6 @@
+##bashrc_alias_txt_unique_id_check_info
+
+
 alias tx='tmux'
 alias txn='tmux new-session -s '
 alias txnm='tmux new-session -s '

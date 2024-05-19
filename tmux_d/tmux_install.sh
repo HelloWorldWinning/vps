@@ -22,10 +22,16 @@ wget -4 -O ~/.config/tmux/python_version.sh   https://raw.githubusercontent.com/
 
 echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
 
-# Reload the tmux configuration
-tmux source-file ~/.config/tmux/tmux.conf
 
 # Start a new tmux session
 
-curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/bashrc_alias.txt >> ~/.bashrc
+####curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/bashrc_alias.txt >> ~/.bashrc
+
+if ! grep -q "bashrc_alias_txt_unique_id_check_info" ~/.bashrc; then
+  curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/bashrc_alias.txt >> ~/.bashrc
+fi
+
+
+# Reload the tmux configuration
+tmux source-file ~/.config/tmux/tmux.conf
 tmux new-session
