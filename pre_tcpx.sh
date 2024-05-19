@@ -157,16 +157,16 @@ function setup_time() {
 }
 
 
-html_content=\$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
-weather=\$(echo "\$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head -n2 | tr '\n' ';' | sed 's/;\$//'  )
-weather=\$(echo \$weather | tr ';' '_')
-temperature=\$(echo "\$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
-we_temp="\${temperature}°C \${weather}"
-##weather_temperature="\${temperature}°C \${weather}"
-##export weather_temperature="\${temperature}°C \${weather}"
-export weather_temperature="\${temperature}\${weather}"
-
-alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'
+###html_content=\$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
+###weather=\$(echo "\$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head -n2 | tr '\n' ';' | sed 's/;\$//'  )
+###weather=\$(echo \$weather | tr ';' '_')
+###temperature=\$(echo "\$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
+###we_temp="\${temperature}°C \${weather}"
+#####weather_temperature="\${temperature}°C \${weather}"
+#####export weather_temperature="\${temperature}°C \${weather}"
+###export weather_temperature="\${temperature}\${weather}"
+###
+#####alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'
 
 
 alias hfc='huggingface-cli'

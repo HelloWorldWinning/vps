@@ -310,8 +310,7 @@ def notebooks(path):
             # Setting color for class=n
             # font color
             # custom_css += '.highlight .n { color: #57E857; }'
-#           return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
-            return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style><style>html * { font-family: "Source Code Pro", monospace !important; }</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
+            return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
             # return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {background_color_hex};">{highlighted_code}</body></html>'
     else:
         return navigate(path)
