@@ -1,5 +1,4 @@
 from flask import Flask, render_template_string, request, session, redirect, url_for
-
 import nbformat
 import nbconvert
 import os
@@ -98,7 +97,7 @@ def navigate(subpath):
         return redirect(url_for('login'))
     path = '/' + subpath
     files_and_dirs = list_files_and_dirs(path)
-    custom_css = 'body * , pre { font-family: "Source Code Pro", monospace  !important ; }'
+    custom_css = 'body, pre { font-family: "Source Code Pro", monospace  !important ; }'
     return render_template_string("""
         <html>
         <head>
@@ -227,7 +226,7 @@ def python_files(path):
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
-            custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
+            custom_css = 'body, pre { font-family: "Source Code Pro", monospace  !important ; }'
             # Setting color for class=n
             # font
             # custom_css += '.highlight .n { color: #57E857; }'
@@ -286,9 +285,7 @@ def notebooks(path):
             notebook_content = nbformat.read(file, as_version=4)
             html_exporter = nbconvert.HTMLExporter()
             (body, resources) = html_exporter.from_notebook_node(notebook_content)
-            custom_css = 'html *, pre { font-family: "Source Code Pro", monospace  !important ; }'
-          # custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
-          # custom_css = 'body, pre { font-family: "Source Code Pro", monospace  !important ; }'
+            custom_css = 'body, pre { font-family: "Source Code Pro", monospace  !important ; }'
             return f'<html><head><title>{filename}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{custom_css}</style></head><body>{body}</body></html>'
 
     elif notebook_path.endswith('.py'):
@@ -309,13 +306,31 @@ def notebooks(path):
 #           return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
 #           return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
-          # custom_css = 'html * , pre { font-family: "Source Code Pro", monospace; }'
-          # custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
-            custom_css = 'html *, pre { font-family: "Source Code Pro", monospace  !important ; }'
+            custom_css = 'body, pre { font-family: "Source Code Pro", monospace; }'
             # Setting color for class=n
             # font color
             # custom_css += '.highlight .n { color: #57E857; }'
-            return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
+#           return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
+     #      return f'<html><head><title>{os.path.basename(notebook_path)}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{formatter.get_style_defs()}</style><style>{custom_css}</style><style>html * { font-family: "Source Code Pro" monospace !important; }</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
+            return f'''
+<html>
+<head>
+    <title>{os.path.basename(notebook_path)}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        {formatter.get_style_defs()}
+        {custom_css}
+        html, body, html *, body *, .jp-RenderedHTMLCommon * {{
+            font-family: 'Source Code Pro', monospace !important;
+        }}
+    </style>
+</head>
+<body style="background-color: {style.background_color};">
+    {highlighted_code}
+</body>
+</html>
+'''
+
             # return f'<html><head><title>{os.path.basename(notebook_path)}</title><style>{formatter.get_style_defs()}</style><style>{custom_css}</style></head><body style="background-color: {background_color_hex};">{highlighted_code}</body></html>'
     else:
         return navigate(path)
@@ -332,8 +347,7 @@ def tree(path):
             notebook_content = nbformat.read(file, as_version=4)
             html_exporter = nbconvert.HTMLExporter()
             (body, resources) = html_exporter.from_notebook_node(notebook_content)
-          # custom_css = 'body * , pre { font-family: "Source Code Pro", monospace  !important ; }'
-            custom_css = 'html * , pre { font-family: "Source Code Pro", monospace  !important ; }'
+            custom_css = 'body, pre { font-family: "Source Code Pro", monospace  !important ; }'
             return f'<html><head><title>{filename}</title><link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"><style>{custom_css}</style></head><body>{body}</body></html>'
     else:
         return navigate(path)
