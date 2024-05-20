@@ -227,8 +227,7 @@ def python_files(path):
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
 #           return f'<html><head><title>{os.path.basename(file_path)}</title><style>{formatter.get_style_defs()}</style></head><body style="background-color: {style.background_color};">{highlighted_code}</body></html>'
           # Adding custom CSS for "Andale Mono" font
-           #custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
-            custom_css = 'html *, pre { font-family: "Source Code Pro", monospace  !important ; }'
+            custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
             # Setting color for class=n
             # font
             # custom_css += '.highlight .n { color: #57E857; }'
