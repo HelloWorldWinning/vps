@@ -32,7 +32,7 @@ wget   --inet4-only  -O  ~/themes/cpu_usage.sh  https://raw.githubusercontent.co
 ####
 
 
-#wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 
 country_code_weather_alias='
