@@ -150,6 +150,7 @@ mkdir -p /root/.config/neofetch
 
 wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
 
+sleep 1
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
 
 
