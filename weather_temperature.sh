@@ -5,3 +5,6 @@ temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 
 export we_temp="${temperature}°C ${weather}"
 export weather_temperature="${temperature}${weather}"
 echo $weather_temperature
+
+# Save weather_temperature to a file
+echo $weather_temperature > ~/.weather_temperature
