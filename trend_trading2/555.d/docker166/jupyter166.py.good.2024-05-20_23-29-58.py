@@ -98,15 +98,6 @@ def navigate(subpath):
         return redirect(url_for('login'))
     path = '/' + subpath
     files_and_dirs = list_files_and_dirs(path)
-    hostname = os.uname().nodename
-    path_parts = subpath.split('/')
-    path_links = []
-    for i in range(len(path_parts)):
-        if path_parts[i]:
-            path = '/'.join(path_parts[:i+1])
-            link = f'<a href="{url_for("navigate", subpath=path)}">{path_parts[i]}</a>'
-            path_links.append(link)
-    path_str = f'{hostname} /{"/".join(path_links)}'
     custom_css = 'body * , pre { font-family: "Source Code Pro", monospace  !important ; }'
     return render_template_string("""
         <html>
@@ -134,7 +125,6 @@ def navigate(subpath):
         <style>body, pre { font-family: "Source Code Pro", monospace  !important ; }</style>
         </head>
         <body>
-            <p>{{ path_str|safe }}</p>
             <table>
                 <tr>
                     <th>No</th>
@@ -159,8 +149,7 @@ def navigate(subpath):
             </table>
         </body>
         </html>
-    """, subpath=subpath, files_and_dirs=files_and_dirs, path_str=path_str)
-
+    """, subpath=subpath, files_and_dirs=files_and_dirs)
 
 
 # @app.route('/<path:subpath>')

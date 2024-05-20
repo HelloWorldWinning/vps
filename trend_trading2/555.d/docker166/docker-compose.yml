@@ -1,8 +1,9 @@
 version: '3'
 services:
   jupyter166:
+    hostname: US
     image: oklove/jupyter166
     ports:
       - "166:166"
     volumes:
-      - /data:/data
+      - /:/US
