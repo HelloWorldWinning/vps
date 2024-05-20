@@ -1,27 +1,29 @@
 ###### echo_To_bashrc.txt   start 
+###echo_To_bashrc_txt_unique_id
+
 export EDITOR=/usr/bin/vim
 export setup_time="`date`"
 
 function setup_time() {
-    setup_time_seconds=\$(date -d "\$setup_time" +%s)
-    current_time_seconds=\$(date +%s)
-    time_difference=\$((current_time_seconds - setup_time_seconds))
-    days=\$((time_difference / 86400))
-    hours=\$(( (time_difference % 86400) / 3600 ))
-    minutes=\$(( (time_difference % 3600) / 60 ))
-    seconds=\$((time_difference % 60))
-    echo "\$days days, \$hours hours, \$minutes minutes, \$seconds seconds"
+    setup_time_seconds=$(date -d "$setup_time" +%s)
+    current_time_seconds=$(date +%s)
+    time_difference=$((current_time_seconds - setup_time_seconds))
+    days=$((time_difference / 86400))
+    hours=$(( (time_difference % 86400) / 3600 ))
+    minutes=$(( (time_difference % 3600) / 60 ))
+    seconds=$((time_difference % 60))
+    echo "$days days, $hours hours, $minutes minutes, $seconds seconds"
 }
 
 
-###html_content=\$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
-###weather=\$(echo "\$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head -n2 | tr '\n' ';' | sed 's/;\$//'  )
-###weather=\$(echo \$weather | tr ';' '_')
-###temperature=\$(echo "\$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
-###we_temp="\${temperature}°C \${weather}"
-#####weather_temperature="\${temperature}°C \${weather}"
-#####export weather_temperature="\${temperature}°C \${weather}"
-###export weather_temperature="\${temperature}\${weather}"
+###html_content=$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
+###weather=$(echo "$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head -n2 | tr '\n' ';' | sed 's/;$//'  )
+###weather=$(echo $weather | tr ';' '_')
+###temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
+###we_temp="${temperature}°C ${weather}"
+#####weather_temperature="${temperature}°C ${weather}"
+#####export weather_temperature="${temperature}°C ${weather}"
+###export weather_temperature="${temperature}${weather}"
 ###
 #####alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'
 
@@ -65,8 +67,8 @@ alias nu='ncdu'
 alias p='python'
 alias _GP='git  pull'
 
-alias _G='git add . && git commit -m  "\$(date)" && git push ;echo " ";date;echo " "'
-alias _F='git pull && git add . && git commit -m "\$(date)"  && git push ;echo " ";date;echo " "'
+alias _G='git add . && git commit -m  "$(date)" && git push ;echo " ";date;echo " "'
+alias _F='git pull && git add . && git commit -m "$(date)"  && git push ;echo " ";date;echo " "'
 
 alias n='/usr/bin/nvim.appimage'
 #alias _ai='docker ps --format "{{.Names}}" |grep  "code_love_bot\|Codex_openai_bot\|openAI_Smart_Wisdom\|text_davinci_003_high_bot\|text_davinci_003_low_bot" |xargs -I {} docker restart {}'
@@ -89,45 +91,45 @@ alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning
 
 
 
-#if [ "\$TERM_PROGRAM" = "Apple_Terminal" ]; then
+#if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
 #if true; then
 
-if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" != "vscode" ]; then
+if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
     # Check if a tmux session named "do" exists
     tmux has-session -t "do" &>/dev/null
-    if [ \$? -ne 0 ]; then
+    if [ $? -ne 0 ]; then
         # If the session does not exist, create it
         tmux new-session -s "do" -d
     fi
     # If we are not already inside a tmux session, attach to the "do" session
-    if [ -z "\$TMUX" ]; then
+    if [ -z "$TMUX" ]; then
         tmux attach -t "do"
     fi
 fi
 
-#if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" = "vscode" ]; then
+#if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" = "vscode" ]; then
 #    # Check if a tmux session named "vscode" exists
 #    tmux has-session -t vscode &>/dev/null
-#    if [ \$? -ne 0 ]; then
+#    if [ $? -ne 0 ]; then
 #        # If the session does not exist, create it
 #        tmux new-session -s vscode -d
 #    fi
 #    # If we are not already inside a tmux session, attach to the "vscode" session
-#    if [ -z "\$TMUX" ]; then
+#    if [ -z "$TMUX" ]; then
 #        tmux attach -t vscode
 #    fi
 #fi
 #
 
-if [ -n "\$SSH_CONNECTION" ] && [ "\$TERM_PROGRAM" = "vscode" ]; then
+if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" = "vscode" ]; then
     # Check if a tmux session named "vscode" exists
     tmux has-session -t vscode &>/dev/null
-    if [ \$? -ne 0 ]; then # Fixed the condition to properly check the exit status
+    if [ $? -ne 0 ]; then # Fixed the condition to properly check the exit status
         # If the session does not exist, create it
         tmux new-session -s vscode -d
     fi
     # If we are not already inside a tmux session, attach to the "vscode" session
-    if [ -z "\$TMUX" ]; then # Correctly check the $TMUX variable to ensure not already in a session
+    if [ -z "$TMUX" ]; then # Correctly check the $TMUX variable to ensure not already in a session
         tmux attach -t vscode
     fi
 fi
@@ -150,13 +152,13 @@ get_git_branch_name() {
     fi
 
     # Use git symbolic-ref or git describe to retrieve the current branch name
-    local branch_name=\$(git symbolic-ref -q HEAD || git describe --tags --exact-match 2>/dev/null)
+    local branch_name=$(git symbolic-ref -q HEAD || git describe --tags --exact-match 2>/dev/null)
     # Remove the 'refs/heads/' from the full ref name
-    branch_name=\${branch_name##refs/heads/}
+    branch_name=${branch_name##refs/heads/}
 
     # Check if we got a branch name
-    if [ -n "\$branch_name" ]; then
-        echo "\$branch_name"
+    if [ -n "$branch_name" ]; then
+        echo "$branch_name"
     else
         echo "Error: Currently not on any branch."
         return 1
@@ -187,4 +189,6 @@ alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinnin
 
 echo ""
 exa -la --sort=changed
+
 ######   echo_To_bashrc.txt  end
+
