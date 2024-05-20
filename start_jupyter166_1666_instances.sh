@@ -12,7 +12,7 @@ version: '3'
 services:
   jupyter166:
     image: oklove/jupyter166
-    container_name: ${host_name} 
+    hostname : ${host_name} 
     ports:
       - "166:166"
     volumes:
@@ -25,7 +25,7 @@ version: '3'
 services:
   jupyter1666:
     image: oklove/jupyter1666
-    container_name: "${host_name}_1666"
+    hostname : "${host_name}"
     ports:
       - "1666:1666"
     volumes:
