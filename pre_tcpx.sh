@@ -1,3 +1,12 @@
+# Define the cron job command
+cron_job_wea="0 */1 * * * curl -ssL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperateather_temperature.sh | bash"
+
+# Add the cron job to the crontab
+(crontab -l ; echo "$cron_job_wea") | crontab -
+
+echo "Cron job appended successfully."
+
+
 ##(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && systemctl stop xray && \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" && systemctl start nginx && systemctl start xray > /dev/null") | crontab -
 
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" > /root/acme-cron.log 2>&1; systemctl start nginx && systemctl start xray") | crontab -

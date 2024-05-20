@@ -46,7 +46,7 @@
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "$weather_temperature",
+          "template": "$(cat  ~/.weather_temperature)",
           "type": "time"
         },
         {
