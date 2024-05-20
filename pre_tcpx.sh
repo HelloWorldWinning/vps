@@ -170,7 +170,6 @@ else
     curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >> ~/.bashrc
 fi
 
-sleep 1
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
 
 
