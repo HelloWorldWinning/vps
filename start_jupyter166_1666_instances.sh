@@ -1,6 +1,6 @@
 #!/bin/bash
 
-host=$(hostname)
+host_name=$(hostname)
 
 # Create the directories
 mkdir -p jupyter166_d
@@ -12,11 +12,12 @@ version: '3'
 services:
   jupyter166:
     image: oklove/jupyter166
+    container_name: ${host_name} 
     ports:
       - "166:166"
     volumes:
   #   - /data:/data
-      - /:/${host}
+      - /:/${host_name}
 EOL
 
 cat > jupyter1666_d/docker-compose.yml <<EOL
@@ -24,11 +25,12 @@ version: '3'
 services:
   jupyter1666:
     image: oklove/jupyter1666
+    container_name: ${host_name} 
     ports:
       - "1666:1666"
     volumes:
   #   - /data:/data
-      - /:/${host}
+      - /:/${host_name}
 EOL
 
 # Change to the jupyter166_d directory and start the container
