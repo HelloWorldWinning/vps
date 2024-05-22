@@ -3,8 +3,10 @@ weather=$(echo "$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head
 weather=$(echo $weather | tr ';' '_')
 temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
 export we_temp="${temperature}°C ${weather}"
-export weather_temperature="${temperature}${weather}"
-echo $weather_temperature
+
+export weather_temperature="${temperature}°${weather}"
 
 # Save weather_temperature to a file
 echo $weather_temperature > ~/.weather_temperature
+
+echo $weather_temperature
