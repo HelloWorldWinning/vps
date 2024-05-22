@@ -1,7 +1,12 @@
 pip install -U huggingface_hub
 ================================================================
+#### notebook
 pip install --upgrade nbconvert  jupyter
 pip install mistune==0.8.4
+pip install --upgrade nbconvert  jupyter  
+pip install mistune==0.8.4
+pip install chardet
+
 ================================================================
 ================================================================
 ================================================================
