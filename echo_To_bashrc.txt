@@ -187,8 +187,12 @@ eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'  
 
 
+alias agi='ag --ignore-dir   '
+
+
 echo ""
 exa -la --sort=changed
+
 
 ######   echo_To_bashrc.txt  end
 
