@@ -20,3 +20,6 @@ curl -4O https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_fol
 
 # Run docker-compose
 docker-compose up -d
+echo "sleep 1s ..."
+sleep 1
+docker ps -a |grep 7777
