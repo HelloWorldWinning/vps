@@ -75,8 +75,7 @@
           "meta.class.python"
         ],
         "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": "Demi-bold"
+          "foreground": "#ffffff"
         }
       },
       {
@@ -88,10 +87,7 @@
         "settings": {
           //"foreground": "#fafa5f"
        // "foreground": "#FFFF00"
-       // "foreground": "#FFFF54"
-       // "foreground": "#ffac1c"
-//        "foreground": "#FFFF8A"
-          "foreground": "#feffa6"
+          "foreground": "#FFFF54"
         }
       },
       {
