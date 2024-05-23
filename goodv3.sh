@@ -644,7 +644,7 @@ ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
 ${Red_font_prefix}105${Font_color_suffix} git new branch.sh 
-${Red_font_prefix}106${Font_color_suffix} docker:upload_folder.sh
+${Red_font_prefix}106${Font_color_suffix} ${Red_font_prefix}docker:upload_folder.py ${Font_color_suffix}
 ${Red_font_prefix}107${Font_color_suffix} curl -sL yabs.sh | bash -s -- -i
 ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution  computing
 ${Red_font_prefix}109${Font_color_suffix} ray_install3.sh
