@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  markdown-app:
+    image: oklove/upload_folder
+    ports:
+      - "7777:7777"                  # Map port 177 of the host to port 5000 of the container
+    volumes:
+      - /data/upload_folder:/data/upload_folder
+        # Map the current directory on the host to /usr/src/app in the container
