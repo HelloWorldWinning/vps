@@ -18,7 +18,7 @@ services:
     volumes:
   #   - /data:/data
 #     - /:/${host_name}
-      - /:/Docker
+      - /:/Host
 EOL
 
 cat > jupyter1666_d/docker-compose.yml <<EOL
@@ -32,7 +32,7 @@ services:
     volumes:
   #   - /data:/data
   #   - /:/${host_name}
-      - /:/Docker
+      - /:/Host
 EOL
 
 # Change to the jupyter166_d directory and start the container
