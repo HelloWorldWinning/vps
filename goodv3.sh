@@ -654,7 +654,7 @@ ${Red_font_prefix}a${Font_color_suffix}  177 docker  markdown_render_dockerfile/
 ${Red_font_prefix}ax${Font_color_suffix} markdown.sh 177 render
 ${Red_font_prefix}b${Font_color_suffix} config_fzf.sh   install fzf
 ${Red_font_prefix}c${Font_color_suffix} tmux_d/tmux_install.sh
-${Red_font_prefix}d${Font_color_suffix} share_data_to_accessor.sh
+${Red_font_prefix}d${Font_color_suffix} share_data_to_accessor.sh /etc/exports /etc/fstab /mnt/vps_
 ${Red_font_prefix}e${Font_color_suffix} install_ftp_server.sh
 ${Red_font_prefix}f${Font_color_suffix} do_zip.sh zip to /data 
 ${Red_font_prefix}g${Font_color_suffix} distri.sh
