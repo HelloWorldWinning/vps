@@ -13,6 +13,7 @@ services:
   jupyter166:
     image: oklove/jupyter166
     hostname : ${host_name} 
+    restart: unless-stopped
     ports:
       - "166:166"
     volumes:
@@ -27,6 +28,7 @@ services:
   jupyter1666:
     image: oklove/jupyter1666
     hostname : "${host_name}"
+    restart: unless-stopped
     ports:
       - "1666:1666"
     volumes:
