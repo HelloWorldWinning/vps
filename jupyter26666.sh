@@ -88,6 +88,15 @@ $conda_env_bin_dir/pip install --upgrade nbconvert
 
 jupyter notebook password
 
+
+
+pip install chardet
+conda update mistune
+pip install --upgrade nbconvert  jupyter  
+
+
+
+
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
 
