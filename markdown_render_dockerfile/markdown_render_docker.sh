@@ -28,7 +28,8 @@ services:
     ports:
       - "177:177"
     volumes:
-      - /data:/data
+    # - /data:/data
+      - /:/Host
     environment:
       - USERNAME=${username:-a}
       - PASSWORD=${password:-a}
