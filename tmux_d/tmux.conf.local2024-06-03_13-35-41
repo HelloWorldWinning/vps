@@ -568,9 +568,10 @@ tmux_conf_theme_right_separator_main=' \uE0B2'
 tmux_conf_theme_right_separator_sub='\uE0B3'
 #tmux_conf_theme_right_separator_main=' '
 
+#set-option -g prefix M-d
 set-option -g prefix M-f
-bind-key p next-window
-bind-key o previous-window
+bind-key n next-window
+bind-key p previous-window
 bind-key h new-session
 bind-key j command-prompt -p "Enter new session name:" "new-session -s '%%'"
 bind-key y confirm-before -p "kill-window #W? (y/n)" kill-window
