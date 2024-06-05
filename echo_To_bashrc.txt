@@ -190,9 +190,35 @@ alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinnin
 alias agi='ag --ignore-dir   '
 
 
+
+fdt() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: fdt <search_pattern>"
+    return 1
+  fi
+
+  fd "$1" | xargs exa -lh --sort newest
+}
+
+fds() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: fds <search_pattern>"
+    return 1
+  fi
+
+  fd "$1" | xargs exa -lh --sort size
+}
+
+
 echo ""
 exa -la --sort=changed
 
 
+
+
+
+
+
 ######   echo_To_bashrc.txt  end
+
 
