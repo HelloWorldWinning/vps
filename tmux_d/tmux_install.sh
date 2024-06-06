@@ -20,7 +20,14 @@ wget -4 -O ~/.config/tmux/tmux.conf.local  https://raw.githubusercontent.com/Hel
 
 wget -4 -O ~/.config/tmux/python_version.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/python_version.sh
 
-echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
+#######echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
+
+if ! grep -q 'tmux source-file ~/.config/tmux/tmux.conf' ~/.bashrc; then
+  echo 'tmux source-file ~/.config/tmux/tmux.conf' >> ~/.bashrc
+  echo "The line 'tmux source-file ~/.config/tmux/tmux.conf' has been appended to ~/.bashrc"
+else
+  echo "The line 'tmux source-file ~/.config/tmux/tmux.conf' already exists in ~/.bashrc"
+fi
 
 
 # Start a new tmux session
