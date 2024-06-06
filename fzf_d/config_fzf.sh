@@ -55,7 +55,9 @@ _fzf_compgen_dir() {
 EOF
 
 
-echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
+####echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
+
+echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc 
 
 
 
@@ -78,4 +80,5 @@ echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 ##export PATH="$PATH:/root/.local/bin"
 ##eval "$(zoxide init bash)"
 ##EOF
+
 
