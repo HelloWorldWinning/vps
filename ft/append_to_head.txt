@@ -13,8 +13,9 @@
 #   command: >
 #     backtesting 
 #     --strategy-list GodStraNew7 DevilStra2 DevilStra3 
+#     --strategy GodStraNew7 
 #     --breakdown week month
 #     --timeframe 5m 
-#     --timerange 20210101-20210602
+#     --timerange 20220101-20220401
 
 
