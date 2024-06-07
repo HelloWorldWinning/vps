@@ -96,7 +96,7 @@ echo "3. Download AI configuration file with wget"
 #read -p "Enter your choice (1 or 2), press Enter for default: " choice
 #read -p "Enter your choice (1 or 2),default 1: " choice
 #read -p "Enter your choice {RED}(1,generate:2,AI:3),default 1: " choice
-echo -en "Enter your choice ${RED}(1,generate:2,AI:3),default 3:${PLAIN} "
+echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),default 3:${PLAIN} "
 read  choice
 
 # Default to 1 if no input is given
@@ -133,7 +133,8 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
     1)
         # Method 1: Download the configuration file
 	mkdir -p user_data
-        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+      # wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config_use.json
         if [ $? -eq 0 ]; then
             echo "Configuration file downloaded successfully."
         else
