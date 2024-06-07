@@ -175,6 +175,13 @@ docker-compose run --rm freqtrade create-userdir --userdir user_data
 ####### for download
 wget -4 -O  config.json_AI_template.json  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config.json_AI_template.json
 
+
+
+wget -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/append_to_head.txt
+touch del.txt
+cat append_to_head.txt docker-compose.yml > del.txt
+mv del.txt docker-compose.yml
+###rm append_to_head.txt 
 #######
 
 chmod -R 777  *
