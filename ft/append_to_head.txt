@@ -1,0 +1,20 @@
+#   command: >
+#     test-pairlist 
+#     list-freqaimodels 
+#     list-strategies
+
+#   command: >
+#     download-data
+#     --logfile /freqtrade/user_data/logs/freqtrade.log
+#     --config /freqtrade/user_data/config.json
+#     --timeframe 1m
+#     --timerange 20100101-20241231
+
+#   command: >
+#     backtesting 
+#     --strategy-list GodStraNew7 DevilStra2 DevilStra3 
+#     --breakdown week month
+#     --timeframe 5m 
+#     --timerange 20210101-20210602
+
+
