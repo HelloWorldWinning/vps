@@ -112,7 +112,8 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
         # Method 3: Download the AI configuration file and update the docker image
         mkdir -p user_data
-        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config_freqai.json
+      # wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config_freqai.json
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config.json_AI_template.json
         if [ $? -eq 0 ]; then
             echo "AI configuration file downloaded successfully."
             # Now comment out the existing image line and add the new image line
