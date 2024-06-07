@@ -158,17 +158,10 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
         ;;
 esac
 
-
-
-
 # Pull the freqtrade image
 docker-compose pull
-
 # Create user directory structure
 docker-compose run --rm freqtrade create-userdir --userdir user_data
-
-
-sudo chown -R 1000:1000  ../$folder_name
 
 #sed -i "s/SampleStrategy//"  docker-compose.yml
 
@@ -177,10 +170,15 @@ sudo chown -R 1000:1000  ../$folder_name
 #  bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
 #fi
 #
+####### for download
+wget -4 -O  config.json_AI_template.json  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/config.json_AI_template.json
+
+#######
 
 chmod -R 777  *
 
-cd  ./$folder_name
+sudo chown -R 1000:1000  ../$folder_name
+cd  ../$folder_name
 echo -en "       ${RED}${folder_name}${PLAIN} on ${RED}${port}${PLAIN} created "
 
 
