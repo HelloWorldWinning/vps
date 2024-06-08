@@ -27,5 +27,4 @@ pip3 install -U scikit-learn
 pip3 install datasieve
 
 
-rm -r  ta-lib-0.4.0-src.tar.gz 
-
+rm -r  ta-lib-0.4.0-src.tar.gz
