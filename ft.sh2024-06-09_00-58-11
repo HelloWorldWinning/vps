@@ -154,17 +154,15 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
         ;;
 
     *)
-#     # echo "Invalid choice. Defaulting to method 1."
-        echo "wrong input"
-	exit 1
-#       echo "Defaulting to method 1."
-#       mkdir -p user_data
-#       wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
-#       if [ $? -eq 0 ]; then
-#           echo "Configuration file downloaded successfully."
-#       else
-#           echo "Failed to download the configuration file."
-#       fi
+      # echo "Invalid choice. Defaulting to method 1."
+        echo "Defaulting to method 1."
+	mkdir -p user_data
+        wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
+        if [ $? -eq 0 ]; then
+            echo "Configuration file downloaded successfully."
+        else
+            echo "Failed to download the configuration file."
+        fi
         ;;
 esac
 
