@@ -87,6 +87,13 @@ source ~/.bashrc
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
 ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
 ~/.acme.sh/acme.sh   --issue -d $Domain --keylength ec-256 --force  --standalone --listen-v6 --pre-hook "systemctl stop nginx" --post-hook "systemctl restart nginx"  --debug
+  if [[ $Domain =~ .*:.* ]]; then
+    # IPv6 domain
+    ~/.acme.sh/acme.sh --issue -d $Domain --keylength ec-256 --force --standalone --listen-v6 --pre-hook "systemctl stop nginx" --post-hook "systemctl restart nginx"
+  else
+    # IPv4 domain
+    ~/.acme.sh/acme.sh --issue -d $Domain --keylength ec-256 --force --standalone --pre-hook "systemctl stop nginx" --post-hook "systemctl restart nginx"
+  fi
 
 }
 
