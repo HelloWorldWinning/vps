@@ -202,6 +202,7 @@ if [ -z "$choice_spot_futures" ]; then
 elif [ "$choice_spot_futures" = "1" ]; then
   sed -i 's/"trading_mode": "futures"/"trading_mode": "spot"/' user_data/config.json
   sed -i '/"margin_mode": "isolated"/d' user_data/config.json
+  sed -i 's/:USDT//g' user_data/config.json
   echo "user_data/config.json has been updated for spot trading"
 else
   echo "Invalid choice_spot_futures. No changes made to user_data/config.json"
