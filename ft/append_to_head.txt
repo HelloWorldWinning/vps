@@ -18,4 +18,17 @@
 #     --timeframe 5m 
 #     --timerange 20220101-20220401
 
+#   command: >
+#     hyperopt
+#     --logfile /freqtrade/user_data/logs/freqtrade.log
+#     --config /freqtrade/user_data/config.json
+#     --fee 0.001
+#     --spaces  buy
+#     --timeframe 1m 
+#     --timerange 20230101-20230201
+#     --hyperopt-loss ProfitDrawDownHyperOptLoss
+#     --epochs 100
+#     --strategy  try3
+
+
 
