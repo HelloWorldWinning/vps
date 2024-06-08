@@ -57,7 +57,14 @@ EOF
 
 ####echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
 
-echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc 
+#########echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc 
+#
+#
+cat >> ~/.bashrc << 'EOF'
+bind '"\ev": "\C-uvim \C-t\C-m"'
+EOF
+
+
 
 
 
