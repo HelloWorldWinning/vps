@@ -1,40 +1,36 @@
 #!/usr/bin/bash
 ###########
 ####!/bin/bash
-
 # Extract the --freqaimodel value using awk
 #model_name=$(awk '/--freqaimodel/ { print $NF }' docker-compose.yml)
-
 # Get the current time tag in the desired format
 time_tag=$(date "+%Y-%m-%d_%H-%M-%S")
-
-# Extract the --strategy value using awk
-#strategy=$(awk '/--strategy/ { print $NF }' docker-compose.yml)
-
+ 
 model_name=$(awk '!/^[[:space:]]*#/ && /--freqaimodel/ { print $NF }' docker-compose.yml)
 strategy=$(awk '!/^[[:space:]]*#/ && /--strategy/ { print $NF }' docker-compose.yml)
 
-
-
-# Combine model_name and strategy
-if [[ -n $strategy ]]; then
-  model_name="${strategy} === ${model_name}"
-fi
-
-#
-# Check if the model_name variable is not empty
-if [[ -n $model_name ]]; then
+# Check if both model_name and strategy exist
+if [[ -n $model_name && -n $strategy ]]; then
+    # Combine model_name and strategy
+    bot_name="${strategy} === ${model_name}"
     # Use jq to update bot_name and identifier in config.json, ensuring atomic update
-    jq --arg model_name "$model_name" --arg time_tag "$time_tag" \
-       '.bot_name = $model_name | .freqai.identifier = $time_tag' \
+    jq --arg bot_name "$bot_name" --arg time_tag "$time_tag" \
+       '.bot_name = $bot_name | .freqai.identifier = $time_tag' \
        user_data/config.json > user_data/tmp.config.json && \
     mv user_data/tmp.config.json user_data/config.json
-    echo -e "\n    \033[31m$time_tag\033[0m  Identifier updated to  in config.json"
-    echo -e "\n    \033[31m$model_name\033[0m     is updated to bot_name in config.json\n"
+    echo -e "\n    \033[31m$time_tag\033[0m  Identifier updated in config.json"
+    echo -e "\n    \033[31m$bot_name\033[0m     is updated to bot_name in config.json\n"
+# Check if only strategy exists
+elif [[ -n $strategy ]]; then
+    # Use jq to update bot_name in config.json, ensuring atomic update
+    jq --arg strategy "$strategy" \
+       '.bot_name = $strategy' \
+       user_data/config.json > user_data/tmp.config.json && \
+    mv user_data/tmp.config.json user_data/config.json
+    echo -e "\n    \033[31m$strategy\033[0m     is updated to bot_name in config.json\n"
 else
-    echo "Failed to extract model name from docker-compose.yml"
+    echo "Failed to extract model name or strategy from docker-compose.yml"
 fi
 
 # Ensure correct file ownership
 chown -R 1000:1000 *
-
