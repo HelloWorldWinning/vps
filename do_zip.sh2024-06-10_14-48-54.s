@@ -18,21 +18,19 @@ if [ -z "$compression_option" ]; then
 fi
 
 # Ask for files/folders to exclude
-echo "Enter files/folders to exclude (one per line, press Enter twice to finish):"
-exclude_list=()
-while IFS= read -r line; do
-    [[ $line ]] || break
-    exclude_list+=("$line")
-done
+read -p "Enter files/folders to exclude (separated by space): " exclude_list
 
-# Create the exclude options for zip command
-exclude_options=""
-for item in "${exclude_list[@]}"; do
-    exclude_options+=" -x '$item/*' -x '$item'"
-done
+# Create the exclude option for zip command
+exclude_option=""
+if [ -n "$exclude_list" ]; then
+    for item in $exclude_list; do
+        exclude_option="$exclude_option -x \"$item\""
+    done
+fi
 
-# Create the archive using zip with the specified compression option and exclude options
-eval "zip -r$compression_option '$destination_dir/$generated_name' . $exclude_options"
+# Create the archive using zip with the specified compression option and exclude list
+####eval "zip -r$compression_option \"$destination_dir/$generated_name\" * $exclude_option"
+eval "zip -r$compression_option \"$destination_dir/$generated_name\" . $exclude_option"
 
 # Check if the zip command completed successfully
 if [ $? -eq 0 ]; then
