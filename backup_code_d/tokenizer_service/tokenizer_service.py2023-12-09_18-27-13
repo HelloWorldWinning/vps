@@ -1,0 +1,23 @@
+from flask import Flask, request
+from transformers import GPT2Tokenizer
+
+app = Flask(__name__)
+
+# Initialize the tokenizer
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+
+@app.route('/tokenize', methods=['POST'])
+def tokenize():
+    # Get input string from the request
+    data = request.get_json()
+    input_string = data.get('input_string', '')
+
+    # Tokenize the string
+    tokens = tokenizer.encode(input_string, add_special_tokens=False)
+
+    # Return the length of tokens as a plain response
+    return str(len(tokens))
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=6969)
+
