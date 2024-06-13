@@ -5,11 +5,11 @@ get_host_name=$(hostname)
 
 echo "Starting setup on host: $get_host_name"
 
-## Prompt for username and password
-#read -p "Enter username (leave empty for a): " username
-#read -p "Enter password (leave empty for a): " password
-#echo
-#
+# Prompt for username and password
+read -p "Enter username (leave empty for a): " username
+read -p "Enter password (leave empty for a): " password
+echo
+
 # Create a new directory for the markdown render docker compose file
 mkdir markdown_render_docker
 
