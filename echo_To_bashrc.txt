@@ -224,6 +224,7 @@ alias ll='find . -maxdepth 1 -type f -printf "%f\0" | xargs -0 exa --long --sort
 alias ff='exa --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify'
 
 alias b='bat '
+alias m='mkdir '
 
 ######   echo_To_bashrc.txt  end
 

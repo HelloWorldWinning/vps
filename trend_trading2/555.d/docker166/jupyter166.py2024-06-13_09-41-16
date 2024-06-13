@@ -211,9 +211,9 @@ def navigate(subpath):
 #        </table>
 #    """, files_and_dirs=files_and_dirs)
 
+@app.route('/py/<path:path>')
 @app.route('/python/<path:path>')
 @app.route('/python_files/<path:path>')
-@app.route('/py/<path:path>')
 def python_files(path):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
