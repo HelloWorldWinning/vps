@@ -1,5 +1,4 @@
 #!/bin/bash
-#echo -e "\n======================================================\n"
 GREEN='\033[0;32m'
 MAGENTA_BACKGROUND='\033[0;45m'
 MAGENTA='\033[0;35m'
@@ -33,17 +32,19 @@ if [ "$#" -eq 1 ]; then
     image_name=$(echo "$details" | cut -d: -f1)
     port_bindings=$(get_port_bindings "$container_name")
     path=$(get_docker_compose_path "$container_name")
-    if [[ -z "$filter_string" || "$container_name" =~ $filter_string ]]; then
+    item="$image_name---$container_name---$port_bindings---$path"
+    if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
         echo -e "${CYAN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---    ${YELLOW}$path${NC}"
     fi
 else
     # If no container name is provided, list all running containers and their details
     docker ps --format "{{.Names}}" | while read container_name; do
-        if [[ -z "$filter_string" || "$container_name" =~ $filter_string ]]; then
-            details=$(get_container_details "$container_name")
-            image_name=$(echo "$details" | cut -d: -f1)
-            port_bindings=$(get_port_bindings "$container_name")
-            path=$(get_docker_compose_path "$container_name")
+        details=$(get_container_details "$container_name")
+        image_name=$(echo "$details" | cut -d: -f1)
+        port_bindings=$(get_port_bindings "$container_name")
+        path=$(get_docker_compose_path "$container_name")
+        item="$image_name---$container_name---$port_bindings---$path"
+        if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
             if [[ -z "$port_bindings" ]]; then
                 echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---   ${YELLOW}$path${NC}"
             else
