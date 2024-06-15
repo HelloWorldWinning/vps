@@ -192,7 +192,8 @@ hi Normal     ctermfg=blue  guifg=blue guifg=#09F418 ctermbg=None guibg=#283237 
 inoremap <Tab> <C-n>
 
 
-set viminfo='100000000000,<1000000000000000,s100,h 
+""""""""""""""""set viminfo='100000000000,<1000000000000000,s100,h 
+set viminfo='1000000000,<100000000000,s100000000000
 
 map <D-v> "+p
 map <D-c> "+y
