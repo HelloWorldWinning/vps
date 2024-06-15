@@ -79,7 +79,8 @@ export HF_TOKEN=""
 
 
 
-alias dc='docker-compose'
+alias dc='docker-compose ' 
+alias d='docker '
 ##alias cc='bash  <(curl -Ls4  bit.ly/myvpsjingyi)'
 alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/goodv3.sh   )'
 
