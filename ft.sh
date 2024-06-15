@@ -99,7 +99,7 @@ echo "3. Download AI configuration file with wget"
 echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),default 3:${PLAIN} "
 read  choice
 
-read -p "Enter your spot/futures (1 for spot, or press Enter for no change): " choice_spot_futures
+read -p "Enter your spot/futures (default for spot, 1 for futures): " choice_spot_futures
 
 
 
@@ -200,12 +200,12 @@ mv del.txt docker-compose.yml
 
 
 if [ -z "$choice_spot_futures" ]; then
-  echo "No changes made to user_data/config.json"
-elif [ "$choice_spot_futures" = "1" ]; then
   sed -i 's/"trading_mode": "futures"/"trading_mode": "spot"/' user_data/config.json
   sed -i '/"margin_mode": "isolated"/d' user_data/config.json
   sed -i 's/:USDT//g' user_data/config.json
   echo "user_data/config.json has been updated for spot trading"
+elif [ "$choice_spot_futures" = "1" ]; then
+  echo "No changes made to user_data/config.json"
 else
   echo "Invalid choice_spot_futures. No changes made to user_data/config.json"
 fi
