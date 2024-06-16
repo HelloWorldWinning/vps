@@ -2,12 +2,13 @@
 ###echo_To_bashrc_txt_unique_id
 
 export EDITOR=/usr/bin/vim
-export setup_time=`date`
+#######export setup_time_first="${date}"
+export setup_time_first=\"$(date)\"
 
 function setup_time() {
-    setup_time_seconds=$(date -d "$setup_time" +%s)
+    setup_time_first_seconds=$(date -d "$setup_time_first" +%s)
     current_time_seconds=$(date +%s)
-    time_difference=$((current_time_seconds - setup_time_seconds))
+    time_difference=$((current_time_seconds - setup_time_first_seconds))
     days=$((time_difference / 86400))
     hours=$(( (time_difference % 86400) / 3600 ))
     minutes=$(( (time_difference % 3600) / 60 ))
