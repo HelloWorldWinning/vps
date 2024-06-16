@@ -1,3 +1,20 @@
+# https://www.freqtrade.io/en/stable/plotting/
+# --timerange TIMERANGE
+# --timeframe TIMEFRAME
+#     --pairs 'JASMY/USDT' 'KDA/USDT' 'SAND/USDT' 'KNC/USDT'
+#     --indicators1  '13_hma_high'   '21_hma_high' '24_hma_high' '34_hma_high' '13_ema_high'   '21_ema_high' '24_ema_high'
+#
+# freqtradeorg/freqtrade:develop_plot
+#   command: >
+#     plot-dataframe
+#     --logfile /freqtrade/user_data/logs/freqtrade.log
+#     --config /freqtrade/user_data/config.json
+#     --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+#     --strategy try12
+
+
+
+
 #     test-pairlist 
 #     list-freqaimodels 
 #   command: >
