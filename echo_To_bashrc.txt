@@ -2,7 +2,7 @@
 ###echo_To_bashrc_txt_unique_id
 
 export EDITOR=/usr/bin/vim
-export setup_time="`date`"
+export setup_time=`date`
 
 function setup_time() {
     setup_time_seconds=$(date -d "$setup_time" +%s)
