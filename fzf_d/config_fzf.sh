@@ -24,10 +24,8 @@ mv ~/.config/ranger/rc.conf  ~/.config/ranger/rc.conf.bak
 wget -4 -O  ~/.config/ranger/commands.py  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/commands.py
 wget -4 -O  ~/.config/ranger/rc.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/rc.conf
 
-cat >> ~/.bashrc <<EOF
-
+cat >> ~/.bashrc <<'EOF'
 ##### fzf  ##### 
-
 
 export FZF_DEFAULT_COMMAND='fdfind --hidden --follow -E ".git" -E "node_modules" . '
 export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | /data/.fzf_d/file_preview.py"  --preview-window=down'
@@ -41,7 +39,7 @@ export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:u
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
-# - The first argument to the function (\$1) is the base path to start traversal
+# - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
   fdfind --hidden --follow -E ".git" -E "node_modules" . 
@@ -50,7 +48,22 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fdfind --type d --hidden --follow -E ".git" -E "node_modules" . 
 }
-### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
+
+
+####### Press Alt+F to search through command history using fzf
+__fzf_history() {
+  local selected_command
+  selected_command=$(history | fzf | awk '{$1=""; print $0}')
+  if [ -n "$selected_command" ]; then
+    echo "$selected_command"
+    eval "$selected_command"
+  fi
+}
+bind -x '"\ef": __fzf_history'
+bind '"\ev": "\C-uvim \C-t\C-m"'
+#### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
+####   https://www.jianshu.com/p/aeebaee1dd2b
+
   #####   #####   ##### 
 EOF
 
@@ -60,9 +73,8 @@ EOF
 #########echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc 
 #
 #
-cat >> ~/.bashrc << 'EOF'
-bind '"\ev": "\C-uvim \C-t\C-m"'
-EOF
+#cat >> ~/.bashrc << 'EOF'
+#EOF
 
 
 
@@ -75,9 +87,7 @@ cd autojump
 #rm -r autojump
 
 echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc
-
 echo "export FZF_COMPLETION_TRIGGER='~~'" >> ~/.fzf.bash
-
 
 
 curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
@@ -87,5 +97,3 @@ echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 ##export PATH="$PATH:/root/.local/bin"
 ##eval "$(zoxide init bash)"
 ##EOF
-
-
