@@ -1,3 +1,4 @@
+## docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade:develop_freqaitorch list-freqaimodels
 # https://www.freqtrade.io/en/stable/plotting/
 # --timerange TIMERANGE
 # --timeframe TIMEFRAME
