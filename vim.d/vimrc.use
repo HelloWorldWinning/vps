@@ -193,7 +193,7 @@ inoremap <Tab> <C-n>
 
 
 """"""""""""""""set viminfo='100000000000,<1000000000000000,s100,h 
-set viminfo='1000000000,<100000000000,s100000000000
+""""""""""""""""""""""""""set viminfo='1000000000,<100000000000,s100000000000
 
 map <D-v> "+p
 map <D-c> "+y
@@ -266,3 +266,27 @@ filetype plugin indent on    " required
 
 
 highlight Visual cterm=none ctermbg=yellow  guibg=#faf4be
+
+
+
+
+" Increase the maximum number of lines to yank
+set viminfo='10000,<1000000
+
+" Increase the undo levels
+set undolevels=1000000
+
+" Enable persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo
+endif
+
+" Increase the maximum memory usage for pattern matching
+set maxmempattern=2000000
+
+" Disable syntax highlighting for large files
+autocmd BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
+
+" Increase the maximum number of columns to display
+set maxfuncdepth=10000
