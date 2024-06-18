@@ -59,8 +59,8 @@ __fzf_history() {
     eval "$selected_command"
   fi
 }
-bind -x '"\ef": __fzf_history'
-bind '"\ev": "\C-uvim \C-t\C-m"'
+bind -x '"\ev": __fzf_history'
+bind '"\ef": "\C-uvim \C-t\C-m"'
 bind '"\er": "\C-unvim \C-t\C-m"'
 #### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
 ####   https://www.jianshu.com/p/aeebaee1dd2b
