@@ -167,7 +167,7 @@ if grep -q "$unique_id_bashrc" ~/.bashrc; then
 else
     # If the unique identifier doesn't exist, append the content to ~/.bashrc
     echo "Unique identifier not found in ~/.bashrc. Adding."
-    echo  export setup_time_first=\"`date`\" > bar.txt
+    echo  export setup_time_first=\"`date`\" >> bar.txt
     curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >> ~/.bashrc
 fi
 
