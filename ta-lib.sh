@@ -1,3 +1,13 @@
+echo "Choose PyTorch installation option:"
+echo "1. CPU only (default)"
+echo "2. CUDA 12.1"
+echo "3. CUDA 11.8"
+read -p "Enter your choice_pytorch [1-3] (default: 1): " choice_pytorch
+
+
+
+
+
 git clone https://github.com/freqtrade/freqtrade.git
 
 git clone https://github.com/freqtrade/freqtrade-strategies.git
@@ -26,5 +36,22 @@ pip install -U scikit-learn
 pip3 install -U scikit-learn
 pip3 install datasieve
 
-
+cd ..
 rm -r  ta-lib-0.4.0-src.tar.gz
+
+
+
+case $choice_pytorch in
+  2)
+    echo "Installing PyTorch with CUDA 12.1"
+    conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+    ;;
+  3)
+    echo "Installing PyTorch with CUDA 11.8"
+    conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+    ;;
+  *)
+    echo "Installing PyTorch with CPU only"
+    conda install pytorch torchvision torchaudio cpuonly -c pytorch
+    ;;
+esac
