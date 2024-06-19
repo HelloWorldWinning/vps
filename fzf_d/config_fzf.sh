@@ -62,6 +62,14 @@ __fzf_history() {
 bind -x '"\ev": __fzf_history'
 bind '"\ef": "\C-uvim \C-t\C-m"'
 bind '"\er": "\C-unvim \C-t\C-m"'
+
+__fzf_cd__() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+bind '"\ec": "__fzf_cd__\C-m"'
+
+
 #### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
 ####   https://www.jianshu.com/p/aeebaee1dd2b
 
