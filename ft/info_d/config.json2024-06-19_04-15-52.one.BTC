@@ -1,0 +1,144 @@
+{
+  "freqai": {
+    "reverse_train_test_order": false,
+    "enabled": true,
+    "purge_old_models": 1,
+    "train_period_days": 100,
+    "backtest_period_days": 7,
+    "live_retrain_hours": 0,
+    "identifier": "wanyi_02b===ZHU_LSTMTradeClassifier02h===2024-06-19_03-28-03",
+    "feature_parameters": {
+      "include_corr_pairlist": [],
+      "include_shifted_candles": 0,
+      "include_timeframes": [
+        "5m"
+      ],
+      "indicator_periods_candles": [
+        12,
+        72,
+        144,
+        288,
+        576,
+        864
+      ],
+      "label_period_candles": 20,
+      "DI_threshold": 5,
+      "weight_factor": 0.95,
+      "principal_component_analysis": false,
+      "use_SVM_to_remove_outliers": false,
+      "use_DBSCAN_to_remove_outliers": false,
+      "plot_feature_importances": 0
+    },
+    "data_split_parameters": {
+      "test_size": 0.08678819,
+      "random_state": 42
+    },
+    "model_training_parameters": {
+      "model_kwargs": {
+        "hidden_size": 512,
+        "num_layers": 5,
+        "dropout_rate": 0.2,
+        "learning_rate": 0.002
+      },
+      "trainer_kwargs": {
+        "n_epochs": 1,
+        "batch_size": 128
+      }
+    }
+  },
+  "trading_mode": "spot",
+  "stake_currency": "USDT",
+  "tradable_balance_ratio": 1,
+  "fiat_display_currency": "USD",
+  "dry_run": true,
+  "dry_run_wallet": 10000,
+  "max_open_trades": 20,
+  "stake_amount": "unlimited",
+  "cancel_open_orders_on_exit": false,
+  "unfilledtimeout": {
+    "entry": 25,
+    "exit": 25
+  },
+  "exchange": {
+    "name": "binance",
+    "key": "",
+    "secret": "",
+    "ccxt_config": {},
+    "ccxt_async_config": {},
+    "pair_whitelist": [
+      "BTC/USDT"
+    ],
+    "pair_blacklist": []
+  },
+  "entry_pricing": {
+    "price_side": "other",
+    "use_order_book": true,
+    "order_book_top": 1,
+    "price_last_balance": 0,
+    "check_depth_of_market": {
+      "enabled": false,
+      "bids_to_ask_delta": 1
+    }
+  },
+  "exit_pricing": {
+    "price_side": "other",
+    "use_order_book": true,
+    "order_book_top": 1
+  },
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "bot_name": "wanyi_02b === ZHU_LSTMTradeClassifier02h",
+  "force_entry_enable": true,
+  "initial_state": "running",
+  "internals": {
+    "process_throttle_secs": 5
+  },
+  "api_server": {
+    "enabled": true,
+    "listen_ip_address": "0.0.0.0",
+    "listen_port": 8080,
+    "verbosity": "error",
+    "enable_openapi": false,
+    "jwt_secret_key": "73a5d418ef03ca2e646fa0ae15a391e7fe0e53f29ffb4cfaace9d7aa4d34d6a5",
+    "CORS_origins": [],
+    "username": "a",
+    "password": "a"
+  },
+  "telegram": {
+    "enabled": true,
+    "token": "7454293051:AAHlbsVsk46yQVzyCEHDlFFvYVTSfOr5Arc",
+    "chat_id": "5093077942",
+    "keyboard": [
+      [
+        "/weekly",
+        "/daily",
+        "/monthly",
+        "/performance"
+      ],
+      [
+        "/status table",
+        "/balance",
+        "/stats",
+        "/profit"
+      ],
+      [
+        "/show_config",
+        "/stop",
+        "/start"
+      ],
+      [
+        "/show_config",
+        "/forcelong",
+        "/forceshort"
+      ],
+      [
+        "/count",
+        "/logs",
+        "/reload_config"
+      ]
+    ]
+  }
+}
