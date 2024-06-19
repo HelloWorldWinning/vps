@@ -1,12 +1,1 @@
-cat >>~/.bashrc <<'EOF'
-# Press Alt+F to search through command history using fzf
-__fzf_history() {
-  local selected_command
-  selected_command=$(history | fzf | awk '{$1=""; print $0}')
-  if [ -n "$selected_command" ]; then
-    echo "$selected_command"
-    eval "$selected_command"
-  fi
-}
-bind -x '"\ef": __fzf_history'
-EOF
+export setup_time_first="Wed Jun 19 03:40:44 PM CST 2024"
