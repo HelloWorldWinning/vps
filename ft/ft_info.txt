@@ -1,3 +1,7 @@
+
+ tensorboard --logdir   $(pwd)  --host 0.0.0.0 --port 8800
+
+
       download-data
       --logfile /freqtrade/user_data/logs/freqtrade.log
       --config /freqtrade/user_data/config.json
@@ -17,3 +21,4 @@
 https://www.freqtrade.io/en/stable/telegram-usage/
 https://www.freqtrade.io/en/stable/configuration/
 https://www.freqtrade.io/en/stable/freqai/#usage-with-docker
+
