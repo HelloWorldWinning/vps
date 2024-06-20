@@ -1,0 +1,166 @@
+[H[J[3J[35m脚本适配 OS: Ubuntu 16+, Debian 10+, RHEL 7+, Arch Linux, Alpine Linux, FreeBSD, MacOS 10.13+, Android (Termux), iOS (iSH), Windows (MinGW/Cygwin) 等。[0m
+
+ [流媒体平台及游戏区域限制测试]
+
+[32m项目地址[0m [33mhttps://github.com/lmc999/RegionRestrictionCheck [0m
+[32mBUG 反馈或使用交流可加TG群组[0m [33mhttps://t.me/gameaccelerate [0m
+
+ ** 测试时间: Thu Jun 20 09:35:47 AM CST 2024
+ ** 版本: 1.0.0
+
+[34m请选择检测项目，直接按回车将进行全区域检测[0m
+[36m输入数字  [1]: [ 跨国平台+台湾平台 ]检测[0m
+[36m输入数字  [2]: [ 跨国平台+香港平台 ]检测[0m
+[36m输入数字  [3]: [ 跨国平台+日本平台 ]检测[0m
+[36m输入数字  [4]: [ 跨国平台+北美平台 ]检测[0m
+[36m输入数字  [5]: [ 跨国平台+南美平台 ]检测[0m
+[36m输入数字  [6]: [ 跨国平台+欧洲平台 ]检测[0m
+[36m输入数字  [7]: [跨国平台+大洋洲平台]检测[0m
+[36m输入数字  [8]: [ 跨国平台+韩国平台 ]检测[0m
+[36m输入数字  [9]: [跨国平台+东南亚平台]检测[0m
+[36m输入数字 [10]: [ 跨国平台+印度平台 ]检测[0m
+[36m输入数字 [11]: [ 跨国平台+非洲平台 ]检测[0m
+[36m输入数字  [0]: [   只进行跨国平台  ]检测[0m
+[36m输入数字 [99]: [   体育直播平台    ]检测[0m
+[36m输入数字 [66]: [     全部平台      ]检测[0m
+[35m输入数字 [69]: [   广告推广投放    ]咨询[0m
+[H[J[3J [流媒体平台及游戏区域限制测试]
+
+[32m项目地址[0m [33mhttps://github.com/lmc999/RegionRestrictionCheck [0m
+[32mBUG 反馈或使用交流可加TG群组[0m [33mhttps://t.me/gameaccelerate [0m
+
+ ** 测试时间: Thu Jun 20 09:35:57 AM CST 2024
+ ** 版本: 1.0.0
+
+
+ [36m** 正在测试 IPv4 解锁情况[0m
+--------------------------------
+ [36m** 您的网络为: xTom (141.98.*.*)[0m
+
+
+============[ Multination ]============
+ Dazn:					[32mYes (Region: JP)[0m
+ Disney+:				[31mNo[0m
+ Netflix:				[33mOriginals Only[0m
+ YouTube Premium:			[32mYes (Region: JP)[0m
+ Amazon Prime Video:			[32mYes (Region: JP)[0m
+ TVBAnywhere+:				[32mYes[0m
+ Spotify Registration:			[32mYes (Region: JP)[0m
+ Instagram Licensed Audio:		[31mNo[0m
+ OneTrust Region:			[32mJP [Tokyo][0m
+ iQyi Oversea Region:			[32mJP[0m
+ Bing Region:				[32mJP[0m
+ YouTube CDN:				[32mTokyo[0m
+ Netflix Preferred CDN:			[32mTokyo[0m
+ ChatGPT:				[32mYes[0m
+ Wikipedia Editability:			[32mYes[0m
+ Google Search CAPTCHA Free:		[32mYes[0m
+ Steam Currency:			[32mJPY[0m
+[33m ---Forum---[0m
+ Reddit:				[31mNo[0m
+=======================================
+===============[ Japan ]===============
+ DMM:					[32mYes[0m
+ DMM TV:				[31mNo[0m
+ Abema.TV:				[31mNo[0m
+ Niconico:				[31mFailed (Error: PAGE ERROR)[0m
+ Telasa:				[32mYes[0m
+ U-NEXT:				[32mYes[0m
+ Hulu Japan:				[31mNo[0m
+ TVer:					[31mFailed (Network Connection)[0m
+ Lemino:				[31mNo[0m
+ WOWOW:					[31mNo[0m
+ VideoMarket:				[32mYes[0m
+ D Anime Store:				[31mNo[0m
+ FOD(Fuji TV):				[32mYes[0m
+ Radiko:				[32mYes (City: TOKYO)[0m
+ Karaoke@DAM:				[31mNo[0m
+ J:com On Demand:			[31mFailed (Error: 404)[0m
+ WATCHA:				[32mYes[0m
+ Rakuten TV JP:				[31mNo[0m
+[33m ---Game---[0m
+ Kancolle Japan:			[31mNo[0m
+ Pretty Derby Japan:			[31mFailed (Network Connection)[0m
+ Konosuba Fantastic Days:		[32mYes[0m
+ Princess Connect Re:Dive Japan:	[32mYes[0m
+ Project Sekai: Colorful Stage:		[31mNo[0m
+[33m ---Music---[0m
+ Mora:					[32mYes[0m
+ music.jp:				[31mNo[0m
+[33m ---Forum---[0m
+ EroGameSpace:				[32mYes[0m
+=======================================
+
+
+ [36m** 正在测试 IPv6 解锁情况[0m 
+--------------------------------
+[36m** 您的网络为: xTom (2a12:a302:1:*:*)[0m
+
+
+============[ Multination ]============
+ Dazn:					[31mIPv6 Is Not Currently Supported[0m
+ Disney+:				[31mIPv6 Is Not Currently Supported[0m
+ Netflix:				[32mYes (Region: JP)[0m
+ YouTube Premium:			[31mNo[0m
+ Amazon Prime Video:			[31mIPv6 Is Not Currently Supported[0m
+ TVBAnywhere+:				[31mIPv6 Is Not Currently Supported[0m
+ Spotify Registration:			[32mYes (Region: JP)[0m
+ Instagram Licensed Audio:		[31mNo[0m
+ OneTrust Region:			[32mJP [Tokyo][0m
+ iQyi Oversea Region:			[31mIPv6 Is Not Currently Supported[0m
+ Bing Region:				[32mJP[0m
+ YouTube CDN:				[32mTokyo[0m
+ Netflix Preferred CDN:			[32mTokyo[0m
+ ChatGPT:				[31mFailed (Network Connection)[0m
+ Wikipedia Editability:			[32mYes[0m
+ Google Search CAPTCHA Free:		[32mYes[0m
+ Steam Currency:			[31mIPv6 Is Not Currently Supported[0m
+[33m ---Forum---[0m
+ Reddit:				[31mIPv6 Is Not Currently Supported[0m
+=======================================
+===============[ Japan ]===============
+ DMM:					[31mIPv6 Is Not Currently Supported[0m
+ DMM TV:				[31mIPv6 Is Not Currently Supported[0m
+ Abema.TV:				[31mIPv6 Is Not Currently Supported[0m
+ Niconico:				[31mIPv6 Is Not Currently Supported[0m
+ Telasa:				[32mYes[0m
+ U-NEXT:				[32mYes[0m
+ Hulu Japan:				[31mIPv6 Is Not Currently Supported[0m
+ TVer:					[31mIPv6 Is Not Currently Supported[0m
+ Lemino:				[32mYes[0m
+ WOWOW:					[31mIPv6 Is Not Currently Supported[0m
+ VideoMarket:				[31mIPv6 Is Not Currently Supported[0m
+ D Anime Store:				[31mIPv6 Is Not Currently Supported[0m
+ FOD(Fuji TV):				[31mIPv6 Is Not Currently Supported[0m
+ Radiko:				[31mIPv6 Is Not Currently Supported[0m
+ Karaoke@DAM:				[31mIPv6 Is Not Currently Supported[0m
+ J:com On Demand:			[31mFailed (Error: 404)[0m
+ WATCHA:				[31mIPv6 Is Not Currently Supported[0m
+ Rakuten TV JP:				[31mIPv6 Is Not Currently Supported[0m
+[33m ---Game---[0m
+ Kancolle Japan:			[31mIPv6 Is Not Currently Supported[0m
+ Pretty Derby Japan:			[31mFailed (Network Connection)[0m
+ Konosuba Fantastic Days:		[31mIPv6 Is Not Currently Supported[0m
+ Princess Connect Re:Dive Japan:	[31mIPv6 Is Not Currently Supported[0m
+ Project Sekai: Colorful Stage:		[31mIPv6 Is Not Currently Supported[0m
+[33m ---Music---[0m
+ Mora:					[31mIPv6 Is Not Currently Supported[0m
+ music.jp:				[31mIPv6 Is Not Currently Supported[0m
+[33m ---Forum---[0m
+ EroGameSpace:				[31mIPv6 Is Not Currently Supported[0m
+=======================================
+[32m本次测试已结束，感谢使用此脚本[0m
+
+[33m检测脚本当天运行次数: 1210; 共计运行次数: 11885933[0m
+
+
+[36m【广告推广】[0m
+================================================
+[92m什么!? 一个DNS竟可解锁所有欧洲流媒体？还能免费试用？[0m
+
+[37m浏览以下TG频道一探究竟[0m
+[93mhttps://t.me/LMT_Unblock/59[0m
+
+[36m还提供更多不同地区的DNS解锁[0m
+[95m了解详情请关注频道: https://t.me/LMT_Unblock[0m
+================================================
