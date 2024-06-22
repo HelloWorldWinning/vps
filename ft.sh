@@ -142,6 +142,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 	mkdir -p user_data
       # wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config.json
         wget -4O "user_data/config.json" https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_config_use.json
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
         if [ $? -eq 0 ]; then
             echo "Configuration file downloaded successfully."
         else
@@ -151,6 +152,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
     2)
         # Method 2: Create a new configuration with docker-compose
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/download_freqaimodels.sh  )
         docker-compose run --rm freqtrade new-config --config user_data/config.json
         ;;
 
