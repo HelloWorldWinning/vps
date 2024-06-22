@@ -263,7 +263,8 @@
       [
         "/show_config",
         "/forcelong",
-        "/forceshort"
+        "/forceshort",
+	"/forceexit"
       ],
       [
         "/count",
