@@ -97,7 +97,7 @@ echo "3. Download AI configuration file with wget"
 #read -p "Enter your choice (1 or 2),default 1: " choice
 #read -p "Enter your choice {RED}(1,generate:2,AI:3),default 1: " choice
 #echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),default 3:${PLAIN} "
-echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),default 1:${PLAIN} "
+echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),default 3:${PLAIN} "
 read  choice
 
 read -p "Enter your spot/futures (default for futures, 1 for spot): " choice_spot_futures
@@ -108,7 +108,7 @@ read -p "Enter your spot/futures (default for futures, 1 for spot): " choice_spo
 
 # Default to 1 if no input is given
 if [ -z "$choice" ]; then
-    choice=1
+    choice=3
 fi
 
 case $choice in
