@@ -24,16 +24,17 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 
 apt install  -y sudo
-apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs
 
+sudo  apt update
+sudo  apt-get update
+
+sudo apt install -y  python3-pynvim
+
+apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs
 
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
-
-
 sudo apt install -y ncdu duf ftp  dfc
-
-
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 
