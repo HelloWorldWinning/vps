@@ -46,9 +46,9 @@ if [ "$#" -eq 1 ]; then
     port_bindings=$(get_port_bindings "$container_name")
     path=$(get_docker_compose_path "$container_name")
     status=$(get_container_status "$container_name")
-    item="$image_name---$container_name---$port_bindings---$path---$status"
+    item="$image_name   ---   $container_name   ---   $port_bindings   ---   $path   ---   $status"
     if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
-        echo -e "${CYAN}$image_name${NC}---${CYAN}$container_name${NC}---${RED}$port_bindings${NC}---${YELLOW}$path${NC}---${MAGENTA}$status${NC}"
+        echo -e "${CYAN}$image_name${NC}   ---   ${CYAN}$container_name${NC}   ---   ${RED}$port_bindings${NC}   ---   ${YELLOW}$path${NC}   ---   ${MAGENTA}$status${NC}"
     fi
 else
     # List all containers (including stopped ones) and their details
@@ -58,12 +58,12 @@ else
         port_bindings=$(get_port_bindings "$container_name")
         path=$(get_docker_compose_path "$container_name")
         status=$(get_container_status "$container_name")
-        item="$image_name---$container_name---$port_bindings---$path---$status"
+        item="$image_name   ---   $container_name   ---   $port_bindings   ---   $path   ---   $status"
         if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
             if [[ -z "$port_bindings" ]]; then
-                echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---   ${YELLOW}$path${NC}---${MAGENTA}$status${NC}"
+                echo -e "${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}   ---      ${YELLOW}$path${NC}   ---   ${MAGENTA}$status${NC}"
             else
-                echo -e "${GREEN}$image_name${NC}---${CYAN}$container_name${NC}---${RED} 【  $port_bindings  】 ${NC}---   ${YELLOW}$path${NC}---${MAGENTA}$status${NC}"
+                echo -e "${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}   ---   ${RED} 【  $port_bindings  】 ${NC}   ---      ${YELLOW}$path${NC}   ---   ${MAGENTA}$status${NC}"
             fi
             echo " "
         fi
