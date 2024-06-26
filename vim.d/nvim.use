@@ -312,3 +312,7 @@ set cursorline
 set cursorcolumn
 hi CursorLine guibg=#505050 ctermbg=NONE
 hi CursorColumn guibg=#505050 ctermbg=NONE
+
+
+set mouse=
+
