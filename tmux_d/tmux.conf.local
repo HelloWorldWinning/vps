@@ -590,3 +590,19 @@ bind-key g command-prompt -p "Enter new session name:" "new-session -s '%%'"
 unbind C-c
 
 bind-key r command-prompt -I "#W" "rename-window '%%'"
+
+
+bind-key -r J resize-pane -D  10
+bind-key -r K resize-pane -U  10
+bind-key -r H resize-pane -L  15
+bind-key -r L resize-pane -R  15
+
+# Unbind the default keys
+unbind-key h
+unbind-key j
+unbind-key k
+unbind-key l
+
+# Set new custom navigation keys
+bind-key j select-pane -U  # j to move up
+bind-key k select-pane -D  # k to move down (keeping this as is)bind-key h select-pane -L  # h to move leftbind-key l select-pane -R  # l to move right (keeping this as is)
