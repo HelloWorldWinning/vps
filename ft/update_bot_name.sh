@@ -13,8 +13,8 @@ if [[ -n $model_name && -n $strategy ]]; then
     # Combine model_name and strategy
     bot_name="${strategy} === ${model_name}"
     # Create identifier with model_name, strategy, and time_tag
-   #identifier="${strategy}___${model_name}___${time_tag}"
-    identifier="${strategy}___${model_name}"
+    identifier="${strategy}___${model_name}___${time_tag}"
+#   identifier="${strategy}___${model_name}"
     # Use jq to update bot_name and identifier in config.json, ensuring atomic update
     jq --arg bot_name "$bot_name" --arg identifier "$identifier" \
        '.bot_name = $bot_name | .freqai.identifier = $identifier' \
