@@ -96,8 +96,8 @@ call plug#end()
 
 
 "colorscheme everforest
-colorscheme gruvbox
-"colorscheme  toast
+""colorscheme gruvbox
+colorscheme  toast
 
 set termguicolors       " enable true colors support
 "colorscheme  quantum
