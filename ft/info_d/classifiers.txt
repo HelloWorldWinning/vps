@@ -1,0 +1,14 @@
+CatboostClassifier 
+CatboostClassifierMultiTarget 
+LightGBMClassifier 
+LightGBMClassifierMultiTarget 
+SKLearnRandomForestClassifier 
+XGBoostClassifier 
+XGBoostRFClassifier 
+ZHU_GBMClassifier 
+ZHU_RF_Classifier_estimators_200_leaf_1_split_3   very bad
+ZHU_sklearn_ExtraTreesClassifier 
+ZHU_sklearn_KNNClassifier 
+ZHU_sklearn_RandomForestClassifier 
+Zhu_SVMClassifier_sklearn 
+zhu_HistGBMClassifier 
