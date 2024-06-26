@@ -308,3 +308,7 @@ command! -bang -nargs=* Rg
 "   -g '!**/.git/**': 排除所有.git文件夹
 
 
+set cursorline
+set cursorcolumn
+hi CursorLine guibg=#505050 ctermbg=NONE
+hi CursorColumn guibg=#505050 ctermbg=NONE
