@@ -613,7 +613,7 @@ bind-key l select-pane -R  # l to move right (keeping this as is)
 
 
 # Move the current window to the next position and follow it
-bind-key n swap-window -t +1\; select-window -t +1
+bind-key O swap-window -t +1\; select-window -t +1
 
 # Move the current window to the previous position and follow it
-bind-key p swap-window -t -1\; select-window -t -1
+bind-key I swap-window -t -1\; select-window -t -1
