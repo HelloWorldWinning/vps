@@ -44,3 +44,11 @@ alias kw='tmux kill-window -t'
 # Kill a specific session
 # usage: tks session_old
 alias ks='tmux kill-session -t'
+
+
+# Switch to next tmux window
+alias ww='tmux next-window'
+
+# Switch to previous tmux window
+alias qq='tmux previous-window'
+
