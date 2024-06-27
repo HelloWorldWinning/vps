@@ -1,3 +1,4 @@
+docker-compose run --rm freqtrade create-userdir --userdir user_data  
 
  tensorboard --logdir   $(pwd)  --host 0.0.0.0 --port 8800
 
