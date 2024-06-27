@@ -592,6 +592,7 @@ bind-key g command-prompt -p "Enter new session name:" "new-session -s '%%'"
 unbind C-c
 
 bind-key r command-prompt -I "#W" "rename-window '%%'"
+bind-key R command-prompt -I "#S" "rename-session '%%'"
 
 
 bind-key -r J resize-pane -D  10
