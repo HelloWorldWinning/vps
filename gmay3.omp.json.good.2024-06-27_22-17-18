@@ -6,7 +6,7 @@
       "segments": [
         {
           "background": "#000000",
-          "foreground": "#c42570",
+          "foreground": "#f03e92",
           "powerline_symbol": "",
           "properties": {
             "style": "full",
@@ -18,8 +18,8 @@
           "font-weight": "bold"
         },
 	  {
-          "background": "#034c99",
-          "foreground": "#cccccc",
+          "background": "#350d5c",
+          "foreground": "#eeeeee",
           "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env $python_version\"; fi)",         
 	  "type": "text",
           "powerline_symbol": "",
