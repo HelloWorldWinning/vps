@@ -352,7 +352,8 @@ tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_7,$tmux_conf_theme_colou
 #tmux_conf_theme_status_left_bg="#ffac1c,$purple,#07825f"
 
 #tmux_conf_theme_status_left_bg="#ffac1c,#ab050d,#07825f"
-tmux_conf_theme_status_left_bg="#ab050d,#ffac1c,#07825f"
+#tmux_conf_theme_status_left_bg="#ab050d,#ffac1c,#07825f"
+tmux_conf_theme_status_left_bg="#7b165d,#ffac1c,#07825f"
 
 
 
