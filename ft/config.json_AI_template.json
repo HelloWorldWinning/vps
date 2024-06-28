@@ -310,7 +310,7 @@
     "password": "a"
   },
   "telegram": {
-    "enabled": true,
+    "enabled": false,
     "token": "7454293051:AAHlbsVsk46yQVzyCEHDlFFvYVTSfOr5Arc",
     "chat_id": "5093077942",
     "keyboard": [
