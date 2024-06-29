@@ -897,7 +897,7 @@ netstat -tulnp | grep -E '166|177'
 
 		102) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh )  ;;
 		103) bash  <(curl -sLk  yabs.sh  ) -i ;;
-		104) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
+		104) yes| bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
 		105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh  )  ;;
 		1066) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.sh )  ;;
 		106)  bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh)    ;;
