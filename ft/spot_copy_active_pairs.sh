@@ -20,4 +20,8 @@ jq --arg pairs "$PAIRS" '
 # Replace the original file with the updated one
 mv "$TEMP_FILE" "$CONFIG_FILE"
 
+# Change permissions of the config file
+sudo chmod -R 777 "$CONFIG_FILE"
+
+
 echo "Configuration updated successfully."
