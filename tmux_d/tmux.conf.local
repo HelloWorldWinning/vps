@@ -624,3 +624,6 @@ bind-key O swap-window -t +1\; select-window -t +1
 
 # Move the current window to the previous position and follow it
 bind-key I swap-window -t -1\; select-window -t -1
+
+
+set -g mouse off
