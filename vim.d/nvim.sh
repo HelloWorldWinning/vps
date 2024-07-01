@@ -102,6 +102,36 @@ OPENAI_API_KEY=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
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 #cd ~/.vim/bundle
 
+
+
+####### rm link vim to nvim
+#!/bin/bash
+
+# Remove existing vim symlink
+sudo rm -f /usr/bin/vim
+
+# Find the path to the original vim executable
+vim_path=$(readlink -f $(which vim.basic || which vim.tiny))
+
+if [ -z "$vim_path" ]; then
+    echo "Error: Could not find vim executable"
+    exit 1
+fi
+
+# Create new symlink to the original vim
+sudo ln -sf "$vim_path" /usr/bin/vim
+
+# Verify the change
+echo "Verifying the change:"
+ls -l /usr/bin/vim
+vim --version | head -n 1
+
+echo "Vim symlink has been updated. Please check the output above to ensure it's correct."
+#########
+
+
+
+
 cat  <<- EOF
 #######  neovim  install :
 :CocInstall coc-python
@@ -121,6 +151,10 @@ PlugInstall
 
 
 EOF
+
+
+
+
 
 
 
