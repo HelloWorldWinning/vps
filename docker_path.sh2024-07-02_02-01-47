@@ -48,7 +48,7 @@ if [ "$#" -eq 1 ]; then
     status=$(get_container_status "$container_name")
     item="$image_name   ---   $container_name   ---   $port_bindings   ---   $path   ---   $status"
     if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
-        echo -e "${BOLD_RED}$port_bindings${NC}  ---  ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${CYAN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
+        echo -e "${CYAN}$image_name${NC}  ---  ${CYAN}$container_name${NC} --- ${RED}$status${NC} ---  ${BOLD_RED}$port_bindings${NC}  ---  ${YELLOW}$path${NC}"
     fi
 else
     # List all containers (including stopped ones) and their details
@@ -61,9 +61,9 @@ else
         item="$image_name   ---   $container_name   ---   $port_bindings   ---   $path   ---   $status"
         if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
             if [[ -z "$port_bindings" ]]; then
-                echo -e "${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}"
+                echo -e "${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC} --- ${RED}$status${NC} --- ${YELLOW}$path${NC}"
             else
-                echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
+                echo -e "${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC} --- ${RED}$status${NC} ---  ${BOLD_RED} 【  $port_bindings  】 ${NC}   ---      ${YELLOW}$path${NC}"
             fi
             echo " "
         fi
