@@ -62,6 +62,9 @@ __fzf_history() {
 bind -x '"\ev": __fzf_history'
 bind '"\ef": "\C-uvim \C-t\C-m"'
 bind '"\er": "\C-unvim \C-t\C-m"'
+bind '"\es": "\C-ubat $(fzf)\C-m"'
+
+
 
 __fzf_cd__() {
   local dir
