@@ -62,7 +62,16 @@ __fzf_history() {
 bind -x '"\ev": __fzf_history'
 bind '"\ef": "\C-uvim \C-t\C-m"'
 bind '"\er": "\C-unvim \C-t\C-m"'
-bind '"\es": "\C-ubat $(fzf)\C-m"'
+
+fzf_bat() {
+  local file
+  file=$(fzf)
+  if [ -n "$file" ]; then
+    bat "$file"
+  fi
+}
+
+bind '"\es": "\C-u fzf_bat\C-m"'
 
 
 
