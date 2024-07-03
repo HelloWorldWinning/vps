@@ -1,3 +1,6 @@
+apt install -y sudo 
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg git vim
 # https://jdhao.github.io/2018/09/05/centos_nvim_install_use_guide/ Linux 下 Neovim 配置 Python 开发环境指南
 # https://juejin.cn/post/6844904118948118536 如何将你的 neovim 打造成 vscode 一般的 Python IDE?
 # https://github.com/ellisonleao/gruvbox.nvim  ellisonleao / gruvbox.nvim
@@ -19,7 +22,11 @@ curl  --ipv4 -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releas
 
 chmod u+x /usr/bin/nvim.appimage
 #./nvim.appimage
-ln -s /usr/bin/nvim.appimage /usr/bin/nvim
+
+NVIM_PATH="/usr/bin/nvim.appimage"
+SYMLINK_PATH="/usr/bin/nvim"
+sudo ln -sf $NVIM_PATH $SYMLINK_PATH
+#####sudo ln -s /usr/bin/nvim.appimage /usr/bin/nvim
 
 
 curl  --ipv4 -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -32,8 +39,6 @@ curl  --ipv4 -fLo  /root/.local/share/nvim/site/autoload/plug.vim --create-dirs 
 #apt update
 #apt install -y node 
 
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg git vim
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 NODE_MAJOR=20
