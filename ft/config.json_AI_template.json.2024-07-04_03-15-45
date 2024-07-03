@@ -14,11 +14,16 @@
         "5m"
       ],
       "indicator_periods_candles": [
+        12,
+        72,
+        144,
+        288,
+        576,
         864
       ],
       "label_period_candles": 20,
       "DI_threshold": 5,
-      "weight_factor": 1,
+      "weight_factor": 0.95,
       "principal_component_analysis": false,
       "use_SVM_to_remove_outliers": false,
       "use_DBSCAN_to_remove_outliers": false,
