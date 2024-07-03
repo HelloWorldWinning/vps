@@ -227,9 +227,8 @@ fi
 chmod -R 777  *
 
 sudo chown -R 1000:1000  ../$folder_name
-cd  ../$folder_name
+#cd  ../$folder_name
+docker-compose down 
 echo -en "       ${RED}${folder_name}${PLAIN} on ${RED}${port}${PLAIN} created "
-
-
 
 
