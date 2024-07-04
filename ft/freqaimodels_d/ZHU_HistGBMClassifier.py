@@ -14,7 +14,7 @@ from freqtrade.freqai.data_kitchen import FreqaiDataKitchen
 
 logger = logging.getLogger(__name__)
 
-class zhu_HistGBMClassifier(BaseClassifierModel):  # Updated class name
+class ZHU_HistGBMClassifier(BaseClassifierModel):  # Updated class name
     """
     User created prediction model using Histogram Gradient Boosting Machine (HistGBM) classifier.
     This class inherits from BaseClassifierModel and is customized to use the
