@@ -210,13 +210,11 @@ if [ -z "$choice_spot_futures" ]; then
   sed -i '/"margin_mode": "isolated"/d' user_data/config.json
   sed -i 's/:USDT//g' user_data/config.json
   echo "user_data/config.json has been updated for spot trading"
+  #update spot pairs
+  bash  <(curl --ipv4  -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/spot_copy_active_pairs.sh  )
 elif [ "$choice_spot_futures" = "1" ]; then
 	# futures
   echo "futures : No changes made to user_data/config.json"
-  #update spot pairs
-bash  <(curl --ipv4  -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/spot_copy_active_pairs.sh  )
-
-
 else
   echo "Invalid choice_spot_futures. No changes made to user_data/config.json"
 fi
