@@ -87,6 +87,15 @@ bind '"\es": "\C-ufzf_bat\C-m"'
 
 
 
+fzf_cat() {
+  local file
+  file=$(fzf)
+  if [ -n "$file" ]; then
+    cat "$file"
+  fi
+}
+bind '"\ea": "\C-u fzf_cat\C-m"'
+
 
 
 __fzf_cd__() {
