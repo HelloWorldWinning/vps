@@ -229,6 +229,10 @@ alias ff='exa --only-dirs --long --bytes --sort=newest --no-user --no-permission
 alias b='bat '
 alias m='mkdir '
 
+export HISTSIZE=-1
+export HISTFILESIZE=-1
+
+
 ######   echo_To_bashrc.txt  end
 
 
