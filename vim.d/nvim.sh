@@ -54,6 +54,9 @@ apt install python3-pip -y
 
 #pip install --upgrade pip
 pip3 install neovim  pynvim jedi
+
+sudo apt install python3-jedi
+
 pip install neovim  pynvim jedi
 
 
