@@ -104,20 +104,22 @@ __fzf_cd__() {
 }
 bind '"\ec": "__fzf_cd__\C-m"'
 
-
 ## New Ctrl+arrow key bindings as per user request
 bind '"\e[1;5A": "\ev"'   # Ctrl+Up for history
 bind '"\e[1;5B": "\ec"'   # Ctrl+Down for change directory
 bind '"\e[1;5C": "\ef"'   # Ctrl+Right for vim
 bind '"\e[1;5D": "\er"'   # Ctrl+Left for run command
 
-
 # New Meta+arrow key bindings as per user requestbind '"\e[1;3A": "\ev"'   # Meta+Up for history
 bind '"\e[1;3B": "\ec"'   # Meta+Down for change directory
 bind '"\e[1;3C": "\ef"'   # Meta+Right for vim
 bind '"\e[1;3D": "\er"'   # Meta+Left for run command
 
-
+# New bindings for Meta (Alt) + hjkl
+bind '"\eh": "\e[1;5D"'   # Meta+h for Ctrl+Left (run command)
+bind '"\ej": "\e[1;5B"'   # Meta+j for Ctrl+Down (change directory)
+bind '"\ek": "\e[1;5A"'   # Meta+k for Ctrl+Up (history)
+bind '"\el": "\e[1;5C"'   # Meta+l for Ctrl+Right (vim)
 
 #### https://yaozhijin.gitee.io/Linux模糊搜索神器fzf终极配置.html
 ####   https://www.jianshu.com/p/aeebaee1dd2b
