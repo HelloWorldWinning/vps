@@ -5,7 +5,7 @@ curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_t
 
 # Define the cron job command
 ##cron_job_wea="0 */1 * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
-cron_job_wea="*/30 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
+cron_job_wea="*/20 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
 
 # Check if weather_temperature.sh is already in the crontab
 if ! crontab -l | grep -q "weather_temperature.sh"; then
