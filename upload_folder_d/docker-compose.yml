@@ -2,6 +2,7 @@ version: '3.8'
 services:
   markdown-app:
     image: oklove/upload_folder
+    restart: unless-stopped
     ports:
       - "7777:7777"   
     volumes:
