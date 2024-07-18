@@ -912,7 +912,7 @@ netstat -tulnp | grep -E '166|177'
 		c) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh )  ;;
 		d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh  )  ;;
 		e) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_ftp_server.sh   )  ;;
-		f) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh  )  ;;
+		i) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh  )  ;;
 		g) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/distri.sh )  ;;
 		h) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/init_github_project.sh  )  ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
