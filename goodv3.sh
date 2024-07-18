@@ -668,7 +668,7 @@ nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 
 
 
-`echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[0;38;2;252;33;137m$(pwd)\e[0m            "
+`echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[0;38;2;252;33;137m$(pwd)\e[0m     \e[0;38;2;252;33;137m$(/usr/bin/ls |wc -l)\e[0m        "
   `   $today_hit $all_hit
 \r\n    \e[1;38;2;252;33;137m🧄\e[0m 
 ")"  choose
