@@ -102,7 +102,8 @@ echo -en "Enter your choice ${RED}(freqtrade:1,   generate:2,   freqai:3),defaul
 read  choice
 
 ###read -p "Enter your spot/futures (default for spot, 1 for futures): " choice_spot_futures
-read -en  "Enter your spot/futures (${RED}default for spot, 1 for futures${RED}): " choice_spot_futures
+echo -en  "Enter your spot/futures (${RED}default for spot, 1 for futures${PLAIN}): " 
+read choice_spot_futures
 
 
 
