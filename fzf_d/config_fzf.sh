@@ -160,5 +160,8 @@ echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 ##eval "$(zoxide init bash)"
 ##EOF
 
+cat >>~/.bashrc<<'EOF'
 eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
+EOF
+
 
