@@ -159,3 +159,6 @@ echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
 ##export PATH="$PATH:/root/.local/bin"
 ##eval "$(zoxide init bash)"
 ##EOF
+
+eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
+

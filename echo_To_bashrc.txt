@@ -3,7 +3,7 @@
 
 
 
-eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
+######  eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
 export EDITOR=/usr/bin/vim
 #######export setup_time_first="${date}"
@@ -190,7 +190,7 @@ else
 fi
 export PATH="/root/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-#eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
+#### eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
 alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'  
 
@@ -238,6 +238,8 @@ alias m='mkdir '
 export HISTSIZE=-1
 export HISTFILESIZE=-1
 
+
+####  eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
 ######   echo_To_bashrc.txt  end
 
