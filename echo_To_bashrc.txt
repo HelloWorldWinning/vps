@@ -61,6 +61,7 @@ alias fw='/usr/lib/cargo/bin/fd --changed-within   '
 
 
 alias nu='ncdu'
+alias dff='ncdu'
 
 
 
