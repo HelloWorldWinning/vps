@@ -159,7 +159,8 @@ def upload_file():
         uploaded_files.append(save_path)
 
     if uploaded_files:
-        response = "Files uploaded successfully:\n" + "\n".join(uploaded_files)
+    #   response = "Files uploaded successfully:\n" + "\n".join(uploaded_files)
+        response =  "\n".join(uploaded_files)
     else:
         response = "No files were uploaded."
 
