@@ -650,6 +650,7 @@ ${Red_font_prefix}107${Font_color_suffix} curl -sL yabs.sh | bash -s -- -i
 ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution  computing
 ${Red_font_prefix}109${Font_color_suffix} ray_install3.sh
 ${Red_font_prefix}0${Font_color_suffix} ip checker
+${Red_font_prefix}2${Font_color_suffix} list docker_path
 ${Red_font_prefix}666${Font_color_suffix} temporary bash
 ${Red_font_prefix}a${Font_color_suffix}  177 docker  markdown_render_dockerfile/markdown_render_docker.sh
 ${Red_font_prefix}ax${Font_color_suffix} markdown.sh 177 render
