@@ -4,7 +4,8 @@
 #read -p "Enter the size of the swap file in GB (e.g., '1' for 1GB, '1.5' for 1.5GB, default is 5): " SWAP_SIZE
 #SWAP_SIZE=${SWAP_SIZE:-5}G  # Append 'G' to make it GB
 
-SWAP_SIZE=5G
+#SWAP_SIZE=5G
+SWAP_SIZE=1G
 
 # Identify the active swap partition(s)
 SWAP_PARTITIONS=$(swapon --show=NAME --noheadings)
