@@ -11,10 +11,14 @@ sudo ln -s /usr/bin/batcat /usr/bin/bat
 
 #sudo chmod 777  /usr/share/lintian/overrides/bat
 
-sudo mkdir  -p  /data/.fzf_d
+##sudo mkdir  -p  /data/.fzf_d
+sudo mkdir  -p    ~/.fzf_d
 
-wget -4 -O /data/.fzf_d/file_preview.py   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
-sudo chmod 777 /data/.fzf_d/file_preview.py 
+#wget -4 -O /data/.fzf_d/file_preview.py   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
+wget -4 -O  ~/.fzf_d/file_preview.py   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
+
+#sudo chmod 777 /data/.fzf_d/file_preview.py 
+sudo chmod 777 ~/.fzf_d/file_preview.py 
 
 
 ranger --copy-config=all
@@ -28,7 +32,8 @@ cat >> ~/.bashrc <<'EOF'
 ##### fzf  ##### 
 
 export FZF_DEFAULT_COMMAND='fdfind --hidden --follow -E ".git" -E "node_modules" . '
-export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | /data/.fzf_d/file_preview.py"  --preview-window=down'
+###export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | /data/.fzf_d/file_preview.py"  --preview-window=down'
+export FZF_DEFAULT_OPTS='--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | ~/.fzf_d/file_preview.py"  --preview-window=down'
 
 # use fzf in bash and zsh
 # Use ~~ as the trigger sequence instead of the default **

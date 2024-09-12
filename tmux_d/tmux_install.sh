@@ -4,14 +4,16 @@
 sudo apt install -y tmux
 
 # Clone the oh-my-tmux repository
-git clone https://github.com/gpakosz/.tmux.git /data/.oh-my-tmux_d
+#git clone https://github.com/gpakosz/.tmux.git /data/.oh-my-tmux_d
+git clone https://github.com/gpakosz/.tmux.git  ~/.oh-my-tmux_d
 
 # Create the tmux configuration directory
 mkdir -p ~/.config/tmux
 
 # Create a symbolic link for the tmux configuration file
 #sudo ln -sf "$PWD/oh-my-tmux_d/.tmux.conf" ~/.config/tmux/tmux.conf
-sudo ln -sf  /data/.oh-my-tmux_d/.tmux.conf ~/.config/tmux/tmux.conf
+#sudo ln -sf  /data/.oh-my-tmux_d/.tmux.conf ~/.config/tmux/tmux.conf
+sudo ln -sf   ~/.oh-my-tmux_d/.tmux.conf ~/.config/tmux/tmux.conf
 
 # Copy the local tmux configuration file
 #cp /data/.oh-my-tmux_d/.tmux.conf.local ~/.config/tmux/tmux.conf.local
