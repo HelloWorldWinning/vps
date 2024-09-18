@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 
 @app.route('/tokenize_o', methods=['POST'])
-def tokenize():
+def tokenize_o():
     # Get input string from the request
     data = request.get_json()
     input_string = data.get('input_string', '')
@@ -13,7 +13,6 @@ def tokenize():
     # Get the encoding for GPT-4
     encoding = tiktoken.encoding_for_model("gpt-4o")
 
-    # Tokenize the string using GPT-4 encoding
     num_tokens = len(encoding.encode(input_string))
 
     # Return the number of tokens as a plain response
