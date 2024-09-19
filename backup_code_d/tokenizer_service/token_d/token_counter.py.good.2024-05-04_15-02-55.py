@@ -1,0 +1,69 @@
+from flask import Flask, request, render_template_string
+import requests
+
+app = Flask(__name__)
+
+# HTML Template for the input form and to display the result, with added CSS for styling
+HTML_TEMPLATE = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Counter</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; display: flex; }
+        .left-col, .right-col { width: 50%; padding: 20px; box-sizing: border-box; }
+        textarea { width: 100%; font-size: 1.2em; }
+        input[type=submit] { font-size: 2.8em; padding: 10px 20px; }
+        .response { font-size: 1.5em; font-weight: bold; color: #333; margin-top: 20px; }
+        .response-label { display: block; }
+        .response-count { font-size: 3em; display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-col">
+            {% if response %}
+                <div class="response">
+                    <span class="response-label">Token count:</span>
+                    <span class="response-count">{{ response }}</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="right-col">
+            <h2>Token Counter</h2>
+            <form method="POST">
+                <label for="inputText">Enter text:</label><br>
+                <textarea id="inputText" name="inputText" rows="10" cols="50"></textarea><br><br>
+                <input type="submit" value="Count Tokens">
+            </form>
+        </div>
+    </div>
+</body>
+</html>'''
+
+@app.route('/', methods=['GET', 'POST'])
+def count_tokens():
+    if request.method == 'POST':
+        input_text = request.form['inputText']
+        response = call_token_api(input_text)
+        return render_template_string(HTML_TEMPLATE, response=response)
+    return render_template_string(HTML_TEMPLATE, response=None)
+
+def call_token_api(input_text):
+    API_URL = "http://s.jingyi.today:6969/tokenize"
+    headers = {'Content-Type': 'application/json'}
+    data = {"input_string": input_text}
+    
+    try:
+        response = requests.post(API_URL, headers=headers, json=data)
+        if response.status_code == 200:
+            return response.text
+        else:
+            return "Error: Failed to retrieve token count."
+    except requests.exceptions.RequestException as e:
+        return "Request Exception: Something went wrong with the request."
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=6868)

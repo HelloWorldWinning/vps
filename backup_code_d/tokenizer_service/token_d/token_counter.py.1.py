@@ -1,0 +1,79 @@
+from flask import Flask, request, render_template_string
+import requests
+
+app = Flask(__name__)
+
+# HTML Template for the input form and to display the result, with added CSS for styling
+HTML_TEMPLATE = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Counter</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; display: flex; }
+        .left-col, .right-col { width: 50%; padding: 20px; box-sizing: border-box; }
+        textarea { width: 100%; font-size: 1.2em; }
+        .response { font-size: 1.5em; font-weight: bold; color: #333; margin-top: 20px; }
+        .response-label { display: block; }
+        .response-count { font-size: 4em; display: block; margin-top: 10px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#inputText').on('input', function() {
+                var inputText = $(this).val();
+                $.ajax({
+                    url: '/count_tokens',
+                    method: 'POST',
+                    data: { inputText: inputText },
+                    success: function(response) {
+                        $('.response-count').text(response);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-col">
+            <div class="response">
+                <span class="response-count">0</span>
+            </div>
+        </div>
+        <div class="right-col">
+            <h2>Token Counter</h2>
+            <label for="inputText">Enter text:</label><br>
+            <textarea id="inputText" name="inputText" rows="10" cols="50"></textarea>
+        </div>
+    </div>
+</body>
+</html>'''
+
+@app.route('/', methods=['GET'])
+def home():
+    return render_template_string(HTML_TEMPLATE)
+
+@app.route('/count_tokens', methods=['POST'])
+def count_tokens():
+    input_text = request.form['inputText']
+    response = call_token_api(input_text)
+    return response
+
+def call_token_api(input_text):
+    API_URL = "http://127.0.0.1:6969/tokenize"
+    headers = {'Content-Type': 'application/json'}
+    data = {"input_string": input_text}
+    try:
+        response = requests.post(API_URL, headers=headers, json=data)
+        if response.status_code == 200:
+            return response.text
+        else:
+            return "Error: Failed to retrieve token count."
+    except requests.exceptions.RequestException as e:
+        return "Request Exception: Something went wrong with the request."
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=6868)
