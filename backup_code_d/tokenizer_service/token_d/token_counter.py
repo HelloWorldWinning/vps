@@ -18,7 +18,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         .counter-label { font-size: 1.2em; color: #333; margin-bottom: 10px; }
         .response-count { font-size: 5em; font-weight: bold; color: #2c3e50; display: block; }
         .input-container { background-color: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        textarea { width: 100%; font-size: 1.2em; padding: 1px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; }
+        textarea { width: 100%; font-size: 1.2em; padding: 0px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; }
         h2 { margin-top: 0; }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
