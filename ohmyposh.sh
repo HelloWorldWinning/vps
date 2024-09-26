@@ -1,6 +1,5 @@
 #!/bin/bash
-curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperateather_temperature.sh | bash
-
+curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash
 
 
 # Define the cron job command
@@ -15,8 +14,6 @@ if ! crontab -l | grep -q "weather_temperature.sh"; then
 else
     echo "Cron job for weather temperature is already present in crontab. No action taken."
 fi
-
-
 
 
 

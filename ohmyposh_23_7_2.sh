@@ -1,4 +1,20 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
+curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash
+
+
+# Define the cron job command
+##cron_job_wea="0 */1 * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
+cron_job_wea="*/20 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
+
+# Check if weather_temperature.sh is already in the crontab
+if ! crontab -l | grep -q "weather_temperature.sh"; then
+    # Add the cron job to the crontab
+    (crontab -l ; echo "$cron_job_wea") | crontab -
+    echo "Cron job appended successfully."
+else
+    echo "Cron job for weather temperature is already present in crontab. No action taken."
+fi
+
 
 install_dir=""
 themes_dir=""
