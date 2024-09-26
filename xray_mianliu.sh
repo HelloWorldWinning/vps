@@ -47,7 +47,7 @@ uuid="12345678-1234-1234-1234-123456789012"
 
 Acme_Get(){
 
-curl -4  -sL https://get.acme.sh | sh -s email=123@wardao.eu.org
+curl -4  -sL https://get.acme.sh | sh -s email=xray_mianliu@wardao.eu.org
 source ~/.bashrc
 ~/.acme.sh/acme.sh  --upgrade  --auto-upgrade
 ~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
