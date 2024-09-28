@@ -74,8 +74,7 @@ else
   echo "Country code weather alias already exists in ~/.bashrc. No changes made."
 fi
 
-
-
+oh-my-posh --version 
 
 
 
