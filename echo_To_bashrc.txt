@@ -235,6 +235,7 @@ alias ff='exa --only-dirs --long --bytes --sort=newest --no-user --no-permission
 
 alias b='bat '
 alias m='mkdir '
+alias rm='rm -i'
 
 export HISTSIZE=-1
 export HISTFILESIZE=-1
