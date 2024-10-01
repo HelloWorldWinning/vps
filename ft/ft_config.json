@@ -13,8 +13,8 @@
 
 
     "unfilledtimeout": {
-        "entry": 30,
-        "exit": 30,
+        "entry": 60,
+        "exit": 60,
         "exit_timeout_count": 30,
         "unit": "minutes"
     },
