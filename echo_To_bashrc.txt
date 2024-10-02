@@ -51,6 +51,7 @@ alias cc='clear'
 
 
 alias l='exa -la --sort=changed'
+alias lc='exa -la --sort=created'
 alias s='exa -la --sort=size'
 alias nm='exa -la'
 alias ls='exa -a'
