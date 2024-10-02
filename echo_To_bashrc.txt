@@ -47,7 +47,6 @@ alias zz='find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | sed "s/.\
 alias ft='freqtrade'
 alias v='vim'
 alias c='clear'
-alias cc='clear'
 
 
 alias l='exa -la --sort=changed'
