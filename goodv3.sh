@@ -533,6 +533,7 @@ ${Red_font_prefix}62${Font_color_suffix} trojan
 ${Red_font_prefix}63${Font_color_suffix} xray
 ${Red_font_prefix}64${Font_color_suffix} realm 中转用
 ${Red_font_prefix}5${Font_color_suffix} speedtest of vps
+${Red_font_prefix}55${Font_color_suffix} 回程路由测试 https://github.com/vpsxb/testrace
 ${Red_font_prefix}6${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
 ${Red_font_prefix}7.0${Font_color_suffix} openvpn angristan/openvpn-install/
@@ -680,6 +681,8 @@ nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9
 		64) eval $realm;;
 #	5) eval $speed;;
 		5) wget -qO- bench.sh | bash | tee speed.log  ;;
+		55) bash <(curl -fSsL   https://raw.githubusercontent.com/vpsxb/testrace/main/testrace.sh) ;;
+
 		6.1)   wg-quick down wg0; wg-quick down wg1;wg-quick down wg2  ; fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p ;;
