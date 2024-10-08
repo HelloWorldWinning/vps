@@ -47,7 +47,7 @@ rm -rf temp_repo
 
 echo "Download completed. Files are now in $LOCAL_PATH"
 
-calibredb add -r /data/ebook_d/*.epub --library-path /data/calibre-library
+calibredb add -r /data/ebook_d/* --library-path /data/calibre-library
  
 calibre-server --manage-users -- add a a 
 
