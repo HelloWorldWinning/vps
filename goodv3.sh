@@ -824,7 +824,7 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
 
-		8)nc -l 9  -q 1  | tar xfvz - ;;
+		8) echo "Listening on port 9. Waiting for incoming data..." &&  nc -l 9  -q 1  | tar xfvz - ;;
  #		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
   		9) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 19860826 ;;
