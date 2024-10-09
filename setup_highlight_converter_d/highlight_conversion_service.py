@@ -1,16 +1,3 @@
-#!/bin/bash
-
-# Step 1: Create the directory for the server
-mkdir -p /data/highlight_converter_187
-
-# Step 2: Change directory
-cd /data/highlight_converter_187
-
-# Step 3: Get the current Python environment
-PYTHON_PATH=$(which python)
-
-# Step 4: Create the Python file with the Flask server code
-cat << "EOF" > highlight_conversion_service.py
 from flask import Flask, request, jsonify, send_file
 import pandas as pd
 from datetime import datetime
@@ -92,41 +79,12 @@ def upload_file():
         output_csv = f'converted_highlights_{title_name}.csv'
 
         # Convert the JSON data to CSV
-        convert_json_to_csv(json_data, output_csv, title_name)
+##      convert_json_to_csv(json_data,output_csv, title_name)
+        convert_json_to_csv(json_data, "data/" + output_csv, title_name)
 
         # Send the file for download
-        return send_file(output_csv, as_attachment=True)
+       #return send_file(output_csv, as_attachment=True)
+        return send_file("data/" + output_csv, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=187)
-EOF
-
-# Step 5: Install necessary Python packages
-$PYTHON_PATH -m pip install flask pandas
-
-# Step 6: Create the systemd service file for the server
-cat << EOF > /etc/systemd/system/highlight_converter_187.service
-[Unit]
-Description=Highlight Converter Flask Service
-After=network.target
-
-[Service]
-User=root
-WorkingDirectory=/data/highlight_converter_187
-ExecStart=$PYTHON_PATH /data/highlight_converter_187/highlight_conversion_service.py
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Step 7: Reload systemctl, enable and start the service
-systemctl daemon-reload
-systemctl enable highlight_converter_187
-systemctl start highlight_converter_187
-
-# Step 8: Check the status of the service
-systemctl status highlight_converter_187 --no-pager
-
-echo "Flask server setup and started successfully!"
-
