@@ -18,7 +18,7 @@ version: '3'
 services:
   highlight_conversion_service:
     image: oklove/highlight_conversion_service
-    container_name: calib
+    container_name:calib_highlight_service
     ports:
       - "187:187"
     volumes:
@@ -36,7 +36,7 @@ echo "Starting the Docker container with Docker Compose..."
 docker-compose up -d
 
 # Check if the container is running
-CONTAINER_NAME="highlight_conversion_service_container"
+CONTAINER_NAME="calib_highlight_service"
 RUNNING=$(docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" -q)
 
 sleep 3;
