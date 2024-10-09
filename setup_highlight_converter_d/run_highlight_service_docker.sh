@@ -18,7 +18,7 @@ version: '3'
 services:
   highlight_conversion_service:
     image: oklove/highlight_conversion_service
-    container_name:calib_highlight_service
+    container_name: calib_highlight_service
     ports:
       - "187:187"
     volumes:
@@ -39,7 +39,7 @@ docker-compose up -d
 CONTAINER_NAME="calib_highlight_service"
 RUNNING=$(docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" -q)
 
-sleep 3;
+sleep 3
 if [ -n "$RUNNING" ]; then
   echo "Container '$CONTAINER_NAME' is running successfully."
 else
