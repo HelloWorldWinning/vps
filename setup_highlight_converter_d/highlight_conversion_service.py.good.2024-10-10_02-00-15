@@ -27,11 +27,10 @@ def convert_json_to_csv(json_data, output_path, title_name):
             "Author": "",
             "URL": "",  # Leave URL empty
             "Note": annotation.get("notes", ""),
-            "Location": "",
+            "Location": location,
             "Date": formatted_date
         })
 
-       ##   "Location": location,
     # Create a DataFrame and save it as CSV with the updated structure
     df_final_update_empty_url = pd.DataFrame(csv_data_final_update_empty_url)
     df_final_update_empty_url = df_final_update_empty_url[['Highlight', 'Title', 'Author', 'URL', 'Note', 'Location', 'Date']]
