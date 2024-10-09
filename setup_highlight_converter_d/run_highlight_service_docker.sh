@@ -39,6 +39,7 @@ docker-compose up -d
 CONTAINER_NAME="highlight_conversion_service_container"
 RUNNING=$(docker ps --filter "name=$CONTAINER_NAME" --filter "status=running" -q)
 
+sleep 3;
 if [ -n "$RUNNING" ]; then
   echo "Container '$CONTAINER_NAME' is running successfully."
 else
