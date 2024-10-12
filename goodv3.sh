@@ -642,7 +642,7 @@ ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
 ${Red_font_prefix}100${Font_color_suffix} ${Red_font_prefix}jupyter: jupyter26666.sh${Font_color_suffix}
 ${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
-${Red_font_prefix}1010${Font_color_suffix} ${Red_font_prefix}typecho_docker_setup.sh${Font_color_suffix}
+${Red_font_prefix}1010${Font_color_suffix} typecho_docker_setup.sh
 ${Red_font_prefix}1011${Font_color_suffix} ${Red_font_prefix}calibre_linux_setup_ebook_online_reader.sh${Font_color_suffix}
 ${Red_font_prefix}1012${Font_color_suffix} docker : run_highlight_service_docker.sh
 ${Red_font_prefix}10122${Font_color_suffix} setup_highlight_converter.sh
