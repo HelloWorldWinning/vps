@@ -82,15 +82,22 @@ ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth
 StandardOutput=append:/var/log/calibre-server.log
 StandardError=append:/var/log/calibre-server.error.log
 
-Restart=on-failure
-RestartSec=10
-StartLimitInterval=200
-StartLimitBurst=5
+##Restart=on-failure
+##RestartSec=10
+##StartLimitInterval=200
+##StartLimitBurst=5
+
+Restart=always  # Ensure service always restarts
+RestartSec=30   # Wait 20 seconds between restarts
+StartLimitInterval=400  # Set a longer window to avoid hitting start limit
+StartLimitBurst=10      # Allow 10 restarts within the window
 
 [Install]
 WantedBy=multi-user.target
 
 EOL
+
+
 echo "Created systemd service file at '$SERVICE_FILE'."
 
 # Reload systemd daemon to recognize the new service
