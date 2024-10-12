@@ -34,7 +34,6 @@ if ($this->is('index')) {
 }
 ?>
         </title>
-    <link rel="shortcut icon" href="<?php $this->options->themeUrl('favicon.ico'); ?>" type="image/x-icon" />
 
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" href="<?php 
