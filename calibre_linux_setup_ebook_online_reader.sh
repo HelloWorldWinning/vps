@@ -92,6 +92,18 @@ RestartSec=30   # Wait 20 seconds between restarts
 StartLimitInterval=400  # Set a longer window to avoid hitting start limit
 StartLimitBurst=10      # Allow 10 restarts within the window
 
+
+
+# Logging for stop events
+ExecStopPost=/bin/sh -c 'echo "Service stopped with exit code $EXIT_CODE" >> /var/log/calibre-stop.log'
+
+# Runtime directory and limits
+RuntimeDirectory=calibre-server
+RuntimeDirectoryMode=0777
+RuntimeMaxSec=43200
+RuntimeDirectoryPreserve=yes
+
+
 [Install]
 WantedBy=multi-user.target
 
