@@ -642,6 +642,7 @@ ${Red_font_prefix}98${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
 ${Red_font_prefix}100${Font_color_suffix} ${Red_font_prefix}jupyter: jupyter26666.sh${Font_color_suffix}
 ${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
+${Red_font_prefix}1010${Font_color_suffix} ${Red_font_prefix}typecho_docker_setup.sh${Font_color_suffix}
 ${Red_font_prefix}1011${Font_color_suffix} ${Red_font_prefix}calibre_linux_setup_ebook_online_reader.sh${Font_color_suffix}
 ${Red_font_prefix}1012${Font_color_suffix} docker : run_highlight_service_docker.sh
 ${Red_font_prefix}10122${Font_color_suffix} setup_highlight_converter.sh
@@ -885,6 +886,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
 		1011) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader.sh )  ;;
+		1010) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh  )  ;;
 		10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter.sh )  ;;
 		1012) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter_d/run_highlight_service_docker.sh )  ;;
 		101) 
