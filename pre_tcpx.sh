@@ -184,4 +184,13 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 
 
+cat <<"EOF">> /etc/sysctl.conf
+net.core.rmem_max=26214400
+net.core.wmem_max=26214400
+net.ipv4.tcp_rmem=4096 87380 26214400
+net.ipv4.tcp_wmem=4096 65536 26214400
+EOF
+
+
+
 reboot
