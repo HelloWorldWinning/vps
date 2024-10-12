@@ -8,9 +8,8 @@
  * @link https://lhcy.org
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-$this->need('header.php');
-?>
-
+ $this->need('header.php');
+ ?>
 <section>
     <div class="container clearfix">
         <div class="main-body">
@@ -24,5 +23,4 @@ $this->need('header.php');
         </div>
     </div>
 </section>
-
 <?php $this->need('footer.php'); ?>
