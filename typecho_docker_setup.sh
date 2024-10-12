@@ -1,5 +1,6 @@
 #!/bin/bash
 
+##### https://bitbucket.org/imlinhai/typecho-theme-simple/src/main/
 # Set up error handling
 set -e
 
