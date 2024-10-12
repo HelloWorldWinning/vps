@@ -77,19 +77,11 @@ Type=simple
 User=root
 Group=root
 Environment="PATH=/opt/calibre/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth
-
-StandardOutput=append:/var/log/calibre-server.log
-StandardError=append:/var/log/calibre-server.error.log
-
-Restart=always
-RestartSec=10
-StartLimitInterval=200
-StartLimitBurst=5
+ExecStart=/usr/bin/calibre-server $LIBRARY_DIR --port=188 --enable-auth
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-
 EOL
 echo "Created systemd service file at '$SERVICE_FILE'."
 
