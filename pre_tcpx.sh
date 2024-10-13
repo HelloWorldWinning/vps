@@ -191,6 +191,11 @@ net.ipv4.tcp_rmem=4096 87380 26214400
 net.ipv4.tcp_wmem=4096 65536 26214400
 EOF
 
+cat <<"EOF">> ~/.bashrc
+alias h='htop'
+alias hc='htop --sort-key PERCENT_CPU'
+alias hm='htop --sort-key PERCENT_MEM'
+EOF
 
 
 reboot
