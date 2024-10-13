@@ -6,21 +6,6 @@
   src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
 }
 
-@font-face {
-  font-family: 'PingFang SC';
-  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Light_300.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'PingFang SC';
-  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Regular_400.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-
 .source-code-pro-body {
   font-family: "Source Code Pro", monospace !important;
   font-weight: 400;
