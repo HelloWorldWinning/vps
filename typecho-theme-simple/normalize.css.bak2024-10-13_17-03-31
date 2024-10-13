@@ -364,9 +364,6 @@ template {
 [hidden] {
   display: none;
 }
-
-
-/*
 #navbar-page-2 {
     display: none;
 }
