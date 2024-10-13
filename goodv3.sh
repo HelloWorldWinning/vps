@@ -670,13 +670,14 @@ ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
 nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9 
-
-
+Receiver: nc -l -p 9 > bar.zip
+Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 
 
 `echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[0;38;2;252;33;137m$(pwd)\e[0m     \e[0;38;2;252;33;137m$(/usr/bin/ls |wc -l)\e[0m        "
   `   $today_hit $all_hit
 \r\n    \e[1;38;2;252;33;137m🧄\e[0m 
+\n
 ")"  choose
 	case $choose in
 		222) eval $tcpx  ;;
