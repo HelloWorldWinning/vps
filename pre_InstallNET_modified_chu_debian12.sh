@@ -1,4 +1,7 @@
 #!/usr/bin/bash
+apt update
+apt-get update
+apt-get install -y xz-utils openssl gawk file
 
 #dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322"'
 dd_debian12='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322"'
