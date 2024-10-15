@@ -198,4 +198,10 @@ alias hm='htop --sort-key PERCENT_MEM'
 EOF
 
 
+cat << "EOF" > /etc/resolv.conf
+nameserver 8.8.4.4
+nameserver 1.1.1.1
+EOF
+
+
 reboot
