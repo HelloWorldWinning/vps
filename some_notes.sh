@@ -388,9 +388,36 @@ wget -r -np -nH --cut-dirs=3 -R "index.html*" http://backup.jingyi.today/pdf_d/t
 
 
 ================================================================
+# docker volume backup  and restore
+
+# On VPS 1
+# Create a backup of the volume
+docker run --rm -v calibre_services_library_vol:/volume -v $(pwd):/backup ubuntu tar cvf /backup/calibre_volume_backup.tar -C /volume .
+
+# Verify the backup file was created
+ls -lh calibre_volume_backup.tar
+
+# Optional: Check the contents of the backup (this doesn't extract the files)
+tar tvf calibre_volume_backup.tar | head -n 10
+
+############################################################
+
+# On VPS 2
+# Remove the existing volume
+docker volume rm calibre_services_library_vol
+
+# Create a new volume
+docker volume create calibre_services_library_vol
+
+# Restore the backup to the new volume
+docker run --rm -v calibre_services_library_vol:/volume -v $(pwd):/backup ubuntu bash -c "tar xvf /backup/calibre_volume_backup.tar -C /volume"
+
+# Verify the restored data
+docker run --rm -v calibre_services_library_vol:/volume ubuntu ls -la /volume
+
+# Check the volume size
+docker run --rm -v calibre_services_library_vol:/volume ubuntu du -sh /volume
 
 
 
-
-
-
+================================================================
