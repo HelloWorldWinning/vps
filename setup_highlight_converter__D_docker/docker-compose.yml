@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  highlight-conversion-service:
+    image: oklove/highlight-conversion-service:latest
+    ports:
+      - "187:187"
+    volumes:
+      - ./downloads:/app/downloads
+    working_dir: /app
+    restart: unless-stopped
