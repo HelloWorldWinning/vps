@@ -36,7 +36,7 @@ services:
       - PHP_TZ=Asia/Shanghai
       - PHP_MAX_EXECUTION_TIME=600
     ports:
-      - "90:80"
+      - "88:80"
     healthcheck:
       test: ["CMD", "curl", "-INfs", "http://localhost/", "||", "exit", "1"]
       interval: 6s
