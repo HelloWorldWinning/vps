@@ -71,12 +71,29 @@ echo "Typecho container started successfully."
 #mv /tmp/vps/typecho-theme-simple /data/typecho_d/data/themes/
 #rm -rf /tmp/vps
 
-# Step 2: Clone the repository
+# Step 2: Clone the repository and move only the theme folder
 echo "Cloning Typecho theme..."
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/HelloWorldWinning/vps.git "$TMP_DIR/vps"
+
+# Check if the theme directory already exists and remove it
+if [ -d "/data/typecho_d/data/themes/typecho-theme-simple" ]; then
+    echo "The theme 'typecho-theme-simple' already exists. Removing it..."
+    rm -rf "/data/typecho_d/data/themes/typecho-theme-simple"
+fi
+
+# Move only the theme folder
 mv "$TMP_DIR/vps/typecho-theme-simple" /data/typecho_d/data/themes/
+
+# Clean up
 rm -rf "$TMP_DIR"
+
+echo "Typecho theme 'typecho-theme-simple' has been updated successfully."
+
+
+
+
+
 
 
 
