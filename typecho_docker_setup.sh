@@ -65,11 +65,19 @@ echo "Typecho container started successfully."
 #git clone https://bitbucket.org/imlinhai/typecho-theme-simple /data/typecho_d/data/themes/typecho-theme-simple
 
 
+## Step 2: Clone the repository
+#echo "Cloning Typecho theme..."
+#git clone https://github.com/HelloWorldWinning/vps.git /tmp/vps
+#mv /tmp/vps/typecho-theme-simple /data/typecho_d/data/themes/
+#rm -rf /tmp/vps
+
 # Step 2: Clone the repository
 echo "Cloning Typecho theme..."
-git clone https://github.com/HelloWorldWinning/vps.git /tmp/vps
-mv /tmp/vps/typecho-theme-simple /data/typecho_d/data/themes/
-rm -rf /tmp/vps
+TMP_DIR=$(mktemp -d)
+git clone https://github.com/HelloWorldWinning/vps.git "$TMP_DIR/vps"
+mv "$TMP_DIR/vps/typecho-theme-simple" /data/typecho_d/data/themes/
+rm -rf "$TMP_DIR"
+
 
 
 # Check Typecho container status
