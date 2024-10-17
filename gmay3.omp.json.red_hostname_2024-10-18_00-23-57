@@ -6,17 +6,6 @@
       "segments": [
         {
           "background": "transparent",
-          "foreground": "#ffdb58",
-          "powerline_symbol": "",
-          "properties": {
-            "time_format": "Mon 2-1-2006 "
-          },
-          "style": "powerline",
-          "template":"  <b>{{ printf \"%*s%s%*s\" (div (sub 7 (len .HostName)) 2) \"\" .HostName (sub (sub 7 (len .HostName)) (div (sub 7 (len .HostName)) 2)) \"\" }}</b>", 
-          "type": "path"
-        },
-        {
-          "background": "transparent",
           "foreground": "#c42570",
           "powerline_symbol": "",
           "properties": {
@@ -24,7 +13,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "$(pwd)    $(ls |wc -l)    <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
+          "template": "  <b>{{ printf \"%*s%s%*s\" (div (sub 7 (len .HostName)) 2) \"\" .HostName (sub (sub 7 (len .HostName)) (div (sub 7 (len .HostName)) 2)) \"\" }}</b>$(pwd)    $(ls |wc -l)    <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
           "type": "path",
           "font-weight": "bold"
         },
