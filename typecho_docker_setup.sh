@@ -91,8 +91,23 @@ rm -rf "$TMP_DIR"
 echo "Typecho theme 'typecho-theme-simple' has been updated successfully."
 
 
+# Step 3: Clone the comment2telegram plugin repository
+echo "Cloning Comment2Telegram plugin..."
+TMP_DIR=$(mktemp -d)
+git clone https://github.com/Adoream/typecho-plugin-comment2telegram.git "$TMP_DIR/comment2telegram"
 
+# Check if the plugin directory already exists and remove it
+if [ -d "/data/typecho_d/data/plugins/Comment2Telegram" ]; then
+    echo "The plugin 'Comment2Telegram' already exists. Removing it..."
+    rm -rf "/data/typecho_d/data/plugins/Comment2Telegram"
+fi
 
+# Move the plugin folder
+mv "$TMP_DIR/comment2telegram" /data/typecho_d/data/plugins/Comment2Telegram
+
+# Clean up
+rm -rf "$TMP_DIR"
+echo "Comment2Telegram plugin has been added successfully."
 
 
 
