@@ -1,3 +1,5 @@
+####  docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade  list-strategies
+
 ## docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade:develop_freqaitorch list-freqaimodels
 # https://www.freqtrade.io/en/stable/plotting/
 # --timerange TIMERANGE
@@ -12,9 +14,6 @@
 #     --config /freqtrade/user_data/config.json
 #     --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
 #     --strategy try12
-
-
-
 
 #     test-pairlist 
 #     list-freqaimodels 
