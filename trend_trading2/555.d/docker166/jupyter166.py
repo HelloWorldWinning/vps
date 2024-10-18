@@ -240,7 +240,7 @@ def python_files(path):
           # Adding custom CSS for "Andale Mono" font
            #custom_css = 'body *, pre { font-family: "Source Code Pro", monospace  !important ; }'
             custom_css = '''html *, pre { font-family: "Source Code Pro", monospace  !important ; }
-                           .linenodiv { color: #aaa; }'''
+                           .linenodiv { color: #bbb !important; }'''
             # Setting color for class=n
             # font
             # custom_css += '.highlight .n { color: #57E857; }'
