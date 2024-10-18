@@ -111,6 +111,21 @@ echo "Comment2Telegram plugin has been added successfully."
 
 
 
+git clone https://github.com/SocialSisterYi/Typecho-Plugin-CommentShowIp  /data/typecho_d/data/plugins/CommentShowIp
+
+
+### git clone https://github.com/vndroid/RobotsLogs /data/typecho_d/data/plugins/RobotsLogs
+
+### VisitorLogger
+### https://www.maisblog.cn/index.php/archives/153/comment-page-4#comments
+### https://github.com/PengMai1998/VisitorLogger
+
+
+ 
+
+
+
+
 
 # Check Typecho container status
 echo "Checking Typecho container status..."
