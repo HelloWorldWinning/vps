@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Set the desired folder name
-folder_name="upload_service_docker_compose_folder"
+#folder_name="upload_service_docker_compose_folder"
+folder_name="/data/upload_service_docker_compose_folder"
 
 # Check if the folder already exists
 if [ -d "$folder_name" ]; then
