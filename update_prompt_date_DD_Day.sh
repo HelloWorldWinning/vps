@@ -1,10 +1,29 @@
 #!/bin/bash
 
+#  # 
+#  # hexagrams=(䷀ ䷁ ䷂ ䷃ ䷄ ䷅ ䷆ ䷇ ䷈ ䷉ ䷊ ䷋ ䷌ ䷍ ䷎ ䷏ ䷐ ䷑ ䷒ ䷓ ䷔ ䷕ ䷖ ䷗ ䷘ ䷙ ䷚ ䷛ ䷜ ䷝ ䷞ ䷟ ䷠ ䷡ ䷢ ䷣ ䷤ ䷥ ䷦ ䷧ ䷨ ䷩ ䷪ ䷫ ䷬ ䷭ ䷮ ䷯ ䷰ ䷱ ䷲ ䷳ ䷴ ䷵ ䷶ ䷷ ䷸ ䷹ ䷺ ䷻ ䷼ ䷽ ䷾ ䷿)
+#  # 
+#  # random_index=$((RANDOM % 64))
+#  # second_part="${hexagrams[random_index]} "
+
+
+
+#echo "second_part=\"$second_part\""
 # First part: Current date in DD-Day format
 first_part=$(date +"%d-%a")
 
+# Array of symbols
+symbols=(" ☯" " ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
+# Randomly pick one
+second_part="${symbols[$RANDOM % ${#symbols[@]}]}"
+
+# Output the randomly selected symbol with the format
+#echo "$second_part"
+
+
 # Second part: Mountain emoji
-second_part="⛰️ " 
+#second_part="䷀ " 
+#second_part="⛰️ " 
 #second_part="🔥"
 
 # Combine the parts
