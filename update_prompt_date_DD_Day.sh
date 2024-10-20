@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# First part: Current date in DD-Day format
+first_part=$(date +"%d-%a")
+
+# Second part: Mountain emoji
+second_part="⛰️ "
+#second_part="🔥"
+
+# Combine the parts
+combined_template="$first_part$second_part"
+
+# Path to your Oh My Posh configuration file
+config_file="/root/themes/gmay3.omp.json"
+
+# Use jq to update the template in the JSON structure
+jq --arg new_template "$combined_template" '
+  .blocks[1].segments[0].template = $new_template
+' "$config_file" > "${config_file}.tmp" && mv "${config_file}.tmp" "$config_file"
+
+echo "Updated template to '$combined_template' in $config_file"

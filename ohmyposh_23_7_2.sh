@@ -1,7 +1,34 @@
 #!/usr/bin/bash
 #
 
-wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
+
+#!/bin/bash
+
+# Path to the update script
+UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
+
+# The crontab entry we want to add
+CRON_ENTRY="0 */2 * * * $UPDATE_SCRIPT"
+
+# Check if the crontab entry already exists
+if crontab -l | grep -Fq "$UPDATE_SCRIPT"
+then
+    echo "Crontab entry already exists. No changes made."
+else
+    # If it doesn't exist, add it
+    (crontab -l 2>/dev/null; echo "$CRON_ENTRY") | crontab -
+    echo "Crontab entry added successfully."
+fi
+
+# Display the current crontab
+echo "Current crontab entries:"
+crontab -l
+
+
+
+
+wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash
 
