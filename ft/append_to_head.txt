@@ -1,3 +1,4 @@
+##    docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade:stable      list-strategies  
 ####  docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade  list-strategies
 
 ## docker run --rm -v $(pwd)/user_data:/freqtrade/user_data freqtradeorg/freqtrade:develop_freqaitorch list-freqaimodels
