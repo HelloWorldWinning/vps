@@ -12,7 +12,7 @@
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "  <b>{{ printf \"%*s%s%*s\" (div (sub 12 (len .HostName)) 2) \"\" .HostName (sub (sub 12 (len .HostName)) (div (sub 12 (len .HostName)) 2)) \"\" }}</b>",
+          "template":"  <b>{{ printf \"%*s%s%*s\" (div (sub 7 (len .HostName)) 2) \"\" .HostName (sub (sub 7 (len .HostName)) (div (sub 7 (len .HostName)) 2)) \"\" }}</b>", 
           "type": "path"
         },
         {
@@ -28,11 +28,11 @@
           "type": "path",
           "font-weight": "bold"
         },
-        {
+	  {
           "background": "#034c99",
           "foreground": "#cccccc",
-          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env $python_version\"; fi)",
-          "type": "text",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env $python_version\"; fi)",         
+	  "type": "text",
           "powerline_symbol": "",
           "style": "powerline",
           "font-weight": "bold"
@@ -92,7 +92,7 @@
         {
           "foreground": "#f1184c",
           "style": "plain",
-          "template": "    20-Sun ⛰️ ",
+          "template": "      ⛰️ ",
           "type": "text"
         }
       ],
