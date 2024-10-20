@@ -9,7 +9,8 @@ UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
 chmod +x "$UPDATE_SCRIPT"
 
 # The crontab entry we want to add
-CRON_ENTRY="0 */1 * * * $UPDATE_SCRIPT"
+#CRON_ENTRY="0 */1 * * * $UPDATE_SCRIPT"
+CRON_ENTRY="*/30 * * * * $UPDATE_SCRIPT"
 
 # Check if the crontab entry already exists
 if crontab -l | grep -Fq "$UPDATE_SCRIPT"
