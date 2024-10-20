@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#
+apt install -y jq
 
 wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
 
