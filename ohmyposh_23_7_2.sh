@@ -2,14 +2,14 @@
 #
 
 wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
-
+bash  ~/themes/update_prompt_date_DD_Day.sh
 #!/bin/bash
 
 # Path to the update script
 UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
 
 # The crontab entry we want to add
-CRON_ENTRY="0 */2 * * * $UPDATE_SCRIPT"
+CRON_ENTRY="0 */1 * * * $UPDATE_SCRIPT"
 
 # Check if the crontab entry already exists
 if crontab -l | grep -Fq "$UPDATE_SCRIPT"
