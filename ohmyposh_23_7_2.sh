@@ -293,3 +293,4 @@ set_install_directory
 validate_install_directory
 install
 
+bash    ~/themes/update_prompt_date_DD_Day.sh
