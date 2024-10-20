@@ -2,8 +2,6 @@
 #
 
 wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
-bash  ~/themes/update_prompt_date_DD_Day.sh
-#!/bin/bash
 
 # Path to the update script
 UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
@@ -31,6 +29,8 @@ crontab -l
 
 
 wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+
+bash  ~/themes/update_prompt_date_DD_Day.sh
 
 curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash
 
