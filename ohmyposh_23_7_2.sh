@@ -7,6 +7,8 @@ bash  ~/themes/update_prompt_date_DD_Day.sh
 
 # Path to the update script
 UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
+# Set execute permissions for the update script
+chmod +x "$UPDATE_SCRIPT"
 
 # The crontab entry we want to add
 CRON_ENTRY="0 */1 * * * $UPDATE_SCRIPT"
