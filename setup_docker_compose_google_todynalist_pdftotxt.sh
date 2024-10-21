@@ -27,6 +27,7 @@ wget -4 "$GITHUB_URL" -O docker-compose.yml
 if [ $? -eq 0 ]; then
     echo "Docker-compose file downloaded successfully"
     
+    docker-compose  pull
     # Run docker-compose
     echo "Running docker-compose up -d"
     docker-compose up -d
