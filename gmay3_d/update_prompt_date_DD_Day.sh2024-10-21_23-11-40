@@ -10,8 +10,7 @@
 
 #echo "second_part=\"$second_part\""
 # First part: Current date in DD-Day format
-#first_part=$(date +"%d-%a")
-first_part=$(date +"%I:%M %d-%a")
+first_part=$(date +"%d-%a")
 
 # Array of symbols
 symbols=(" ☯" " ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
@@ -28,8 +27,7 @@ second_part="${symbols[$RANDOM % ${#symbols[@]}]}"
 #second_part="🔥"
 
 # Combine the parts
-#combined_template="    $first_part $second_part"
-combined_template="$first_part$second_part"
+combined_template="    $first_part $second_part"
 
 # Path to your Oh My Posh configuration file
 config_file="/root/themes/gmay3.omp.json"

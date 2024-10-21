@@ -12,7 +12,7 @@
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "  <b>{{ printf \"%*s%s%*s\" (div (sub 13 (len .HostName)) 2) \"\" .HostName (sub (sub 13 (len .HostName)) (div (sub 13 (len .HostName)) 2)) \"\" }}</b>",
+          "template": "  <b>{{ printf \"%*s%s%*s\" (div (sub 12 (len .HostName)) 2) \"\" .HostName (sub (sub 12 (len .HostName)) (div (sub 12 (len .HostName)) 2)) \"\" }}</b>",
           "type": "path"
         },
         {
@@ -92,7 +92,7 @@
         {
           "foreground": "#31c43b",
           "style": "plain",
-          "template": "11:09 21-Mon ☳",
+          "template": "    20-Sun ⛰️ ",
           "type": "text"
         }
       ],
