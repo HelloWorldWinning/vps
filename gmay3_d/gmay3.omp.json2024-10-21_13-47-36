@@ -90,7 +90,7 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#31c43b",
+          "foreground": "#2f6a6a",
           "style": "plain",
           "template": "    20-Sun ⛰️ ",
           "type": "text"
