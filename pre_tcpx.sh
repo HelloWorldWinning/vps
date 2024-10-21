@@ -195,6 +195,7 @@ cat <<"EOF">> ~/.bashrc
 alias h='htop'
 alias hc='htop --sort-key PERCENT_CPU'
 alias hm='htop --sort-key PERCENT_MEM'
+alias bt='btop'
 EOF
 
 
