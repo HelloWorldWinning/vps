@@ -205,4 +205,13 @@ nameserver 1.1.1.1
 EOF
 
 
+# Set XDG_CACHE_HOME for the current session
+export XDG_CACHE_HOME="/root/.cache/oh-my-posh"
+mkdir -p "$XDG_CACHE_HOME"
+echo 'export XDG_CACHE_HOME="/root/.cache/oh-my-posh"' >>  $HOME/.bashrc
+echo "XDG_CACHE_HOME has been set to $XDG_CACHE_HOME"
+
+
+
+
 reboot
