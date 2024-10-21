@@ -46,6 +46,7 @@ alias nf='neofetch'
 alias zz='find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | sed "s/.\///"'
 alias ft='freqtrade'
 alias v='vim'
+alias V='vim'
 alias c='clear'
 
 
