@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tika-server:
+    image: oklove/tika-server
+    container_name: tika-server_instance
+    restart: unless-stopped
+    network_mode: "host"
+    # Remove 'ports' because they're incompatible with 'network_mode: "host"'
+
+  web:
+    build: .
+    image: oklove/google_todynalist_pdftotxt:latest
+    container_name: google_todynalist_pdftotxt_instance
+    environment:
+      - FLASK_ENV=production
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - tika-server
+    # Remove 'ports' because they're incompatible with 'network_mode: "host"'
+
