@@ -1,5 +1,6 @@
 
 types {
+    text/service     service;
     text/php                             php;
     text/html                             html htm shtml;
     text/css                              css;
