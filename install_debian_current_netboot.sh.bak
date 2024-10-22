@@ -94,37 +94,7 @@ fi
 
 echo "IP Address: $ipAddr"
 #echo "Subnet Prefix (Mask): $ipMask"
-
-# Function to convert CIDR to subnet mask
-cidr_to_netmask() {
-  local cidr=$1
-  local mask=""
-  local full_octets=$((cidr / 8))
-  local remaining_bits=$((cidr % 8))
-
-  for ((i=0; i<4; i++)); do
-    if [ $i -lt $full_octets ]; then
-      mask+="255"
-    elif [ $i -eq $full_octets ]; then
-      mask+=$((256 - (2 ** (8 - remaining_bits))))
-    else
-      mask+="0"
-    fi
-    if [ $i -lt 3 ]; then
-      mask+="."
-    fi
-  done
-
-  echo "$mask"
-}
-
-# Convert CIDR to dotted-decimal
-subnetMask=$(cidr_to_netmask $ipMask)
-
-echo "Subnet Prefix (Mask):   $subnetMask"
-
-
-
+echo "Subnet Prefix (Mask):   $(printf %d.%d.%d.%d $((256 - 2**$((32-${ipMask%/*}))/256)) $((256 - 2**$((32-${ipMask%/*}))%256)) $((256 - 2**$((32-${ipMask%/*}))%256%256)) $((256 - 2**$((32-${ipMask%/*}))%256%256%256)))"
 
 echo "Gateway: $ipGate"
 # Add some additional info below
