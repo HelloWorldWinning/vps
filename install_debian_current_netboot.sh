@@ -121,7 +121,7 @@ cidr_to_netmask() {
 # Convert CIDR to dotted-decimal
 subnetMask=$(cidr_to_netmask $ipMask)
 
-echo "Subnet Prefix (Mask):   $subnetMask"
+echo "Subnet Prefix (Mask): $subnetMask"
 
 
 
