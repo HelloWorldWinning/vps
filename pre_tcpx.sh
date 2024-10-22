@@ -213,6 +213,22 @@ echo "XDG_CACHE_HOME has been set to $XDG_CACHE_HOME"
 
 ###########  wg 
 
+net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
+
+wgcf_card=$(ip addr | grep "wgcf:" | awk '{print $2}' | cut -d ":" -f 1)
+warp_card=$(ip addr | grep "warp:" | awk '{print $2}' | cut -d ":" -f 1)
+
+if [ "$wgcf_card" == "wgcf" ]; then
+  wg_card="wgcf"
+elif [ "$warp_card" == "warp" ]; then
+  wg_card="warp"
+#elif [ -z "$wgcf_card" ] && [ -z "$warp_card" ]; then
+else
+  wg_card=$net_card
+fi
+
+
+
 fix_wg_ipv6_RTNETLINK(){
 cat >>/etc/sysctl.conf<<EOF
 net.ipv6.conf.all.disable_ipv6 = 0
