@@ -74,7 +74,7 @@ fi
 chmod a+x InstallNET.sh
 
 # Step 4: Run InstallNET.sh with the collected parameters
-bash InstallNET.sh -debian 12 -password '1' -port 54322 --ip-addr "$ipAddr" --ip-gate "$ipGate" --ip-mask "$ipMask"
+bash InstallNET.sh -debian 12 -password '1' -port 54322 --ip-addr "$ipAddr" --ip-gate "$ipGate" --ip-mask "$ipMask" -swap "2048"
 
 
 echo "sleep 5 ;  to reboot,"
