@@ -93,7 +93,9 @@ if [ -z "$ipGate" ]; then
 fi
 
 echo "IP Address: $ipAddr"
-echo "Subnet Prefix (Mask): $ipMask"
+#echo "Subnet Prefix (Mask): $ipMask"
+echo "Subnet Prefix (Mask):   $(printf %d.%d.%d.%d $((256 - 2**$((32-${ipMask%/*}))/256)) $((256 - 2**$((32-${ipMask%/*}))%256)) $((256 - 2**$((32-${ipMask%/*}))%256%256)) $((256 - 2**$((32-${ipMask%/*}))%256%256%256)))"
+
 echo "Gateway: $ipGate"
 # Add some additional info below
 echo "Press any key to continue, or N/n to stop (Auto-continue in 6 seconds)..."
