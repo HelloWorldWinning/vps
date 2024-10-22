@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+#
+#
 apt update
 apt-get update
 apt-get install -y xz-utils openssl gawk file
@@ -58,7 +60,7 @@ function netmask() {
 
 
 echo -e  "重点关注mask 默认DD进行。其他情况手工输入内网ip:\n" 
-read DD_IP
+read -t 5 DD_IP
 if [[ -z "$DD_IP" ]]; then
     eval ${dd_debian12}
 else
