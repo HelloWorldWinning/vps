@@ -1,16 +1,49 @@
 #!/bin/bash
 
-# WARNING: This script will WIPE ALL DATA on this machine and install the current stable Debian OS!
+## WARNING: This script will WIPE ALL DATA on this machine and install the current stable Debian OS!
+#echo -e "WARNING: Running this script will erase ALL data on the machine and \ninstall the current stable Debian OS."
+#echo "Are you sure you want to continue? (Type 'YES' to proceed)"
+#
+## Read user input for confirmation
+#read -r user_input
+#
+#if [ "$user_input" != "YES" ]; then
+#    echo "Installation aborted. No changes were made."
+#    exit 1
+#fi
+
 echo -e "WARNING: Running this script will erase ALL data on the machine and \ninstall the current stable Debian OS."
-echo "Are you sure you want to continue? (Type 'YES' to proceed)"
 
-# Read user input for confirmation
+# Get hostname and align with fixed padding
+hostname=$(hostname)
+padding=15  # Fixed padding to align vertically
+
+# Display hostname
+#printf "\n%${padding}s\033[1;34m%s\033[0m" "" "$hostname"
+printf "\n%${padding}s\033[1;31m%s\033[0m" "" "$hostname"
+
+# Add a line below hostname
+printf "\n%${padding}s%s\n" "" "----------------------------------------"
+
+# Display prompt with same padding
+printf "%${padding}s%s\n" "" "Are you sure you want to continue?"
+
+# Create the formatted prompt with red background, white bold text
+printf "%${padding}s\033[1;41;37mDD %s\033[0m\n" "" "$hostname"
+
+# Read user input with same padding
+printf "%${padding}sInput: " "" 
 read -r user_input
-
-if [ "$user_input" != "YES" ]; then
+if [ "$user_input" != "DD $hostname" ]; then
     echo "Installation aborted. No changes were made."
     exit 1
 fi
+
+
+
+
+
+
 
 # Step 1: Get the latest Debian ISO URL (Adjusted to fetch the netboot files)
 DEBIAN_NETBOOT_URL="http://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz"
