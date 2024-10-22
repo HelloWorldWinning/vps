@@ -95,6 +95,33 @@ fi
 echo "IP Address: $ipAddr"
 echo "Subnet Prefix (Mask): $ipMask"
 echo "Gateway: $ipGate"
+# Add some additional info below
+echo "Press any key to continue, or N/n to stop (Auto-continue in 6 seconds)..."
+
+# Read user input with timeout of 6 seconds
+read -t 6 -n 1 input
+
+# Check if input is N or n to stop the script
+if [[ "$input" == "N" || "$input" == "n" ]]; then
+    echo "Stopping the script."
+    exit 0
+else
+    echo "Continuing..."
+fi
+
+# Continue the script
+echo "Additional operations can go here."
+
+
+
+
+
+
+
+
+
+
+
 
 # Step 3: Download InstallNET.sh
 wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh'
