@@ -81,9 +81,8 @@ ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth
 StandardOutput=append:/var/log/calibre-server.log
 StandardError=append:/var/log/calibre-server.error.log
 Restart=always
-RestartSec=20
-StartLimitIntervalSec=300
-StartLimitBurst=10
+RestartSec=30
+
 RuntimeDirectory=calibre-server
 RuntimeDirectoryMode=0755
 RuntimeDirectoryPreserve=yes
