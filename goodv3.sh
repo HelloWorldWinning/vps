@@ -755,7 +755,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		49)eval "$ss_rust";;
 		7)eval netstat_filter ;;
 		500)eval ps_filter ;;
-                t)read -p 'script to run': x && ${x};;
+                r)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
                 57)eval "$delete_user";;
                 58)eval "$hysteria";
