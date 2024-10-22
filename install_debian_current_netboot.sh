@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# WARNING: This script will WIPE ALL DATA on this machine and install the current stable Debian OS!
+echo -e "WARNING: Running this script will erase ALL data on the machine and \ninstall the current stable Debian OS."
+echo "Are you sure you want to continue? (Type 'YES' to proceed)"
+
+# Read user input for confirmation
+read -r user_input
+
+if [ "$user_input" != "YES" ]; then
+    echo "Installation aborted. No changes were made."
+    exit 1
+fi
+
 # Step 1: Get the latest Debian ISO URL (Adjusted to fetch the netboot files)
 DEBIAN_NETBOOT_URL="http://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz"
 
