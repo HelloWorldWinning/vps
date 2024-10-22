@@ -79,7 +79,39 @@ else
     echo "debian 12"
     # Example command using DD_IP, DD_GATE, and DD_MASK
     echo -e "IP: $DD_IP, \nGate: $DD_GATE, \nMask: $DD_MASK"
-    read -t 4 -n 1 -s -p "Press any key to continue immediately..."
+###    read -t 4 -n 1 -s -p "Press any key to continue immediately..."
+
+
+
+# Save current terminal settings
+old_stty=$(stty -g)
+
+# Set terminal to non-canonical mode to detect input immediately
+stty -icanon -echo
+
+# Print a more informative prompt
+echo -n "Press any key to continue immediately (timeout in 4 seconds)..."
+
+# Read with a timeout
+read -t 4 -n 1 key_input
+
+# Restore original terminal settings
+stty "$old_stty"
+
+# Check if key was pressed or timeout occurred
+if [ -z "$key_input" ]; then
+    echo ""  # This ensures a newline after the prompt
+    echo "No key pressed. Timeout occurred."
+else
+    echo ""  # This ensures a newline after the prompt
+    echo "Key pressed: $key_input"
+fi
+
+
+
+
+
+
 fi
 
 
