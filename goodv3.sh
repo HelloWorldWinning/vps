@@ -342,7 +342,7 @@ ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-R
 
 
 pre_InstallNET_modified_chu='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu.sh)'
-pre_InstallNET_modified_chu_debian12='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu_debian12.sh)'
+pre_InstallNET_modified_chu_debian12='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu_debian12.sh )'
 
 
 dd_debian11='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
