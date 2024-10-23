@@ -8,15 +8,15 @@ read port
 if [ -z "$port" ]; then
   port=26666
 fi
-#
 
-#conda install python jupyter    
-conda install  -y  jupyter
-conda install  -y   notebook==6.5.4
+# Install required packages
+conda install -y jupyter
+conda install -y notebook==6.5.4
 
 # Create a systemd service file for Jupyter Notebook with dynamic Conda environment activation and logging
 service_name="jupyter${port}"
 log_file="/var/log/${service_name}.log"
+
 # Capture the current Conda environment name
 conda_env_name=$(echo $CONDA_DEFAULT_ENV)
 
@@ -26,44 +26,31 @@ if [ -z "$conda_env_name" ]; then
     exit 1
 fi
 
-
-
-# Find the path to the Conda setup script and the Conda environment's bin directory
-#conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
-# Find the path to the Conda setup script and the Conda environment's bin directory
-conda_setup_script="$(conda info --base)/etc/profile.d/conda.sh"
-
-if [ "$conda_env_name" == "base" ]; then
-    conda_env_bin_dir="$(conda info --base)/bin"
-else
-    conda_env_bin_dir="$(conda info --base)/envs/$conda_env_name/bin"
-fi
-
+# Find the Conda base directory and setup script
 python_path=$(which python)
-
-# Check if the Python path contains 'miniconda3'
 if [[ $python_path == *miniconda3* ]]; then
-    # Set the path for Conda environment's bin directory to miniconda3
-    conda_env_bin_dir="/root/miniconda3/bin"
-    conda_setup_script="/root/miniconda3/etc/profile.d/conda.sh"
+    conda_base="/root/miniconda3"
 else
-    # Set the path for Conda environment's bin directory based on the current environment
-    if [ "$conda_env_name" == "base" ]; then
-        conda_env_bin_dir="/root/anaconda3/bin"
-    else
-        conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
-    fi
+    conda_base="/root/anaconda3"
 fi
-## Set the path for the Conda environment's bin directory
-#if [ "$conda_env_name" == "base" ]; then
-#    conda_env_bin_dir="/root/anaconda3/bin"
-#else
-#    conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
-#fi
-#
-# conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
+conda_setup_script="${conda_base}/etc/profile.d/conda.sh"
 
+# Determine the correct jupyter executable path within the active environment
+if [ "$conda_env_name" == "base" ]; then
+    jupyter_path="${conda_base}/bin/jupyter"
+    conda_env_bin_dir="${conda_base}/bin"
+else
+    jupyter_path="${conda_base}/envs/${conda_env_name}/bin/jupyter"
+    conda_env_bin_dir="${conda_base}/envs/${conda_env_name}/bin"
+fi
 
+# Verify jupyter executable exists
+if [ ! -f "$jupyter_path" ]; then
+    echo "Warning: Jupyter not found in environment path. Installing in current environment..."
+    conda install -y jupyter
+    # Update jupyter_path after installation
+    jupyter_path=$(which jupyter)
+fi
 
 # Create the systemd service file
 cat <<EOF | sudo tee /etc/systemd/system/${service_name}.service
@@ -72,9 +59,9 @@ Description=Jupyter Notebook
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter notebook --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/'
+ExecStart=/bin/bash -c 'source ${conda_setup_script}; conda activate ${conda_env_name}; ${jupyter_path} notebook --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/'
 User=root
-Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
+Environment="PATH=${conda_env_bin_dir}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
 StandardOutput=append:${log_file}
 StandardError=append:${log_file}
 
@@ -86,24 +73,18 @@ EOF
 sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
-
+# Install additional packages
 conda install -y -c conda-forge cchardet chardet 
-#jupyter26666.sh
-conda install  -y  -c conda-forge notebook==6.5.4
+conda install -y -c conda-forge notebook==6.5.4
 
 conda update -y nbconvert
-$conda_env_bin_dir/pip install --upgrade nbconvert
+${conda_env_bin_dir}/pip install --upgrade nbconvert
 
 jupyter notebook password
 
-
-
 pip install chardet
-conda update mistune
-pip install --upgrade nbconvert  jupyter  
-
-
-
+conda update -y mistune
+pip install --upgrade nbconvert jupyter
 
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
@@ -117,4 +98,3 @@ sudo systemctl start $service_name
 # Display the status of the service
 echo "Service status:"
 sudo systemctl status $service_name | head -n 20
-
