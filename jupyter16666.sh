@@ -12,6 +12,14 @@ fi
 # Install required packages
 conda install -y jupyter
 conda install -y notebook==6.5.4
+###Could not solve for environment specs                                                                                             
+###The following packages are incompatible                                                                                            
+###├─ notebook 6.5.4  is installable with the potential options                                                                       
+###│  ├─ notebook 6.5.4 would require                                                                                                 
+###│  │  └─ python >=3.10,<3.11.0a0 , which can be installed;                                                                         
+###│  ├─ notebook 6.5.4 would require                                                                                                 
+###│  │  └─ python >=3.11,<3.12.0a0 , which can be installed;   
+
 
 conda config --add channels defaults
 
