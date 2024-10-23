@@ -13,6 +13,8 @@ fi
 conda install -y jupyter
 conda install -y notebook==6.5.4
 
+conda config --add channels defaults
+
 # Create a systemd service file for Jupyter Notebook with dynamic Conda environment activation and logging
 service_name="jupyter${port}"
 log_file="/var/log/${service_name}.log"
