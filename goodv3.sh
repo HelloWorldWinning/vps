@@ -769,7 +769,7 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
                 59)eval "$superspeed_uxh | tee speeds.log";;		
                 60)eval "$ping_local";;		
                 61) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mini_conda.sh )  ;;
-                611)eval "$jobs_spiders" ;
+                611)eval "$jobs_spiders" ;;
 #	eval "$jupyter_notebook_remote_access" ;
 #	bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter26666.sh)  ;;
                 1111)
