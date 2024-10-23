@@ -29,15 +29,7 @@ fi
 
 
 # Find the path to the Conda setup script and the Conda environment's bin directory
-#conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
-# Find the path to the Conda setup script and the Conda environment's bin directory
-conda_setup_script="$(conda info --base)/etc/profile.d/conda.sh"
-
-if [ "$conda_env_name" == "base" ]; then
-    conda_env_bin_dir="$(conda info --base)/bin"
-else
-    conda_env_bin_dir="$(conda info --base)/envs/$conda_env_name/bin"
-fi
+conda_setup_script="/root/anaconda3/etc/profile.d/conda.sh"
 
 python_path=$(which python)
 
