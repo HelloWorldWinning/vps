@@ -92,7 +92,7 @@ if [ -z "$ipGate" ]; then
     exit 1
 fi
 
-echo "IP Address: $ipAddr"
+#echo "IP Address: $ipAddr"
 #echo "Subnet Prefix (Mask): $ipMask"
 
 # Function to convert CIDR to subnet mask
@@ -121,14 +121,21 @@ cidr_to_netmask() {
 # Convert CIDR to dotted-decimal
 subnetMask=$(cidr_to_netmask $ipMask)
 
-echo "Subnet Prefix (Mask): $subnetMask"
+#echo "Subnet Prefix (Mask): $subnetMask"
 
 
 
 
-echo "Gateway: $ipGate"
+#echo "Gateway: $ipGate"
 # Add some additional info below
-echo "Press any key to continue, or N/n to stop (Auto-continue in 6 seconds)..."
+
+
+
+printf "%-21s %s\n" "IP Address:" "$ipAddr"
+printf "%-21s %s\n" "Gateway:" "$ipGate"
+printf "%-21s %s\n" "Subnet Prefix (Mask):" "$subnetMask"
+
+echo "Press any key to continue, or N|n to stop (Auto-continue in 6 seconds)..."
 
 # Read user input with timeout of 6 seconds
 read -t 6 -n 1 input
