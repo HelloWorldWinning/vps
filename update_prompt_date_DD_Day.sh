@@ -1,7 +1,8 @@
 #!/bin/bash
 
 first_part=$(date +"%I:%M %d-%a")
-symbols=(" ☯" " ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
+#symbols=(" ☯" " ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
+symbols=(" ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
 config_file="/root/themes/gmay3.omp.json"
 symbol_state_file="/tmp/current_symbol.txt"
 
