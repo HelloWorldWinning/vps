@@ -10,6 +10,7 @@ if [ -z "$port" ]; then
 fi
 
 # Install required packages
+conda config --add channels defaults
 conda install -y jupyter
 conda install -y notebook==6.5.4
 ###Could not solve for environment specs                                                                                             
