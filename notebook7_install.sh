@@ -81,7 +81,6 @@ conda install -y cchardet chardet
 conda update -y nbconvert
 $conda_env_bin_dir/pip install --upgrade nbconvert
 
-#jupyter26666.sh
 conda install  -y notebook
 conda update -y notebook
 
