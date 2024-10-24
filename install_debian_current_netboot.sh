@@ -164,7 +164,7 @@ echo "Additional operations can go here."
 
 # Step 3: Download InstallNET.sh
 #####wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh'
-wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh'
+wget --no-check-certificate -qO InstallNET.sh  'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_leitbogioro_Tools_Linux_reinstall_InstallNET.sh'
 
 if [ ! -f InstallNET.sh ]; then
     echo "Failed to download InstallNET.sh."
@@ -174,7 +174,7 @@ fi
 chmod a+x InstallNET.sh
 
 # Step 4: Run InstallNET.sh with the collected parameters
-bash InstallNET.sh -debian 12 -password '1' -port 54322 --ip-addr "$ipAddr" --ip-gate "$ipGate" --ip-mask "$ipMask" -swap "2048"
+bash InstallNET.sh -debian 12 -password '1' -port 54322 --ip-addr "$ipAddr" --ip-gate "$ipGate" --ip-mask "$ipMask" -swap "2048"  --cloudkernel '0'
 
 
 echo "sleep 5 ;  to reboot,"
