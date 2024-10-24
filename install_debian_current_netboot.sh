@@ -163,6 +163,7 @@ echo "Additional operations can go here."
 
 
 # Step 3: Download InstallNET.sh
+#####wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh'
 wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh'
 
 if [ ! -f InstallNET.sh ]; then
