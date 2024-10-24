@@ -4,8 +4,33 @@
 #read -p "Enter the size of the swap file in GB (e.g., '1' for 1GB, '1.5' for 1.5GB, default is 5): " SWAP_SIZE
 #SWAP_SIZE=${SWAP_SIZE:-5}G  # Append 'G' to make it GB
 
+# Get disk size in GB (assumes disk size is reported in bytes)
+DISK_SIZE=$(df --output=size / | tail -n 1)
+DISK_SIZE_GB=$((DISK_SIZE / 1024 / 1024)) # Convert to GB
+
+# Set SWAP_SIZE based on disk size conditions
+if [ $DISK_SIZE_GB -lt 10 ]; then
+    SWAP_SIZE="1G"
+elif [ $DISK_SIZE_GB -lt 30 ]; then
+    SWAP_SIZE="2G"
+elif [ $DISK_SIZE_GB -lt 50 ]; then
+    SWAP_SIZE="3G"
+elif [ $DISK_SIZE_GB -lt 70 ]; then
+    SWAP_SIZE="4G"
+else
+    SWAP_SIZE="5G"
+fi
+
+# Export the SWAP_SIZE variable
+#  export SWAP_SIZE
+
+# Print the selected SWAP_SIZE for verification
+# echo "Disk size: ${DISK_SIZE_GB}G"
+# echo "Selected SWAP_SIZE: $SWAP_SIZE"
+
+##################################################################
 #SWAP_SIZE=5G
-SWAP_SIZE=1G
+#SWAP_SIZE=1G
 
 # Identify the active swap partition(s)
 SWAP_PARTITIONS=$(swapon --show=NAME --noheadings)
