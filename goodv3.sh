@@ -803,6 +803,7 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 3)eval "$xray_mianliu" ;;
                 411)eval "$pre_InstallNET_modified_chu" ;;
                 4)eval "$pre_InstallNET_modified_chu_debian12" ;;
+                44)  bash <(wget -4  --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current.sh ')  ;;
 		444) bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh' )    ;; 
                 65)eval "$ss_rust2" ;;
           #     66)eval "$ping_local_fast" ;;
