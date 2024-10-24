@@ -45,15 +45,15 @@ fi
 
 
 
-# Step 1: Get the latest Debian ISO URL (Adjusted to fetch the netboot files)
-DEBIAN_NETBOOT_URL="http://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz"
-
-if [ -z "$DEBIAN_NETBOOT_URL" ]; then
-    echo "Failed to obtain the Debian netboot URL."
-    exit 1
-fi
-
-echo "Using Debian netboot URL: $DEBIAN_NETBOOT_URL"
+## Step 1: Get the latest Debian ISO URL (Adjusted to fetch the netboot files)
+#DEBIAN_NETBOOT_URL="http://ftp.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz"
+#
+#if [ -z "$DEBIAN_NETBOOT_URL" ]; then
+#    echo "Failed to obtain the Debian netboot URL."
+#    exit 1
+#fi
+#
+#echo "Using Debian netboot URL: $DEBIAN_NETBOOT_URL"
 
 # Step 2: Get --ip-addr, --ip-gate, --ip-mask
 # Get default network interface
