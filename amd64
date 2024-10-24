@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64</title>
+ </head>
+ <body>
+<h1>Index of /debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64</h1>
+  <table>
+   <tr><th valign="top"><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th></tr>
+   <tr><th colspan="4"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td></tr>
+<tr><td valign="top"><img src="/icons/folder.gif" alt="[DIR]"></td><td><a href="boot-screens/">boot-screens/</a></td><td align="right">2024-08-27 22:35  </td><td align="right">  - </td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="bootnetx64.efi">bootnetx64.efi</a></td><td align="right">2024-08-27 22:35  </td><td align="right">938K</td></tr>
+<tr><td valign="top"><img src="/icons/folder.gif" alt="[DIR]"></td><td><a href="grub/">grub/</a></td><td align="right">2024-08-27 22:35  </td><td align="right">  - </td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="grubx64.efi">grubx64.efi</a></td><td align="right">2024-08-27 22:35  </td><td align="right">3.7M</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="initrd.gz">initrd.gz</a></td><td align="right">2024-08-27 22:35  </td><td align="right"> 39M</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="linux">linux</a></td><td align="right">2024-08-27 22:35  </td><td align="right">7.8M</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="pxelinux.0">pxelinux.0</a></td><td align="right">2024-08-27 22:35  </td><td align="right"> 41K</td></tr>
+<tr><td valign="top"><img src="/icons/folder.gif" alt="[DIR]"></td><td><a href="pxelinux.cfg/">pxelinux.cfg/</a></td><td align="right">2024-08-27 22:35  </td><td align="right">  - </td></tr>
+   <tr><th colspan="4"><hr></th></tr>
+</table>
+<address>Apache Server at ftp.debian.org Port 80</address>
+</body></html>
