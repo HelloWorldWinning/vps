@@ -202,6 +202,7 @@ EOF
 cat << "EOF" > /etc/resolv.conf
 nameserver 8.8.4.4
 nameserver 1.1.1.1
+nameserver 8.8.8.8
 EOF
 
 
