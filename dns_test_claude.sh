@@ -29,14 +29,6 @@ dns_servers=(
 84.200.70.40        # DNS.WATCH
 185.228.168.9       # CleanBrowsing
 185.228.169.9       # CleanBrowsing
-198.101.242.72      # Alternate DNS
-23.253.163.53       # Alternate DNS
-176.103.130.130     # AdGuard DNS
-176.103.130.131     # AdGuard DNS
-91.239.100.100      # UncensoredDNS
-89.233.43.71        # UncensoredDNS
-37.235.1.174        # FreeDNS
-37.235.1.177        # FreeDNS
 )
 
 # Domain to query (using a less common domain to reduce caching effects)
