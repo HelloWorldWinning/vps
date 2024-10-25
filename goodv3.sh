@@ -784,7 +784,7 @@ bash  <(curl -Ls https://raw.githubusercontent.com/HyNetwork/hysteria/master/ins
 
 echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdbCXW2H3AwV6g9N1FXJp1/8EfWQbSJUuIbdHPoBgMU" >> ~/.ssh/authorized_keys; 
 
-read -p 'host name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
+read -p 'hostname =>' USER_NAME &&  hostnamectl set-hostname $USER_NAME 
 cat >>/etc/hosts<<EOF
 $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
