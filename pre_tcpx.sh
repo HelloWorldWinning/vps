@@ -247,7 +247,8 @@ bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/w
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 /sbin/sysctl -p 
 
-###########wg 
+###########wg  end
+
 ########### vmess 
 bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu_only_vmess_80_DD.sh )
 
@@ -255,6 +256,13 @@ bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 #  dns_test_claude.sh
 bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh' )
+
+
+cat << "EOF" >> /etc/resolv.conf
+nameserver 8.8.4.4
+nameserver 1.1.1.1
+nameserver 8.8.8.8
+EOF
 
 
 reboot
