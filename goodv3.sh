@@ -642,6 +642,7 @@ ${Red_font_prefix}981${Font_color_suffix} docker:Token 6868 web 6969 backend dep
 ${Red_font_prefix}98${Font_color_suffix} docker: setup_docker_compose_google_todynalist_pdftotxt.sh
 ${Red_font_prefix}988${Font_color_suffix} pdf_to_html_combined_tika.sh
 ${Red_font_prefix}99${Font_color_suffix} sncli install
+${Red_font_prefix}lab${Font_color_suffix} ${Red_font_prefix}jupyter_lab jupyter_lab_install.sh  ${Font_color_suffix}
 ${Red_font_prefix}100${Font_color_suffix} ${Red_font_prefix}jupyter: jupyter16666.sh${Font_color_suffix}
 ${Red_font_prefix}1007${Font_color_suffix} ${Red_font_prefix}jupyter notebook7 : notebook7_install.sh  ${Font_color_suffix}
 ${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
@@ -895,6 +896,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		98) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_docker_compose_google_todynalist_pdftotxt.sh  ) ;;
 		99) bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 		100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter16666.sh)  ;;
+		lab) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter_lab_install.sh     )  ;;
 		1007) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/notebook7_install.sh )  ;;
 		1011) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader.sh )  ;;
 		10111) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d/run_calibre_server_docker.sh  )  ;;
