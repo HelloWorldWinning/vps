@@ -86,7 +86,8 @@ conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert
 conda update -y nbconvert notebook   jupyterlab   mistune
 
 
-$conda_env_bin_dir/pip install -y --upgrade nbconvert  chardet    isort  black   jupyterlab-code-formatter 
+$conda_env_bin_dir/pip install   nbconvert  chardet    isort  black   jupyterlab-code-formatter 
+$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   jupyterlab-code-formatter 
 
 ###jupyter notebook password
 ###jupyter server password
