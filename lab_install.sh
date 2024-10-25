@@ -197,7 +197,21 @@ EOF
 set -e
 
 # Create necessary directories
-rm  -r   /root/.jupyter/lab/workspaces
+# Function to safely remove directory
+remove_workspace() {
+    local dir="$HOME/.jupyter/lab/workspaces"
+    
+    if [ -d "$dir" ]; then
+        rm -rv "$dir"
+        echo "Directory $dir successfully removed"
+    else
+        echo "Directory $dir does not exist - skipping removal"
+    fi
+}
+
+# Execute the function
+remove_workspace
+
 mkdir -p /root/.jupyter/lab/workspaces
 mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/statusbar-extension
 
