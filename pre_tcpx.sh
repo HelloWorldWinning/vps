@@ -253,4 +253,8 @@ bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 ########### vmess end
 
+#  dns_test_claude.sh
+bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh' )
+
+
 reboot
