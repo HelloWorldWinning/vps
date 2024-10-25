@@ -2,7 +2,7 @@
 
 # Prompt for port number
 echo "Enter the port number (default is 16666):"
-read -t 5  port
+read port
 
 # If the user input is empty, use the default port number
 if [ -z "$port" ]; then
@@ -81,23 +81,38 @@ sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
 
-conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert
+conda install -y cchardet chardet 
+conda update -y nbconvert
+$conda_env_bin_dir/pip install --upgrade nbconvert -y
 
-conda update -y nbconvert notebook   jupyterlab   mistune
+conda install  -y notebook
+conda update -y notebook
 
-
-$conda_env_bin_dir/pip install -y --upgrade nbconvert  chardet    isort  black   jupyterlab-code-formatter 
+# Step 1: Install JupyterLab
+conda install -c conda-forge jupyterlab -y
+# Step 2: Update JupyterLab to the latest version
+conda update -c conda-forge jupyterlab -y
 
 ###jupyter notebook password
 ###jupyter server password
 
+curl -4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_jupyter_server_config_json.txt  >  ~/.jupyter/jupyter_server_config.json
+
+
+
+pip install chardet
+conda update mistune -y
+
+pip install   --upgrade nbconvert  jupyter isort   
 
 
 
 ######## black
 # Install black formatter
+pip install black 
 
 # Install the JupyterLab code formatter extension
+pip install jupyterlab-code-formatter 
 
 # Enable the code formatter extension in JupyterLab
 jupyter labextension install @ryantam626/jupyterlab_code_formatter
@@ -117,20 +132,57 @@ jupyter serverextension enable --py jupyterlab_code_formatter
 # This script should be run as root or with sudo
 
 # Define the settings directory path
-mkdir  -p ~/.jupyter
-mkdir  -p ~/.jupyter/lab
-mkdir  -p ~/.jupyter/lab/user-settings
-mkdir  -p ~/.jupyter/lab/user-settings/@jupyterlab
-mkdir  -p ~/.jupyter/lab/user-settings/@jupyterlab/application-extension
+SETTINGS_DIR="/root/.jupyter/lab/user-settings/@jupyterlab/application-extension"
 
+# Create the directory structure
+echo "Creating directory structure..."
+mkdir -p "$SETTINGS_DIR"
+
+# Define the settings file path
+SETTINGS_FILE="$SETTINGS_DIR/shell.jupyterlab-settings"
+
+# Create the JSON configuration
+echo "Creating configuration file..."
+cat > "$SETTINGS_FILE" << 'EOF'
+{
+"interfaceStyle": "simple",
+    "leftSideBar": {
+        "visible": false
+    },
+    "rightSideBar": {
+        "visible": false
+    },
+    "leftActivityBar": {
+        "visible": false
+    },
+    "rightActivityBar": {
+        "visible": false
+    },
+    "statusBar": {
+        "visible": false
+    }
+}
+EOF
+
+# Set proper permissions
+echo "Setting file permissions..."
+chmod 644 "$SETTINGS_FILE"
+
+# Verify the file was created
+if [ -f "$SETTINGS_FILE" ]; then
+    echo "Configuration successful!"
+    echo "Settings file created at: $SETTINGS_FILE"
+    echo "Please restart JupyterLab for changes to take effect."
+else
+    echo "Error: Failed to create settings file!"
+    exit 1
+fi
 
 #########  format on save
-
-
-mkdir -p   $HOME/.jupyter
-mkdir -p   $HOME/.jupyter/lab
-mkdir -p   $HOME/.jupyter/lab/user-settings
-mkdir -p   $HOME/.jupyter/lab/user-settings/jupyterlab_code_formatter
+mkdir -p $HOME/.jupyter
+mkdir -p $HOME/.jupyter/lab
+mkdir -p $HOME/.jupyter/lab/user-settings
+mkdir -p $HOME/.jupyter/lab/user-settings/jupyterlab_code_formatter
 
 cat <<"EOF" > $HOME/.jupyter/lab/user-settings/jupyterlab_code_formatter/settings.jupyterlab-settings
 {
@@ -145,14 +197,25 @@ cat <<"EOF" > $HOME/.jupyter/lab/user-settings/jupyterlab_code_formatter/setting
 } 
 EOF
 
+#cat <<"EOF" > /root/.jupyter/lab/user-settings/jupyterlab_code_formatter/settings.jupyterlab-settings
+#{
+#    "formatOnSave": true,
+#
+#        "preferences": {
+#        "default_formatter": {
+#            "python":  ["black","isort"], 
+#            "R": "styler"
+#        }
+#    }
+#        
+#} 
+#EOF
+#########  format on save end
+
+
+
 
 ######## hidden  alll apprerance   end
-
-mkdir -p   ~/.jupyter
-mkdir -p   ~/.jupyter/lab
-mkdir -p   ~/.jupyter/lab/user-settings
-mkdir -p   ~/.jupyter/lab/user-settings/@jupyterlab
-mkdir -p   ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension
 
 cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
 {
@@ -186,125 +249,6 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
 EOF
 
 
-#######  no 6 items
-
-
-
-
-#!/bin/bash
-
-# Exit on error
-set -e
-
-# Create necessary directories
-rm  -r   /root/.jupyter/lab/workspaces
-mkdir -p /root/.jupyter/lab/workspaces
-mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/statusbar-extension
-
-# Function to log messages
-log_message() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
-}
-
-# Create the workspace configuration
-WORKSPACE_FILE="/root/.jupyter/lab/workspaces/default-37a8.jupyterlab-workspace"
-log_message "Creating workspace configuration at ${WORKSPACE_FILE}"
-
-cat > "${WORKSPACE_FILE}" << 'EOL'
-{
-    "data": {
-        "layout-restorer:data": {
-            "main": {
-                "dock": {
-                    "type": "tab-area",
-                    "currentIndex": 0,
-                    "widgets": ["notebook:Untitled.ipynb"]
-                },
-                "current": "notebook:Untitled.ipynb"
-            },
-            "down": {
-                "size": 0,
-                "widgets": []
-            },
-            "left": {
-                "collapsed": true,
-                "visible": false,
-                "current": "filebrowser",
-                "widgets": [
-                    "filebrowser",
-                    "running-sessions",
-                    "@jupyterlab/toc:plugin",
-                    "extensionmanager.main-view"
-                ]
-            },
-            "right": {
-                "collapsed": true,
-                "visible": false,
-                "current": "jp-property-inspector",
-                "widgets": [
-                    "jp-property-inspector",
-                    "debugger-sidebar"
-                ]
-            },
-            "relativeSizes": [0, 1, 0],
-            "top": {
-                "simpleVisibility": false
-            }
-        },
-        "docmanager:recents": {
-            "opened": [],
-            "closed": []
-        }
-    },
-    "metadata": {
-        "id": "default"
-    }
-}
-EOL
-
-# Create the statusbar settings
-mkdir -p  "$HOME/.jupyter/lab"
-mkdir -p  "$HOME/.jupyter/lab/user-settings"
-mkdir -p  "$HOME/.jupyter/lab/user-settings/@jupyterlab"
-mkdir -p  "$HOME/.jupyter/lab/user-settings/@jupyterlab/statusbar-extension"
-STATUSBAR_FILE="$HOME/.jupyter/lab/user-settings/@jupyterlab/statusbar-extension/plugin.jupyterlab-settings"
-log_message "Creating statusbar settings at ${STATUSBAR_FILE}"
-
-cat > "${STATUSBAR_FILE}" << 'EOL'
-{
-    // Status Bar
-    // @jupyterlab/statusbar-extension:plugin
-    // Status Bar settings.
-    // **************************************
-    // Status Bar Visibility
-    // Whether to show status bar or not
-    "visible": false
-}
-EOL
-
-# Check if files were created successfully
-if [ -f "${WORKSPACE_FILE}" ] && [ -f "${STATUSBAR_FILE}" ]; then
-    log_message "Successfully created all configuration files"
-else
-    log_message "Error: Failed to create one or more configuration files"
-    exit 1
-fi
-
-# Set appropriate permissions
-chmod 644 "${WORKSPACE_FILE}" "${STATUSBAR_FILE}"
-
-log_message "Configuration complete"
-#######  no 6 items end 
-
-
-
-
-
-
-
-curl -4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_jupyter_server_config_json.txt  >  ~/.jupyter/jupyter_server_config.json
-
-
 
 
 
@@ -324,6 +268,53 @@ sudo systemctl start $service_name
 # Display the status of the service
 echo "Service status:"
 sudo systemctl status $service_name | head -n 20
+
+
+
+
+#
+#
+#cat <<"EOF"
+#//////////////////////
+#    //
+#    // List of keyboard shortcuts:
+#
+#{
+#    "shortcuts": [
+#
+#
+#        {
+#            "args": {},
+#            "command": "jupyterlab_code_formatter:black",
+#            "keys": [
+#                "Accel Shift F"
+#            ],
+#            "selector": ".jp-Notebook.jp-mod-commandMode"
+#        },
+#        {
+#            "args": {},
+#            "command": "jupyterlab_code_formatter:black",
+#            "keys": [
+#                "Accel Shift F"
+#            ],
+#            "selector": ".jp-Notebook.jp-mod-editMode"
+#        },
+#        {
+#            "args": {},
+#            "command": "jupyterlab_code_formatter:black",
+#            "keys": [
+#                "Accel Shift F"
+#            ],
+#            "selector": ".jp-FileEditor"
+#        }
+#
+#
+#
+#    ]
+#}
+#//////////////////////
+#EOF
+#
 
 
 
