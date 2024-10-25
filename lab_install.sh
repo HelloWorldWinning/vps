@@ -94,7 +94,10 @@ conda install -c conda-forge jupyterlab -y
 conda update -c conda-forge jupyterlab -y
 
 ###jupyter notebook password
-jupyter server password
+###jupyter server password
+
+curl -4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_jupyter_server_config_json.txt  >  ~/.jupyter/jupyter_server_config.json
+
 
 
 pip install chardet
