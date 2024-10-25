@@ -247,5 +247,9 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip
 /sbin/sysctl -p 
 
 ###########wg 
+########### vmess 
+bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu_only_vmess_80_DD.sh )
+
+########### vmess end
 
 reboot
