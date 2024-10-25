@@ -86,8 +86,15 @@ conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert
 conda update -y nbconvert notebook   jupyterlab   mistune
 
 
-$conda_env_bin_dir/pip install   nbconvert  chardet    isort  black   jupyterlab-code-formatter 
-$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   jupyterlab-code-formatter 
+$conda_env_bin_dir/pip install   nbconvert  chardet    isort  black   
+$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   
+
+
+#pip install jupyterlab-code-formatter
+#
+## Enable the extension in JupyterLab
+#jupyter server extension enable jupyterlab_code_formatter
+
 
 ###jupyter notebook password
 ###jupyter server password
@@ -95,16 +102,19 @@ $conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   j
 
 
 
-######## black
-# Install black formatter
+#jupyter labextension install @ryantam626/jupyterlab_code_formatter
+#jupyter serverextension enable --py jupyterlab_code_formatter
 
-# Install the JupyterLab code formatter extension
+# Install and enable the code formatter
+$conda_env_bin_dir/pip install --upgrade jupyterlab_code_formatter
 
-# Enable the code formatter extension in JupyterLab
-jupyter labextension install @ryantam626/jupyterlab_code_formatter
+# Enable the server extension using the modern command
+jupyter server extension enable jupyterlab_code_formatter
 
-# Enable the Black formatter within JupyterLab
-jupyter serverextension enable --py jupyterlab_code_formatter
+# Verify the installation
+jupyter server extension list
+
+
 
 # Configure JupyterLab Code Formatter to use Black as the default formatter
 #jupyter lab --NotebookApp.contents_manager_class=jupyterlab_code_formatter.BlackContentsManager
