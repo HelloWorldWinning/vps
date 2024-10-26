@@ -620,7 +620,7 @@ ${Red_font_prefix}9${Font_color_suffix} send on 9
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel ip:8888  1 19860826
 ${Red_font_prefix}75.1${Font_color_suffix} echo get az  api 
 ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin123456
-${Red_font_prefix}777${Font_color_suffix} tuic
+${Red_font_prefix}1777${Font_color_suffix} tuic
 ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
 ${Red_font_prefix}79${Font_color_suffix} docker nginx 
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
@@ -762,6 +762,8 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		49)eval "$ss_rust";;
 		7)eval netstat_filter_quick ;;
 		77)eval netstat_filter ;;
+		777)
+bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/network_monitor_openai.sh  )    ;;
 		500)eval ps_filter ;;
                 r)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
@@ -868,7 +870,7 @@ unzip  AWS-Panel-linux-amd64.zip
 chmod 777 AWS-Panel-linux-amd64
 nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 ;;
-                777)eval "${tuic}";;
+                1777)eval "${tuic}";;
                 78)eval "${new_nginx_conf}";;
                 79)eval "${new_nginx_conf_docker}";;
 		80)curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
