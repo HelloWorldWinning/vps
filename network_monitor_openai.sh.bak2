@@ -1,56 +1,27 @@
 #!/bin/bash
 # Neat header function
 print_header() {
-    echo -e "\n\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-    echo -e "\e[1;36m                              $1\e[0m"
-    echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+    echo -e "\n\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+    echo -e "\e[1;36m                  $1\e[0m"
+    echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 }
 
 # Clear screen first
 clear
 
-# Active Connections Section with aligned spacing
+# Active Connections Section
 print_header "ACTIVE CONNECTIONS"
-echo -e "\e[1;33mPROTO        LOCAL ADDRESS             REMOTE ADDRESS           STATE            PROGRAM PID\e[0m"
+echo -e "\e[1;33mPROTO    LOCAL ADDRESS         REMOTE ADDRESS        STATE         PID/PROGRAM\e[0m"
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-ss -tap | grep -v "LISTEN" | awk '
-NR>1 {
-    # Extract program name and PID from the last field
-    if ($NF ~ /users/) {
-        # Extract the program name and PID using regex
-        match($NF, /"([^"]+)",pid=([0-9]+)/)
-        if (RSTART > 0) {
-            program = substr($NF, RSTART+1, RLENGTH-1)
-            split(program, parts, ",")
-            prog_name = parts[1]
-            sub(/"/, "", prog_name)  # Remove remaining quote
-            pid = parts[2]
-            sub(/pid=/, "", pid)     # Remove "pid=" prefix
-            
-            # Format the program and PID in a clean way
-            prog_pid = sprintf("%-8s %s", prog_name, pid)
-        } else {
-            prog_pid = "-"
-        }
-    } else {
-        prog_pid = "-"
-    }
-    
-    # Print the formatted line
-    printf "%-12s %-24s %-24s %-16s %s\n",
-    $1, $4, $5, $2, prog_pid
+ss -tap | grep -v "LISTEN" | awk 'NR>1 {
+    printf "%-8s %-20s %-20s %-12s %s\n",
+    $1, $4, $5, $2, $NF
 }'
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
-
-
-
-
-
-
 # UDP Listening Ports Section
 print_header "UDP LISTENING PORTS"
-echo -e "\e[1;33mPROTO        PORT                          PID/PROGRAM\e[0m"
+echo -e "\e[1;33mPROTO    PORT                          PID/PROGRAM\e[0m"
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 ss -ulnp | awk '
 BEGIN {
@@ -77,15 +48,15 @@ NR>1 {
     } else {
         colored_port = $4
     }
-    printf "%-12s %-30s %-20s\n",
+    printf "%-8s %-30s %-20s\n",
     $1, colored_port, $NF
 }'
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
-# TCP Listening Ports Section with expanded spacing
+# TCP Listening Ports Section
 print_header "TCP LISTENING PORTS"
-echo -e "\e[1;33mPROTO        PORT                    USER           PID            PROGRAM\e[0m"
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;33mPROTO    PORT                          PID/PROGRAM\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 ss -tlnp | awk '
 BEGIN {
     red="\033[1;31m"
@@ -111,31 +82,10 @@ NR>1 {
     } else {
         colored_port = $4
     }
-    
-    # Extract PID and program name from the last field
-    pid_prog = $NF
-    if (pid_prog ~ /pid=[0-9]+/) {
-        # Extract PID
-        match(pid_prog, /pid=[0-9]+/)
-        pid = substr(pid_prog, RSTART+4, RLENGTH-4)
-        
-        # Extract program name
-        match(pid_prog, /"([^"]+)"/)
-        prog = substr(pid_prog, RSTART+1, RLENGTH-2)
-        
-        # Get user for the PID
-        cmd = "ps -o user= -p " pid
-        cmd | getline user
-        close(cmd)
-        
-        printf "%-12s %-24s %-14s %-14s %-s\n",
-        $1, colored_port, user, pid, prog
-    } else {
-        printf "%-12s %-24s %-14s %-14s %-s\n",
-        $1, colored_port, "-", "-", "-"
-    }
+    printf "%-8s %-30s %-20s\n",
+    $1, colored_port, $NF
 }'
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
 # Process Details Section
 print_header "PROCESS DETAILS"
@@ -171,4 +121,3 @@ if [ -n "$pids" ]; then
     done
 fi
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-

@@ -11,42 +11,13 @@ clear
 
 # Active Connections Section with aligned spacing
 print_header "ACTIVE CONNECTIONS"
-echo -e "\e[1;33mPROTO        LOCAL ADDRESS             REMOTE ADDRESS           STATE            PROGRAM PID\e[0m"
+echo -e "\e[1;33mPROTO        LOCAL ADDRESS             REMOTE ADDRESS           STATE            PID/PROGRAM\e[0m"
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-ss -tap | grep -v "LISTEN" | awk '
-NR>1 {
-    # Extract program name and PID from the last field
-    if ($NF ~ /users/) {
-        # Extract the program name and PID using regex
-        match($NF, /"([^"]+)",pid=([0-9]+)/)
-        if (RSTART > 0) {
-            program = substr($NF, RSTART+1, RLENGTH-1)
-            split(program, parts, ",")
-            prog_name = parts[1]
-            sub(/"/, "", prog_name)  # Remove remaining quote
-            pid = parts[2]
-            sub(/pid=/, "", pid)     # Remove "pid=" prefix
-            
-            # Format the program and PID in a clean way
-            prog_pid = sprintf("%-8s %s", prog_name, pid)
-        } else {
-            prog_pid = "-"
-        }
-    } else {
-        prog_pid = "-"
-    }
-    
-    # Print the formatted line
+ss -tap | grep -v "LISTEN" | awk 'NR>1 {
     printf "%-12s %-24s %-24s %-16s %s\n",
-    $1, $4, $5, $2, prog_pid
+    $1, $4, $5, $2, $NF
 }'
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-
-
-
-
-
-
 
 # UDP Listening Ports Section
 print_header "UDP LISTENING PORTS"

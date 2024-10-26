@@ -1,3 +1,0 @@
-       read -p "ws path 默认: /xray " WSPATH
- [[ -z "${WSPATH}" ]] && WSPATH='/xray'
-echo $WSPATH
