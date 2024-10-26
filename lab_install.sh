@@ -82,12 +82,12 @@ sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
 
-conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert
+conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert isort
 
-conda update -y nbconvert notebook   jupyterlab   mistune
+conda update -y nbconvert notebook   jupyterlab   mistune isort
 
 
-$conda_env_bin_dir/pip install   nbconvert  chardet    isort  black   
+$conda_env_bin_dir/pip install   nbconvert  chardet   isort  black    
 $conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   
 
 
