@@ -57,6 +57,7 @@ fi
 #
 # conda_env_bin_dir="/root/anaconda3/envs/$conda_env_name/bin"
 
+##ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter lab  --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/  --NotebookApp.contents_manager_class=jupyterlab_code_formatter.BlackContentsManager   --LabApp.default_url="/doc"    '
 
 
 # Create the systemd service file
@@ -66,7 +67,7 @@ Description=Jupyter Notebook
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter lab  --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/  --NotebookApp.contents_manager_class=jupyterlab_code_formatter.BlackContentsManager   --LabApp.default_url="/doc"    '
+ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter lab  --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/  --LabApp.default_url="/doc"    '
 User=root
 Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 StandardOutput=append:${log_file}
