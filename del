@@ -1,0 +1,59 @@
+#!/bin/bash
+# Neat header function
+print_header() {
+    echo -e "\n\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+    echo -e "\e[1;36m                              $1\e[0m"
+    echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+}
+
+# Clear screen first
+clear
+
+# Active Connections Section with aligned spacing
+print_header "ACTIVE CONNECTIONS"
+echo -e "\e[1;33mPROTO        LOCAL ADDRESS        PORT     REMOTE ADDRESS       PORT     STATE            PROGRAM PID\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+ss -tap | awk '
+NR>1 {
+    # Extract program name and PID from the last field
+    if ($NF ~ /users/) {
+        # Extract the program name and PID using regex
+        match($NF, /"([^"]+)",pid=([0-9]+)/)
+        if (RSTART > 0) {
+            program = substr($NF, RSTART+1, RLENGTH-1)
+            split(program, parts, ",")
+            prog_name = parts[1]
+            sub(/"/, "", prog_name)  # Remove remaining quote
+            pid = parts[2]
+            sub(/pid=/, "", pid)     # Remove "pid=" prefix
+
+            # Format the program and PID in a clean way
+            prog_pid = sprintf("%-8s %s", prog_name, pid)
+        } else {
+            prog_pid = "-"
+        }
+    } else {
+        prog_pid = "-"
+    }
+
+    # Split local address into IP and port
+    split($4, local_addr, ":")
+    if (length(local_addr) > 2) {
+        # IPv6 address
+        local_ip = local_addr[1]
+        for (i=2; i<length(local_addr)-1; i++) {
+            local_ip = local_ip ":" local_addr[i]
+        }
+        local_port = local_addr[length(local_addr)]
+    } else {
+        local_ip = local_addr[1]
+        local_port = local_addr[2]
+    }
+
+    # Similarly for remote address
+    split($5, remote_addr, ":")
+    if (length(remote_addr) > 2) {
+        # IPv6 address
+        remote_ip = remote_addr[1]
+        for (i=2; i<length(remote_addr)-1; 
+
