@@ -2,7 +2,7 @@
 
 # Prompt for port number
 echo "Enter the port number (default is 16666):"
-read -t 5  port
+read -t 4  port
 
 # If the user input is empty, use the default port number
 if [ -z "$port" ]; then
