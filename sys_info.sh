@@ -116,4 +116,12 @@ free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; available=$7/1024; printf "%
 echo -n "Disk      : "
 df -BG --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {sub(/G/, "", $4); sub(/G/, "", $3); sub(/G/, "", $2); printf "%5s | %5s | %5s G\n", $4, $3, $2}'
 
-echo "----------------------------------------------------------------------"
+
+echo -n "Public IP : "
+curl -s -m 5 https://ipinfo.io/ip 2>/dev/null || \
+curl -s -m 5 https://api.ipify.org 2>/dev/null || \
+curl -s -m 5 https://icanhazip.com 2>/dev/null || \
+echo "Unable to determine"
+
+
+echo -e "\n----------------------------------------------------------------------"
