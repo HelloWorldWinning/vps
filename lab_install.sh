@@ -191,6 +191,14 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
                 "Alt D"
             ],
             "selector": ".jp-FileEditor"
+        },
+        {
+            "args": {},
+            "command": "application:toggle-side-tabbar",
+            "keys": [
+                "Accel Shift B"
+            ],
+            "selector": "body"
         }
     ]
 }
