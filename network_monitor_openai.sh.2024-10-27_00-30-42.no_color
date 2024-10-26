@@ -85,8 +85,7 @@ echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━
 
 
 
-
-# TCP Listening Ports Section with aligned columns and colored ports
+# TCP Listening Ports Section with aligned columns
 print_header "TCP LISTENING PORTS"
 echo -e "\e[1;33mSTATE        ADDRESS:PORT              USER           PID            PROGRAM\e[0m"
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
@@ -111,14 +110,11 @@ NR>1 {
         port = a[2]
     }
     
-    # Format address:port with colors for non-localhost addresses
+    # Format address:port with proper coloring for non-localhost addresses
     if (addr == "0.0.0.0" || addr == "[::]" || addr == "*") {
-        colored_port = sprintf("%s:%s%s%s", addr, red, port, reset)
-        # Add padding after the reset to maintain alignment
-        colored_port = sprintf("%-24s", colored_port)
+        colored_port = sprintf("%s:%-14s", addr, port)
     } else {
-        colored_port = sprintf("%s:%s", addr, port)
-        colored_port = sprintf("%-24s", colored_port)
+        colored_port = sprintf("%s:%-14s", addr, port)
     }
     
     # Extract PID and program name from the last field
@@ -147,6 +143,8 @@ NR>1 {
     }
 }' | sort -k1,1 -k3,3 | sed 's/^.\{1\}//'
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+
+
 
 
 
