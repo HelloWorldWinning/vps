@@ -561,7 +561,7 @@ ${Red_font_prefix}18${Font_color_suffix} wg to wgcf 有wgcf 解锁nf 情况用
 ${Red_font_prefix}19${Font_color_suffix} x ui 面板
 ${Red_font_prefix}20${Font_color_suffix} open ipv6
 ${Red_font_prefix}21${Font_color_suffix} 甬哥 netflix free
-${Red_font_prefix}22${Font_color_suffix} P3terx  netflix free
+${Red_font_prefix}221${Font_color_suffix} P3terx  netflix free
 ${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
 ${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
 ${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
@@ -729,7 +729,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		19) eval $xui;;
 		20) eval $open_ipv6;;
 		21) eval $nf_free2;;
-		22) eval $nf_free3;;
+		221) eval $nf_free3;;
 		23) eval $wg_after_warp;eval $ipv4_v6_forwarding;;
 		24) eval $ipv4_v6_forwarding;;
 		25)(sed -i 's/\w\{8\}\-\w\{4\}\-\w\{4\}\-\w\{4\}\-\w\{12\}/12345678-1234-1234-1234-123456789012/g'  /usr/local/etc/xray/config.json;echo 14 |eval $xray) ;;
@@ -892,7 +892,8 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		92) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh ) ;;
 		93) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh  ) ;;
 		94) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh  ) ;;
-		2) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh ) ;;
+		2) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path_quick.sh ) ;;
+		22) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh ) ;;
 		0)
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  ) 			
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh  ) ;;
