@@ -63,7 +63,7 @@ alias nf='neofetch'
 #
 alias zz='function _zz() { 
   dir="${1:-.}"; 
-  padding1="\t"       # Customize padding1 for column alignment
+  padding1="\t\t"       # Customize padding1 for column alignment
   space1="\t\t"            # Customize space1 for additional spacing
   
   find "$dir" -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | while read -r size path; do 
