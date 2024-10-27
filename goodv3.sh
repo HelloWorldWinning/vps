@@ -768,6 +768,8 @@ bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps
 		500)eval ps_filter ;;
                 r)read -p 'script to run': x && ${x};;
                 56)eval "$rdp";;
+                561)
+bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh  )    ;;
                 57)eval "$delete_user";;
                 58)eval "$hysteria";
 sed -i 's/8.8.8.8/8.8.4.4/g'  /etc/hihy/conf/hihyServer.json
