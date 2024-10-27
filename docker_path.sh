@@ -34,7 +34,7 @@ get_container_status() {
 }
 
 # Prompt for filter string
-read -p "Enter filter string (leave empty for no filter): " filter_string
+read -t 3.5  -p "Enter filter string (leave empty for no filter): " filter_string
 
 echo -e "\n================= start  =========================\n"
 
