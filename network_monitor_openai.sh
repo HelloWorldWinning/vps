@@ -222,10 +222,50 @@ NR>1 {
 }' | sort -k1,1 -k3,3 | sed 's/^.\{1\}//'
 echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
+## Process Details Section
+#print_header "PROCESS DETAILS"
+#echo -e "\e[1;33mPID      USER     PORT     PROTO             CMD\e[0m"
+#echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#pids=$(ss -tap | grep -o 'pid=[0-9]*' | cut -d= -f2 | sort -u | tr '\n' ',')
+#if [ -n "$pids" ]; then
+#    ps -o pid,user,cmd -p ${pids%,} 2>/dev/null | grep -v "PID USER" | while read pid user cmd; do
+#        port_info=$(ss -tulpn | grep "pid=$pid," | awk '{
+#            split($5,a,":")
+#            proto = toupper($1)
+#            printf "%s %s\n", a[length(a)], proto
+#        }' | sort -u | awk '
+#        {
+#            ports = ports sprintf("%-8s %-4s, ", $1, $2)
+#        } 
+#        END {
+#            if (length(ports) > 0) {
+#                print substr(ports, 1, length(ports)-2)
+#            } else {
+#                print "-"
+#            }
+#        }')
+#        
+#        if [ "$port_info" != "-" ]; then
+#            colored_ports=$(echo "$port_info" | sed 's/\([0-9]*\) \([A-Z]*\)/\\e[1;91m\1\\e[0m \\e[1;36m\2\\e[0m/g')
+#            printf -v formatted_line "%-8s %-8s %-30s %s\n" "$pid" "$user" "$colored_ports" "$cmd"
+#        else
+#            printf -v formatted_line "%-8s %-8s %-30s %s\n" "$pid" "$user" "-" "$cmd"
+#        fi
+#        
+#        echo -e "$formatted_line"
+#    done
+#fi
+#echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#
+#
+#
+
+
+
 # Process Details Section
 print_header "PROCESS DETAILS"
 echo -e "\e[1;33mPID      USER     PORT     PROTO             CMD\e[0m"
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 pids=$(ss -tap | grep -o 'pid=[0-9]*' | cut -d= -f2 | sort -u | tr '\n' ',')
 if [ -n "$pids" ]; then
     ps -o pid,user,cmd -p ${pids%,} 2>/dev/null | grep -v "PID USER" | while read pid user cmd; do
@@ -236,7 +276,7 @@ if [ -n "$pids" ]; then
         }' | sort -u | awk '
         {
             ports = ports sprintf("%-8s %-4s, ", $1, $2)
-        } 
+        }
         END {
             if (length(ports) > 0) {
                 print substr(ports, 1, length(ports)-2)
@@ -244,16 +284,16 @@ if [ -n "$pids" ]; then
                 print "-"
             }
         }')
-        
+
         if [ "$port_info" != "-" ]; then
             colored_ports=$(echo "$port_info" | sed 's/\([0-9]*\) \([A-Z]*\)/\\e[1;91m\1\\e[0m \\e[1;36m\2\\e[0m/g')
-            printf -v formatted_line "%-8s %-8s %-30s %s\n" "$pid" "$user" "$colored_ports" "$cmd"
+            printf -v formatted_line "%-8s %-8s %-30s %s" "$pid" "$user" "$colored_ports" "$cmd"
         else
-            printf -v formatted_line "%-8s %-8s %-30s %s\n" "$pid" "$user" "-" "$cmd"
+            printf -v formatted_line "%-8s %-8s %-30s %s" "$pid" "$user" "-" "$cmd"
         fi
-        
+
         echo -e "$formatted_line"
     done
 fi
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
