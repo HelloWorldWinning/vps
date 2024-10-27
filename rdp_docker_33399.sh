@@ -11,13 +11,13 @@ mkdir -p "$HOST_DOWNLOAD_DIR"
 chmod 777 "$HOST_DOWNLOAD_DIR"  # Ensure proper permissions
 
 # Create docker-compose.yml
-cat > "$COMPOSE_FILE" << EOL
+cat > $COMPOSE_FILE << EOL
 version: '3.8'
 services:
   remote-desktop:
     image: scottyhardy/docker-remote-desktop:latest
     container_name: remote-desktop
-    hostname: HK
+    hostname: ${HOSTNAME}
     ports:
       - "33399:3389"
     volumes:
