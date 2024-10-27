@@ -4,11 +4,11 @@
 DOCKER_DIR="/data/docker-remote-desktop_d"
 COMPOSE_FILE="$DOCKER_DIR/docker-compose.yml"
 HOST_DOWNLOAD_DIR="$DOCKER_DIR/download"
+CURRENT_HOSTNAME=$(hostname)
 
 # Create necessary directories
 mkdir -p "$DOCKER_DIR"
 mkdir -p "$HOST_DOWNLOAD_DIR"
-chmod 777 "$HOST_DOWNLOAD_DIR"  # Ensure proper permissions
 
 # Create docker-compose.yml
 cat > "$COMPOSE_FILE" << EOL
@@ -17,15 +17,18 @@ services:
   remote-desktop:
     image: scottyhardy/docker-remote-desktop:latest
     container_name: remote-desktop
-    hostname: HK
+    hostname: $CURRENT_HOSTNAME
     ports:
       - "33399:3389"
     volumes:
-      - /data/docker-remote-desktop_d/download:/downloads  # Changed mount point
-    environment:
-      - DOWNLOAD_DIR=/downloads  # Tell the container about the new downloads location
+      - /data/docker-remote-desktop_d/download:/home/ubuntu/Downloads
     restart: always
 EOL
+
+# Set proper permissions
+chmod 755 "$DOCKER_DIR"
+chmod 755 "$HOST_DOWNLOAD_DIR"
+chmod 644 "$COMPOSE_FILE"
 
 # Function to check if Docker is running
 check_docker() {
@@ -45,6 +48,7 @@ check_docker_compose() {
 
 # Main execution
 echo "Starting Docker Remote Desktop setup..."
+echo "Using hostname: $CURRENT_HOSTNAME"
 
 # Run checks
 check_docker
@@ -52,9 +56,6 @@ check_docker_compose
 
 # Change to the Docker directory
 cd "$DOCKER_DIR"
-
-# Stop and remove existing container if it exists
-docker-compose down
 
 # Pull the latest image
 echo "Pulling the latest image..."
@@ -70,7 +71,6 @@ if docker-compose ps | grep -q "remote-desktop"; then
     echo "You can connect to the remote desktop using:"
     echo "Host: $(hostname -I | awk '{print $1}')"
     echo "Port: 33399"
-    echo "Downloads will be available in /downloads inside the container"
 else
     echo "Error: Container failed to start"
     docker-compose logs
