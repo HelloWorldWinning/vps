@@ -44,8 +44,24 @@ alias nf='neofetch'
 #alias zz='du -sh ./* ./.??* | sort -h'
 ###alias zz='find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | exa -l --sort newest'
 ########alias zz='find . -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | sed "s/.\///"'
+########## alias zz='function _zz() { dir="${1:-.}"; find "$dir" -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | sed "s|^\./||"; }; _zz'
 
-alias zz='function _zz() { dir="${1:-.}"; find "$dir" -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | sed "s|^\./||"; }; _zz'
+alias zz='function _zz() { 
+  dir="${1:-.}"; 
+  find "$dir" -mindepth 1 -maxdepth 1 -exec du -sh {} + | sort -h | while read -r size path; do 
+    full_path=$(realpath "$path" | sed "s|//|/|g")  # Remove double slashes
+    name=$(basename "$full_path")
+    if [ -d "$path" ]; then
+      # Red and bold for folder name
+      printf "%s\t%s\033[1;31m%s\033[0m/\n" "$size" "$(dirname "$full_path")/" "$name"
+    else
+      # Bright green (#00FF00) and bold for file name
+      printf "%s\t%s\033[38;5;82m%s\033[0m\n" "$size" "$(dirname "$full_path")/" "$name"
+    fi
+  done
+}; _zz'
+
+
 
 
 alias ft='freqtrade'
