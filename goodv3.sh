@@ -537,8 +537,9 @@ ${Red_font_prefix}222${Font_color_suffix} tcpx
 ${Red_font_prefix}62${Font_color_suffix} trojan
 ${Red_font_prefix}63${Font_color_suffix} xray
 ${Red_font_prefix}64${Font_color_suffix} realm 中转用
-${Red_font_prefix}5${Font_color_suffix} speedtest of vps
+${Red_font_prefix}5${Font_color_suffix} network_monitor_openai.sh  
 ${Red_font_prefix}55${Font_color_suffix} 回程路由测试 https://github.com/vpsxb/testrace
+${Red_font_prefix}555${Font_color_suffix}  wget -qO- bench.sh | bash | tee benchspeed.log
 ${Red_font_prefix}6${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
 ${Red_font_prefix}7.0${Font_color_suffix} openvpn angristan/openvpn-install/
@@ -695,7 +696,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		63) eval $xray;;
 		64) eval $realm;;
 #	5) eval $speed;;
-		5) wget -qO- bench.sh | bash | tee speed.log  ;;
+		555) wget -qO- bench.sh | bash | tee benchspeed.log  ;;
 		55) bash <(curl -fSsL   https://raw.githubusercontent.com/vpsxb/testrace/main/testrace.sh) ;;
 
 		6.1)   wg-quick down wg0; wg-quick down wg1;wg-quick down wg2  ; fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
@@ -762,7 +763,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		49)eval "$ss_rust";;
 		7)eval netstat_filter_quick ;;
 		77)eval netstat_filter ;;
-		777)
+		5)
 bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/network_monitor_openai.sh  )    ;;
 		500)eval ps_filter ;;
                 r)read -p 'script to run': x && ${x};;
