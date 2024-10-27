@@ -48,10 +48,55 @@ echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━
 
 
 
+## UDP Listening Ports Section
+#print_header "UDP LISTENING PORTS"
+#echo -e "\e[1;33mPROTO        PORT                          PID/PROGRAM\e[0m"
+#echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#ss -ulnp | awk '
+#BEGIN {
+#    red="\033[1;31m"
+#    reset="\033[0m"
+#}
+#NR>1 {
+#    split($4, a, ":")
+#    addr = a[1]
+#    if (length(a) > 2) {
+#        addr = ""
+#        for (i=1; i<length(a); i++) {
+#            if (i > 1) addr = addr ":"
+#            addr = addr a[i]
+#        }
+#        port = a[length(a)]
+#    } else {
+#        addr = a[1]
+#        port = a[2]
+#    }
+#    
+#    if (addr == "0.0.0.0" || addr == "[::]" || addr == "*") {
+#        colored_port = sprintf("%s:%s%s%s", addr, red, port, reset)
+#    } else {
+#        colored_port = $4
+#    }
+#    printf "%-12s %-30s %-20s\n",
+#    $1, colored_port, $NF
+#}'
+#echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#
+##!/bin/bash
+## Neat header function
+#print_header() {
+#    echo -e "\n\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#    echo -e "\e[1;36m                              $1\e[0m"
+#    echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+#}
+#
+## Clear screen first
+#clear
+
 # UDP Listening Ports Section
 print_header "UDP LISTENING PORTS"
-echo -e "\e[1;33mPROTO        PORT                          PID/PROGRAM\e[0m"
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;33mPROTO        PORT                          PID        PROGRAM\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 ss -ulnp | awk '
 BEGIN {
     red="\033[1;31m"
@@ -71,16 +116,46 @@ NR>1 {
         addr = a[1]
         port = a[2]
     }
-    
+
     if (addr == "0.0.0.0" || addr == "[::]" || addr == "*") {
         colored_port = sprintf("%s:%s%s%s", addr, red, port, reset)
     } else {
         colored_port = $4
     }
-    printf "%-12s %-30s %-20s\n",
-    $1, colored_port, $NF
+
+    user_info = $NF
+    sub(/^users:\(/, "", user_info)
+    sub(/\)$/, "", user_info)
+
+    # Remove any outer parentheses
+    sub(/^\(/, "", user_info)
+    sub(/\)$/, "", user_info)
+
+    # Split on ),( to handle multiple processes
+    split(user_info, procs, /\),\(/)
+
+    # Take the first process info
+    proc_info = procs[1]
+
+    # Remove any remaining parentheses
+    sub(/^\(/, "", proc_info)
+    sub(/\)$/, "", proc_info)
+
+    # Split the process info into components
+    split(proc_info, arr, ",")
+
+    # Extract and clean the program name
+    program = arr[1]
+    sub(/^"/, "", program)
+    sub(/"$/, "", program)
+
+    # Extract the PID
+    split(arr[2], pid_arr, "=")
+    pid = pid_arr[2]
+
+    printf "%-12s %-30s %-10s %-20s\n", $1, colored_port, pid, program
 }'
-echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "\e[1;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 
 
 
