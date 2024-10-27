@@ -5,14 +5,14 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#b00b0b",
-          "foreground": "#ffffff",
+          "background": "transparent",
+          "foreground": "#ffdb58",
           "powerline_symbol": "",
           "properties": {
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "<b>{{ printf \"%*s%s%*s\" (div (sub 15 (len .HostName)) 2) \"\" .HostName (sub (sub 15 (len .HostName)) (div (sub 15 (len .HostName)) 2)) \"\" }}</b>",
+          "template": "  <b>{{ printf \"%*s%s%*s\" (div (sub 13 (len .HostName)) 2) \"\" .HostName (sub (sub 13 (len .HostName)) (div (sub 13 (len .HostName)) 2)) \"\" }}</b>",
           "type": "path"
         },
         {
@@ -92,7 +92,7 @@
         {
           "foreground": "#31c43b",
           "style": "plain",
-          "template": "  11:05 27-Sun ☰",
+          "template": "11:09 21-Mon ☳",
           "type": "text"
         }
       ],
