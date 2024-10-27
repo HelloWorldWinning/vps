@@ -262,6 +262,9 @@ fds() {
   fd "$1" | xargs exa -lh --sort size
 }
 
+alias fd='fd --absolute-path --color always'
+export FD_COLORS="hl=1;31"
+
 
 alias m='mkdir '
 
