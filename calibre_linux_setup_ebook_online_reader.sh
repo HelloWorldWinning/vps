@@ -79,7 +79,7 @@ Group=root
 Environment="PATH=/opt/calibre/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth --disable-use-bonjour --log  /var/log/calibre-server.log --access-log  /var/log/calibre-access.log --compress-min-size=31457280 --disable-use-sendfile
-ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth --disable-use-bonjour
+##ExecStart=/usr/bin/calibre-server /data/calibre-library --port=188 --enable-auth --disable-use-bonjour
 StandardOutput=append:/var/log/calibre-server.log
 StandardError=append:/var/log/calibre-server.error.log
 Restart=always
