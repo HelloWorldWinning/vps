@@ -1,6 +1,6 @@
 #!/bin/bash
 
-something=30  # Time interval in minutes for updating second_part
+update_frequency_minutes_symbol=30  # Time interval in minutes for updating second_part
 
 first_part=$(date +"%I:%M %d-%a")
 
@@ -8,7 +8,7 @@ symbols=(" ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
 config_file="/root/themes/gmay3.omp.json"
 symbol_state_file="/tmp/current_symbol.txt"
 
-# Function to check if 'something' minutes have passed since last symbol change
+# Function to check if 'update_frequency_minutes_symbol' minutes have passed since last symbol change
 need_symbol_update() {
     if [ ! -f "$symbol_state_file" ]; then
         return 0  # File doesn't exist, needs update
@@ -18,9 +18,9 @@ need_symbol_update() {
     current_time=$(date +%s)
     time_diff=$((current_time - last_update))
 
-    interval_seconds=$((something * 60))
+    interval_seconds=$((update_frequency_minutes_symbol * 60))
 
-    # Return 0 (true) if 'something' minutes have passed
+    # Return 0 (true) if 'update_frequency_minutes_symbol' minutes have passed
     [ $time_diff -ge $interval_seconds ]
 }
 
