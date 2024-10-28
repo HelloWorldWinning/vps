@@ -263,7 +263,9 @@ fds() {
 }
 
 alias fd='fd --absolute-path --color always'
-export FD_COLORS="hl=1;31"
+####export FD_COLORS="hl=1;31"
+#####export EXA_COLORS="di=31;1:fi=38;5;226;1"  # yello
+export EXA_COLORS="di=31;1:fi=38;5;118;1"  # green
 
 
 alias m='mkdir '
