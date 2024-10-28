@@ -607,7 +607,7 @@ ${Red_font_prefix}1111${Font_color_suffix} 一键搞定13 17 21,需要reboot
 ${Red_font_prefix}1${Font_color_suffix} tcpc 脚本
 ${Red_font_prefix}mianliu2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}3${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
-${Red_font_prefix}444${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
+${Red_font_prefix}4${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
 ${Red_font_prefix}412${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD debian12${Font_color_suffix}
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
 ${Red_font_prefix}66${Font_color_suffix} parallel ping_local_fast.sh
@@ -815,8 +815,8 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 mianliu2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
                 411)eval "$pre_InstallNET_modified_chu" ;;
-                444)eval "$pre_InstallNET_modified_chu_debian12" ;;
-                4)  
+                4)eval "$pre_InstallNET_modified_chu_debian12" ;;
+                444)  
 		bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current.sh' ) ;;
 		4441) bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh' )    ;; 
                 65)eval "$ss_rust2" ;;
