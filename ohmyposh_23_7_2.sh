@@ -1,7 +1,11 @@
 #!/usr/bin/bash
 apt install -y jq
 
-wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
+#wget   --inet4-only  -O  ~/themes/update_prompt_date_DD_Day.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh
+#
+curl -4SsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh  >  ~/themes/update_prompt_date_DD_Day.sh 
+chmod 777  ~/themes/update_prompt_date_DD_Day.sh
+
 
 # Path to the update script
 UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
