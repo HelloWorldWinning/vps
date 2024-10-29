@@ -58,16 +58,16 @@ IP-ASN,20473,OpenAI
 # DOMAIN: 4
 # DOMAIN-SUFFIX: 6
 # TOTAL: 10
-DOMAIN-SUFFIX,ai.google.dev
-DOMAIN,alkalimakersuite-pa.clients6.google.com
-DOMAIN,generativelanguage.googleapis.com
-DOMAIN,makersuite.google.com
-DOMAIN-SUFFIX,bard.google.com
-DOMAIN-SUFFIX,deepmind.com
-DOMAIN-SUFFIX,deepmind.google
-DOMAIN-SUFFIX,gemini.google.com
-DOMAIN-SUFFIX,generativeai.google
-DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
+DOMAIN,ai.google.dev,OpenAI
+DOMAIN,alkalimakersuite-pa.clients6.google.com,OpenAI
+DOMAIN,generativelanguage.googleapis.com,OpenAI
+DOMAIN,makersuite.google.com,OpenAI
+DOMAIN-SUFFIX,bard.google.com,OpenAI
+DOMAIN-SUFFIX,deepmind.com,OpenAI
+DOMAIN-SUFFIX,deepmind.google,OpenAI
+DOMAIN-SUFFIX,gemini.google.com,OpenAI
+DOMAIN-SUFFIX,generativeai.google,OpenAI
+DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,OpenAI
 
 # NAME: OpenAI
 # AUTHOR: blackmatrix7
