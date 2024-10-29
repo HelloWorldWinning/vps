@@ -1,11 +1,6 @@
 #!/bin/bash
 
-#GREEN='\033[0;32m'
-BOLD_BRIGHT_YELLOW='\033[1;38;5;226m'
-BOLD_AMBER_YELLOW='\033[1;38;5;222m'
-BOLD_YELLOW_4='\033[1;38;5;185m' # Golden yellow
-
-GREEN='\033[0;38;5;185m'
+GREEN='\033[0;32m'
 BOLD_RED_BACKGROUND='\033[0;45m'
 BOLD_RED='\033[1;31m'
 CYAN='\033[0;36m'
@@ -68,8 +63,7 @@ else
             if [[ -z "$port_bindings" ]]; then
                 echo -e "${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}"
             else
-              # echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
-                echo -e "${BOLD_RED}    $port_bindings    ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
+                echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
             fi
             echo " "
         fi
