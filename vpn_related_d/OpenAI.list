@@ -58,7 +58,7 @@ IP-ASN,20473,OpenAI
 # DOMAIN: 4
 # DOMAIN-SUFFIX: 6
 # TOTAL: 10
-DOMAIN,ai.google.dev
+DOMAIN-SUFFIX,ai.google.dev
 DOMAIN,alkalimakersuite-pa.clients6.google.com
 DOMAIN,generativelanguage.googleapis.com
 DOMAIN,makersuite.google.com
