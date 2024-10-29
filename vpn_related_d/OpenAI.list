@@ -79,33 +79,33 @@ DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,OpenAI
 # IP-ASN: 1
 # IP-CIDR: 2
 # TOTAL: 27
-DOMAIN,browser-intake-datadoghq.com
-DOMAIN,static.cloudflareinsights.com
-DOMAIN-SUFFIX,ai.com
-DOMAIN-SUFFIX,algolia.net
-DOMAIN-SUFFIX,api.statsig.com
-DOMAIN-SUFFIX,auth0.com
-DOMAIN-SUFFIX,chatgpt.com
-DOMAIN-SUFFIX,chatgpt.livekit.cloud
-DOMAIN-SUFFIX,client-api.arkoselabs.com
-DOMAIN-SUFFIX,events.statsigapi.net
-DOMAIN-SUFFIX,featuregates.org
-DOMAIN-SUFFIX,host.livekit.cloud
-DOMAIN-SUFFIX,identrust.com
-DOMAIN-SUFFIX,intercom.io
-DOMAIN-SUFFIX,intercomcdn.com
-DOMAIN-SUFFIX,launchdarkly.com
-DOMAIN-SUFFIX,oaistatic.com
-DOMAIN-SUFFIX,oaiusercontent.com
-DOMAIN-SUFFIX,observeit.net
-DOMAIN-SUFFIX,segment.io
-DOMAIN-SUFFIX,sentry.io
-DOMAIN-SUFFIX,stripe.com
-DOMAIN-SUFFIX,turn.livekit.cloud
-DOMAIN-KEYWORD,openai
-IP-CIDR,24.199.123.28/32,no-resolve
-IP-CIDR,64.23.132.171/32,no-resolve
-IP-ASN,20473,no-resolve
+DOMAIN,browser-intake-datadoghq.com,OpenAI   
+DOMAIN,static.cloudflareinsights.com,OpenAI   
+DOMAIN-SUFFIX,ai.com,OpenAI   
+DOMAIN-SUFFIX,algolia.net,OpenAI   
+DOMAIN-SUFFIX,api.statsig.com,OpenAI   
+DOMAIN-SUFFIX,auth0.com,OpenAI   
+DOMAIN-SUFFIX,chatgpt.com,OpenAI   
+DOMAIN-SUFFIX,chatgpt.livekit.cloud,OpenAI   
+DOMAIN-SUFFIX,client-api.arkoselabs.com,OpenAI   
+DOMAIN-SUFFIX,events.statsigapi.net,OpenAI   
+DOMAIN-SUFFIX,featuregates.org,OpenAI   
+DOMAIN-SUFFIX,host.livekit.cloud,OpenAI   
+DOMAIN-SUFFIX,identrust.com,OpenAI   
+DOMAIN-SUFFIX,intercom.io,OpenAI   
+DOMAIN-SUFFIX,intercomcdn.com,OpenAI   
+DOMAIN-SUFFIX,launchdarkly.com,OpenAI   
+DOMAIN-SUFFIX,oaistatic.com,OpenAI   
+DOMAIN-SUFFIX,oaiusercontent.com,OpenAI   
+DOMAIN-SUFFIX,observeit.net,OpenAI   
+DOMAIN-SUFFIX,segment.io,OpenAI   
+DOMAIN-SUFFIX,sentry.io,OpenAI   
+DOMAIN-SUFFIX,stripe.com,OpenAI   
+DOMAIN-SUFFIX,turn.livekit.cloud,OpenAI   
+DOMAIN-KEYWORD,openai,OpenAI   
+IP-CIDR,24.199.123.28/32,no-resolve,OpenAI   
+IP-CIDR,64.23.132.171/32,no-resolve,OpenAI   
+IP-ASN,20473,no-resolve,OpenAI   
 
 # NAME: Claude
 # AUTHOR: blackmatrix7
@@ -114,6 +114,6 @@ IP-ASN,20473,no-resolve
 # DOMAIN: 1
 # DOMAIN-SUFFIX: 2
 # TOTAL: 3
-DOMAIN,cdn.usefathom.com
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,claude.ai
+DOMAIN,cdn.usefathom.com,OpenAI   
+DOMAIN-SUFFIX,anthropic.com,OpenAI   
+DOMAIN-SUFFIX,claude.ai,OpenAI   
