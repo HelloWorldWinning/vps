@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Get the directory of the source files (where the script is run from)
-SOURCE_DIR=$(pwd)
+#SOURCE_DIR=$(pwd)
 
 # Create full path directory
 sudo mkdir -p /data/text-extractor_docker_d
 
-# Copy all necessary files to the deployment directory
-echo "Copying application files..."
-cp -r "$SOURCE_DIR"/{app.py,requirements.txt,Dockerfile,docker-compose.yml} /data/text-extractor_docker_d/
-
+## Copy all necessary files to the deployment directory
+#echo "Copying application files..."
+#cp -r "$SOURCE_DIR"/{app.py,requirements.txt,Dockerfile,docker-compose.yml} /data/text-extractor_docker_d/
+#
 # Change to deployment directory
 cd /data/text-extractor_docker_d
 
