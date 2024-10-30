@@ -20,11 +20,6 @@ services:
   text-extractor:
     image: oklove/text-extractor
     network_mode: "host"
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_RUN_PORT=9977
-    volumes:
-      - ./:/app
     restart: unless-stopped
 EOF
 
