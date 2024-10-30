@@ -111,7 +111,7 @@ check_calibre_status() {
     fi
 
     local STATUS=$(docker inspect --format='{{.State.Status}}' "$CONTAINER_ID")
-    local HEALTH=$(docker inspect --format='{{.State.Health.Status}}' "$CONTAINER_ID" 2>/dev/null || echo "N/A")
+#   local HEALTH=$(docker inspect --format='{{.State.Health.Status}}' "$CONTAINER_ID" 2>/dev/null || echo "N/A")
     local UPTIME=$(docker inspect --format='{{.State.StartedAt}}' "$CONTAINER_ID")
     local PORT_STATUS=$(netstat -tuln | grep ":188 " || echo "")
 
@@ -120,7 +120,7 @@ check_calibre_status() {
     echo "----------------------------------------"
     echo "🔄 Container Status: $STATUS"
     echo "⏰ Started At: $UPTIME"
-    echo "🏥 Health Status: $HEALTH"
+#   echo "🏥 Health Status: $HEALTH"
 
     if [ -n "$PORT_STATUS" ]; then
         echo "🌐 Port 188: LISTENING"
