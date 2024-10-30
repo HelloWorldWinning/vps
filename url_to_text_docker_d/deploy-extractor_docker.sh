@@ -24,6 +24,7 @@ services:
 EOF
 
 # Start docker compose
+docker-compose pull
 docker-compose up -d
 
 # Wait for container to initialize
