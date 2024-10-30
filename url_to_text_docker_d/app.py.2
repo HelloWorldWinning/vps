@@ -3,36 +3,15 @@ import requests
 
 app = Flask(__name__)
 
-# HTML template with custom.css content added
+# HTML template for the webpage with your requested changes
 template = '''
 <!doctype html>
 <html>
 <head>
     <title>URL Text Extractor</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
-
-        a {
-            text-decoration: none;
-        }
-
-        @font-face {
-            font-family: 'FZFangJunHeiS';
-            src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-        }
-
-        body, html * {
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-        }
-
-        pre, pre * {
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Existing styles */
         body {
+            font-family: Arial, sans-serif;
             margin: 20px;
         }
         #text-output {
@@ -45,6 +24,8 @@ template = '''
             box-sizing: border-box;
             font-size: 18px;
             line-height: 1.6;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            /* Removed background-color to match the page background */
         }
         #url-input {
             width: 80%;
@@ -77,6 +58,7 @@ template = '''
 <body>
     <h1>URL Text Extractor</h1>
     <form method="post" id="url-form">
+        <!-- Removed the "Enter URL:" label -->
         <input type="text" name="url" id="url-input" required
                placeholder="Enter URL here"
                onchange="submitForm(event)"
@@ -104,6 +86,7 @@ def index():
         if url:
             # Backend API endpoint
             api_url = 'http://127.0.0.1:9966/url'
+            #api_url = 'http://jp.zhulei.eu.org:9966/url'
             headers = {
                 'Authorization': 'Bearer _to_know_world'
             }
