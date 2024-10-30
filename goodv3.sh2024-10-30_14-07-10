@@ -1,23 +1,7 @@
 #!/usr/bin/bash
-#!/bin/bash
-
-# Get country code (e.g., HK, TW, JP)
-country_code_UPPER=$(echo "$country_code" | tr '[:lower:]' '[:upper:]')  # Ensure uppercase
-
-# Convert to flag emoji
-# This works by converting each letter to its regional indicator Unicode character
-first_char=$(printf "\U$(printf %x $(( $(printf "%d" "'${country_code_UPPER:0:1}") + 127397 )) )")
-second_char=$(printf "\U$(printf %x $(( $(printf "%d" "'${country_code_UPPER:1:1}") + 127397 )) )")
-
-# Display the emoji
-flag_emoji="${first_char}${second_char}"
-#echo "$flag_emoji"
-
-
-
-
-
-
+#
+#
+#
 #`echo -e "        \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[38;2;247;47;244m$(pwd)\e[0m            "
 #  `  今天运行/总运行 $today_hit / $all_hit
 ##`echo -e "    \e[1;38;2;252;33;137m$(hostname)\e[0m    "`  今天运行/总运行 $today_hit / $all_hit
@@ -706,7 +690,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 
 `echo -e "                 \e[1;38;2;252;33;137m$(hostname)\e[0m            \e[1;38;2;252;33;137m$(pwd)\e[0m            \e[1;38;2;252;33;137m$(/usr/bin/ls |wc -l)\e[0m                   "
   `          $today_hit $all_hit
-  \r\n\n\n              \e[1;38;2;252;33;137m$(echo "$flag_emoji")\e[0m 
+\r\n\n\n              \e[1;38;2;252;33;137m🧄\e[0m 
 \n\n
 ")"  choose
 	case $choose in
