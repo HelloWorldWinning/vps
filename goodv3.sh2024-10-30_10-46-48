@@ -686,12 +686,10 @@ Receiver: nc -l -p 9 > bar.zip
 Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 
 
-
-
-`echo -e "                 \e[1;38;2;252;33;137m$(hostname)\e[0m            \e[1;38;2;252;33;137m$(pwd)\e[0m            \e[1;38;2;252;33;137m$(/usr/bin/ls |wc -l)\e[0m                   "
-  `          $today_hit $all_hit
-\r\n\n\n              \e[1;38;2;252;33;137m🧄\e[0m 
-\n\n
+`echo -e "       \e[1;38;2;252;33;137m$(hostname)\e[0m         \e[0;38;2;252;33;137m$(pwd)\e[0m     \e[0;38;2;252;33;137m$(/usr/bin/ls |wc -l)\e[0m        "
+  `   $today_hit $all_hit
+\r\n    \e[1;38;2;252;33;137m🧄\e[0m 
+\n
 ")"  choose
 	case $choose in
 		222) eval $tcpx  ;;
