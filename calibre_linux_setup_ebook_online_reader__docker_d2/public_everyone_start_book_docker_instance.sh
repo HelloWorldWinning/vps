@@ -31,6 +31,7 @@ services:
     command: >
       $cmd
     restart: unless-stopped
+#######  --enable-auth
 EOF
 }
 
