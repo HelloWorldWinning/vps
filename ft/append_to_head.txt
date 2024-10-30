@@ -44,7 +44,7 @@
 #     --spaces  buy
 #     --timeframe 1m 
 #     --timerange 20230101-20230301
-#     --hyperopt-loss ProfitDrawDownHyperOptLoss
+#     --hyperopt-loss ProfitDrawDownHyperOptLoss  OnlyProfitHyperOptLoss
 #     --epochs 100
 #     --strategy  try3
 
