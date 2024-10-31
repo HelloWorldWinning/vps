@@ -85,11 +85,13 @@ sudo chmod 664 ${log_file}
 
 
 $conda_env_bin_dir/pip install   nbconvert  chardet   isort  black    
-$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black   
+$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black    jupyterlab
+#pip install --upgrade jupyterlab
 
 
-conda install -y cchardet chardet  notebook  jupyterlab  mistune  nbconvert isort
-conda update -y nbconvert notebook   jupyterlab   mistune isort
+### jupyterlab
+conda install -y cchardet chardet  notebook  mistune  nbconvert isort
+conda update -y nbconvert notebook   mistune isort
 
 
 #pip install jupyterlab-code-formatter
@@ -358,6 +360,7 @@ curl -4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_jupyter
 
 
 
+#pip install --upgrade jupyterlab
 
 
 
