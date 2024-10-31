@@ -36,6 +36,9 @@
 #     --timeframe 5m 
 #     --timerange 20230101-20230301
 
+
+# https://www.wuzao.com/document/freqtrade/hyperopt/
+# https://www.freqtrade.io/en/stable/hyperopt/
 #   command: >
 #     hyperopt
 #     --logfile /freqtrade/user_data/logs/freqtrade.log
@@ -44,7 +47,7 @@
 #     --spaces  buy
 #     --timeframe 1m 
 #     --timerange 20230101-20230301
-#     --hyperopt-loss ProfitDrawDownHyperOptLoss  OnlyProfitHyperOptLoss
+#     --hyperopt-loss ProfitDrawDownHyperOptLoss  OnlyProfitHyperOptLoss 
 #     --epochs 100
 #     --strategy  try3
 
