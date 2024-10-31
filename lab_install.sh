@@ -72,6 +72,8 @@ User=root
 Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 StandardOutput=append:${log_file}
 StandardError=append:${log_file}
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
