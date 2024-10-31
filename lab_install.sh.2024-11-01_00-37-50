@@ -169,56 +169,40 @@ mkdir -p   ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension
 
 cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shortcuts.jupyterlab-settings
 {
-  "shortcuts": [
-    {
-      "args": {},
-      "command": "jupyterlab_code_formatter:black",
-      "keys": [
-        "Alt D"
-      ],
-      "selector": ".jp-Notebook.jp-mod-commandMode"
-    },
-    {
-      "args": {},
-      "command": "jupyterlab_code_formatter:black",
-      "keys": [
-        "Alt D"
-      ],
-      "selector": ".jp-Notebook.jp-mod-editMode"
-    },
-    {
-      "args": {},
-      "command": "application:toggle-side-tabbar",
-      "keys": [
-        "Alt D"
-      ],
-      "selector": ".jp-FileEditor"
-    },
-    {
-      "args": {},
-      "command": "application:toggle-side-tabbar",
-      "keys": [
-        "Accel Shift B"
-      ],
-      "selector": "body"
-    },
-    {
-      "args": {},
-      "command": "notebook:hide-cell-outputs",
-      "keys": [
-        "O"
-      ],
-      "selector": ".jp-Notebook.jp-mod-commandMode:not(.jp-mod-readWrite) :focus"
-    },
-    {
-      "args": {},
-      "command": "notebook:show-cell-outputs",
-      "keys": [
-        "Shift O"
-      ],
-      "selector": ".jp-Notebook.jp-mod-commandMode:not(.jp-mod-readWrite) :focus"
-    }
-  ]
+    "shortcuts": [
+        {
+            "args": {},
+            "command": "jupyterlab_code_formatter:black",
+            "keys": [
+                "Alt D"
+            ],
+            "selector": ".jp-Notebook.jp-mod-commandMode"
+        },
+        {
+            "args": {},
+            "command": "jupyterlab_code_formatter:black",
+            "keys": [
+                "Alt D"
+            ],
+            "selector": ".jp-Notebook.jp-mod-editMode"
+        },
+        {
+            "args": {},
+            "command": "jupyterlab_code_formatter:black",
+            "keys": [
+                "Alt D"
+            ],
+            "selector": ".jp-FileEditor"
+        },
+        {
+            "args": {},
+            "command": "application:toggle-side-tabbar",
+            "keys": [
+                "Accel Shift B"
+            ],
+            "selector": "body"
+        }
+    ]
 }
 EOF
 
