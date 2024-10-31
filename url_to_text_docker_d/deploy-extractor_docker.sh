@@ -24,6 +24,10 @@ services:
 EOF
 
 # Start docker compose
+
+docker-compose down
+
+sleep 3 
 docker-compose pull
 docker-compose up -d
 
