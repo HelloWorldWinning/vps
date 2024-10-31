@@ -9,11 +9,6 @@ template = '''
 <html>
 <head>
     <title>URL Text Extractor</title>
-     <style>
-        html {
-            zoom: 2.0 ; /* This sets the zoom level to 175% */
-        }
-    </style>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
 
@@ -40,18 +35,19 @@ template = '''
         body {
             margin: 20px;
         }
-        #text-output {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    padding: 20px;
-    border: 1px solid #ccc;
-    width: 100%; /* Changed from max-width to width */
-    margin: 0 auto;
-    box-sizing: border-box;
-    font-size: 18px;
-    line-height: 1.6;
-    max-width: 90vw; /* Allows the element to take 90% of the viewport width but is not fixed */
+#text-output {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: clamp(1rem, 2vw, 2rem);  /* Responsive padding */
+  border: 1px solid #ccc;
+  width: min(95%, 1200px);  /* Responsive width with a maximum */
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-size: clamp(16px, 1.125vw, 18px);  /* Responsive font size */
+  line-height: 1.6;
 }
+
+
         #url-input {
             width: 80%;
             padding: 10px;

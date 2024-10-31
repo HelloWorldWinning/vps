@@ -9,11 +9,6 @@ template = '''
 <html>
 <head>
     <title>URL Text Extractor</title>
-     <style>
-        html {
-            zoom: 2.0 ; /* This sets the zoom level to 175% */
-        }
-    </style>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
 
