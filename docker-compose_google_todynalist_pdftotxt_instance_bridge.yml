@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  tika-server:
+    image: oklove/tika-server
+    container_name: tika-server_instance
+    restart: unless-stopped
+    ports:
+      - "9998:9998"
+    networks:
+      - pdf_todynalist_network
+
+  web:
+    build: .
+    image: oklove/google_todynalist_pdftotxt_bridge:latest
+    container_name: google_todynalist_pdftotxt_instance
+    environment:
+      - FLASK_ENV=production
+    restart: unless-stopped
+    ports:
+      - "9966:9966"
+    depends_on:
+      - tika-server
+    networks:
+      - pdf_todynalist_network
+
+networks:
+  pdf_todynalist_network:
+    driver: bridge

@@ -2,7 +2,8 @@
 
 # Define variables
 FOLDER="/data/google_todynalist_pdftotxt_instance_d"
-GITHUB_URL="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker-compose_google_todynalist_pdftotxt_instance.yml"
+#GITHUB_URL="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker-compose_google_todynalist_pdftotxt_instance.yml"
+GITHUB_URL="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker-compose_google_todynalist_pdftotxt_instance_bridge.yml"
 CONTAINER1="google_todynalist_pdftotxt_instance"
 CONTAINER2="tika-server_instance"
 
@@ -21,7 +22,7 @@ cd "$FOLDER"
 
 # Download the docker-compose file
 echo "Downloading docker-compose file"
-wget -4 "$GITHUB_URL" -O docker-compose.yml
+wget -4 --no-check-certificate  "$GITHUB_URL" -O docker-compose.yml
 
 # Check if the download was successful
 if [ $? -eq 0 ]; then
