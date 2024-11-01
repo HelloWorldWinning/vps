@@ -257,6 +257,7 @@ bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 #  dns_test_claude.sh
 bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh' )
 
+bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )
 
 cat << "EOF" >> /etc/resolv.conf
 nameserver 8.8.4.4
