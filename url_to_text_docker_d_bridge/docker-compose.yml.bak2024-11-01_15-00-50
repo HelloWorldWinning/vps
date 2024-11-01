@@ -1,0 +1,6 @@
+version: '3'
+services:
+  text-extractor:
+    image: oklove/text-extractor
+    network_mode: "host"
+    restart: unless-stopped
