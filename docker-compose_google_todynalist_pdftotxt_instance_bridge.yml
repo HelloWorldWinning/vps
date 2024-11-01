@@ -2,6 +2,10 @@ version: '3.8'
 services:
   tika-server:
     image: oklove/tika-server
+    deploy:
+      resources:
+        limits:
+          memory: 256m
     container_name: tika-server_instance
     restart: unless-stopped
     ports:
