@@ -29,6 +29,10 @@ docker-compose down || true
 
 # Wait for containers to fully stop
 echo "Waiting for containers to stop..."
+
+
+docker-compose pull
+
 sleep 2
 
 # Start the service
