@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  token_counter:
+    image: oklove/bridge_tokenizer_service_token_counter
+    container_name: bridge_tokenizer_service_token_counter_one_image
+#   command: ["/bin/sh", "-c", "python3 tokenizer_service.py & python3 token_counter.py"]
+    ports:
+      - "6868:6868"
+      - "6969:6969"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    environment:
+      - FLASK_ENV=production
+#   deploy:
+#     resources:
+#       limits:
+#         memory: 256M

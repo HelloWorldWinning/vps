@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  token_counter:
+    image: oklove/bridge_token_counter
+    container_name: bridge_token_counter
+    ports:
+      - "6868:6868"
+    depends_on:
+      - tokenizer_service
+    networks:
+      - bridge_tokenizer_service_token_counter
+
+  tokenizer_service:
+    image: oklove/bridge_tokenizer_service
+    container_name: bridge_tokenizer_service
+    ports:
+      - "6969:6969"
+    networks:
+      - bridge_tokenizer_service_token_counter
+
+networks:
+  bridge_tokenizer_service_token_counter:
+    driver: bridge
+
