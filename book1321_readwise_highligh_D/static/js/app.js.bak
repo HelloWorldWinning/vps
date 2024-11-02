@@ -1,0 +1,200 @@
+// State management
+let highlights = [];
+let filteredHighlights = [];
+let filters = {
+    bookTitle: 'all',
+    bookAuthor: 'all',
+    tags: 'all',
+    color: 'all'
+};
+
+// DOM Elements
+const highlightText = document.getElementById('highlightText');
+const noteContent = document.getElementById('note');
+const bookTitleSelect = document.getElementById('bookTitle');
+const bookAuthorSelect = document.getElementById('bookAuthor');
+const bookTagsSelect = document.getElementById('bookTags');
+const highlightColorSelect = document.getElementById('highlightColor');
+
+// Helper function to get random index
+function getRandomIndex(max) {
+    return Math.floor(Math.random() * max);
+}
+
+// Fetch and populate filter options
+async function loadFilters() {
+    try {
+        const response = await fetch('/api/filters');
+        const data = await response.json();
+
+        // Populate book titles
+        data.bookTitles.forEach(title => {
+            const option = document.createElement('option');
+            option.value = title;
+            option.textContent = title;
+            bookTitleSelect.appendChild(option);
+        });
+
+        // Populate authors
+        data.bookAuthors.forEach(author => {
+            const option = document.createElement('option');
+            option.value = author;
+            option.textContent = author;
+            bookAuthorSelect.appendChild(option);
+        });
+
+        // Populate tags
+        data.tags.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            bookTagsSelect.appendChild(option);
+        });
+
+        // Populate colors
+        data.colors.forEach(color => {
+            const option = document.createElement('option');
+            option.value = color;
+            option.textContent = color;
+            highlightColorSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading filters:', error);
+    }
+}
+
+// Fetch highlights from the API
+async function loadHighlights() {
+    try {
+        const response = await fetch('/api/highlights');
+        highlights = await response.json();
+        filterAndDisplayHighlight();
+    } catch (error) {
+        console.error('Error loading highlights:', error);
+        highlightText.textContent = 'Error loading highlights. Please try again later.';
+    }
+}
+
+// Filter highlights based on selected criteria
+function filterHighlights() {
+    filters = {
+        bookTitle: bookTitleSelect.value,
+        bookAuthor: bookAuthorSelect.value,
+        tags: bookTagsSelect.value,
+        color: highlightColorSelect.value
+    };
+
+    filterAndDisplayHighlight();
+}
+
+// Apply filters and display current highlight
+function filterAndDisplayHighlight() {
+    filteredHighlights = highlights.filter(highlight => {
+        if (!highlight) return false;
+        
+        const matchesTitle = filters.bookTitle === 'all' || highlight.booktitle === filters.bookTitle;
+        const matchesAuthor = filters.bookAuthor === 'all' || highlight.bookauthor === filters.bookAuthor;
+        const matchesColor = filters.color === 'all' || highlight.color === filters.color;
+        const matchesTags = filters.tags === 'all' ||
+            (highlight.tags && highlight.tags.split(',').map(t => t.trim()).includes(filters.tags));
+
+        return matchesTitle && matchesAuthor && matchesColor && matchesTags;
+    });
+
+    if (filteredHighlights.length === 0) {
+        highlightText.textContent = 'No highlights found with the selected filters.';
+        noteContent.textContent = '';
+        const metadata = document.getElementById('highlightMetadata');
+        if (metadata) metadata.textContent = '';
+        return;
+    }
+
+    // Display a random highlight
+    const randomIndex = getRandomIndex(filteredHighlights.length);
+    const selectedHighlight = filteredHighlights[randomIndex];
+    
+    if (selectedHighlight && selectedHighlight.highlight) {
+        displayHighlight(selectedHighlight);
+    } else {
+        console.error('Invalid highlight data:', selectedHighlight);
+        highlightText.textContent = 'Error: Could not display highlight. Please try again.';
+    }
+
+    // Set up keyboard navigation to show random highlights
+    document.onkeydown = (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            const newRandomIndex = getRandomIndex(filteredHighlights.length);
+            const newHighlight = filteredHighlights[newRandomIndex];
+            if (newHighlight && newHighlight.highlight) {
+                displayHighlight(newHighlight);
+            }
+        }
+    };
+}
+
+// Display a single highlight
+function displayHighlight(highlight) {
+    if (!highlight || !highlight.highlight) {
+        console.error('Invalid highlight data in displayHighlight:', highlight);
+        return;
+    }
+
+    // Detect language and add appropriate class/attributes
+    const text = highlight.highlight;
+    const hasChineseCharacters = /[\u4e00-\u9fa5]/.test(text);
+
+    // Set the highlight text with appropriate language attributes
+    highlightText.textContent = text;
+    if (hasChineseCharacters) {
+        highlightText.setAttribute('lang', 'zh-CN');
+        highlightText.classList.add('chinese-text');
+    } else {
+        highlightText.removeAttribute('lang');
+        highlightText.classList.remove('chinese-text');
+    }
+
+    // Create or update the metadata element
+    let highlightMetadata = document.getElementById('highlightMetadata');
+    if (!highlightMetadata) {
+        highlightMetadata = document.createElement('div');
+        highlightMetadata.classList.add('highlight-metadata');
+        highlightMetadata.id = 'highlightMetadata';
+        // Append to highlight-card
+        const highlightCard = document.querySelector('.highlight-card');
+        highlightCard.appendChild(highlightMetadata);
+    }
+
+    // Set the metadata content
+    const metadataContent = `
+${highlight.booktitle ? `Book: ${highlight.booktitle}` : ''}
+${highlight.bookauthor ? `\nAuthor: ${highlight.bookauthor}` : ''}
+${highlight.tags ? `\nTags: ${highlight.tags}` : ''}
+    `;
+
+    highlightMetadata.textContent = metadataContent.trim();
+
+    // Display note if available
+    noteContent.textContent = highlight.note || '';
+    if (hasChineseCharacters) {
+        noteContent.setAttribute('lang', 'zh-CN');
+        noteContent.classList.add('chinese-text');
+    } else {
+        noteContent.removeAttribute('lang');
+        noteContent.classList.remove('chinese-text');
+    }
+}
+
+// Initialize the application
+async function init() {
+    await loadFilters();
+    await loadHighlights();
+
+    // Add event listeners for filter changes
+    bookTitleSelect.addEventListener('change', filterHighlights);
+    bookAuthorSelect.addEventListener('change', filterHighlights);
+    bookTagsSelect.addEventListener('change', filterHighlights);
+    highlightColorSelect.addEventListener('change', filterHighlights);
+}
+
+// Start the application
+init();
