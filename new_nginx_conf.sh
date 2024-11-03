@@ -6,9 +6,10 @@ wget -4  -O /etc/nginx/mime.types  https://raw.githubusercontent.com/HelloWorldW
 wget -4  -O /etc/nginx/conf.d/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
 wget -4  -O /data/d.share/.css/custom.css  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx_d/custom.css
 
+
+#apt-get install nginx -y
 apt  install dnsutils -y
 apt-get update -y
-#apt-get install nginx -y
 apt update  -y  
 apt install -y  sudo
 sudo apt install nginx-extras  -y
