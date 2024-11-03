@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  highlights-viewer:
+    image: oklove/readwise-viewer
+    container_name:  readwise-viewer_instance
+    ports:
+      - "189:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

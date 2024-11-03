@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reflect & Whetstone: Wisdom Through Highlights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+        /* Font definitions - keeping existing font-face rules */
+        @font-face {
+            font-family: 'PingFang SC';
+            src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Light_300.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'PingFang SC';
+            src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Regular_400.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'FZFangJunHeiS';
+            src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+        }
+
+        /* Global styles */
+        html, body, * {
+            font-weight: 400 !important;
+            font-family: "Source Code Pro", "FZFangJunHeiS", "PingFang SC", monospace !important;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        [lang="zh"],
+        [lang="zh-CN"],
+        [lang="zh-TW"],
+        .chinese-text {
+            font-weight: 300 !important;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 20px 20px 20px 3;
+            overflow: auto;
+        }
+
+        .highlight-container {
+            display: grid;
+            gap: 2px;
+            width: 100%;
+            margin: 0 auto;
+            transition: grid-template-columns 0.3s ease-in-out;
+        }
+
+        /* Default state - both columns visible 1.3333 */
+        .highlight-container {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        }
+
+        /* When no notes - full width for highlights */
+        .highlight-container.no-notes {
+            grid-template-columns: 1fr;
+        }
+
+        /* Hide notes container when no notes */
+        .highlight-container.no-notes .notes-container {
+            display: none;
+        }
+
+        .highlight-card {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            min-height: 300px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* New: Highlight content wrapper */
+        .highlight-content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Space for metadata */
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+
+        /* Customize scrollbar */
+        .highlight-content-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .highlight-content-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .highlight-content-wrapper::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .highlight-content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .highlight {
+            font-size: 220% !important;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .highlight-metadata {
+            position: absolute;
+            bottom: 15px;
+            left: 30px;
+            font-size: 1.3rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            width: calc(100% - 60px);
+            background: white; /* Ensure metadata has solid background */
+        }
+
+        .notes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            font-size: 150% !important;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .note-content {
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 150% !important;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Bottom bar styles */
+
+        .filter-menu {
+	     position: relative;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-item label {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .filter-item select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 0.9rem;
+        }
+
+        .searchable-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .searchable-select-input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 0.9rem;
+        }
+
+        .searchable-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+        }
+
+        .searchable-select-dropdown.active {
+            display: block;
+        }
+
+        .searchable-select-option {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .searchable-select-option:hover {
+            background: #f5f5f5;
+        }
+
+        /* Scrollbar styling */
+        .searchable-select-dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+/***   ****/
+	        .filter-menu {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            padding: 10px 0;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* Specific widths for different filters */
+        .filter-item:nth-child(1) { /* Book Title */
+            flex: 5.5;  /* Takes up more space */
+            min-width: 600px;
+        }
+
+        .filter-item:nth-child(2) { /* Book Author */
+            flex: 1.5;
+            min-width: 200px;
+        }
+
+        .filter-item:nth-child(3), /* Tags */
+        .filter-item:nth-child(4) { /* Color */
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-item label {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-weight: 500 !important;
+        }
+
+        .searchable-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .searchable-select-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .searchable-select-input:hover {
+            border-color: #bbb;
+        }
+
+        .searchable-select-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+
+        .searchable-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .searchable-select-dropdown.active {
+            display: block;
+        }
+
+        .searchable-select-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .searchable-select-option:hover {
+            background: #f8f9fa;
+        }
+
+        /* Custom scrollbar */
+        .searchable-select-dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .searchable-select-dropdown::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* Bottom bar container */
+        .bottom_bar {
+            background: #ffffff;
+            padding: 10px 25px 25px 25px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            overflow-y: auto;
+            flex-shrink: 0;
+            border-top: 1px solid #eee;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="highlight-container">
+            <div class="highlight-card">
+                <!-- New: Added highlight content wrapper -->
+                <div class="highlight-content-wrapper">
+                    <div class="highlight" id="highlightText">
+                        Loading highlights...
+                    </div>
+                </div>
+            </div>
+            <div class="notes-container">
+                <div class="note-item">
+                    <div class="note-content" id="note">Note: Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom_bar">
+        <div class="filter-menu">
+            <div class="filter-item">
+                <label for="bookTitle">Book Title:</label>
+                <select id="bookTitle" onchange="filterHighlights()">
+                    <option value="all">All</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="bookAuthor">Book Author:</label>
+                <select id="bookAuthor" onchange="filterHighlights()">
+                    <option value="all">All</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="bookTags">Tags:</label>
+                <select id="bookTags" onchange="filterHighlights()">
+                    <option value="all">All</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="highlightColor">Color:</label>
+                <select id="highlightColor" onchange="filterHighlights()">
+                    <option value="all">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
