@@ -1,3 +1,10 @@
+cat << "EOF"  >> $HOME/.bashrc
+export XDG_CACHE_HOME="/root/.cache/oh-my-posh"
+EOF
+
+source $HOME/.bashrc
+
+
 # Define the cron job command
 
 
