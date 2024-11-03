@@ -153,7 +153,7 @@ function filterAndDisplayHighlight() {
         let newHighlight;
         
         // Right or Down: Next random highlight
-        if (e.key === 'ArrowRight' ) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
             newIndex = getNewRandomIndex(filteredHighlights.length, currentHighlightIndex);
             newHighlight = filteredHighlights[newIndex];
             
@@ -171,7 +171,7 @@ function filterAndDisplayHighlight() {
             }
         }
         // Left or Up: Go back in history
-        else if (e.key === 'ArrowLeft' ) {
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
             if (historyPosition > 0) {
                 historyPosition--;
                 newIndex = highlightHistory[historyPosition];
