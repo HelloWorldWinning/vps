@@ -90,7 +90,7 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#e9f024",
+          "foreground": "#31c43b",
           "style": "plain",
           "template": "  11:05 27-Sun ☰",
           "type": "text"
