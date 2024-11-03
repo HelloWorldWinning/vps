@@ -3,11 +3,11 @@
 host_name=$(hostname)
 
 # Create the directories
-mkdir -p jupyter166_d
-mkdir -p jupyter1666_d
+mkdir -p /root/jupyter166_d
+mkdir -p /root/jupyter1666_d
 
 # Copy the docker-compose.yml files to their respective directories
-cat > jupyter166_d/docker-compose.yml <<EOL
+cat > /root/jupyter166_d/docker-compose.yml <<EOL
 version: '3'
 services:
   jupyter166:
@@ -22,7 +22,7 @@ services:
       - /:/Host
 EOL
 
-cat > jupyter1666_d/docker-compose.yml <<EOL
+cat > /root/jupyter1666_d/docker-compose.yml <<EOL
 version: '3'
 services:
   jupyter1666:
@@ -37,12 +37,18 @@ services:
       - /:/Host
 EOL
 
-# Change to the jupyter166_d directory and start the container
-cd jupyter166_d
+# Change to the /root/jupyter166_d directory and start the container
+cd /root/jupyter166_d
+docker-compose down
+sleep 2
+docker-compose pull
 docker-compose up -d
 
-# Change to the jupyter1666_d directory and start the container
-cd ../jupyter1666_d
+# Change to the /root/jupyter1666_d directory and start the container
+cd /root/jupyter1666_d
+docker-compose down
+sleep 2
+docker-compose pull
 docker-compose up -d
 
 # Check the running status of the two specific instances
