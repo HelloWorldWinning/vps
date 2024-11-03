@@ -24,6 +24,9 @@ flag_emoji="${first_char}${second_char}"
 #	eval  'rm -fr  ~/.ssh ;mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys; sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/g"  /etc/ssh/sshd_config;sed -i "s/#Port 22/Port 54322/g"  /etc/ssh/sshd_config ;sed -i "s/Port 22/Port 54322/g"  /etc/ssh/sshd_config ; sed -i "s/PermitRootLogin no/PermitRootLogin yes/g"  /etc/ssh/sshd_config ; systemctl restart sshd' ;
 
 #	echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdbCXW2H3AwV6g9N1FXJp1/8EfWQbSJUuIbdHPoBgMU" >> ~/.ssh/authorized_keys; 
+
+Bold_prefix="\033[1m"
+
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 
@@ -869,7 +872,7 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 			;;
 
-		8) echo -e "${Red_font_prefix}Listening${Font_color_suffix} on port 9. Waiting for incoming data..." &&  nc -l 9  -q 1  | tar xfvz - ;;
+		8) echo -e "${Red_font_prefix}${Bold_prefix}Listening${Font_color_suffix} on port 9. Waiting for incoming data..." &&  nc -l 9  -q 1  | tar xfvz - ;;
  #		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
   		9) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
 		75)docker run -itd --name az --restart always -p 8888:8888  dqjdda/azure-manager &&  docker exec -it az flask admin  1 19860826 ;;
