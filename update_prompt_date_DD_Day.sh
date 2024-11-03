@@ -32,7 +32,8 @@ else
     second_part=$(cat "$symbol_state_file")
 fi
 
-combined_template="    $first_part$second_part"
+#combined_template="    $first_part$second_part"
+combined_template="    <b>$first_part$second_part</b>"
 
 # Update the config file
 jq --arg new_template "$combined_template" '
