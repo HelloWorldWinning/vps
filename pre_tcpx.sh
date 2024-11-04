@@ -264,6 +264,13 @@ bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 
 bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh )
 
+# 106) 
+bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh) 
+# 101)
+bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh ) 
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
+
+
 
 cat << "EOF" >> /etc/resolv.conf
 nameserver 8.8.4.4
@@ -273,3 +280,4 @@ EOF
 
 
 reboot
+
