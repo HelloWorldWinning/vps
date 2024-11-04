@@ -144,16 +144,34 @@ bash  <(curl       -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 
 
+# Set XDG_CACHE_HOME for the current session
+#export XDG_CACHE_HOME="/root/.cache/oh-my-posh"
 
 
-#source ~/.bashrc
+##echo 'export XDG_CACHE_HOME="/root/.cache/oh-my-posh"' >>  $HOME/.bashrc
+
+
+export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh 
+export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache
+mkdir -p "$XDG_CACHE_HOME"
+mkdir -p "$OMP_CACHE_DIR"
+
+cat <<EOF >> $HOME/.bashrc 
+export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh
+export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache
+EOF
+source   $HOME/.bashrc
+
+#echo "XDG_CACHE_HOME has been set to $XDG_CACHE_HOME"
+
 ####bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh  )
 #
-bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  )
+#3bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  )
 
 ###curl -4s https://ohmyposh.dev/install.sh | bash -s  
-#
-(export XDG_CACHE_HOME="/root/.cache/oh-my-posh" )  && (  curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s )
+# export env1=value1 && export env2=value2 && bash my.sh
+
+(export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh && export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache  )  && (  curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s )
 
 mkdir -p /root/.config/neofetch
 
@@ -209,11 +227,6 @@ nameserver 8.8.8.8
 EOF
 
 
-# Set XDG_CACHE_HOME for the current session
-export XDG_CACHE_HOME="/root/.cache/oh-my-posh"
-mkdir -p "$XDG_CACHE_HOME"
-echo 'export XDG_CACHE_HOME="/root/.cache/oh-my-posh"' >>  $HOME/.bashrc
-echo "XDG_CACHE_HOME has been set to $XDG_CACHE_HOME"
 
 ###########  wg 
 
