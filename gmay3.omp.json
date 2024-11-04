@@ -24,7 +24,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "  $(pwd)       <b>$(ls |wc -l)</b>       <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
+          "template": "  <b>$(pwd)</b>       <b>$(ls |wc -l)</b>       <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
           "type": "path",
           "font-weight": "bold"
         },
