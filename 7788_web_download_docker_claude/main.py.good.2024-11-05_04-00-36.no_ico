@@ -144,7 +144,6 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         <html>
         <head>
             <meta charset="UTF-8">
-            <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/favicon.ico">
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
