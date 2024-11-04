@@ -561,6 +561,7 @@ ${Red_font_prefix}55${Font_color_suffix} 回程路由测试 https://github.com/v
 ${Red_font_prefix}555${Font_color_suffix}  wget -qO- bench.sh | bash | tee benchspeed.log
 ${Red_font_prefix}6${Font_color_suffix} apt install wireguard
 ${Red_font_prefix}6.1${Font_color_suffix} wg teddysun/across/master/wireguard.sh https://github.com/teddysun/across 
+${Red_font_prefix}7z${Font_color_suffix} docker: start_up_openvpn-server_z.sh
 ${Red_font_prefix}7.0${Font_color_suffix} openvpn angristan/openvpn-install/
 ${Red_font_prefix}7.1${Font_color_suffix} openvpn Nyr / openvpn-install
 ${Red_font_prefix}50${Font_color_suffix} v2ray
@@ -733,6 +734,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 			/sbin/sysctl -p 
 		       	;;
 
+		7z) bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 		7.0) eval $openvpn;;
 		7.1) eval $openvpn2;;
 		50) eval $v2ray;;
