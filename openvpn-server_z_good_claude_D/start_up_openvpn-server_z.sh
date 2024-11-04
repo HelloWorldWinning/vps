@@ -45,6 +45,8 @@ for i in {1..100}; do
     fi
 done
 
+zip /root/ovpn-clients/vpn_client_100_configs.zip /root/ovpn-clients/*.ovpn
+
 # Print server information
 echo "============================================"
 echo "OpenVPN Server Setup Complete"
