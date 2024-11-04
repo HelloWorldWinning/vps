@@ -26,7 +26,7 @@ echo "Waiting for OpenVPN container to initialize..."
 sleep 10
 
 # Create directory for client configs
-mkdir -p /data/ovpn-clients/
+mkdir -p /root/ovpn-clients/
 
 # Get public IP address
 THIS_HOST_IP=$(curl -s ifconfig.me)
