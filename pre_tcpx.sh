@@ -262,6 +262,9 @@ bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 
 bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )
 
+bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh )
+
+
 cat << "EOF" >> /etc/resolv.conf
 nameserver 8.8.4.4
 nameserver 1.1.1.1
