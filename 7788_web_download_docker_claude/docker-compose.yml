@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  file_browser:
+    image: oklove/webpage_port_7788_download
+    container_name: file_browser
+    ports:
+      - "7788:7788"
+    volumes:
+      - /:/Host
+    restart: unless-stopped
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_ADMIN
