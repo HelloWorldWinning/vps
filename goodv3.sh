@@ -686,7 +686,7 @@ ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
 ${Red_font_prefix}105${Font_color_suffix} git new branch.sh 
-${Red_font_prefix}106${Font_color_suffix} ${Red_font_prefix}docker 7777  :upload_folder.py ${Font_color_suffix}
+${Red_font_prefix}7777${Font_color_suffix} ${Red_font_prefix}docker 7777  :upload_folder.py ${Font_color_suffix}
 ${Red_font_prefix}7788${Font_color_suffix} ${Red_font_prefix}docker 7788 setup_7788_web_download_docker.sh  ${Font_color_suffix}
 ${Red_font_prefix}107${Font_color_suffix} curl -sL yabs.sh | bash -s -- -i
 ${Red_font_prefix}108${Font_color_suffix} ddp_master.sh pytorch ddp distribution  computing
@@ -975,7 +975,7 @@ netstat -tulnp | grep -E '166|177'
 		104) yes| bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
 		105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh  )  ;;
 		1066) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.sh )  ;;
-		106)  bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh)    ;;
+		7777)  bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh)    ;;
 		7788) bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh ) ;;
 		107) curl -sL yabs.sh | bash -s -- -i ;;
 
