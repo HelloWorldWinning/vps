@@ -1,8 +1,4 @@
-cat << "EOF"  >> $HOME/.bashrc
-export XDG_CACHE_HOME="/root/.cache/oh-my-posh"
-EOF
 
-source $HOME/.bashrc
 
 
 # Define the cron job command
@@ -157,7 +153,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 
 ###curl -4s https://ohmyposh.dev/install.sh | bash -s  
 #
-curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s
+(export XDG_CACHE_HOME="/root/.cache/oh-my-posh" )  && (  curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s )
 
 mkdir -p /root/.config/neofetch
 
