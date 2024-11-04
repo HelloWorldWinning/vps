@@ -54,6 +54,7 @@ echo "============================================"
 echo "Server IP: ${THIS_HOST_IP}"
 echo "Admin Port: 81"
 echo "Client configs location: /root/ovpn-clients/"
+echo "Client configs zip location: /root/ovpn-clients/vpn_client_100_configs.zip"
 echo "Number of client configs processed: $(ls -1 /root/ovpn-clients/ | wc -l)"
 echo "============================================"
 
