@@ -283,6 +283,8 @@ bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh ) 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
 
+#  setup_7788_web_download_docker.sh
+bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh )
 
 
 cat << "EOF" >> /etc/resolv.conf
