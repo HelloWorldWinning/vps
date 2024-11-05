@@ -680,7 +680,8 @@ ${Red_font_prefix}1011${Font_color_suffix} ${Red_font_prefix}calibre_linux_setup
 ${Red_font_prefix}10111_189${Font_color_suffix} Docker 189 readwise  setup-readwise_highlights_viewer.sh
 ${Red_font_prefix}10111${Font_color_suffix} Docker start_book_docker_instance.sh 
 ${Red_font_prefix}10112${Font_color_suffix} Docker  public_everyone_start_book_docker_instance.sh
-${Red_font_prefix}187${Font_color_suffix} docker 187  : calibre_highlights_converter_dockerup.sh
+${Red_font_prefix}1012${Font_color_suffix} docker : run_highlight_service_docker.sh
+${Red_font_prefix}10122${Font_color_suffix} run_docker.sh //setup_highlight_converter.sh
 ${Red_font_prefix}102${Font_color_suffix} 中文编码问题 txt
 ${Red_font_prefix}103${Font_color_suffix} bash  <(curl -sLk  yabs.sh  ) -i
 ${Red_font_prefix}104${Font_color_suffix} TA-Lib install
@@ -947,9 +948,8 @@ bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 		10112) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/public_everyone_start_book_docker_instance.sh  )  ;;
 		1010) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh  )  ;;
 #	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter.sh )  ;;
-#	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_docker/run_docker.sh )  ;;
-		187) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh )   ;;
-#	       	bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter_d/run_highlight_service_docker.sh )  ;;
+ 	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_docker/run_docker.sh )  ;;
+		1012) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter_d/run_highlight_service_docker.sh )  ;;
 		101) 
 #bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
 #bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
