@@ -38,6 +38,7 @@ def index():
     <head>
         <title>Upload File or Folder</title>
         <style>
+         html {     zoom: 250%;   }
             #loading {
                 display: none;
                 font-size: 300%;       /* Make text 3 times bigger */
