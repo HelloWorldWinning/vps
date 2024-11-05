@@ -183,7 +183,7 @@
 //"python.defaultInterpreterPath": "/root/anaconda3/envs/ray/bin/python",
   "editor.formatOnSave": true,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.autopep8"
   },
   //"editor.fontLigatures": false,
   "editor.fontLigatures": true,
