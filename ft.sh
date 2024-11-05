@@ -64,7 +64,7 @@ curl -s https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-comp
 
 wget -q  -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/ft_info.txt
 wget -q -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/update_bot_name.sh
-wget -q -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/re.sh
+wget -q -4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft/show_results.sh
 
 #sed -i 's/127.0.0.1:8080:8080/8080:8080/' docker-compose.yml
 
