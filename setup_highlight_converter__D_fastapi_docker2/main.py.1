@@ -1,0 +1,193 @@
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+import pandas as pd
+from datetime import datetime
+import json
+import os
+from typing import List
+import shutil
+import uuid
+from pathlib import Path
+
+app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Create directories if they don't exist
+os.makedirs("static", exist_ok=True)
+os.makedirs("downloads", exist_ok=True)
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+def clean_old_files():
+    """Clean up old files in the downloads directory."""
+    try:
+        downloads_dir = Path("downloads")
+        if downloads_dir.exists():
+            for item in downloads_dir.iterdir():
+                try:
+                    if item.is_file():
+                        item.unlink(missing_ok=True)
+                    elif item.is_dir():
+                        shutil.rmtree(item, ignore_errors=True)
+                except Exception as e:
+                    print(f"Error cleaning item {item}: {e}")
+    except Exception as e:
+        print(f"Error cleaning old files: {e}")
+
+
+def convert_json_to_csv(json_data: dict, output_path: Path, filename: str) -> None:
+    """Convert JSON annotations to CSV format."""
+    try:
+        csv_data = []
+        annotations = json_data.get('annotations', [])
+
+        for annotation in annotations:
+            # Skip non-highlight annotations if any
+            if annotation.get('type') != 'highlight':
+                continue
+
+            # Format the timestamp
+            timestamp = annotation.get("timestamp", "")
+            try:
+                formatted_date = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d %H:%M:%S") if timestamp else ""
+            except ValueError:
+                formatted_date = timestamp  # Keep original if parsing fails
+
+            # Get chapter/section from toc_family_titles if available
+            chapter = annotation.get("toc_family_titles", [""])[0]
+
+            # Create entry
+            csv_data.append({
+                "Highlight": annotation.get("highlighted_text", ""),
+                "Title": filename,
+                "Chapter": chapter,
+                "Note": annotation.get("notes", ""),
+                "Location": annotation.get("spine_index", ""),
+                "Date": formatted_date,
+                "Style": annotation.get("style", {}).get("which", "")
+            })
+
+        # Create and save DataFrame
+        if csv_data:
+            df = pd.DataFrame(csv_data)
+            df = df[['Highlight', 'Title', 'Chapter', 'Note', 'Location', 'Date', 'Style']]
+            df.to_csv(output_path, index=False, encoding='utf-8-sig')  # Use utf-8-sig for proper UTF-8 with BOM
+        else:
+            # Create empty file with headers if no valid annotations
+            pd.DataFrame(columns=['Highlight', 'Title', 'Chapter', 'Note', 'Location', 'Date', 'Style']).to_csv(output_path, index=False, encoding='utf-8-sig')
+
+    except Exception as e:
+        raise Exception(f"Error converting JSON to CSV: {str(e)}")
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root():
+    with open("static/index.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+
+@app.post("/upload/")
+async def upload_files(files: List[UploadFile] = File(...)):
+    session_dir = None
+    zip_path = None
+
+    try:
+        # Create a unique session directory
+        session_id = str(uuid.uuid4())
+        session_dir = Path("downloads") / session_id
+        session_dir.mkdir(parents=True, exist_ok=True)
+
+        # Process each file
+        processed_files = []
+        for file in files:
+            if not file.filename.endswith('.json'):
+                raise HTTPException(status_code=400, detail=f"File {file.filename} is not a JSON file")
+
+            try:
+                # Read JSON content
+                content = await file.read()
+                json_data = json.loads(content)
+
+                # Get filename without extension and sanitize it
+                filename = Path(file.filename).stem
+                sanitized_filename = "".join(x for x in filename if x.isalnum() or x in (' ', '-', '_'))
+
+                # Generate output path
+                output_csv = session_dir / f"{sanitized_filename}-highlights.csv"
+
+                # Convert to CSV
+                convert_json_to_csv(json_data, output_csv, filename)
+                processed_files.append(output_csv)
+
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=400, detail=f"File {file.filename} contains invalid JSON")
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Error processing file {file.filename}: {str(e)}")
+
+        # Handle response based on number of files
+        if len(processed_files) == 1:
+            # For single file
+            file_path = processed_files[0]
+            if not file_path.exists():
+                raise HTTPException(status_code=500, detail="Generated file not found")
+
+            # Read file content into memory
+            file_content = file_path.read_bytes()
+
+            # Clean up immediately after reading
+            shutil.rmtree(session_dir)
+
+            # Return file from memory
+            return Response(
+                content=file_content,
+                media_type="text/csv",
+                headers={
+                    "Content-Disposition": f'attachment; filename="{file_path.name}"'
+                }
+            )
+        else:
+            # For multiple files
+            zip_filename = "converted_highlights.zip"
+            zip_path = session_dir / zip_filename
+
+            # Create zip file
+            shutil.make_archive(str(zip_path.with_suffix('')), 'zip', session_dir)
+
+            if not zip_path.with_suffix('.zip').exists():
+                raise HTTPException(status_code=500, detail="Failed to create zip file")
+
+            # Read zip content into memory
+            zip_content = zip_path.with_suffix('.zip').read_bytes()
+
+            # Clean up immediately after reading
+            shutil.rmtree(session_dir)
+
+            # Return zip from memory
+            return Response(
+                content=zip_content,
+                media_type="application/zip",
+                headers={
+                    "Content-Disposition": f'attachment; filename="{zip_filename}"'
+                }
+            )
+
+    except Exception as e:
+        # Clean up on error
+        if session_dir and session_dir.exists():
+            shutil.rmtree(session_dir)
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=187, reload=True)

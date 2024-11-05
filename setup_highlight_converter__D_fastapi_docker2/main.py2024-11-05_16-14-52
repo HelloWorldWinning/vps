@@ -1,0 +1,183 @@
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.responses import Response, HTMLResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+import pandas as pd
+from datetime import datetime
+import json
+import os
+import io
+from typing import List
+from pathlib import Path
+import urllib.parse
+
+app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Create static directory if it doesn't exist
+os.makedirs("static", exist_ok=True)
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+def clean_filename(filename: str) -> str:
+    """Clean the filename by removing existing '-highlights' suffix if present"""
+    # Remove '-highlights' suffix if it exists
+    if filename.endswith('-highlights'):
+        filename = filename[:-11]  # remove '-highlights'
+    return filename
+
+def get_content_disposition_header(filename: str) -> str:
+    """Generate Content-Disposition header with RFC 5987 encoding"""
+    ascii_filename = filename.encode('ascii', 'ignore').decode()
+    if ascii_filename == filename:
+        # If filename is ASCII-only, use simple format
+        return f'attachment; filename="{filename}"'
+    else:
+        # If filename contains non-ASCII, use RFC 5987 encoding
+        encoded_filename = urllib.parse.quote(filename.encode('utf-8'))
+        return f"attachment; filename*=UTF-8''{encoded_filename}"
+
+def convert_json_to_csv(json_data: dict, filename: str) -> io.StringIO:
+    """Convert JSON annotations to CSV format and return as StringIO."""
+    try:
+        csv_data = []
+        annotations = json_data.get('annotations', [])
+
+        for annotation in annotations:
+            if annotation.get('type') != 'highlight':
+                continue
+
+            timestamp = annotation.get("timestamp", "")
+            try:
+                formatted_date = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d %H:%M:%S") if timestamp else ""
+            except ValueError:
+                formatted_date = timestamp
+
+            chapter = annotation.get("toc_family_titles", [""])[0]
+
+            csv_data.append({
+                "Highlight": annotation.get("highlighted_text", ""),
+                "Title": filename,
+                "Chapter": chapter,
+                "Note": annotation.get("notes", ""),
+                "Location": "",
+                "Date": formatted_date,
+                "Style": annotation.get("style", {}).get("which", "")
+            })
+
+        # Create DataFrame with explicit UTF-8 encoding
+        df = pd.DataFrame(csv_data) if csv_data else pd.DataFrame(columns=['Highlight', 'Title', 'Chapter', 'Note', 'Location', 'Date', 'Style'])
+        df = df[['Highlight', 'Title', 'Chapter', 'Note', 'Location', 'Date', 'Style']]
+
+        # Convert to CSV in memory with UTF-8 encoding
+        output = io.StringIO()
+        df.to_csv(output, index=False, encoding='utf-8-sig')
+        output.seek(0)
+        return output
+
+    except Exception as e:
+        raise Exception(f"Error converting JSON to CSV: {str(e)}")
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root():
+    with open("static/index.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.post("/upload/")
+async def upload_files(files: List[UploadFile] = File(...)):
+    try:
+        if len(files) == 1:
+            # Single file case
+            file = files[0]
+            if not file.filename.endswith('.json'):
+                raise HTTPException(status_code=400, detail=f"File {file.filename} is not a JSON file")
+
+            try:
+                # Read JSON content with explicit UTF-8 encoding
+                content = await file.read()
+                json_data = json.loads(content.decode('utf-8'))
+
+                # Get filename without extension and clean it
+                filename = clean_filename(Path(file.filename).stem)
+                output_filename = f"{filename}-highlights.csv"
+
+                # Convert to CSV
+                csv_io = convert_json_to_csv(json_data, filename)
+
+                # Return CSV file with properly encoded filename
+                content_disposition = get_content_disposition_header(output_filename)
+                headers = {
+                    'Content-Disposition': content_disposition,
+                    'Access-Control-Expose-Headers': 'Content-Disposition'
+                }
+
+                return StreamingResponse(
+                    iter([csv_io.getvalue()]),
+                    media_type="text/csv; charset=utf-8",
+                    headers=headers
+                )
+
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=400, detail=f"File {file.filename} contains invalid JSON")
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Error processing file {file.filename}: {str(e)}")
+        else:
+            # Multiple files case
+            all_data = []
+            for file in files:
+                if not file.filename.endswith('.json'):
+                    raise HTTPException(status_code=400, detail=f"File {file.filename} is not a JSON file")
+
+                try:
+                    content = await file.read()
+                    json_data = json.loads(content.decode('utf-8'))
+                    filename = clean_filename(Path(file.filename).stem)
+                    csv_io = convert_json_to_csv(json_data, filename)
+
+                    df = pd.read_csv(io.StringIO(csv_io.getvalue()), encoding='utf-8-sig')
+                    all_data.append(df)
+
+                except json.JSONDecodeError:
+                    raise HTTPException(status_code=400, detail=f"File {file.filename} contains invalid JSON")
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"Error processing file {file.filename}: {str(e)}")
+
+            # Combine all DataFrames
+            combined_df = pd.concat(all_data, ignore_index=True)
+
+            # Convert to CSV with UTF-8 encoding
+            output = io.StringIO()
+            combined_df.to_csv(output, index=False, encoding='utf-8-sig')
+            output.seek(0)
+
+            # Return combined CSV
+            current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_filename = f"combined_highlights_{current_time}.csv"
+
+            content_disposition = get_content_disposition_header(output_filename)
+            headers = {
+                'Content-Disposition': content_disposition,
+                'Access-Control-Expose-Headers': 'Content-Disposition'
+            }
+
+            return StreamingResponse(
+                iter([output.getvalue()]),
+                media_type="text/csv; charset=utf-8",
+                headers=headers
+            )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=187, reload=True)

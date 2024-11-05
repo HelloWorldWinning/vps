@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlights JSON to CSV Converter</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            zoom: 150%;
+        }
+        .drop-zone {
+            border: 2px dashed #4F46E5;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.dragover {
+            background-color: #EEF2FF;
+            border-color: #4338CA;
+        }
+        .processing {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Highlights Converter</h1>
+                <p class="text-lg text-gray-600 mb-2">Convert your JSON highlight files to CSV format</p>
+                <p class="text-sm text-gray-500">Supported format: JSON highlights export files</p>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <!-- Drag & Drop Zone -->
+                <div id="dropZone" class="drop-zone rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50">
+                    <div class="space-y-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <div class="text-gray-600">
+                            <span class="font-medium">Click to upload</span> or drag and drop
+                            <br>JSON files only
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept=".json" class="hidden">
+                </div>
+
+                <!-- File List -->
+                <div id="fileList" class="mt-4 space-y-2"></div>
+            </div>
+
+            <!-- Processing Status -->
+            <div id="status" class="mt-4 text-center hidden">
+                <div class="processing inline-flex items-center space-x-2 text-indigo-600">
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Converting your files...</span>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="mt-4 text-center hidden">
+                <div class="text-red-600 bg-red-50 p-3 rounded-md">
+                    <span id="errorText"></span>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="mt-4 text-center hidden">
+                <div class="text-green-600 bg-green-50 p-3 rounded-md">
+                    Conversion successful! Your download should begin automatically.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const status = document.getElementById('status');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successMessage = document.getElementById('successMessage');
+
+        // Handle drag and drop events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        // Handle file drop
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        // Handle file selection via click
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+        async function handleFiles(files) {
+            if (files.length === 0) return;
+
+            // Reset messages
+            errorMessage.classList.add('hidden');
+            successMessage.classList.add('hidden');
+            
+            // Validate file types
+            const invalidFiles = Array.from(files).filter(file => !file.name.toLowerCase().endsWith('.json'));
+            if (invalidFiles.length > 0) {
+                errorText.textContent = `Invalid file type(s): ${invalidFiles.map(f => f.name).join(', ')}. Please upload only JSON files.`;
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            
+            // Update file list
+            updateFileList(files);
+            
+            // Process files
+            await processFiles(files);
+        }
+
+        function updateFileList(files) {
+            fileList.innerHTML = '';
+            Array.from(files).forEach(file => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center space-x-2 text-sm text-gray-600';
+                item.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                    </svg>
+                    <span>${file.name}</span>
+                `;
+                fileList.appendChild(item);
+            });
+        }
+
+        async function processFiles(files) {
+            const formData = new FormData();
+            Array.from(files).forEach(file => {
+                formData.append('files', file);
+            });
+
+            status.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let errorData;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    errorData = await response.json();
+                }
+
+                if (!response.ok) {
+                    throw new Error(errorData?.detail || 'Upload failed. Please try again.');
+                }
+
+                // Get the blob
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                // Get the filename from Content-Disposition header
+                const contentDisposition = response.headers.get('content-disposition');
+                const filenameMatch = contentDisposition && contentDisposition.match(/filename="?([^"]+)"?/);
+                const filename = filenameMatch ? filenameMatch[1] : 'converted_highlights.csv';
+                
+                // Create a temporary link and trigger download
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                // Show success message
+                successMessage.classList.remove('hidden');
+                
+                // Reset form and file list after a short delay
+                setTimeout(() => {
+                    fileInput.value = '';
+                    fileList.innerHTML = '';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorText.textContent = error.message;
+                errorMessage.classList.remove('hidden');
+            } finally {
+                status.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

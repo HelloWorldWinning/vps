@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  highlights_converter:
+    image: oklove/fastapi_calibrew_highlights_convertor:latest
+    container_name: highlights_converter
+    ports:
+      - "187:187"
+    restart: unless-stopped
+    volumes:
+      - ./static:/app/static
+    # Optional environment variables if needed
+    environment:
+      - TZ=Asia/Shanghai
+    # Optional healthcheck
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:187/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
