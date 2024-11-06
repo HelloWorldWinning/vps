@@ -96,8 +96,9 @@ services:
     container_name: xray_docker_instance
     volumes:
       - ./config.json:/config.json
-    ports:
-      - "80:80"
+    network_mode: "host"  # Changed from ports mapping to network: host
+#   ports:
+#     - "80:80"
     command: run -c /config.json
     restart: unless-stopped
 EOL
