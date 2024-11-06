@@ -4,8 +4,6 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 
 app = Flask(__name__)
-
-# Default upload directory and credentials
 DEFAULT_UPLOAD_FOLDER = '/data/upload_folder'
 USERNAME = 'a'
 PASSWORD = 'a'
@@ -16,9 +14,9 @@ def check_auth(username, password):
 
 def authenticate():
     return Response(
-    'Could not verify your access level for that URL.\n'
-    'You have to login with proper credentials', 401,
-    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        'Could not verify your access level for that URL.\n'
+        'You have to login with proper credentials', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 def requires_auth(f):
     @wraps(f)
@@ -38,7 +36,7 @@ def index():
     <head>
         <title>Upload File or Folder</title>
         <style>
-         html {     zoom: 250%;   }
+            html { zoom: 350%; }
             #loading {
                 display: none;
                 font-size: 300%;       /* Make text 3 times bigger */
@@ -48,20 +46,18 @@ def index():
             }
         </style>
         <script>
-        function uploadFiles() {
-            document.getElementById('uploadForm').submit();
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('uploadButton').disabled = true;
-            document.getElementById('folderButton').disabled = true;
-        }
-
-        function triggerFileUpload() {
-            document.getElementById('fileInput').click();
-        }
-
-        function triggerFolderUpload() {
-            document.getElementById('folderInput').click();
-        }
+            function uploadFiles() {
+                document.getElementById('uploadForm').submit();
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('uploadButton').disabled = true;
+                document.getElementById('folderButton').disabled = true;
+            }
+            function triggerFileUpload() {
+                document.getElementById('fileInput').click();
+            }
+            function triggerFolderUpload() {
+                document.getElementById('folderInput').click();
+            }
         </script>
     </head>
     <body>
@@ -80,95 +76,44 @@ def index():
     '''
     return render_template_string(html_content)
 
-
-
-
-
-#@app.route('/upload', methods=['POST'])
-#@requires_auth
-#def upload_file():
-#    base_upload_path = request.form.get('path') or DEFAULT_UPLOAD_FOLDER
-#
-#    files = request.files.getlist('files')
-#    if not files:
-#        return 'No files selected for upload.'
-#
-#    for file in files:
-#        if file.filename == '':
-#            continue
-#
-##       relative_path = '/'.join([secure_filename(part) for part in file.filename.split('/')])
-#        relative_path = '/'.join([part for part in file.filename.split('/')])
-#       #save_path = os.path.join(base_upload_path, relative_path)
-#        save_path = os.path.join(base_upload_path, relative_path)
-#        save_path = save_path.encode('utf-8').decode('utf-8')
-#
-#       #os.makedirs(os.path.dirname(save_path), exist_ok=True)
-#       #file.save(save_path)
-#        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-#        with open(save_path, 'wb') as f:
-#            f.write(file.read())
-#
-#    return f'Files uploaded successfully to {base_upload_path}'
-
-#@app.route('/upload', methods=['POST'])
-#@requires_auth
-#def upload_file():
-#    base_upload_path = request.form.get('path') or DEFAULT_UPLOAD_FOLDER
-#    files = request.files.getlist('files')
-#    if not files:
-#        return 'No files selected for upload.'
-#
-#    uploaded_file_paths = []
-#
-#    for file in files:
-#        if file.filename == '':
-#            continue
-#
-#        relative_path = '/'.join([part for part in file.filename.split('/')])
-#        save_path = os.path.join(base_upload_path, relative_path)
-#        save_path = save_path.encode('utf-8').decode('utf-8')
-#
-#        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-#        with open(save_path, 'wb') as f:
-#            f.write(file.read())
-#
-#        uploaded_file_paths.append(save_path)
-#
-#    return '\n'.join(uploaded_file_paths)
-
-
-
 @app.route('/upload', methods=['POST'])
 @requires_auth
 def upload_file():
     base_upload_path = request.form.get('path') or DEFAULT_UPLOAD_FOLDER
     files = request.files.getlist('files')
     if not files:
-        return 'No files selected for upload.'
-
-    uploaded_files = []
-    for file in files:
-        if file.filename == '':
-            continue
-        relative_path = '/'.join([part for part in file.filename.split('/')])
-        save_path = os.path.join(base_upload_path, relative_path)
-        save_path = save_path.encode('utf-8').decode('utf-8')
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        with open(save_path, 'wb') as f:
-            f.write(file.read())
-        uploaded_files.append(save_path)
-
-    if uploaded_files:
-    #   response = "Files uploaded successfully:\n" + "\n".join(uploaded_files)
-        response =  "\n".join(uploaded_files)
+        response = 'No files selected for upload.'
     else:
-        response = "No files were uploaded."
-
-    return response.replace('\n', '<br>')
-
-
-
+        uploaded_files = []
+        for file in files:
+            if file.filename == '':
+                continue
+            relative_path = '/'.join([part for part in file.filename.split('/')])
+            save_path = os.path.join(base_upload_path, relative_path)
+            save_path = save_path.encode('utf-8').decode('utf-8')
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            with open(save_path, 'wb') as f:
+                f.write(file.read())
+            uploaded_files.append(save_path)
+        if uploaded_files:
+            response = '<br>'.join(uploaded_files)
+        else:
+            response = "No files were uploaded."
+    # Return the response with zoom effect
+    html_content = '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            html { zoom: 450%; }
+        </style>
+    </head>
+    <body>
+        <p>{{ response|safe }}</p>
+    </body>
+    </html>
+    '''
+    return render_template_string(html_content, response=response)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=7777)
