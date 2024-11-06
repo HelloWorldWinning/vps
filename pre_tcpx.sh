@@ -54,8 +54,9 @@ git config --global core.editor "vim"
 
 #apt install fzf -y
 
+####apt install docker-compose -y
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
-apt install docker-compose -y
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
