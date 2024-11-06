@@ -266,8 +266,10 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip
 ###########wg  end
 
 ########### vmess 
-bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu_only_vmess_80_DD.sh )
+#bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu_only_vmess_80_DD.sh )
 
+#  docker version
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
 ########### vmess end
 
 #  dns_test_claude.sh
