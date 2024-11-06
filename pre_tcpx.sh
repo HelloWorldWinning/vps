@@ -55,6 +55,7 @@ git config --global core.editor "vim"
 #apt install fzf -y
 
 ####apt install docker-compose -y
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v1_claude.sh )  
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
