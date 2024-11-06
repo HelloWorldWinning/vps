@@ -56,7 +56,6 @@ git config --global core.editor "vim"
 
 apt install docker-compose -y
 #####bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v1_claude.sh )  
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
 apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
@@ -290,6 +289,8 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mar
 #  setup_7788_web_download_docker.sh
 bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh )
 
+## compose v2 install
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 cat << "EOF" >> /etc/resolv.conf
 nameserver 8.8.4.4
