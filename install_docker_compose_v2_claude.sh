@@ -51,5 +51,7 @@ To test installation, you can run:
 # Verify installations
 echo "Installation complete! Verifying versions..."
 docker run hello-world
+docker rm $(docker ps -a -q --filter ancestor=hello-world)
+docker rmi hello-world
 docker --version
 docker compose version
