@@ -30,7 +30,8 @@ services:
       - /lib/modules:/lib/modules
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
-    restart: unless-stopped
+#   restart: unless-stopped
+    restart: always
 EOF
 )
 
