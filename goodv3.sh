@@ -730,6 +730,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		6.1)   wg-quick down wg0; wg-quick down wg1;wg-quick down wg2  ; fix_wg_ipv6_RTNETLINK;eval $wg61  ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )  ;
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p ;;
+	        d6) bash <(curl -4LSs "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_d/wireguard_docker_startup_65506.sh" )  ;;
 		6) wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;eval $wg ; bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) ; 
 			bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh);
 			/sbin/sysctl -p 
