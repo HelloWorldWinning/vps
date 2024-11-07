@@ -33,7 +33,7 @@ sudo  apt-get update
 
 sudo apt install -y  python3-pynvim
 
-apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs
+apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
