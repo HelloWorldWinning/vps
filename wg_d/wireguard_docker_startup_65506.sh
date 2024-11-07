@@ -72,6 +72,10 @@ docker ps --filter "name=docker_wg" --format "table {{.Names}}\t{{.Status}}\t{{.
 
 # Show container logs
 echo -e "\nContainer Logs:"
+
+sleep 4
+
 docker logs docker_wg --tail 40
 
 echo -e "\nSetup completed! Check the logs above for any issues."
+
