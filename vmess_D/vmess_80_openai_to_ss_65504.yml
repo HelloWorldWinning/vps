@@ -82,3 +82,6 @@ routing:
     - segment.io
     - sentry.io
     - stripe.com
+    - cdn.usefathom.com
+    - anthropic.com
+    - claude.ai
