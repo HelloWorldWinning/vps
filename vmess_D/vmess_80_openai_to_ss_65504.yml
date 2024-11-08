@@ -26,7 +26,7 @@ outbounds:
   tag: ss-openai
   settings:
     servers:
-    - address: wjwy.zhulei.eu.org
+    - address: OPENAI_IP_DOMAIN
       port: 65504
       method: "aes-128-gcm"
       password: "passwd"
@@ -46,7 +46,7 @@ routing:
     - browser-intake-datadoghq.com
     - chat.openai.com.cdn.cloudflare.net
     - gemini.google.com
-    - HOST-api.arkoselabs.com
+    - api.arkoselabs.com
     - HOSTcom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
     - HOSTcomproductionae4b.blob.core.windows.net
     - production-openaicom-storage.azureedge.net
@@ -55,9 +55,9 @@ routing:
     - browser-intake-datadoghq.com
     - chat.openai.com.cdn.cloudflare.net
     - gemini.google.com
-    - HOST-api.arkoselabs.com
-    - HOSTcom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
-    - HOSTcomproductionae4b.blob.core.windows.net
+    - api.arkoselabs.com
+    - api-bdcpf8c6d2e9atf6.z01.azurefd.net
+    - comproductionae4b.blob.core.windows.net
     - production-openaicom-storage.azureedge.net
     - static.cloudflareinsights.com
     - ai.com
@@ -77,9 +77,8 @@ routing:
     - oaistatic.com
     - oaiusercontent.com
     - observeit.net
-    - HOST-SUFFIX.com
-    - HOST-SUFFIXapi-site.azureedge.net
-    - HOST-SUFFIXcom.imgix.net
+    - api-site.azureedge.net
+    - imgix.net
     - segment.io
     - sentry.io
     - stripe.com
