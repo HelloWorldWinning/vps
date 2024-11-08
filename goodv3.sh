@@ -13,6 +13,55 @@ second_char=$(printf "\U$(printf %x $(( $(printf "%d" "'${country_code_UPPER:1:1
 flag_emoji="${first_char}${second_char}"
 #echo "$flag_emoji"
 
+docker_vmess_80_openai_65504(){
+#!/bin/bash
+#read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
+read -p "openai: ss 65504  IP or domain: " new_domain
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh) 
+
+# Define the configuration file path
+CONFIG_PATH="/root/xray_docker_d/config.yml"
+
+# Check if config file exists at the specified path
+if [ ! -f "$CONFIG_PATH" ]; then
+    echo "Error: config.yml not found at $CONFIG_PATH"
+    exit 1
+fi
+
+# Prompt for IP/Domain input
+
+# Validate input is not empty
+if [ -z "$new_domain" ]; then
+    echo "Error: Input cannot be empty"
+    exit 1
+fi
+
+# Create backup of original file
+cp "$CONFIG_PATH" "${CONFIG_PATH}.backup"
+
+# Replace the text using sed
+# Note: Using different delimiter (|) since the path might contain forward slashes
+sed -i "s|OPENAI_IP_DOMAIN|$new_domain|g" "$CONFIG_PATH"
+
+# Check if replacement was successful
+if [ $? -eq 0 ]; then
+    echo "Successfully replaced OPENAI_IP_DOMAIN with $new_domain"
+    echo "A backup of the original file has been created as ${CONFIG_PATH}.backup"
+else
+    echo "Error occurred during replacement"
+    # Restore from backup
+    mv "${CONFIG_PATH}.backup" "$CONFIG_PATH"
+    exit 1
+fi
+
+# Make sure the config file has correct permissions
+chmod 777 "$CONFIG_PATH"
+
+cd /root/xray_docker_d/
+docker-compose down
+sleep 3
+docker-compose up -d
+}
 
 
 
@@ -628,6 +677,7 @@ ${Red_font_prefix}1${Font_color_suffix} tcpc 脚本
 ${Red_font_prefix}mianliu2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}3${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}d80${Font_color_suffix} docker xray ${Red_font_prefix}免流${Font_color_suffix}  xray_vmess_80_ws_docker_startup.sh 
+${Red_font_prefix}d80ai${Font_color_suffix} docker xray ${Red_font_prefix}免流${Font_color_suffix}  xray_vmess_80_ws_docker_startup.sh 
 ${Red_font_prefix}65504${Font_color_suffix} docker ss-rust-launch-tcp-only.sh
 ${Red_font_prefix}444${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
 ${Red_font_prefix}412${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD debian12${Font_color_suffix}
@@ -844,6 +894,8 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 mianliu2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
 		d80) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  ;;
+		d80ai) docker_vmess_80_openai_65504  ;;
+
 		65504)  bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )  ;;
                 411)eval "$pre_InstallNET_modified_chu" ;;
                 444)eval "$pre_InstallNET_modified_chu_debian12" ;;
