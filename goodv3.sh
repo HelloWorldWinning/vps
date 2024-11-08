@@ -17,7 +17,7 @@ docker_vmess_80_openai_65504(){
 #!/bin/bash
 #read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
 read -p "openai: ss 65504  IP or domain: " new_domain
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh) 
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh ) 
 
 # Define the configuration file path
 CONFIG_PATH="/root/xray_docker_d/config.yml"
@@ -59,6 +59,7 @@ chmod 777 "$CONFIG_PATH"
 
 cd /root/xray_docker_d/
 docker-compose down
+docker-compose pull
 sleep 3
 docker-compose up -d
 }
