@@ -628,7 +628,7 @@ ${Red_font_prefix}1${Font_color_suffix} tcpc 脚本
 ${Red_font_prefix}mianliu2${Font_color_suffix} trojan_go ws ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}3${Font_color_suffix} xray ${Red_font_prefix}免流${Font_color_suffix}
 ${Red_font_prefix}d80${Font_color_suffix} docker xray ${Red_font_prefix}免流${Font_color_suffix}  xray_vmess_80_ws_docker_startup.sh 
-${Red_font_prefix}333${Font_color_suffix} docker ss-rust-launch-tcp-only.sh
+${Red_font_prefix}65504${Font_color_suffix} docker ss-rust-launch-tcp-only.sh
 ${Red_font_prefix}444${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD${Font_color_suffix}
 ${Red_font_prefix}412${Font_color_suffix} 可以检查mask ip gate ${Red_font_prefix}DD debian12${Font_color_suffix}
 ${Red_font_prefix}65${Font_color_suffix} ss_rust
@@ -844,7 +844,7 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 mianliu2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
 		d80) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  ;;
-		333)  bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )  ;;
+		65504)  bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )  ;;
                 411)eval "$pre_InstallNET_modified_chu" ;;
                 444)eval "$pre_InstallNET_modified_chu_debian12" ;;
                 4)  
