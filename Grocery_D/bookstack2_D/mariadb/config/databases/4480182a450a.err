@@ -1,0 +1,41 @@
+241108 10:59:19 mysqld_safe Starting mariadbd daemon with databases from /config/databases
+2024-11-08 10:59:19 0 [Note] Starting MariaDB 10.11.10-MariaDB-log source revision 3d0fb150289716ca75cd64d62823cf715ee47646 server_uid uNL4WqLbmvIfw6soQ1Qa440bM70= as process 411
+2024-11-08 10:59:19 0 [Note] InnoDB: Compressed tables use zlib 1.3.1
+2024-11-08 10:59:19 0 [Note] InnoDB: Number of transaction pools: 1
+2024-11-08 10:59:19 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2024-11-08 10:59:19 0 [Note] InnoDB: Using Linux native AIO
+2024-11-08 10:59:19 0 [Note] InnoDB: Initializing buffer pool, total size = 256.000MiB, chunk size = 4.000MiB
+2024-11-08 10:59:19 0 [Note] InnoDB: Completed initialization of buffer pool
+2024-11-08 10:59:19 0 [Note] InnoDB: File system buffers for log disabled (block size=512 bytes)
+2024-11-08 10:59:20 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=46964
+2024-11-08 10:59:20 0 [Note] InnoDB: End of log at LSN=1251959
+2024-11-08 10:59:20 0 [Note] InnoDB: To recover: 506 pages
+2024-11-08 10:59:20 0 [Note] InnoDB: Last binlog file '/config/log/mysql/mariadb-bin.000004', position 157886
+2024-11-08 10:59:20 0 [Note] InnoDB: 128 rollback segments are active.
+2024-11-08 10:59:20 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2024-11-08 10:59:20 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+2024-11-08 10:59:20 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
+2024-11-08 10:59:20 0 [Note] InnoDB: log sequence number 1251959; transaction id 2193
+2024-11-08 10:59:20 0 [Note] InnoDB: Loading buffer pool(s) from /config/databases/ib_buffer_pool
+2024-11-08 10:59:20 0 [Note] Plugin 'FEEDBACK' is disabled.
+2024-11-08 10:59:20 0 [Note] InnoDB: Buffer pool(s) load completed at 241108 10:59:20
+2024-11-08 10:59:20 0 [Note] Recovering after a crash using /config/log/mysql/mariadb-bin
+2024-11-08 10:59:20 0 [Note] Starting table crash recovery...
+2024-11-08 10:59:20 0 [Note] Crash table recovery finished.
+2024-11-08 10:59:20 0 [Note] Server socket created on IP: '0.0.0.0'.
+2024-11-08 10:59:20 0 [Note] Server socket created on IP: '::'.
+2024-11-08 10:59:20 0 [Note] /usr/bin/mariadbd: ready for connections.
+Version: '10.11.10-MariaDB-log'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  Alpine Linux
+2024-11-08 10:59:20 4 [Warning] Aborted connection 4 to db: 'unconnected' user: 'unauthenticated' host: 'localhost' (This connection closed normally without authentication)
+2024-11-08 10:59:22 6 [Warning] Aborted connection 6 to db: 'unconnected' user: 'unauthenticated' host: 'bookstack.bookstack2_d_default' (This connection closed normally without authentication)
+2024-11-08 10:59:57 8 [Warning] Aborted connection 8 to db: 'bookstackdb' user: 'bookstack' host: 'bookstack.bookstack2_d_default' (Got an error reading communication packets)
+2024-11-08 11:00:00 0 [Note] /usr/bin/mariadbd (initiated by: unknown): Normal shutdown
+2024-11-08 11:00:00 0 [Note] InnoDB: FTS optimize thread exiting.
+2024-11-08 11:00:00 0 [Note] InnoDB: Starting shutdown...
+2024-11-08 11:00:00 0 [Note] InnoDB: Dumping buffer pool(s) to /config/databases/ib_buffer_pool
+2024-11-08 11:00:00 0 [Note] InnoDB: Buffer pool(s) dump completed at 241108 11:00:00
+2024-11-08 11:00:01 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2024-11-08 11:00:01 0 [Note] InnoDB: Shutdown completed; log sequence number 1254687; transaction id 2242
+2024-11-08 11:00:01 0 [Note] /usr/bin/mariadbd: Shutdown complete
+
+241108 11:00:01 mysqld_safe mysqld from pid file /var/run/mysqld/mysqld.pid ended
