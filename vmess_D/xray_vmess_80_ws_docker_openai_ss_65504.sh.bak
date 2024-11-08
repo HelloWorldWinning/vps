@@ -97,6 +97,44 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/
 
 
 
+# Check if config file exists
+if [ ! -f "config.yml" ]; then
+    echo "Error: config.yml not found in current directory"
+    exit 1
+fi
+
+# Prompt for IP/Domain input
+read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
+
+# Validate input is not empty
+if [ -z "$new_domain" ]; then
+    echo "Error: Input cannot be empty"
+    exit 1
+fi
+
+# Create backup of original file
+#cp config.yml config.yml.backup
+cp $XRAY_DIR/config.yml $XRAY_DIR/config.yml.bak
+
+# Replace the text using sed
+sed -i "s/OPENAI_IP_DOMAIN/$new_domain/g" "$XRAY_DIR/config.yml"
+
+# Check if replacement was successful
+if [ $? -eq 0 ]; then
+    echo "Successfully replaced OPENAI_IP_DOMAIN with $new_domain"
+    echo "A backup of the original file has been created as config.yml.backup"
+else
+    echo "Error occurred during replacement"
+    # Restore from backup
+  # mv config.yml.backup config.yml
+    mv  $XRAY_DIR/config.yml.bak       $XRAY_DIR/config.yml
+    exit 1
+fi
+
+
+
+
+
 # Create docker-compose.yml
 cat > "$XRAY_DIR/docker-compose.yml" << EOL
 version: '3'
