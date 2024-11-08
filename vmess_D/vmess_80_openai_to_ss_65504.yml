@@ -1,0 +1,85 @@
+log:
+  loglevel: error
+
+inbounds:
+- port: 80
+  listen: 0.0.0.0
+  protocol: vmess
+  settings:
+    clients:
+    - id: 12345678-1234-1234-1234-123456789012
+    decryption: none
+    fallbacks:
+    - dest: 8080
+  streamSettings:
+    network: ws
+    wsSettings:
+      path: ''
+
+outbounds:
+- protocol: freedom
+  settings: {}
+- protocol: blackhole
+  tag: blocked
+  settings: {}
+- protocol: shadowsocks
+  tag: ss-openai
+  settings:
+    servers:
+    - address: wjwy.zhulei.eu.org
+      port: 65504
+      method: "aes-128-gcm"
+      password: "passwd"
+    uot: false
+    level: 0
+
+routing:
+  domainStrategy: AsIs
+  rules:
+  - type: field
+    ip:
+    - geoip:private
+    outboundTag: block
+  - type: field
+    outboundTag: ss-openai
+    domain:
+    - browser-intake-datadoghq.com
+    - chat.openai.com.cdn.cloudflare.net
+    - gemini.google.com
+    - HOST-api.arkoselabs.com
+    - HOSTcom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+    - HOSTcomproductionae4b.blob.core.windows.net
+    - production-openaicom-storage.azureedge.net
+    - static.cloudflareinsights.com
+    - ai.com
+    - browser-intake-datadoghq.com
+    - chat.openai.com.cdn.cloudflare.net
+    - gemini.google.com
+    - HOST-api.arkoselabs.com
+    - HOSTcom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+    - HOSTcomproductionae4b.blob.core.windows.net
+    - production-openaicom-storage.azureedge.net
+    - static.cloudflareinsights.com
+    - ai.com
+    - algolia.net
+    - api.statsig.com
+    - auth0.com
+    - chatgpt.com
+    - chatgpt.livekit.cloud
+    - client-api.arkoselabs.com
+    - events.statsigapi.net
+    - featuregates.org
+    - host.livekit.cloud
+    - identrust.com
+    - intercom.io
+    - intercomcdn.com
+    - launchdarkly.com
+    - oaistatic.com
+    - oaiusercontent.com
+    - observeit.net
+    - HOST-SUFFIX.com
+    - HOST-SUFFIXapi-site.azureedge.net
+    - HOST-SUFFIXcom.imgix.net
+    - segment.io
+    - sentry.io
+    - stripe.com
