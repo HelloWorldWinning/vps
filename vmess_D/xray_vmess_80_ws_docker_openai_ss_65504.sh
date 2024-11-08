@@ -85,8 +85,8 @@ fi
 
 # Create directory and download config
 mkdir -p "$XRAY_DIR"
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config > "$XRAY_DIR/config.json"
-
+#curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config > "$XRAY_DIR/config.json"
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/vmess_80_openai_to_ss_65504.yml > "$XRAY_DIR/config.yml" 
 # Create docker-compose.yml
 cat > "$XRAY_DIR/docker-compose.yml" << EOL
 version: '3'
@@ -95,11 +95,11 @@ services:
     image: ${DOCKER_IMAGE}
     container_name: xray_docker_instance
     volumes:
-      - ./config.json:/config.json
+      - ./config.yml:/config.yml
     network_mode: "host"  # Changed from ports mapping to network: host
 #   ports:
 #     - "80:80"
-    command: run -c /config.json
+    command: run -c /config.yml
     restart: unless-stopped
 EOL
 
