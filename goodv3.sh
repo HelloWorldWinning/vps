@@ -878,7 +878,7 @@ EOF
 bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) 
 		;;
 	1112)
-yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh ) 
+ bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh ) 
 		;;
                 1) bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh )  ;;
                 1.1)
