@@ -87,6 +87,11 @@ fi
 mkdir -p "$XRAY_DIR"
 #curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config > "$XRAY_DIR/config.json"
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/vmess_80_openai_to_ss_65504.yml > "$XRAY_DIR/config.yml" 
+
+
+
+
+
 # Create docker-compose.yml
 cat > "$XRAY_DIR/docker-compose.yml" << EOL
 version: '3'
