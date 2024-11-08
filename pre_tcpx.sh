@@ -1,14 +1,14 @@
-read -t 5 -p "1 vmess80 ,2 vmess80 openai " REPLY || REPLY=1
-
-# Handle timeout/empty input to 1, and invalid inputs to 2
-if [[ -z "$REPLY" ]] || [[ "$REPLY" == "1" ]]; then
-    REPLY=1
-else
-    REPLY=2
- # Prompt for IP/Domain input
- read -p "Please openai ss IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
-fi
-
+#read -t 5 -p "1 vmess80 ,2 vmess80 openai " REPLY || REPLY=1
+#
+## Handle timeout/empty input to 1, and invalid inputs to 2
+#if [[ -z "$REPLY" ]] || [[ "$REPLY" == "1" ]]; then
+#    REPLY=1
+#else
+#    REPLY=2
+# # Prompt for IP/Domain input
+# read -p "Please openai ss IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
+#fi
+#
 #echo "Selected: $REPLY"
 
 
@@ -285,57 +285,57 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip
 
 #  docker version
 
-if [ "$REPLY" -eq 1 ]; then
-    # commands for when REPLY equals 1
-    echo "You selected option 1"
+#if [ "$REPLY" -eq 1 ]; then
+#    # commands for when REPLY equals 1
+#    echo "You selected option 1"
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
-else
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh) 
-# Define the configuration file path
-CONFIG_PATH="/root/xray_docker_d/config.yml"
-
-# Check if config file exists at the specified path
-if [ ! -f "$CONFIG_PATH" ]; then
-    echo "Error: config.yml not found at $CONFIG_PATH"
-    exit 1
-fi
-
-## Prompt for IP/Domain input
-#read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
-
-## Validate input is not empty
-#if [ -z "$new_domain" ]; then
-#    echo "Error: Input cannot be empty"
+#else
+#bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh) 
+## Define the configuration file path
+#CONFIG_PATH="/root/xray_docker_d/config.yml"
+#
+## Check if config file exists at the specified path
+#if [ ! -f "$CONFIG_PATH" ]; then
+#    echo "Error: config.yml not found at $CONFIG_PATH"
 #    exit 1
 #fi
-
-# Create backup of original file
-cp "$CONFIG_PATH" "${CONFIG_PATH}.backup"
-
-# Replace the text using sed
-# Note: Using different delimiter (|) since the path might contain forward slashes
-sed -i "s|OPENAI_IP_DOMAIN|$new_domain|g" "$CONFIG_PATH"
-
-# Check if replacement was successful
-if [ $? -eq 0 ]; then
-    echo "Successfully replaced OPENAI_IP_DOMAIN with $new_domain"
-    echo "A backup of the original file has been created as ${CONFIG_PATH}.backup"
-else
-    echo "Error occurred during replacement"
-    # Restore from backup
-    mv "${CONFIG_PATH}.backup" "$CONFIG_PATH"
-  # exit 1
-fi
-
-# Make sure the config file has correct permissions
-chmod 644 "$CONFIG_PATH"
-cd /root/xray_docker_d/
-docker-compose down
-sleep 2 
-docker-compose up -d
-cd  $HOME
-fi
-
+#
+### Prompt for IP/Domain input
+##read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
+#
+### Validate input is not empty
+##if [ -z "$new_domain" ]; then
+##    echo "Error: Input cannot be empty"
+##    exit 1
+##fi
+#
+## Create backup of original file
+#cp "$CONFIG_PATH" "${CONFIG_PATH}.backup"
+#
+## Replace the text using sed
+## Note: Using different delimiter (|) since the path might contain forward slashes
+#sed -i "s|OPENAI_IP_DOMAIN|$new_domain|g" "$CONFIG_PATH"
+#
+## Check if replacement was successful
+#if [ $? -eq 0 ]; then
+#    echo "Successfully replaced OPENAI_IP_DOMAIN with $new_domain"
+#    echo "A backup of the original file has been created as ${CONFIG_PATH}.backup"
+#else
+#    echo "Error occurred during replacement"
+#    # Restore from backup
+#    mv "${CONFIG_PATH}.backup" "$CONFIG_PATH"
+#  # exit 1
+#fi
+#
+## Make sure the config file has correct permissions
+#chmod 644 "$CONFIG_PATH"
+#cd /root/xray_docker_d/
+#docker-compose down
+#sleep 2 
+#docker-compose up -d
+#cd  $HOME
+#fi
+#
 
 
 
