@@ -54,6 +54,7 @@ routing:
     - ai.com
     - browser-intake-datadoghq.com
     - chat.openai.com.cdn.cloudflare.net
+    - openai
     - gemini.google.com
     - api.arkoselabs.com
     - api-bdcpf8c6d2e9atf6.z01.azurefd.net
@@ -65,6 +66,7 @@ routing:
     - api.statsig.com
     - auth0.com
     - chatgpt.com
+    - chatgpt
     - chatgpt.livekit.cloud
     - client-api.arkoselabs.com
     - events.statsigapi.net
@@ -85,3 +87,5 @@ routing:
     - cdn.usefathom.com
     - anthropic.com
     - claude.ai
+    - anthropic
+    - claude
