@@ -638,6 +638,7 @@ bind-key I swap-window -t -1\; select-window -t -1
 #bind-key I swap-window -t +1\; select-window -t +1
 bind-key O swap-window -t +1\; select-window -t +1
 
-
+unbind [
+bind-key Up copy-mode
 
 set -g mouse off
