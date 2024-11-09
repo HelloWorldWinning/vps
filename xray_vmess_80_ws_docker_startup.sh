@@ -89,7 +89,6 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80
 
 # Create docker-compose.yml
 cat > "$XRAY_DIR/docker-compose.yml" << EOL
-version: '3'
 services:
   xray:
     image: ${DOCKER_IMAGE}
