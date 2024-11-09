@@ -71,7 +71,8 @@ else
               # echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
                 echo -e "${BOLD_RED}    $port_bindings    ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
             fi
-            echo " "
+#           echo " "
+printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
         fi
     done
 fi
