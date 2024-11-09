@@ -106,7 +106,7 @@ EOF
 esac
 
 # Optionally configure SMTP settings
-echo "Do you want to configure SMTP settings for email notifications? (y/n)"
+echo "Do you want to configure SMTP settings for email notifications? (y/N)"
 read SMTP_CHOICE
 
 if [ "$SMTP_CHOICE" = "y" ]; then
