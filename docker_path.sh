@@ -15,11 +15,27 @@ get_container_details() {
     echo "$details"
 }
 
+
 get_port_bindings() {
     local container_name="$1"
-    local port_bindings=$(docker inspect "$container_name" | jq -r '.[] | .NetworkSettings.Ports | to_entries[] | select(.value != null) | "\(.value[0].HostPort):\(.key)"' | head -n 1)
-    echo "$port_bindings"
+    local port_bindings=$(docker inspect "$container_name" | jq -r '
+        .[].NetworkSettings.Ports | 
+        to_entries[] | 
+        select(.value != null) | 
+        "\(.value[0].HostPort):\(.key)"
+    ')
+    # Join multiple port bindings with commas
+    if [ -n "$port_bindings" ]; then
+        echo "$port_bindings" | paste -sd "," -
+    fi
 }
+
+
+#get_port_bindings() {
+#    local container_name="$1"
+#    local port_bindings=$(docker inspect "$container_name" | jq -r '.[] | .NetworkSettings.Ports | to_entries[] | select(.value != null) | "\(.value[0].HostPort):\(.key)"' | head -n 1)
+#    echo "$port_bindings"
+#}
 
 # Function to fetch and display the docker-compose path for a given container
 get_docker_compose_path() {
@@ -65,7 +81,9 @@ else
             else
                 echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
             fi
-            echo " "
+#           echo " "
+printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
+
         fi
     done
 fi
