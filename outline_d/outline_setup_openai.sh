@@ -6,6 +6,12 @@ cef3f14d2c2abaab3903e61078568107
 Verification Token
 zCEKJYQkW2LbotjAfc1eVKqA
 
+.ProseMirror  {
+	font-size: 240%
+}
+
+
+
 """
 
 # Set fixed path
