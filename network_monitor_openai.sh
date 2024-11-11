@@ -288,8 +288,10 @@ if [ -n "$pids" ]; then
 
         if [ "$port_info" != "-" ]; then
             colored_ports=$(echo "$port_info" | sed 's/\([0-9]*\) \([A-Z]*\)/\\e[1;91m\1\\e[0m \\e[1;36m\2\\e[0m/g')
+	    printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
             printf -v formatted_line "%-8s %-8s %-30s %s" "$pid" "$user" "$colored_ports" "$cmd"
         else
+       	    printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
             printf -v formatted_line "%-8s %-8s %-30s %s" "$pid" "$user" "-" "$cmd"
         fi
 
