@@ -29,7 +29,21 @@ sleep 10
 mkdir -p /root/ovpn-clients/
 
 # Get public IP address
-THIS_HOST_IP=$(curl -s ifconfig.me)
+#THIS_HOST_IP=$(curl -s ifconfig.me)
+
+# Try multiple services to get IP
+for service in ifconfig.me icanhazip.com checkip.amazonaws.com; do
+    if THIS_HOST_IP=$(curl -s --max-time 3 $service); then
+        if [[ $THIS_HOST_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            export THIS_HOST_IP
+            echo "IP found: $THIS_HOST_IP"
+            exit 0
+        fi
+    fi
+done
+
+
+
 echo "Detected public IP: ${THIS_HOST_IP}"
 
 # Copy and modify client configuration files
@@ -39,12 +53,14 @@ for i in {1..100}; do
     docker cp openvpn:/root/client_${i}.ovpn /root/ovpn-clients/ 2>/dev/null
     
     # If file exists, replace IP address
-    if [ -f "/data/ovpn-clients/client_${i}.ovpn" ]; then
-        sed -i "s/8.210.139.66/${THIS_HOST_IP}/g" "/root/ovpn-clients/client_${i}.ovpn"
-        echo "Processed client_${i}.ovpn"
-    fi
+#   if [ -f "/root/ovpn-clients/client_${i}.ovpn" ]; then
+#       sed -i "s/8.210.139.66/${THIS_HOST_IP}/g" "/root/ovpn-clients/client_${i}.ovpn"
+#       sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/ovpn-clients/*.ovpn
+#       echo "Processed client_${i}.ovpn"
+#   fi
 done
 
+sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/ovpn-clients/*.ovpn
 zip /root/ovpn-clients/vpn_client_100_configs.zip /root/ovpn-clients/*.ovpn
 
 # Print server information
