@@ -194,29 +194,6 @@ wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/
 
 
 
-bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
-
-
-
-
-
-# Define the unique identifier
-unique_id_bashrc="echo_To_bashrc_txt_unique_id_bashrc"
-
-# Check if the unique identifier exists in ~/.bashrc
-if grep -q "$unique_id_bashrc" ~/.bashrc; then
-    echo "Unique identifier found in ~/.bashrc. Ignoring."
-else
-    # If the unique identifier doesn't exist, append the content to ~/.bashrc
-    echo "Unique identifier not found in ~/.bashrc. Adding."
-    echo  export setup_time_first=\"`date`\" >> ~/.bashrc
-    curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >> ~/.bashrc
-fi
-
-
-bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
-
-bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh  )
 
 
 
@@ -368,6 +345,25 @@ nameserver 8.8.8.8
 nameserver 1.0.0.1
 EOF
 
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
+
+# Define the unique identifier
+unique_id_bashrc="echo_To_bashrc_txt_unique_id_bashrc"
+
+# Check if the unique identifier exists in ~/.bashrc
+if grep -q "$unique_id_bashrc" ~/.bashrc; then
+    echo "Unique identifier found in ~/.bashrc. Ignoring."
+else
+    # If the unique identifier doesn't exist, append the content to ~/.bashrc
+    echo "Unique identifier not found in ~/.bashrc. Adding."
+    echo  export setup_time_first=\"`date`\" >> ~/.bashrc
+    curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >> ~/.bashrc
+fi
+
+
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
+
+bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh  )
 
 reboot
 
