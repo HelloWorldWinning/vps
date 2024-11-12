@@ -335,8 +335,6 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mar
 #  setup_7788_web_download_docker.sh
 bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh )
 
-## compose v2 install
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 cat << "EOF" >> /etc/resolv.conf
 nameserver 8.8.4.4
@@ -344,6 +342,9 @@ nameserver 1.1.1.1
 nameserver 8.8.8.8
 nameserver 1.0.0.1
 EOF
+
+## compose v2 install
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
 
