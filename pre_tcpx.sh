@@ -366,6 +366,11 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf
 
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh  )
 
+
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/python_D/cleanpy.sh > /usr/bin/cpy
+chmod +x /usr/bin/cpy
+
+
 reboot
 
 
