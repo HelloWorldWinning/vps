@@ -244,6 +244,12 @@
     "chat_id": "5093077942",
     "keyboard": [
       [
+        "/stopentry",
+        "/blacklist",
+        "/trades",
+        "/count"
+      ],
+      [
         "/weekly",
         "/daily",
         "/monthly",
