@@ -594,8 +594,11 @@ tmux_conf_theme_right_separator_sub='\uE0B3'
 
 set-option -g prefix M-d
 #bind-key u previous-window
-#bind-key h new-session
-#bind-key j command-prompt -p "Enter new session name:" "new-session -s '%%'"
+bind-key i previous-window
+#bind-key i next-window
+bind-key o next-window
+bind-key h new-session
+bind-key j command-prompt -p "Enter new session name:" "new-session -s '%%'"
 bind-key y confirm-before -p "kill-window #W? (y/n)" kill-window
 
 bind-key v command-prompt -p "Enter new window name:" "new-window -n '%%'"
@@ -609,6 +612,10 @@ bind-key r command-prompt -I "#W" "rename-window '%%'"
 bind-key R command-prompt -I "#S" "rename-session '%%'"
 
 
+bind-key -r J resize-pane -D  10
+bind-key -r K resize-pane -U  10
+bind-key -r H resize-pane -L  15
+bind-key -r L resize-pane -R  15
 
 # Unbind the default keys
 unbind-key h
@@ -617,20 +624,20 @@ unbind-key k
 unbind-key l
 
 
-bind-key -r I resize-pane -D  10
-bind-key -r O resize-pane -U  10
-bind-key o select-pane -U  # j to move up
-bind-key i select-pane -D  # k to move down (keeping this as is)
 
-bind-key -r H resize-pane -L  15
-bind-key -r L resize-pane -R  15
+# Set new custom navigation keys
+bind-key j select-pane -U  # j to move up
+bind-key k select-pane -D  # k to move down (keeping this as is)
 bind-key h select-pane -L  # h to move left
 bind-key l select-pane -R  # l to move right (keeping this as is)
 
-bind-key J swap-window -t -1\; select-window -t -1
-bind-key K swap-window -t +1\; select-window -t +1
-bind-key j previous-window
-bind-key k next-window
+# Move the current window to the previous position and follow it
+bind-key I swap-window -t -1\; select-window -t -1
+
+# Move the current window to the next position and follow it
+#bind-key I swap-window -t +1\; select-window -t +1
+bind-key O swap-window -t +1\; select-window -t +1
+
 unbind [
 bind-key Up copy-mode
 
