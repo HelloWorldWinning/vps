@@ -139,8 +139,8 @@ services:
   outline:
     image: docker.getoutline.com/outlinewiki/outline:latest
     env_file: ./docker.env
-    ports:
-      - "3000:3000"
+#   ports:
+#     - "3000:3000"
     volumes:
       - ./data/storage-data:/var/lib/outline/data
     depends_on:
@@ -150,8 +150,8 @@ services:
   redis:
     image: redis
     env_file: ./docker.env
-    ports:
-      - "6379:6379"
+#   ports:
+#     - "6379:6379"
     volumes:
       - ./data/redis.conf:/redis.conf
     command: ["redis-server", "/redis.conf"]
@@ -164,8 +164,8 @@ services:
   postgres:
     image: postgres
     env_file: ./docker.env
-    ports:
-      - "5432:5432"
+#   ports:
+#     - "5432:5432"
     volumes:
       - ./data/database-data:/var/lib/postgresql/data
     healthcheck:
