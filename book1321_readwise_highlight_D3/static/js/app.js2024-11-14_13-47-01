@@ -11,11 +11,6 @@ let filters = {
     color: 'all'
 };
 
-// Touch handling variables
-let touchStartX = 0;
-let touchEndX = 0;
-const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe
-
 // DOM Elements
 const highlightText = document.getElementById('highlightText');
 const noteContent = document.getElementById('note');
@@ -24,76 +19,6 @@ const bookAuthorSelect = document.getElementById('bookAuthor');
 const bookTagsSelect = document.getElementById('bookTags');
 const highlightColorSelect = document.getElementById('highlightColor');
 const highlightContainer = document.querySelector('.highlight-container');
-
-// Navigation Functions
-function navigateNext() {
-    const newIndex = getNewRandomIndex(filteredHighlights.length, currentHighlightIndex);
-    const newHighlight = filteredHighlights[newIndex];
-    
-    if (newHighlight && newHighlight.highlight) {
-        // Add to history only when moving forward
-        if (historyPosition < highlightHistory.length - 1) {
-            // If we're in the middle of history, truncate forward history
-            highlightHistory = highlightHistory.slice(0, historyPosition + 1);
-        }
-        highlightHistory.push(newIndex);
-        historyPosition = highlightHistory.length - 1;
-        
-        currentHighlightIndex = newIndex;
-        displayHighlight(newHighlight);
-    }
-}
-
-function navigatePrevious() {
-    if (historyPosition > 0) {
-        historyPosition--;
-        const newIndex = highlightHistory[historyPosition];
-        const newHighlight = filteredHighlights[newIndex];
-        
-        if (newHighlight && newHighlight.highlight) {
-            currentHighlightIndex = newIndex;
-            displayHighlight(newHighlight);
-        }
-    }
-}
-
-// Touch and Click Event Handlers
-function handleTouchStart(event) {
-    touchStartX = event.touches[0].clientX;
-}
-
-function handleTouchEnd(event) {
-    touchEndX = event.changedTouches[0].clientX;
-    handleSwipe();
-}
-
-function handleSwipe() {
-    const swipeDistance = touchEndX - touchStartX;
-    
-    if (Math.abs(swipeDistance) >= SWIPE_THRESHOLD) {
-        if (swipeDistance > 0) {
-            // Swipe right to left (previous)
-            navigatePrevious();
-        } else {
-            // Swipe left to right (next)
-            navigateNext();
-        }
-    }
-}
-
-function handleScreenClick(event) {
-    const screenWidth = window.innerWidth;
-    const clickX = event.clientX;
-    
-    // Click on right half of screen
-    if (clickX > screenWidth / 2) {
-        navigateNext();
-    }
-    // Click on left half of screen
-    else {
-        navigatePrevious();
-    }
-}
 
 // Helper function to get random index different from current
 function getNewRandomIndex(max, currentIndex) {
@@ -116,7 +41,7 @@ function updateGridLayout(hasNote) {
     }
 }
 
-// [Previous code for loadFilters remains the same]
+// Fetch and populate filter options
 async function loadFilters() {
     try {
         const response = await fetch('/api/filters');
@@ -158,7 +83,7 @@ async function loadFilters() {
     }
 }
 
-// [Previous code for loadHighlights remains the same]
+// Fetch highlights from the API
 async function loadHighlights() {
     try {
         const response = await fetch('/api/highlights');
@@ -224,16 +149,44 @@ function filterAndDisplayHighlight() {
 
     // Set up keyboard navigation
     document.onkeydown = (e) => {
-        if (e.key === 'ArrowRight') {
-            navigateNext();
+        let newIndex;
+        let newHighlight;
+        
+        // Right or Down: Next random highlight
+        if (e.key === 'ArrowRight' ) {
+            newIndex = getNewRandomIndex(filteredHighlights.length, currentHighlightIndex);
+            newHighlight = filteredHighlights[newIndex];
+            
+            if (newHighlight && newHighlight.highlight) {
+                // Add to history only when moving forward
+                if (historyPosition < highlightHistory.length - 1) {
+                    // If we're in the middle of history, truncate forward history
+                    highlightHistory = highlightHistory.slice(0, historyPosition + 1);
+                }
+                highlightHistory.push(newIndex);
+                historyPosition = highlightHistory.length - 1;
+                
+                currentHighlightIndex = newIndex;
+                displayHighlight(newHighlight);
+            }
         }
-        else if (e.key === 'ArrowLeft') {
-            navigatePrevious();
+        // Left or Up: Go back in history
+        else if (e.key === 'ArrowLeft' ) {
+            if (historyPosition > 0) {
+                historyPosition--;
+                newIndex = highlightHistory[historyPosition];
+                newHighlight = filteredHighlights[newIndex];
+                
+                if (newHighlight && newHighlight.highlight) {
+                    currentHighlightIndex = newIndex;
+                    displayHighlight(newHighlight);
+                }
+            }
         }
     };
 }
 
-// [Previous code for displayHighlight and SearchableSelect class remains the same]
+// Display a single highlight
 function displayHighlight(highlight) {
     if (!highlight || !highlight.highlight) {
         console.error('Invalid highlight data in displayHighlight:', highlight);
@@ -289,9 +242,98 @@ ${highlight.tags ? `\nTags: ${highlight.tags}` : ''}
     }
 }
 
-// [Previous SearchableSelect class implementation remains the same]
+///////////
+
+// Create a class for the searchable select
 class SearchableSelect {
-    // ... [Previous implementation remains unchanged]
+    constructor(originalSelect) {
+        this.originalSelect = originalSelect;
+        this.options = Array.from(originalSelect.options);
+        this.setupSearchableSelect();
+    }
+
+    setupSearchableSelect() {
+        // Create container
+        this.container = document.createElement('div');
+        this.container.className = 'searchable-select-container';
+
+        // Create input
+        this.input = document.createElement('input');
+        this.input.type = 'text';
+        this.input.className = 'searchable-select-input';
+        this.input.placeholder = this.originalSelect.querySelector('option').textContent;
+
+        // Create dropdown
+        this.dropdown = document.createElement('div');
+        this.dropdown.className = 'searchable-select-dropdown';
+
+        // Add elements to container
+        this.container.appendChild(this.input);
+        this.container.appendChild(this.dropdown);
+
+        // Insert the new elements
+        this.originalSelect.style.display = 'none';
+        this.originalSelect.parentNode.insertBefore(this.container, this.originalSelect.nextSibling);
+
+        // Setup event listeners
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        // Input event listeners
+        this.input.addEventListener('focus', () => this.showDropdown());
+        this.input.addEventListener('input', () => this.filterOptions());
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!this.container.contains(e.target)) {
+                this.hideDropdown();
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        this.dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    showDropdown() {
+        this.dropdown.classList.add('active');
+        this.renderOptions(this.options);
+    }
+
+    hideDropdown() {
+        this.dropdown.classList.remove('active');
+    }
+
+    filterOptions() {
+        const searchTerm = this.input.value.toLowerCase();
+        const filteredOptions = this.options.filter(option => 
+            option.textContent.toLowerCase().includes(searchTerm)
+        );
+        this.renderOptions(filteredOptions);
+    }
+
+    renderOptions(options) {
+        this.dropdown.innerHTML = '';
+        options.forEach(option => {
+            const div = document.createElement('div');
+            div.className = 'searchable-select-option';
+            div.textContent = option.textContent;
+            div.addEventListener('click', () => {
+                this.selectOption(option);
+            });
+            this.dropdown.appendChild(div);
+        });
+    }
+
+    selectOption(option) {
+        this.originalSelect.value = option.value;
+        this.input.value = option.textContent;
+        this.hideDropdown();
+        // Trigger change event on original select
+        this.originalSelect.dispatchEvent(new Event('change'));
+    }
 }
 
 // Initialize searchable selects
@@ -310,6 +352,15 @@ function initializeSearchableSelects() {
     });
 }
 
+// Add to your existing init function
+async function init() {
+
+    // Note: No need for the original event listeners as they're handled by the SearchableSelect class
+}
+
+
+
+
 // Initialize the application
 async function init() {
     await loadFilters();
@@ -317,17 +368,11 @@ async function init() {
 
     // Initialize searchable selects after filters are loaded
     initializeSearchableSelects();
-    
     // Add event listeners for filter changes
     bookTitleSelect.addEventListener('change', filterHighlights);
     bookAuthorSelect.addEventListener('change', filterHighlights);
     bookTagsSelect.addEventListener('change', filterHighlights);
     highlightColorSelect.addEventListener('change', filterHighlights);
-
-    // Add touch and click event listeners
-    document.addEventListener('touchstart', handleTouchStart, false);
-    document.addEventListener('touchend', handleTouchEnd, false);
-    document.addEventListener('click', handleScreenClick, false);
 }
 
 // Start the application
