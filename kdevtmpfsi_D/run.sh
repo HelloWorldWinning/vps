@@ -7,7 +7,7 @@ else
 touch $report
 fi
 chattr +i /tmp/kdevtmpfsi
-
+chmod 000 /tmp/zzz
 fixing () {
 rm -rfv /tmp/kdevtmpfsi*
 touch /tmp/kdevtmpfsi
@@ -20,4 +20,7 @@ log () {
  echo  "$(date) by user:$(whoami) executed:<$0> virus:kdevtmpfsi action:>killed Pattern:spoofing Target:<CPU> host:$(hostname):<$(curl -s ident.me)>" >> $report
 }
 fixing
+
 log
+
+
