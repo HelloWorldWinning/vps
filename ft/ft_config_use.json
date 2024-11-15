@@ -267,7 +267,6 @@
         "/start"
       ],
       [
-        "/show_config",
         "/forcelong",
         "/forceshort",
 	"/forceexit"
