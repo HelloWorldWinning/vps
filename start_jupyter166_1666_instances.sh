@@ -8,7 +8,6 @@ mkdir -p /root/jupyter1666_d
 
 # Copy the docker-compose.yml files to their respective directories
 cat > /root/jupyter166_d/docker-compose.yml <<EOL
-version: '3'
 services:
   jupyter166:
     image: oklove/jupyter166
@@ -24,7 +23,6 @@ services:
 EOL
 
 cat > /root/jupyter1666_d/docker-compose.yml <<EOL
-version: '3'
 services:
   jupyter1666:
     image: oklove/jupyter1666
