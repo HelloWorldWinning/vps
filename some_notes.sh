@@ -4,6 +4,24 @@
 ================================================================
 ================================================================
 ================================================================
+https://hostloc.com/thread-1030881-1-1.html
+https://netboot.xyz/docs/booting/grub/
+ dd.sh 
+# Install grub-imageboot
+apt install grub-imageboot -y
+
+# Download netboot.xyz ISO
+yes | rm -r /boot/images 
+mkdir -p  /boot/images
+cd /boot/images
+wget https://boot.netboot.xyz/ipxe/netboot.xyz.iso
+
+# Update GRUB menu to include this ISO
+update-grub2
+reboot
+
+
+
 ================================================================
 docker run -d --name dynalist --restart always oklove/dyna.v0.0.1.2.py:latest
 ================================================================
