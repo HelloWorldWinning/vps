@@ -86,7 +86,9 @@ while [ -z "$MODE" ]; do
 done
 
 if [ "$MODE" = "receiver" ]; then
+	echo ""
     receiver_mode
 else
+	echo ""
     sender_mode
 fi
