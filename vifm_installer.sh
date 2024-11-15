@@ -31,3 +31,5 @@ source ~/.bashrc
 
 echo "Current vifmrc content:"
 cat ~/.config/vifm/vifmrc
+
+
