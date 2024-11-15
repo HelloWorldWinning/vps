@@ -167,7 +167,9 @@ set laststatus=2
 "hi Normal     ctermfg=blue  guifg=blue guifg=#25f540 ctermbg=Black guibg=#283237  ctermbg=Black
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#13e8e1  ctermbg=Black guibg=#283237  ctermbg=Black
-hi Normal     ctermfg=blue  guifg=blue guifg=#09F418  ctermbg=Black guibg=#283237  ctermbg=Black
+
+""""""""2024-11-15_16-06-47""""""""hi Normal     ctermfg=blue  guifg=blue guifg=#09F418  ctermbg=Black guibg=#283237  ctermbg=Black
+hi Normal     ctermfg=blue  guifg=blue guifg=#09F418 ctermbg=None guibg=#283237  ctermbg=None 
 
 "inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
