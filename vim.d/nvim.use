@@ -89,20 +89,22 @@ call plug#end()
 
 "set background=dark " or light if you want light mode
 "set background=light" or light if you want light mode
-
 "set background=dark
 "set termguicolors
 "silent! colorscheme pire
-
-
 "colorscheme everforest
-""colorscheme gruvbox
-colorscheme  toast
+""""colorscheme gruvbox
+""colorscheme  toast
+"""colorscheme  quantum
+""set background=dark     " dark theme
+"""set background=light  " light theme
+""
 
 set termguicolors       " enable true colors support
-"colorscheme  quantum
-set background=dark     " dark theme
-"set background=light  " light theme
+
+set background=dark         " Use dark background
+let g:gruvbox_contrast_dark = 'soft'  " Set hard contrast
+colorscheme gruvbox         " Apply the gruvbox colorscheme
 
 
 
