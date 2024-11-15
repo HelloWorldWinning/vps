@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+#https://askubuntu.com/questions/1225410/my-ubuntu-server-has-been-infected-by-a-virus-kdevtmpfsi
+#https://stackoverflow.com/questions/60151640/kdevtmpfsi-using-the-entire-cpu
+#https://www.enmimaquinafunciona.com/pregunta/174372/mi-servidor-ubuntu-ha-sido-infectado-por-un-virus-kdevtmpfsi
+
+
 report=/var/log/incident.log
 if [  -f "$report" ]
 then
