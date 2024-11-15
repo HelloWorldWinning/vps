@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Color codes
+#
+YELLOW_BG="\e[103m"
 RED_BG="\e[41m"
 WHITE_TEXT="\e[97m"
 GREEN_BG="\e[42m"
@@ -26,7 +28,7 @@ if [ $? -gt 128 ] || [ -z "$input" ]; then
     nc -l -p 9 > "$filename"
 else
     # Sender mode
-    echo -e "${GREEN_BG}${BLACK_TEXT}${BOLD}  Sender Mode  ${RESET}"
+    echo -e "${YELLOW_BG}${BLACK_TEXT}${BOLD}  Sender Mode  ${RESET}"
     read -p "IP or domain to send to: " ip
     read -p "Filename to send: " filename
     nc -q 1 "$ip" 9 < "$filename"
