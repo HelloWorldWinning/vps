@@ -727,7 +727,7 @@ ${Red_font_prefix}lab${Font_color_suffix} ${Red_font_prefix}jupyter_lab lab_inst
 ${Red_font_prefix}100${Font_color_suffix} ${Red_font_prefix}jupyter: jupyter16666.sh${Font_color_suffix}
 ${Red_font_prefix}1007${Font_color_suffix} ${Red_font_prefix}jupyter notebook7 : notebook7_install.sh  ${Font_color_suffix}
 ${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
-${Red_font_prefix}1010${Font_color_suffix} typecho_docker_setup.sh
+${Red_font_prefix}d88${Font_color_suffix}  ${Red_font_prefix} docker: typecho_docker_setup.sh ${Font_color_suffix}  
 ${Red_font_prefix}1011${Font_color_suffix} ${Red_font_prefix}calibre_linux_setup_ebook_online_reader.sh${Font_color_suffix}
 ${Red_font_prefix}d189${Font_color_suffix} Docker 189 readwise  setup-readwise_highlights_viewer.sh
 ${Red_font_prefix}10111${Font_color_suffix} Docker start_book_docker_instance.sh 
@@ -1001,7 +1001,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		d189) 
 bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D/setup-readwise_highlights_viewer.sh'  )   ;;
 		10112) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/public_everyone_start_book_docker_instance.sh  )  ;;
-		1010) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh  )  ;;
+		d88) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh  )  ;;
 #	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter.sh )  ;;
 #	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_docker/run_docker.sh )  ;;
 		187) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh )   ;;
