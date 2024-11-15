@@ -371,6 +371,9 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/python_D
 chmod +x /usr/bin/cpy
 
 
+ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/disable_ssh_password.sh ) 
+
+
 reboot
 
 
