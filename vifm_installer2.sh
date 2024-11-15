@@ -20,6 +20,8 @@ fi
 
 # Create vifmrc with color schemes
 {
+    echo "set relativenumber"
+    echo "set number"
     echo "colorscheme $default_scheme"
     for theme in "$vifm_colors_dir"/*.vifm; do
         theme_name=$(basename "$theme" .vifm)
