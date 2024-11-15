@@ -9,19 +9,46 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Check for required commands
-for cmd in docker-compose git; do
-    if ! command_exists "$cmd"; then
-        echo "Error: $cmd is not installed. Please install it and try again."
-        exit 1
+ 
+# Check and install required commands
+for cmd in "docker compose" git; do
+    if [ "$cmd" = "docker compose" ]; then
+        if ! docker compose version >/dev/null 2>&1; then
+            echo "Docker Compose V2 is not installed. Installing..."
+             bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )     
+        fi
+    elif ! command_exists "$cmd"; then
+        echo "$cmd is not installed. Installing..."
+        case "$cmd" in
+            git)
+                apt update && apt -y install git
+                ;;
+        esac
     fi
 done
 
 # Create necessary directories
-#mkdir -p /data/typecho_d/data/themes/
-$path_D="/root/typecho_d"
-#mkdir -p /data/typecho_d/data/themes/
-mkdir -p $path_d
+path_d="/root/typecho_d"
+mkdir -p "$path_d"
+
+echo "Installation completed successfully!"
+echo "Docker compose version:"
+docker compose version
+
+
+
+
+
+## Create necessary directories
+##mkdir -p /data/typecho_d/data/themes/
+#$path_D="/root/typecho_d"
+##mkdir -p /data/typecho_d/data/themes/
+#mkdir -p $path_d
+
+
+
+path_d="/root/typecho_d"
+mkdir -p "$path_d"
 
 # Create the docker-compose.yml file
 #cat << "EOF" > /data/typecho_d/docker-compose.yml
