@@ -793,7 +793,7 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		50) eval $v2ray;;
 		8.1) eval $modify_id_of_v2ray;;
 		999) eval $kcptun;;
-		99  bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/one_file_transfer4.sh )     ;;
+		99)  bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/one_file_transfer4.sh )     ;;
 		10) eval $ss_go;;
 		11o) eval $dd;;
 		11) eval $dd_debian11;;
