@@ -18,10 +18,14 @@ for cmd in docker-compose git; do
 done
 
 # Create necessary directories
-mkdir -p /data/typecho_d/data/themes/
+#mkdir -p /data/typecho_d/data/themes/
+$path_D="/root/typecho_d"
+#mkdir -p /data/typecho_d/data/themes/
+mkdir -p $path_d
 
 # Create the docker-compose.yml file
-cat << "EOF" > /data/typecho_d/docker-compose.yml
+#cat << "EOF" > /data/typecho_d/docker-compose.yml
+cat << EOF > ${path_D}/docker-compose.yml
 version: '3'
 services:
   typecho:
@@ -31,7 +35,7 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - /data/typecho_d/data:/data
+      - ./data:/data
     environment:
       - PHP_TZ=Asia/Shanghai
       - PHP_MAX_EXECUTION_TIME=600
@@ -48,7 +52,9 @@ echo "docker-compose.yml created successfully."
 
 # Step 1: Run docker-compose up -d
 echo "Starting Typecho container..."
-cd /data/typecho_d
+#cd /data/typecho_d
+cd  $path_d
+docker-compose pull
 docker-compose up -d
 
 # Check if the container is running
@@ -83,7 +89,8 @@ if [ -d "/data/typecho_d/data/themes/typecho-theme-simple" ]; then
 fi
 
 # Move only the theme folder
-mv "$TMP_DIR/vps/typecho-theme-simple" /data/typecho_d/data/themes/
+#mv "$TMP_DIR/vps/typecho-theme-simple" /data/typecho_d/data/themes/
+mv "$TMP_DIR/vps/typecho-theme-simple" $path_d/data/themes/
 
 # Clean up
 rm -rf "$TMP_DIR"
@@ -103,7 +110,8 @@ if [ -d "/data/typecho_d/data/plugins/Comment2Telegram" ]; then
 fi
 
 # Move the plugin folder
-mv "$TMP_DIR/comment2telegram" /data/typecho_d/data/plugins/Comment2Telegram
+#mv "$TMP_DIR/comment2telegram" /data/typecho_d/data/plugins/Comment2Telegram
+mv "$TMP_DIR/comment2telegram"  $path_d/data/plugins/Comment2Telegram
 
 # Clean up
 rm -rf "$TMP_DIR"
@@ -111,7 +119,8 @@ echo "Comment2Telegram plugin has been added successfully."
 
 
 
-git clone https://github.com/SocialSisterYi/Typecho-Plugin-CommentShowIp  /data/typecho_d/data/plugins/CommentShowIp
+#git clone https://github.com/SocialSisterYi/Typecho-Plugin-CommentShowIp  /data/typecho_d/data/plugins/CommentShowIp
+git clone https://github.com/SocialSisterYi/Typecho-Plugin-CommentShowIp  $path_d/data/plugins/CommentShowIp
 
 
 ### git clone https://github.com/vndroid/RobotsLogs /data/typecho_d/data/plugins/RobotsLogs
@@ -122,10 +131,6 @@ git clone https://github.com/SocialSisterYi/Typecho-Plugin-CommentShowIp  /data/
 
 
  
-
-
-
-
 
 # Check Typecho container status
 echo "Checking Typecho container status..."
