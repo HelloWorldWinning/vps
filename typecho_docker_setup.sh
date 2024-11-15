@@ -50,9 +50,9 @@ docker compose version
 path_d="/root/typecho_d"
 mkdir -p "$path_d"
 
-# Create the docker-compose.yml file
-#cat << "EOF" > /data/typecho_d/docker-compose.yml
-cat << EOF > ${path_D}/docker-compose.yml
+# Create the docker compose.yml file
+#cat << "EOF" > /data/typecho_d/docker compose.yml
+cat << EOF > ${path_D}/docker compose.yml
 version: '3'
 services:
   typecho:
@@ -75,18 +75,18 @@ services:
       retries: 3
 EOF
 
-echo "docker-compose.yml created successfully."
+echo "docker compose.yml created successfully."
 
-# Step 1: Run docker-compose up -d
+# Step 1: Run docker compose up -d
 echo "Starting Typecho container..."
 #cd /data/typecho_d
 cd  $path_d
-docker-compose pull
-docker-compose up -d
+docker compose pull
+docker compose up -d
 
 # Check if the container is running
-if ! docker-compose ps | grep -q "Up"; then
-    echo "Error: Failed to start Typecho container. Please check docker-compose logs."
+if ! docker compose ps | grep -q "Up"; then
+    echo "Error: Failed to start Typecho container. Please check docker compose logs."
     exit 1
 fi
 
