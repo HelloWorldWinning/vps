@@ -623,16 +623,14 @@ bind-key o select-pane -U  # j to move up
 bind-key i select-pane -D  # k to move down (keeping this as is)
 
 bind-key -r H resize-pane -L  15
+bind-key -r L resize-pane -R  15
 bind-key h select-pane -L  # h to move left
-
-bind-key k select-pane -R  # l to move right (keeping this as is)
-bind-key -r K resize-pane -R  15
-
-bind-key l next-window
-bind-key L swap-window -t +1\; select-window -t +1
+bind-key l select-pane -R  # l to move right (keeping this as is)
 
 bind-key J swap-window -t -1\; select-window -t -1
+bind-key K swap-window -t +1\; select-window -t +1
 bind-key j previous-window
+bind-key k next-window
 unbind [
 bind-key Up copy-mode
 
