@@ -51,3 +51,49 @@ else
     echo "SSH configuration test failed! Please check your configuration"
     exit 1
 fi
+
+
+###########    del users :  "www-data"    "debian"
+
+# Check if running as root
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+# Function to delete user
+delete_user() {
+    local username=$1
+    
+    # Check if user exists
+    if id "$username" >/dev/null 2>&1; then
+        echo "Deleting user: $username"
+        
+        # Try to stop any processes running as this user
+        pkill -u "$username"
+        
+        # Delete user and their home directory
+        userdel -r "$username" 2>/dev/null || {
+            echo "Warning: Couldn't delete user with -r flag, trying without home directory removal"
+            userdel "$username"
+        }
+        
+        # Check if deletion was successful
+        if id "$username" >/dev/null 2>&1; then
+            echo "Failed to delete user: $username"
+        else
+            echo "Successfully deleted user: $username"
+        fi
+    else
+        echo "User $username does not exist"
+    fi
+}
+
+# Delete specified users
+delete_user "www-data"
+delete_user "debian"
+
+echo "User deletion process completed"
+
+
+
