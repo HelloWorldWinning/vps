@@ -24,7 +24,7 @@
             "folder_icon": ""
           },
           "style": "diamond",
-          "template": "  $(dirname $(pwd) | xargs -I{} sh -c 'if [ '{}' = '/' ]; then echo '<i>/</i>'; else echo '<i>{}/</i>'; fi')$(basename $(pwd) | xargs -I{} sh -c 'if [ $(pwd) = '/' ]; then echo ''; else echo '<b>{}</b>'; fi')       <b>$(ls |wc -l)</b>       <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
+          "template": "  <b>$(pwd)</b>       <b>$(ls |wc -l)</b>       <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
           "type": "path",
           "font-weight": "bold"
         },
@@ -92,7 +92,7 @@
         {
           "foreground": "#e9f024",
           "style": "plain",
-          "template": "    <b>12:27 16-Sat ☰</b>",
+          "template": "  11:05 27-Sun ☰",
           "type": "text"
         }
       ],
