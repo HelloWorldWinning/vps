@@ -6,8 +6,6 @@ from urllib.parse import quote, unquote
 import secrets
 from datetime import datetime
 from typing import List
-import mimetypes
-import html
 
 app = FastAPI()
 security = HTTPBasic()
@@ -56,9 +54,9 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_password = "a"
 
     is_correct_username = secrets.compare_digest(credentials.username.encode('utf8'),
-                                                 correct_username.encode('utf8'))
+                                               correct_username.encode('utf8'))
     is_correct_password = secrets.compare_digest(credentials.password.encode('utf8'),
-                                                 correct_password.encode('utf8'))
+                                               correct_password.encode('utf8'))
 
     if not (is_correct_username and is_correct_password):
         raise HTTPException(
@@ -67,50 +65,6 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials
-
-# List of text file extensions to render in the browser
-#TEXT_FILE_EXTENSIONS = [
-#    '.txt', '.py', '.sh', '.log', '.cfg', '.conf', '.ini', '.json', '.yaml', '.yml',
-#    '.md', '.rst', '.csv', '.tsv', '.bat', '.sql', '.css', '.js', '.xml'
-#]
-
-TEXT_FILE_EXTENSIONS = [
-    # Shell and config files
-    '.sh', '.bash', '.zsh', '.fish',
-    '.conf', '.ini', '.cfg', '.properties', '.env',
-
-    # Data formats
-    '.yml', '.yaml', '.json', '.toml',
-    '.md', '.markdown',
-    '.sql',
-    '.log',
-    '.csv', '.tsv',
-    '.xml',
-
-    # Programming languages
-    '.rs', '.go', '.java', '.kt', '.scala',
-    '.rb', '.php',
-    '.js', '.ts',
-    '.css', '.scss', '.less',
-    '.vue', '.jsx', '.tsx',
-    '.html', '.htm',
-    '.c', '.cpp', '.h', '.hpp',
-    '.cs', '.vb',
-    '.pl', '.pm',
-    '.swift',
-    '.r',
-    '.lua',
-    '.tcl',
-
-    # Special config files
-    '.dockerfile',
-    '.gitignore', '.dockerignore',
-    '.editorconfig',
-    '.htaccess',
-    '.nginx',
-    '.service', '.socket', '.timer'
-]
-
 
 @app.get("/{path:path}")
 async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authenticate)):
@@ -229,12 +183,14 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
                     white-space: nowrap;
                 }}
 
-                .breadcrumb-item, .breadcrumb-item *, .breadcrumb > :not(a) {{
+.breadcrumb-item, .breadcrumb-item *, .breadcrumb > :not(a) {{
                     color: #1d910d;
                     text-decoration: none;
                     transition: color 0.2s;
                     font-size: 200%;
                 }}
+
+
 
                 .breadcrumb-item:hover {{
                     color: #26cc0e;
@@ -344,51 +300,11 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         return HTMLResponse(content=html_content)
 
     elif os.path.isfile(full_path):
-        file_extension = os.path.splitext(full_path)[1].lower()
-        if file_extension in TEXT_FILE_EXTENSIONS:
-            try:
-                with open(full_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-            except UnicodeDecodeError:
-                # Try with 'latin-1' encoding
-                with open(full_path, 'r', encoding='latin-1') as f:
-                    content = f.read()
-            # Escape HTML special characters to prevent HTML injection
-            content = html.escape(content)
-            html_content = f"""
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>{os.path.basename(full_path)}</title>
-                <style>
-                    body {{
-                        font-family: 'Source Code Pro', monospace;
-                        white-space: pre-wrap;
-                        word-wrap: break-word;
-                        background-color: #f8f9fa;
-                        margin: 20px;
-                    }}
-                    pre {{
-                        font-family: 'Source Code Pro', monospace;
-                        white-space: pre-wrap;
-                        word-wrap: break-word;
-                    }}
-                </style>
-            </head>
-            <body>
-                <h1>{os.path.basename(full_path)}</h1>
-                <pre>{content}</pre>
-            </body>
-            </html>
-            """
-            return HTMLResponse(content=html_content)
-        else:
-            # Serve the file
-            return FileResponse(full_path)
+        # Serve the file
+        return FileResponse(full_path)
     else:
         raise HTTPException(status_code=404, detail="Path not found")
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=7788, reload=True)
-
