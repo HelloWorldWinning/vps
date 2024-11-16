@@ -93,7 +93,7 @@ TEXT_FILE_EXTENSIONS = [
     '.js', '.ts',
     '.css', '.scss', '.less',
     '.vue', '.jsx', '.tsx',
-    '.html', '.htm',
+#   '.html', '.htm',
     '.c', '.cpp', '.h', '.hpp',
     '.cs', '.vb',
     '.pl', '.pm',
