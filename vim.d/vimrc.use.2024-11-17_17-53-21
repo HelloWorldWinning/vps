@@ -293,36 +293,3 @@ autocmd BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
 set maxfuncdepth=10000
 
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
-
-
-
-" Function to run Black formatter
-function! BlackFormat()
-    if executable('black')
-        try
-            silent! undojoin | %!black -q -
-        catch /.*/
-            echohl ErrorMsg | echo "Black formatting failed" | echohl None
-        endtry
-    endif
-endfunction
-
-" Custom write commands for Python files
-function! WritePython()
-    call BlackFormat()
-    write
-endfunction
-
-function! WriteQuitPython()
-    call BlackFormat()
-    write
-    quit
-endfunction
-
-" Map custom commands for Python files only
-autocmd FileType python cnoreabbrev <buffer> w :call WritePython()<CR>
-autocmd FileType python cnoreabbrev <buffer> wq :call WriteQuitPython()<CR>
-
-" Reset writeany for non-Python files
-autocmd BufEnter * if &filetype != 'python' | set nowriteany | endif
-
