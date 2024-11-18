@@ -147,18 +147,41 @@ alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning
 #if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
 #if true; then
 
+
+
+
 if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
-    # Check if a tmux session named "do" exists
-    tmux has-session -t "do" &>/dev/null
+    # Check if a tmux session named "易" exists
+    tmux has-session -t "易" &>/dev/null
     if [ $? -ne 0 ]; then
-        # If the session does not exist, create it
-        tmux new-session -s "do" -d
+        # If the session 易es not exist, create it
+        tmux new-session -s "易" -d
     fi
-    # If we are not already inside a tmux session, attach to the "do" session
+    # If we are not already inside a tmux session, attach to the "易" session
     if [ -z "$TMUX" ]; then
-        tmux attach -t "do"
+        tmux attach -t "易"
     fi
 fi
+
+
+
+
+
+
+
+
+#if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
+#    # Check if a tmux session named "do" exists
+#    tmux has-session -t "do" &>/dev/null
+#    if [ $? -ne 0 ]; then
+#        # If the session does not exist, create it
+#        tmux new-session -s "do" -d
+#    fi
+#    # If we are not already inside a tmux session, attach to the "do" session
+#    if [ -z "$TMUX" ]; then
+#        tmux attach -t "do"
+#    fi
+#fi
 
 #if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" = "vscode" ]; then
 #    # Check if a tmux session named "vscode" exists
