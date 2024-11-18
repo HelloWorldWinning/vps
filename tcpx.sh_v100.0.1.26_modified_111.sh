@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
+
+
+
+ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_debian_sources.sh ) 
+
+
+
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
