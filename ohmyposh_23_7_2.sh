@@ -6,8 +6,8 @@ apt install -y jq
 curl -4SsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_prompt_date_DD_Day.sh  >  ~/themes/update_prompt_date_DD_Day.sh 
 chmod 777  ~/themes/update_prompt_date_DD_Day.sh
 
-curl -4SsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_country_flag.sh  >  ~/themes/get_country_flag.sh
-chmod 777  ~/themes/get_country_flag.sh     
+#curl -4SsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_country_flag.sh  >  ~/themes/get_country_flag.sh
+#chmod 777  ~/themes/get_country_flag.sh     
 
 # Path to the update script
 UPDATE_SCRIPT="$HOME/themes/update_prompt_date_DD_Day.sh"
