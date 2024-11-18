@@ -1,6 +1,15 @@
 ###### echo_To_bashrc.txt   start 
 ###echo_To_bashrc_txt_unique_id
 
+##cd /data
+country_code_file=~/.country_code
+
+if [ -f "$country_code_file" ]; then
+  export country_code=$(cat "$country_code_file")
+else 
+  export country_code=$(curl -s http://ip-api.com/line/?fields=countryCode)
+  echo "$country_code" > "$country_code_file"
+fi
 
 
 ######  eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
@@ -247,15 +256,6 @@ get_git_branch_name() {
 alias nbc='jupyter nbconvert --to script --no-prompt --ClearOutputPreprocessor.enabled=True '
 alias pyc='sed -i -e '/^#/d' -e '/^$/d''
 
-##cd /data
-country_code_file=~/.country_code
-
-if [ -f "$country_code_file" ]; then
-  export country_code=$(cat "$country_code_file")
-else 
-  export country_code=$(curl -s http://ip-api.com/line/?fields=countryCode)
-  echo "$country_code" > "$country_code_file"
-fi
 export PATH="/root/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 #### eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
