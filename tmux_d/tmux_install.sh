@@ -23,6 +23,7 @@ wget -4 -O ~/.config/tmux/tmux.conf.local  https://raw.githubusercontent.com/Hel
 wget -4 -O ~/.config/tmux/python_version.sh   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/python_version.sh
 
 wget -4 -O ~/.config/tmux/get_country_flag.sh     https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_country_flag.sh 
+chmod 777 ~/.config/tmux/get_country_flag.sh 
 
 #curl -4SsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_country_flag.sh  >  ~/themes/get_country_flag.sh
 #chmod 777  ~/themes/get_country_flag.sh     
