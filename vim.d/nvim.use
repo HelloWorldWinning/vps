@@ -21,7 +21,6 @@ Plug 'scrooloose/nerdtree'
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
-Plug 'dpayne/CodeGPT.nvim'
 
 
 Plug 'morhetz/gruvbox'
