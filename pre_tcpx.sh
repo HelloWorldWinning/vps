@@ -423,6 +423,8 @@ chmod +x /usr/bin/cpy
  bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vifm_installer.sh )     
 
 
+
+rm  /root/pre_tcpx.sh 
 reboot
 
 
