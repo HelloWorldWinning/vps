@@ -19,7 +19,9 @@ fi
 #cron_job="@reboot sleep 25 ; yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh )  #${unique_id}"
 curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh > /root/pre_tcpx.sh
 chmod 777 /root/pre_tcpx.sh 
-cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
+#cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
+#cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
+cron_job="@reboot sleep 10 ; tmux new-session -d -s ins 'yes | /root/pre_tcpx.sh' #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
