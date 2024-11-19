@@ -427,22 +427,28 @@ apt install iptables wireguard -y
 wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf 
 sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf 
 systemctl enable wg-quick@wg0.service
+systemctl restart wg-quick@wg0.service
+
+
 wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf 
 sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf 
 systemctl enable wg-quick@wg1.service
+systemctl restart wg-quick@wg1.service
+
+
 wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf 
 sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf 
 systemctl enable wg-quick@wg2.service
-sysctl -p /etc/sysctl.conf 
-sysctl -p 
+systemctl restart wg-quick@wg2.service
 
-wg-quick up wg0 
-wg-quick up wg1 
-wg-quick up wg2 
+/usr/bin/wg-quick up wg0
+/usr/bin/wg-quick up wg1
+/usr/bin/wg-quick up wg2
 
 bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) 
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
-/sbin/sysctl -p 
+#/sbin/sysctl -p 
+#sysctl -p /etc/sysctl.conf 
 
 ###########wg  end
 reboot
