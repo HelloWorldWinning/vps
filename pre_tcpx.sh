@@ -10,7 +10,7 @@ echo "Backing up current crontab to crontab.bak..."
 crontab -l > crontab.bak 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "No existing crontab found. Exiting."
-    exit 1
+#   exit 1
 fi
 
 # Remove lines containing the specific tag
@@ -21,7 +21,7 @@ crontab -l | grep -v "$TAG" > crontab.tmp
 if cmp -s crontab.bak crontab.tmp; then
     echo "No lines with the tag '$TAG' were found. No changes made."
     rm crontab.tmp
-    exit 0
+#   exit 0
 fi
 
 # Install the updated crontab
@@ -34,7 +34,7 @@ else
     echo "Failed to update crontab."
     # Restore from backup in case of failure
     crontab crontab.bak
-    exit 1
+#   exit 1
 fi
 
 # Clean up temporary file
@@ -266,60 +266,6 @@ EOF
 
 
 
-###########  wg 
-
-net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
-
-wgcf_card=$(ip addr | grep "wgcf:" | awk '{print $2}' | cut -d ":" -f 1)
-warp_card=$(ip addr | grep "warp:" | awk '{print $2}' | cut -d ":" -f 1)
-
-if [ "$wgcf_card" == "wgcf" ]; then
-  wg_card="wgcf"
-elif [ "$warp_card" == "warp" ]; then
-  wg_card="warp"
-#elif [ -z "$wgcf_card" ] && [ -z "$warp_card" ]; then
-else
-  wg_card=$net_card
-fi
-
-
-
-fix_wg_ipv6_RTNETLINK(){
-cat >>/etc/sysctl.conf<<EOF
-net.ipv6.conf.all.disable_ipv6 = 0
-net.ipv6.conf.default.disable_ipv6 = 0
-net.ipv6.conf.lo.disable_ipv6 = 0
-EOF
-sysctl -p
-}
-sleep 5
-
-wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;
-
-apt update -y 
-apt upgrade -y  
-apt install iptables wireguard -y 
-wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf 
-sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf 
-systemctl enable wg-quick@wg0.service
-wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf 
-sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf 
-systemctl enable wg-quick@wg1.service
-wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf 
-sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf 
-systemctl enable wg-quick@wg2.service
-sysctl -p /etc/sysctl.conf 
-sysctl -p 
-
-wg-quick up wg0 
-wg-quick up wg1 
-wg-quick up wg2 
-
-bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) 
-bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
-/sbin/sysctl -p 
-
-###########wg  end
 
 ########### vmess 
 #bash <(curl -4fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu_only_vmess_80_DD.sh )
@@ -444,6 +390,61 @@ chmod +x /usr/bin/cpy
 
 rm  /root/crontab.bak
 rm  /root/pre_tcpx.sh 
+
+###########  wg 
+
+net_card=$(ip addr |grep BROADCAST|head -1|awk '{print $2; exit}'|cut -d ":" -f 1)
+
+wgcf_card=$(ip addr | grep "wgcf:" | awk '{print $2}' | cut -d ":" -f 1)
+warp_card=$(ip addr | grep "warp:" | awk '{print $2}' | cut -d ":" -f 1)
+
+if [ "$wgcf_card" == "wgcf" ]; then
+  wg_card="wgcf"
+elif [ "$warp_card" == "warp" ]; then
+  wg_card="warp"
+#elif [ -z "$wgcf_card" ] && [ -z "$warp_card" ]; then
+else
+  wg_card=$net_card
+fi
+
+
+
+fix_wg_ipv6_RTNETLINK(){
+cat >>/etc/sysctl.conf<<EOF
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+EOF
+sysctl -p
+}
+sleep 5
+
+wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;
+
+apt update -y 
+apt upgrade -y  
+apt install iptables wireguard -y 
+wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf 
+sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf 
+systemctl enable wg-quick@wg0.service
+wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf 
+sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf 
+systemctl enable wg-quick@wg1.service
+wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf 
+sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf 
+systemctl enable wg-quick@wg2.service
+sysctl -p /etc/sysctl.conf 
+sysctl -p 
+
+wg-quick up wg0 
+wg-quick up wg1 
+wg-quick up wg2 
+
+bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) 
+bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+/sbin/sysctl -p 
+
+###########wg  end
 reboot
 
 
