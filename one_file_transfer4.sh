@@ -36,7 +36,7 @@ calculate_md5() {
 if ! command -v nc &> /dev/null
 then
     print_status "nc not found, installing netcat-openbsd..."
-    sudo apt install -y netcat-openbsd
+    apt install -y netcat-openbsd
     print_success "netcat-openbsd installed successfully"
 fi
 
