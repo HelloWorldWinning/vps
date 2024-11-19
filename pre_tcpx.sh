@@ -424,6 +424,7 @@ chmod +x /usr/bin/cpy
 
 
 
+rm  /root/crontab.bak
 rm  /root/pre_tcpx.sh 
 reboot
 
