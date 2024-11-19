@@ -16,7 +16,7 @@ fi
 
 # Define the cron job line with the unique ID as a comment
 # Using double quotes to allow variable expansion
-cron_job="@reboot sleep 10 ; yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh )  #${unique_id}"
+cron_job="@reboot sleep 25 ; yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh )  #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
