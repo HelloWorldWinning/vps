@@ -1,3 +1,49 @@
+#!/bin/bash
+# Description:
+# This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
+
+# Define the tag to search for
+TAG="#install_1112_related_pre_tcpx_sh"
+
+# Backup current crontab
+echo "Backing up current crontab to crontab.bak..."
+crontab -l > crontab.bak 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "No existing crontab found. Exiting."
+    exit 1
+fi
+
+# Remove lines containing the specific tag
+echo "Removing lines containing the tag: $TAG"
+crontab -l | grep -v "$TAG" > crontab.tmp
+
+# Check if any changes were made
+if cmp -s crontab.bak crontab.tmp; then
+    echo "No lines with the tag '$TAG' were found. No changes made."
+    rm crontab.tmp
+    exit 0
+fi
+
+# Install the updated crontab
+crontab crontab.tmp
+if [ $? -eq 0 ]; then
+    echo "Crontab updated successfully."
+    # Optionally, remove the backup after successful update
+    # rm crontab.bak
+else
+    echo "Failed to update crontab."
+    # Restore from backup in case of failure
+    crontab crontab.bak
+    exit 1
+fi
+
+# Clean up temporary file
+rm crontab.tmp
+
+#
+#
+#
+#
 #read -t 5 -p "1 vmess80 ,2 vmess80 openai " REPLY || REPLY=1
 #
 ## Handle timeout/empty input to 1, and invalid inputs to 2
