@@ -877,7 +877,7 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 #yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh ) 
 #bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh ) 
-yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) 
+bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) 
 		;;
 	1112)
 yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh ) 
