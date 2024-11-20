@@ -2,6 +2,7 @@
 
 # Color codes
 RED_BG="\e[41m"
+RED_FONT="\e[31m"
 WHITE_TEXT="\e[97m"
 GREEN_BG="\e[42m"
 BLACK_TEXT="\e[30m"
@@ -26,9 +27,9 @@ calculate_md5() {
     if [ -f "$file" ]; then
         print_status "Calculating MD5 checksum for $file..."
         local md5sum_output=$(md5sum "$file")
-        echo -e "${YELLOW}${BOLD}MD5 Checksum:${RESET} $md5sum_output"
+        echo -e "${YELLOW}${BOLD}MD5 Checksum:${RESET} ${RED_FONT}${BOLD}$md5sum_output${RESET}"
     else
-        echo -e "${RED_BG}${WHITE_TEXT}${BOLD} ERROR ${RESET} File not found: $file"
+        echo -e "${RED_BG}${WHITE_TEXT}${BOLD} ERROR ${RESET} ${RED_FONT}${BOLD} File not found: $file${RESET}"
     fi
 }
 
