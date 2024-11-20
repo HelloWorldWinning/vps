@@ -445,7 +445,9 @@ systemctl restart wg-quick@wg2.service
 /usr/bin/wg-quick up wg1
 /usr/bin/wg-quick up wg2
 
-bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) 
+#  bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh ) 
+bash  <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )    
+
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 #/sbin/sysctl -p 
 #sysctl -p /etc/sysctl.conf 

@@ -1,39 +1,120 @@
-#!/bin/bash
 
+# Set strict error handling
 set -euo pipefail
 
-# Install iptables-persistent if not already installed
-if ! dpkg -l | grep -qw iptables-persistent; then
-    echo "Installing iptables-persistent..."
-    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
-    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-    apt-get update
-    apt-get install -y iptables-persistent
-fi
+# Setup logging
+readonly LOGFILE="/var/log/wgiptables.log"
 
-# Detect the primary network interface
-net_card=$(ip route | awk '/default/ {print $5; exit}')
+log() {
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "$timestamp - $1" >> "$LOGFILE"
+}
 
-if [ -z "$net_card" ]; then
-    echo "Error: Could not detect the network interface."
- #  exit 1
-else
-    echo "Detected network interface: $net_card"
-fi
+# Function to check if rules were saved properly
+check_rules_file() {
+    local file="$1"
+    if [ ! -s "$file" ]; then
+        log "ERROR: $file is empty after saving"
+        return 1
+    fi
+    log "SUCCESS: Rules saved to $file"
+    return 0
+}
 
-# Add iptables rules
-echo "Adding iptables rules..."
-iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j DNAT --to-destination ":65503"
-ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j DNAT --to-destination ":65503"
+# Function to apply and save iptables rules
+apply_and_save_rules() {
+    local net_card
+    
+    # Get network interface
+    net_card=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -1)
+    if [ -z "$net_card" ]; then
+        log "ERROR: Could not determine network interface"
+#       exit 1
+    }
+    log "Using network interface: $net_card"
 
-# Save the rules
-echo "Saving iptables rules..."
-iptables-save > /etc/iptables/rules.v4
-ip6tables-save > /etc/iptables/rules.v6
+    # Ensure iptables-persistent is installed
+    log "Installing iptables-persistent"
+    {
+        echo "iptables-persistent iptables-persistent/autosave_v4 boolean true" | debconf-set-selections
+        echo "iptables-persistent iptables-persistent/autosave_v6 boolean true" | debconf-set-selections
+        DEBIAN_FRONTEND=noninteractive apt-get install -y iptables-persistent
+    } >> "$LOGFILE" 2>&1
 
-# Ensure iptables-persistent is configured to load rules on boot
-echo "Enabling iptables-persistent service..."
-systemctl enable netfilter-persistent
+    # Ensure directory exists
+    mkdir -p /etc/iptables
 
-echo "Setup completed successfully."
+    # Apply IPv4 rules
+    log "Applying IPv4 rules"
+    if ! iptables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503; then
+        log "ERROR: Failed to apply IPv4 rules"
+#       exit 1
+    fi
 
+    # Apply IPv6 rules
+    log "Applying IPv6 rules"
+    if ! ip6tables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503; then
+        log "ERROR: Failed to apply IPv6 rules"
+#       exit 1
+    fi
+
+    # Save rules with verification
+    local max_attempts=3
+    local attempt=1
+    local success=false
+
+    while [ $attempt -le $max_attempts ]; do
+        log "Attempt $attempt of $max_attempts to save rules"
+
+        # Save IPv4 rules
+        if iptables-save > /etc/iptables/rules.v4.tmp && [ -s /etc/iptables/rules.v4.tmp ]; then
+            mv /etc/iptables/rules.v4.tmp /etc/iptables/rules.v4
+            success=true
+        else
+            log "Failed to save IPv4 rules (attempt $attempt)"
+            sleep 2
+        fi
+
+        # Save IPv6 rules
+        if ip6tables-save > /etc/iptables/rules.v6.tmp && [ -s /etc/iptables/rules.v6.tmp ]; then
+            mv /etc/iptables/rules.v6.tmp /etc/iptables/rules.v6
+            success=true
+        else
+            log "Failed to save IPv6 rules (attempt $attempt)"
+            sleep 2
+        fi
+
+        if $success; then
+            break
+        fi
+        attempt=$((attempt + 1))
+    done
+
+    # Verify files are not empty
+    if ! check_rules_file "/etc/iptables/rules.v4" || ! check_rules_file "/etc/iptables/rules.v6"; then
+        log "ERROR: Rule files verification failed"
+#       exit 1
+    fi
+
+    # Setup cron jobs with verification
+    log "Setting up cron jobs"
+    (crontab -l 2>/dev/null || true; echo "@reboot sleep 13; /usr/sbin/iptables-restore < /etc/iptables/rules.v4") | sort -u | crontab -
+    (crontab -l 2>/dev/null || true; echo "@reboot sleep 14; /usr/sbin/ip6tables-restore < /etc/iptables/rules.v6") | sort -u | crontab -
+
+    # Verify cron jobs
+    if ! crontab -l | grep -q "iptables-restore"; then
+        log "ERROR: Failed to set IPv4 cron job"
+#       exit 1
+    fi
+    if ! crontab -l | grep -q "ip6tables-restore"; then
+        log "ERROR: Failed to set IPv6 cron job"
+#       exit 1
+    fi
+
+    log "Script completed successfully"
+}
+
+# Main execution
+log "Starting wgiptables script"
+apply_and_save_rules
