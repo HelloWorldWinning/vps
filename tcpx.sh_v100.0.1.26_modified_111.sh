@@ -2,6 +2,9 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
+# del del_qemu_guest_agent_service.sh
+ bash <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/del_qemu_guest_agent_service.sh  )
+
  bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_debian_sources.sh ) 
 #=================================================
 # add 1112 / pre_tcpx.sh to crontab
