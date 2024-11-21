@@ -102,7 +102,6 @@ alias c='clear'
 
 
 alias l='exa -la --sort=changed'
-export EXA_COLORS="di=31;1:fi=38;5;82"  # di=31;1 sets directories to bold red; fi=38;5;82 sets files to bright green
 
 alias cc='exa -la --sort=created'
 alias s='exa -la --sort=size'
@@ -308,10 +307,9 @@ fds() {
 #    sed "s|\(/[^/]*${search_term}[^/]*\)|${RED}\1${RESET}|g"
 #}
 
-
+export EXA_COLORS="di=35;1:fi=38;5;82"  
 ####export FD_COLORS="hl=1;31"
-#####export EXA_COLORS="di=31;1:fi=38;5;226;1"  # yello
-export EXA_COLORS="di=31;1:fi=38;5;118;1"  # green
+
 
 
 alias m='mkdir '
