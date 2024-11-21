@@ -1,3 +1,4 @@
+#!/bin/bash
 ###### echo_To_bashrc.txt   start 
 ###echo_To_bashrc_txt_unique_id
 
@@ -159,16 +160,17 @@ alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning
 
 
 
+tag_tmux=细
 if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
-    # Check if a tmux session named "细" exists
-    tmux has-session -t "细" &>/dev/null
+    # Check if a tmux session named "${tag_tmux}" exists
+    tmux has-session -t "${tag_tmux}" &>/dev/null
     if [ $? -ne 0 ]; then
-        # If the session 细es not exist, create it
-        tmux new-session -s "细" -d
+        # If the session ${tag_tmux}es not exist, create it
+        tmux new-session -s "${tag_tmux}" -d
     fi
-    # If we are not already inside a tmux session, attach to the "细" session
+    # If we are not already inside a tmux session, attach to the "${tag_tmux}" session
     if [ -z "$TMUX" ]; then
-        tmux attach -t "细"
+        tmux attach -t "${tag_tmux}"
     fi
 fi
 
