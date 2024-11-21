@@ -160,15 +160,15 @@ alias f='bash  <(curl -Ls4   https://raw.githubusercontent.com/HelloWorldWinning
 
 
 if [ -n "$SSH_CONNECTION" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
-    # Check if a tmux session named "易" exists
-    tmux has-session -t "易" &>/dev/null
+    # Check if a tmux session named "细" exists
+    tmux has-session -t "细" &>/dev/null
     if [ $? -ne 0 ]; then
-        # If the session 易es not exist, create it
-        tmux new-session -s "易" -d
+        # If the session 细es not exist, create it
+        tmux new-session -s "细" -d
     fi
-    # If we are not already inside a tmux session, attach to the "易" session
+    # If we are not already inside a tmux session, attach to the "细" session
     if [ -z "$TMUX" ]; then
-        tmux attach -t "易"
+        tmux attach -t "细"
     fi
 fi
 
