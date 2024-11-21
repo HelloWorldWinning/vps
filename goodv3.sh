@@ -896,7 +896,10 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 mianliu2)eval "$trojan_go_mianliu" ;;
                 3)eval "$xray_mianliu" ;;
 		d80) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  ;;
+
 		d80ai) docker_vmess_80_openai_65504  ;;
+
+		d81) bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh )      ;;
 
 		65504)  bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh'  )  ;;
                 411)eval "$pre_InstallNET_modified_chu" ;;
