@@ -287,7 +287,44 @@ fds() {
   fd "$1" | xargs exa -lh --sort size
 }
 
-alias fd='fd --absolute-path --color always'
+#######alias fd='fd --absolute-path --color always'
+ee() {
+    if [ "$#" -lt 1 ]; then
+        echo "Usage: fd_func <search_term> [additional_terms...]"
+        return 1
+    fi
+    local search_term="$1"
+    shift
+    local additional_terms=("$@")
+    /usr/local/bin/fd --absolute-path --color=never "$search_term" "${additional_terms[@]}" | \
+        rg --color=always \
+           --colors 'match:fg:blue' \
+           --colors 'line:none' \
+           --regexp "[^/]*${search_term}[^/]*"
+}
+
+
+# o1
+#ee() {
+#    if [ "$#" -lt 1 ]; then
+#        echo "Usage: ee <search_term> [additional_terms...]"
+#        return 1
+#    fi
+#
+#    local search_term="$1"
+#    shift
+#    local additional_terms=("$@")
+#
+#    # Define ANSI color codes using ANSI-C quoting
+#    local RED=$'\033[31m'
+#    local RESET=$'\033[0m'
+#
+#    /usr/local/bin/fd --absolute-path --color=never "$search_term" "${additional_terms[@]}" | \
+#    rg --color=never "$search_term" | \
+#    sed "s|\(/[^/]*${search_term}[^/]*\)|${RED}\1${RESET}|g"
+#}
+
+
 ####export FD_COLORS="hl=1;31"
 #####export EXA_COLORS="di=31;1:fi=38;5;226;1"  # yello
 export EXA_COLORS="di=31;1:fi=38;5;118;1"  # green
