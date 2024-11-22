@@ -621,7 +621,7 @@ ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
 ${Red_font_prefix}11${Font_color_suffix} bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
-${Red_font_prefix}13${Font_color_suffix} s5 socks5代理用
+${Red_font_prefix}13${Font_color_suffix} gost s5 socks5代理用
 ${Red_font_prefix}13.1${Font_color_suffix}reaml2 转发
 ${Red_font_prefix}14${Font_color_suffix} netflix available test
 ${Red_font_prefix}15${Font_color_suffix} nf freedom
@@ -798,7 +798,8 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		11o) eval $dd;;
 		11) eval $dd_debian11;;
 		12) eval $dd_1;;
-		13) eval $s5;;
+#	13) eval $s5;;
+ 	13) bash  <(curl -4LkSs https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh )       ;;
 		13.1) eval $realm2;;
 		14)eval  "${nf}"  | tee netflix.log ;;
         	15) eval $nfFree;;
