@@ -355,6 +355,6 @@ autocmd FileType python cnoreabbrev <buffer> wq :call WriteQuitPython()<CR>
 autocmd BufEnter * if &filetype != 'python' | set nowriteany | endif
 
 
-lua << "EOF"
+lua << EOF
 require('leap').add_default_mappings()
 EOF
