@@ -1,5 +1,5 @@
 log:
-  loglevel: error
+  loglevel: warn
 
 inbounds:
 - port: 80
@@ -23,15 +23,29 @@ outbounds:
   tag: blocked
   settings: {}
 - protocol: shadowsocks
-  tag: ss-openai
+  tag: foo222
   settings:
     servers:
-    - address: OPENAI_IP_DOMAIN
+    - address: wjwy.zhulei.eu.org
       port: 65504
       method: "aes-128-gcm"
       password: "passwd"
     uot: false
     level: 0
+- protocol: shadowsocks
+  tag: ss-openai
+  settings:
+    servers:
+    - address: wjwy.zhulei.eu.org
+      port: 65504
+      method: "aes-128-gcm"
+      password: "passwd"
+    uot: false
+    level: 0
+
+
+
+
 
 routing:
   domainStrategy: AsIs
@@ -89,6 +103,9 @@ routing:
     - claude.ai
     - anthropic
     - claude
+  - type: field
+    outboundTag: foo222
+    domain:
     - x.com
     - twitter.com
     - ads-twitter.com
