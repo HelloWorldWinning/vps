@@ -21,7 +21,7 @@
             "time_format": "Mon 2-1-2006 "
           },
           "style": "powerline",
-          "template": "<b>{{ printf \"%*s%s%*s\" (div (sub 8 (len .HostName)) 2) \"\" .HostName (sub (sub 8 (len .HostName)) (div (sub 8 (len .HostName)) 2)) \"\" }}</b>",
+          "template": "<b>{{ printf \"%*s%s%*s\" (div (sub 10 (len .HostName)) 2) \"\" .HostName (sub (sub 10 (len .HostName)) (div (sub 10 (len .HostName)) 2)) \"\" }}</b>",
           "type": "path"
         },
         {
