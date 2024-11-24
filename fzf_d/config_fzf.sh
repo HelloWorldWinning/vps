@@ -3,8 +3,9 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 #~/.fzf/install
 sudo yes | ~/.fzf/install
 
-apg-get update
-apt-get -y install sudo fd-find ripgrep ranger  
+apt-get update
+apt update
+apt  -y install sudo fd-find ripgrep ranger  
 
 sudo apt install bat -y
 sudo ln -s /usr/bin/batcat /usr/bin/bat
