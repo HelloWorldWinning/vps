@@ -24,7 +24,8 @@ curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pr
 chmod 777 /root/pre_tcpx.sh 
 #cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
 #cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
-cron_job="@reboot sleep 10 ; tmux new-session -d -s ins 'yes | /root/pre_tcpx.sh' #${unique_id}"
+#cron_job="@reboot sleep 10 ; tmux new-session -d -s ins 'yes | /root/pre_tcpx.sh' #${unique_id}"
+cron_job="@reboot sleep 10 ; sudo tmux new-session -d -s ins -c /root 'yes | ./pre_tcpx.sh' #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
