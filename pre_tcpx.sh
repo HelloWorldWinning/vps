@@ -372,7 +372,8 @@ else
 fi
 
 
-bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
+sleep 2
+bash <(curl -fSsL4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  ) 
 
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh  )
 

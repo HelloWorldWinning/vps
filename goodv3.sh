@@ -1047,7 +1047,7 @@ netstat -tulnp | grep -E '166|177'
 		ax) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh )  ;;
 		a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh)  ;;
 
-		b) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  )  ;;
+		b) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  )  ;;
 		ccc) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh )  ;;
 		d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh  )  ;;
 		e) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_ftp_server.sh   )  ;;
