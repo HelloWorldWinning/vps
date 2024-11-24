@@ -7,7 +7,7 @@
         {
           "background": "transparent",
           "foreground": "#cccccc",
-          "template": "$(echo '     ')",
+          "template": "$(echo '      ')",
           "type": "text",
           "powerline_symbol": "",
           "style": "powerline",
