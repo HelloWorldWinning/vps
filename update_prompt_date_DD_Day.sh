@@ -3,7 +3,8 @@
 update_frequency_minutes_symbol=30  # Time interval in minutes for updating second_part
 
 #first_part=$(date +"%I:%M %d-%A")
-first_part=$(date +"%-I:%M %d-%-9A")
+#first_part=$(date +"%-I:%M %d-%-9A")
+first_part=$(date +"%2I:%M %d-%-9A")
 
 symbols=(" ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
 config_file="/root/themes/gmay3.omp.json"
