@@ -1,0 +1,113 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "transparent",
+          "foreground": "#cccccc",
+          "template": "$(echo '     ')",
+          "type": "text",
+          "powerline_symbol": "",
+          "style": "powerline",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#b00b0b",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006 "
+          },
+          "style": "powerline",
+          "template": "<b>{{ printf \"%*s%s%*s\" (div (sub 10 (len .HostName)) 2) \"\" .HostName (sub (sub 10 (len .HostName)) (div (sub 10 (len .HostName)) 2)) \"\" }}</b>",
+          "type": "path"
+        },
+        {
+          "background": "transparent",
+          "foreground": "#c42570",
+          "powerline_symbol": "",
+          "properties": {
+            "style": "full",
+            "folder_icon": ""
+          },
+          "style": "diamond",
+          "template": "    $(dirname $(pwd) | xargs -I{} sh -c 'if [ '{}' = '/' ]; then echo '<i>/</i>'; else echo '<i>{}/</i>'; fi')$(basename $(pwd) | xargs -I{} sh -c 'if [ $(pwd) = '/' ]; then echo ''; else echo '<b>{}</b>'; fi')       <b>$(ls |wc -l)</b>       <#988999>$(if [ ! -z \"$country_code\" ]; then first_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c1)\"); second_letter=$(printf \"%d\" \"'$(echo $country_code | cut -c2)\"); first_unicode=$(printf \"\\\\U$(printf '%x' $((first_letter + 127462 - 65)))\"); second_unicode=$(printf \"\\\\U$(printf '%x' $((second_letter + 127462 - 65)))\"); echo -e \"$first_unicode$second_unicode \"; else echo ' Unknown '; fi) {{.UserName}}</> ",
+          "type": "path",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#034c99",
+          "foreground": "#cccccc",
+          "template": "$(python_version=$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo ''); conda_env=$(echo $CONDA_DEFAULT_ENV); if [ -z \"$conda_env\" ] && [ -z \"$python_version\" ]; then echo ''; else echo \"$conda_env $python_version\"; fi)",
+          "type": "text",
+          "powerline_symbol": "",
+          "style": "powerline",
+          "font-weight": "bold"
+        },
+        {
+          "background": "#f5f26e",
+          "foreground": "#000000",
+          "powerline_symbol": "",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": " {{ .UpstreamIcon }}{{`$(get_git_branch_name)`}}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "type": "git"
+        },
+        {
+          "background": "#19381a",
+          "foreground": "#bbbbbb",
+          "powerline_symbol": "",
+          "properties": {
+            "time_format": "Mon 2-1-2006 "
+          },
+          "style": "powerline",
+          "template": "$(cat  ~/.weather_temperature)",
+          "type": "time"
+        },
+        {
+          "background": "#6CA35E",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "style": "powerline",
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "type": "node"
+        },
+        {
+          "background": "#2e9599",
+          "background_templates": [
+            "{{ if gt .Code 0 }}#f1184c{{ end }}"
+          ],
+          "foreground": "#dddddd",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": " ✓",
+          "trailing_diamond": "",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#e9f024",
+          "style": "plain",
+          "template": "    <b>05:23 16-Sat ☳</b>",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}
