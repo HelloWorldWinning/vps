@@ -16,5 +16,13 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.State}}" | grep "affine"
 
 sleep 4
 
-
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AFFine_increase_AFFine_Cloud_Storage.sh )
+
+
+
+cd $Path_AFFiNE
+
+docker compose  down 
+
+chmod 777  -R  *
+docker compose up -d
