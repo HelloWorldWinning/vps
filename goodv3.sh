@@ -1054,6 +1054,7 @@ netstat -tulnp | grep -E '166|177'
 		i) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh  )  ;;
 		g) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/distri.sh )  ;;
 		h) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/init_github_project.sh  )  ;;
+		d3010) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_docker_affine.sh )   ;;
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 		d443) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh ) ;; 
 
