@@ -28,32 +28,12 @@ os.makedirs("static", exist_ok=True)
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-import re
-
 def clean_filename(filename: str) -> str:
-    """
-    Clean the filename by removing all variations of 'highlights' suffix,
-    including patterns like ' - highlights', ' - highlights (1)', etc.
-
-    Args:
-        filename (str): The filename to clean
-
-    Returns:
-        str: The filename with highlights suffix removed
-    """
-    # Remove file extension
-    filename_without_ext = Path(filename).stem
-
-    # Regular expression to match ' - highlights' optionally followed by ' (number)'
-    pattern = re.compile(r'^(.*?)(\s*[-_–—]\s*highlights(\s*\(\d+\))?)$', re.IGNORECASE)
-
-    match = pattern.match(filename_without_ext)
-    if match:
-        # Return the part before ' - highlights'
-        return match.group(1).strip()
-    else:
-        return filename_without_ext
-
+    """Clean the filename by removing existing 'highlights' suffix if present"""
+    for suffix in ['-highlights', '_highlights']:
+        if filename.endswith(suffix):
+            filename = filename[:-len(suffix)]
+    return filename
 
 def get_content_disposition_header(filename: str) -> str:
     """Generate Content-Disposition header with RFC 5987 encoding"""
@@ -71,6 +51,7 @@ def generate_output_filename(original_filename: str, is_combined: bool = False) 
         return f"combined_highlights_{current_time}.csv"
     else:
         clean_name = clean_filename(original_filename) if original_filename else "converted"
+       #return f"{clean_name}_highlights_{current_time}.csv"
         return f"one_highlights_{current_time}.csv"
 
 def convert_json_to_csv(json_data: dict, filename: str) -> io.StringIO:
@@ -128,7 +109,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
             try:
                 content = await file.read()
                 json_data = json.loads(content.decode('utf-8'))
-                filename = clean_filename(file.filename)
+                filename = Path(file.filename).stem
                 csv_io = convert_json_to_csv(json_data, filename)
 
                 df = pd.read_csv(io.StringIO(csv_io.getvalue()), encoding='utf-8-sig')
@@ -147,6 +128,8 @@ async def upload_files(files: List[UploadFile] = File(...)):
         # Generate output filename
         if len(files) == 1:
             # Use the original filename
+           #file_stem = Path(files[0].filename).stem
+           #output_filename = generate_output_filename(file_stem)
             output_filename = generate_output_filename("", is_combined=False)
         else:
             output_filename = generate_output_filename("", is_combined=True)
