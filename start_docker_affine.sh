@@ -13,3 +13,8 @@ sleep 5
 
 echo "Container Status:"
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.State}}" | grep "affine"
+
+sleep 4
+
+
+bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AFFine_increase_AFFine_Cloud_Storage.sh )
