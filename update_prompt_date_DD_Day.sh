@@ -27,7 +27,7 @@ format_date() {
 
     # Pad the weekday to 8 characters (left-justified)
     local padded_weekday="$weekday"
-    while [ ${#padded_weekday} -lt 8 ]; do
+    while [ ${#padded_weekday} -lt 9 ]; do
         padded_weekday="$padded_weekday "
     done
 
@@ -37,9 +37,9 @@ format_date() {
 
 first_part=$(format_date "now")
 # Uncomment below lines if you need to format dates like yesterday or tomorrow
-# first_part=$(format_date "yesterday")
-# first_part=$(format_date "tomorrow")
-# first_part=$(date +"%I:%M %d-%A")
+#first_part=$(format_date "yesterday")
+#first_part=$(format_date "tomorrow")
+#first_part=$(date +"%I:%M %d-%A")
 # first_part=$(date +"%-I:%M %d-%-9A")
 # first_part=$(date +"%2I:%M %d-%-9A")
 # first_part=$(date -d "yesterday" +"%2I:%M %d-%-9A")
