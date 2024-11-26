@@ -30,6 +30,9 @@ fi
 source ~/.bashrc
 
 echo "Current vifmrc content:"
+
+cat <<"EOF" >> ~/.config/vifm/vifmrc 
+set number relativenumber
+EOF
+
 cat ~/.config/vifm/vifmrc
-
-
