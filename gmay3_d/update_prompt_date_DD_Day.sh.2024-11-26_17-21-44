@@ -2,35 +2,9 @@
 
 update_frequency_minutes_symbol=30  # Time interval in minutes for updating second_part
 
-# Function to format the date with padded weekday names
-format_date() {
-    local date_input="$1"
-    
-    # Extract date components
-    local hour=$(date -d "$date_input" +"%I")
-    local minute=$(date -d "$date_input" +"%M")
-    local day=$(date -d "$date_input" +"%d")
-    local weekday=$(date -d "$date_input" +"%A")
-    
-    # Pad the weekday to 9 characters (left-justified)
-    local padded_weekday=$(printf "%-9s" "$weekday")
-    
-    # Assemble the fixed-length first_part
- #  printf "%02d:%02d %02d-%s" "$hour" "$minute" "$day" "$padded_weekday"
-    printf "%02d:%02d %02d-%s" "$hour" "$minute" "$day" "$padded_weekday"
-}
-
-
-
-first_part=$(format_date  "now" )
-#first_part=$(format_date  "yesterday" )
-#first_part=$(format_date  "tomorrow" )
-
-
 #first_part=$(date +"%I:%M %d-%A")
 #first_part=$(date +"%-I:%M %d-%-9A")
-#first_part=$(date +"%2I:%M %d-%-9A")
-#first_part=$(date -d "yesterday" +"%2I:%M %d-%-9A")
+first_part=$(date +"%2I:%M %d-%-9A")
 
 symbols=(" ☰" " ☱" " ☲" " ☳" " ☴" " ☵" " ☶" " ☷")
 config_file="/root/themes/gmay3.omp.json"
@@ -61,8 +35,7 @@ else
 fi
 
 #combined_template="    $first_part$second_part"
-#combined_template="    <b>$first_part$second_part</b>"
-combined_template="<b>$first_part$second_part </b>"
+combined_template="    <b>$first_part$second_part</b>"
 
 # Update the config file
 jq --arg new_template "$combined_template" '
