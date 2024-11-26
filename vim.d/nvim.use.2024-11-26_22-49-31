@@ -323,6 +323,7 @@ hi CursorColumn guibg=#505050 ctermbg=NONE
 
 set mouse=
 
+""""""""""""   Black  formatter
 " Function to run Black formatter
 function! BlackFormat()
     if executable('black')
@@ -334,19 +335,10 @@ function! BlackFormat()
     endif
 endfunction
 
-" Updated WritePython function to precisely preserve cursor position
+" Custom write commands for Python files
 function! WritePython()
-    " Save the current cursor position (line and column)
-    let l:pos = getpos('.')
-
-    " Call the Black formatter
     call BlackFormat()
-
-    " Write the buffer to file
     write
-
-    " Restore the cursor position
-    call setpos('.', l:pos)
 endfunction
 
 function! WriteQuitPython()
@@ -361,6 +353,7 @@ autocmd FileType python cnoreabbrev <buffer> wq :call WriteQuitPython()<CR>
 
 " Reset writeany for non-Python files
 autocmd BufEnter * if &filetype != 'python' | set nowriteany | endif
+
 
 lua << EOF
 require('leap').add_default_mappings()
