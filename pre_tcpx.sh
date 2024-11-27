@@ -457,6 +457,8 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh  )  
 
+# startup_port16_py_jupyter.sh 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh   )
 
 
 reboot

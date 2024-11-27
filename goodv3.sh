@@ -727,7 +727,7 @@ ${Red_font_prefix}sncli${Font_color_suffix} sncli install
 ${Red_font_prefix}lab${Font_color_suffix} ${Red_font_prefix}jupyter_lab lab_install.sh  ${Font_color_suffix}
 ${Red_font_prefix}100${Font_color_suffix} ${Red_font_prefix}jupyter: jupyter16666.sh${Font_color_suffix}
 ${Red_font_prefix}1007${Font_color_suffix} ${Red_font_prefix}jupyter notebook7 : notebook7_install.sh  ${Font_color_suffix}
-${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
+${Red_font_prefix}101${Font_color_suffix} ${Red_font_prefix}docker: startup_port16_py_jupyter.sh   jupyter1666.sh jupyter166.sh  markdown.sh${Font_color_suffix}
 ${Red_font_prefix}d88${Font_color_suffix}  ${Red_font_prefix} docker: typecho_docker_setup.sh ${Font_color_suffix}  
 ${Red_font_prefix}1011${Font_color_suffix} ${Red_font_prefix}calibre_linux_setup_ebook_online_reader.sh${Font_color_suffix}
 ${Red_font_prefix}d189${Font_color_suffix} Docker 189 readwise  setup-readwise_highlights_viewer.sh
@@ -1020,6 +1020,7 @@ bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/st
 
 		 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh   )  
 
 
 
