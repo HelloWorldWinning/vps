@@ -24,65 +24,78 @@ else
 fi
 
 # Process the Python file:
-# 1. Remove single-line comments that start with #
-# 2. Remove multi-line comments (docstrings) using sed
-# 3. Remove empty lines and lines with only whitespace
-# 4. Preserve empty lines that are syntactically important (e.g., between function definitions)
+# 1. Remove comments and docstrings
+# 2. Remove empty lines and lines with only whitespace
+# 3. Preserve empty lines that are syntactically important (e.g., between function definitions)
 python3 -c "
-import re
+import io
+import tokenize
 
-def remove_comments_and_minimize(content):
-    # Remove multi-line strings/comments (docstrings)
-    content = re.sub(r'\"\"\"[\s\S]*?\"\"\"|\'\'\'[\s\S]*?\'\'\'', '', content)
-    
-    # Process line by line
-    lines = content.split('\n')
+def remove_comments_and_docstrings(source):
+    io_obj = io.StringIO(source)
+    out = ''
+    prev_toktype = tokenize.INDENT
+    last_col = 0
+    last_lineno = -1
+
+    tokgen = tokenize.generate_tokens(io_obj.readline)
+    for tok in tokgen:
+        token_type = tok.type
+        token_string = tok.string
+        start_line, start_col = tok.start
+        end_line, end_col = tok.end
+
+        if start_line > last_lineno:
+            last_col = 0
+        if start_col > last_col:
+            out += (' ' * (start_col - last_col))
+
+        if token_type == tokenize.COMMENT:
+            continue
+        elif token_type == tokenize.STRING:
+            if prev_toktype != tokenize.INDENT and prev_toktype != tokenize.NEWLINE and prev_toktype != tokenize.DEDENT:
+                # Not a docstring
+                out += token_string
+            else:
+                # Docstring; skip it
+                continue
+        else:
+            out += token_string
+
+        prev_toktype = token_type
+        last_col = end_col
+        last_lineno = end_line
+
+    return out
+
+def process_code(content):
+    code_without_comments = remove_comments_and_docstrings(content)
+    # Now process line by line
+    lines = code_without_comments.split('\\n')
     cleaned_lines = []
     prev_line_empty = False
-    
     for line in lines:
-        # Remove inline comments (but preserve strings containing #)
-        processed_line = ''
-        in_string = False
-        string_char = None
-        i = 0
-        
-        while i < len(line):
-            char = line[i]
-            if char in ['\"', \"'\"]:
-                if not in_string:
-                    in_string = True
-                    string_char = char
-                elif char == string_char:
-                    in_string = False
-                processed_line += char
-            elif char == '#' and not in_string:
-                break
-            else:
-                processed_line += char
-            i += 1
-        
         # Strip whitespace
-        processed_line = processed_line.rstrip()
-        
-        # Add non-empty lines or lines that are syntactically important
+        processed_line = line.rstrip()
+        # Add non-empty lines
         if processed_line:
             cleaned_lines.append(processed_line)
             prev_line_empty = False
         elif not prev_line_empty and any(cleaned_lines) and \
              (cleaned_lines[-1].startswith(('def ', 'class ')) or \
               cleaned_lines[-1].endswith(':')):
+            # Preserve empty line
             cleaned_lines.append('')
             prev_line_empty = True
-    
-    return '\n'.join(cleaned_lines)
+        # Else skip the empty line
+    return '\\n'.join(cleaned_lines)
 
 # Read input file
 with open('$input_file', 'r') as f:
     content = f.read()
 
 # Process content
-minimized = remove_comments_and_minimize(content)
+minimized = process_code(content)
 
 # Write output
 with open('$output_file', 'w') as f:
@@ -101,3 +114,4 @@ else
     echo "Error occurred while processing the file"
     exit 1
 fi
+
