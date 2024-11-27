@@ -1,0 +1,9 @@
+
+services:
+  flask_app:
+    image: oklove/port16_py_jupyter
+    ports:
+      - "16:16"
+    volumes:
+      - /:/Host
+
