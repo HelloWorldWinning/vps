@@ -15,7 +15,9 @@ services:
       - /:/Host
 EOF
 
-docker-compose up -d
+docker compose  down
+docker compose  pull
+docker compose up -d
 sleep 3
 
 STATUS=$(docker ps -a --format '{{.Status}}' --filter name=port16_py_jupyter_container)
