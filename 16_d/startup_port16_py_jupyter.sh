@@ -8,6 +8,7 @@ services:
   port16_py_jupyter_instance:
     container_name: port16_py_jupyter_container
     image: oklove/port16_py_jupyter
+    restart: always
     ports:
       - "16:16"
     volumes:
