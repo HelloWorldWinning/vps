@@ -1017,13 +1017,8 @@ bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 #bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )  
 #bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh ) 
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh ) 
-
-		 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
-
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh   )  
-
-
-
 echo "======================================="
         echo "sleep 3 seconds..."
         sleep 3
@@ -1033,7 +1028,7 @@ netstat -tulnp | grep -E '166|177'
 #netstat -tulnp |grep 166 | wc -l	       
 			;;
 
-
+		d16) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh   )   ;;
 		102) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh )  ;;
 		103) bash  <(curl -sLk  yabs.sh  ) -i ;;
 		104) yes| bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh  )  ;;
