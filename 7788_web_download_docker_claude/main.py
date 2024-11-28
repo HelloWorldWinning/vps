@@ -298,6 +298,7 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
                 .file {{
                     color:  #db0bee ;
                     background-color: transparent ;
+                    font-weight: bold;
                     padding: 3px 8px;
                     border-radius: 4px;
                     transition: background-color 0.2s;
