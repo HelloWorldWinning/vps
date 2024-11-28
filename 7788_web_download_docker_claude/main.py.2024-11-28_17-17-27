@@ -282,7 +282,7 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
                 }}
 
                 .folder {{
-                    background-color:  transparent ;
+                    background-color: #ffffff;
                     color: #1d910d;
                     font-weight: bold;
                     font-size: 120%;
@@ -292,19 +292,19 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
                 }}
 
                 .folder:hover {{
-                    background-color: transparent ;
+                    background-color: #f8f9fa;
                 }}
 
                 .file {{
-                    color:  #db0bee ;
-                    background-color: transparent ;
+                    color: #ffffff;
+                    background-color: #b33105;
                     padding: 3px 8px;
                     border-radius: 4px;
                     transition: background-color 0.2s;
                 }}
 
                 .file:hover {{
-                    background-color: transparent ;
+                    background-color: #8b2604;
                 }}
 
                 .size-col {{
