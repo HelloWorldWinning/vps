@@ -6,8 +6,8 @@ set -e
 # Define variables
 BASE_DIR="/data/readwise_highlights_viewer_d"
 DATA_DIR="${BASE_DIR}/data"
-COMPOSE_FILE="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D/docker-compose.yml"
-DATA_FILE="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D/data/readwise-data.csv"
+COMPOSE_FILE="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D3/docker-compose.yml"
+DATA_FILE="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D3/data/readwise-data.csv"
 
 # Create necessary directories
 echo "Creating directories..."
