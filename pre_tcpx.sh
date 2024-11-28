@@ -91,7 +91,7 @@ apt install  -y sudo
 sudo  apt update
 sudo  apt-get update
 
-sudo apt install -y  python3-pynvim
+sudo apt install -y  python3-pynvim vnstat
 
 apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 
