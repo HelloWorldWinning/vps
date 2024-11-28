@@ -102,6 +102,7 @@ alias c='clear'
 
 
 alias l='exa -la --sort=changed'
+alias lss="/usr/bin/ls "
 
 alias cc='exa -la --sort=created'
 alias s='exa -la --sort=size'
