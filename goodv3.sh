@@ -1005,7 +1005,7 @@ bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/
 		1011) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader.sh )  ;;
 		10111) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/start_book_docker_instance.sh  )  ;;
 		d189) 
-bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D/setup-readwise_highlights_viewer.sh'  )   ;;
+bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D3/setup-readwise_highlights_viewer.sh'  )   ;;
 		10112) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/public_everyone_start_book_docker_instance.sh  )  ;;
 		d88) yes| bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh  )  ;;
 #	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter.sh )  ;;
