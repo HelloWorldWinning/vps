@@ -321,7 +321,7 @@ async def navigate(
                 }}
 
                 .folder {{
-                    background-color: transparent ;
+                    background-color: #ffffff;
                     color: #1d910d;
                     font-weight: bold;
                     font-size: 120%;
