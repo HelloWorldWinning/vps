@@ -34,9 +34,9 @@
 }
 
 html, body, * {
-  font-weight:300;
-  font-family: "Source Code Pro", "FZFangJunHeiS", monospace !important;
+  font-weight: 300 !important ;
+  font-family: "Source Code Pro", "FZFangJunHeiS", monospace !important ;
 }
 /****
-rgb(252,240,217) good
+rgb(252,240,217) good bg
 238 226 204 so 
