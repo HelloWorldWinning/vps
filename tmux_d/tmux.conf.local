@@ -638,3 +638,10 @@ unbind [
 bind-key Up copy-mode
 
 set -g mouse off
+
+
+unbind q
+bind-key q kill-window -t:-1
+
+unbind e
+bind-key e kill-window -t:+1
