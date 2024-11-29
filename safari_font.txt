@@ -36,6 +36,7 @@
 html, body, * {
   font-weight: 300 !important ;
   font-family: "Source Code Pro", "FZFangJunHeiS", monospace !important ;
+  line-height: 140%;
 }
 /****
 rgb(252,240,217) good bg
