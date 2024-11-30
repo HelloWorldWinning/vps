@@ -19,7 +19,6 @@ cd "$DEPLOY_DIR"
 # Write the updated docker-compose.yml into the directory
 echo "Writing updated docker-compose.yml"
 cat <<"EOF" > docker-compose.yml
-version: '3.8'
 
 services:
   web:
@@ -27,6 +26,7 @@ services:
     container_name:  token_service_backend_webpage_web_instance
     network_mode: "host"
     command: python token_counter.py
+    restart: always
     environment:
       BACKEND_HOST: "127.0.0.1"
 
@@ -34,6 +34,7 @@ services:
     image: oklove/token_service_backend_webpage:latest
     container_name:  token_service_backend_webpage_backend_instance
     network_mode: "host"
+    restart: always
     command: python tokenizer_service.py
 EOF
 
