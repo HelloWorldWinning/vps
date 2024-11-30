@@ -2,7 +2,7 @@ echo "Choose PyTorch installation option:"
 echo "1. CPU only (default)"
 echo "2. CUDA 12.1"
 echo "3. CUDA 11.8"
-read -p "Enter your choice_pytorch [1-3] (default: 1): " choice_pytorch
+read -t 5 -p "Enter your choice_pytorch [1-3] (default: 1): " choice_pytorch
 
 
 
