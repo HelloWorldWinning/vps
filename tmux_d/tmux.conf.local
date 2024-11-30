@@ -645,3 +645,6 @@ bind-key q kill-window -t:-1
 
 unbind e
 bind-key e kill-window -t:+1
+
+unbind b
+bind-key b new-window -n ""
