@@ -29,6 +29,7 @@ get_ip() {
 start_server() {
     echo "Starting iperf3 server..."
     iperf3 -s -D
+    sleep 2  # Wait for server to start
 }
 
 # Function to stop iperf server
@@ -51,34 +52,44 @@ echo "======================="
 # Check if iperf3 is installed
 check_iperf
 
-# Get server IP/domain
-read -p "Enter VPS1 IP address or domain: " vps1_input
-VPS1_IP=$(get_ip $vps1_input)
+# Initialize variables
+SERVER_IP=""
+IS_SERVER=false
 
-if [ -z "$VPS1_IP" ]; then
-    echo "Could not resolve IP address for $vps1_input"
-    exit 1
+# Prompt for remote IP with 5-second timeout
+echo "Enter remote VPS IP/domain (5s timeout - no input = this VPS becomes server):"
+read -t 5 remote_input
+
+if [ -z "$remote_input" ]; then
+    echo "No input received - this VPS will be the server"
+    IS_SERVER=true
+else
+    SERVER_IP=$(get_ip $remote_input)
+    if [ -z "$SERVER_IP" ]; then
+        echo "Could not resolve IP address for $remote_input"
+        exit 1
+    fi
+    echo "Using remote IP address: $SERVER_IP"
 fi
 
-echo "Using IP address: $VPS1_IP"
+# Execute based on role
+if [ "$IS_SERVER" = true ]; then
+    echo "Running as SERVER"
+    start_server
+    echo "Server started. Waiting for client connection..."
+    # Keep script running
+    while true; do
+        if ! pgrep -f "iperf3 -s" > /dev/null; then
+            echo "Server stopped. Exiting..."
+            break
+        fi
+        sleep 5
+    done
+else
+    echo "Running as CLIENT"
+    echo "Waiting 5 seconds for server to be ready..."
+    sleep 5
+    run_client_test $SERVER_IP
+fi
 
-# Round 1: VPS1 as server, VPS2 as client
-echo -e "\nRound 1: VPS1 (Server) -> VPS2 (Client)"
-echo "----------------------------------------"
-echo "On VPS1, run: iperf3 -s -D"
-echo -e "On VPS2, run: iperf3 -c $VPS1_IP -t 30 -J > iperf_result_\$(date +%Y%m%d_%H%M%S).json\n"
-
-# Wait for first round to complete
-read -p "Press Enter when Round 1 is complete..."
-
-# Round 2: VPS2 as server, VPS1 as client
-echo -e "\nRound 2: VPS2 (Server) -> VPS1 (Client)"
-echo "----------------------------------------"
-echo "On VPS2, run: iperf3 -s -D"
-echo "On VPS1, run: iperf3 -c [VPS2_IP] -t 30 -J > iperf_result_\$(date +%Y%m%d_%H%M%S).json"
-
-# Cleanup instructions
-echo -e "\nTo stop iperf3 server on either VPS:"
-echo "pkill -f 'iperf3 -s'"
-
-echo -e "\nTest complete! Check the JSON result files for detailed performance metrics."
+echo "Test complete!"
