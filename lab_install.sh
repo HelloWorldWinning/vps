@@ -192,10 +192,18 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
       "args": {},
       "command": "application:toggle-side-tabbar",
       "keys": [
-        "Alt D"
+        "Accel Shift B"
       ],
       "selector": ".jp-FileEditor"
     },
+{
+    "command": "running:show-panel",
+    "keys": [
+        "Accel Shift B"
+    ],
+    "selector": "body",
+    "disabled": true
+},
     {
       "args": {},
       "command": "application:toggle-side-tabbar",
