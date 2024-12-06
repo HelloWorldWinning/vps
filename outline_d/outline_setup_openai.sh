@@ -141,6 +141,7 @@ services:
     env_file: ./docker.env
 #   ports:
 #     - "3000:3000"
+    restart: always
     volumes:
       - ./data/storage-data:/var/lib/outline/data
     depends_on:
@@ -152,6 +153,7 @@ services:
     env_file: ./docker.env
 #   ports:
 #     - "6379:6379"
+    restart: always
     volumes:
       - ./data/redis.conf:/redis.conf
     command: ["redis-server", "/redis.conf"]
@@ -166,6 +168,7 @@ services:
     env_file: ./docker.env
 #   ports:
 #     - "5432:5432"
+    restart: always
     volumes:
       - ./data/database-data:/var/lib/postgresql/data
     healthcheck:
