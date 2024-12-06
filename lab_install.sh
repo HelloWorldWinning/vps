@@ -227,6 +227,13 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
         "Shift O"
       ],
       "selector": ".jp-Notebook.jp-mod-commandMode:not(.jp-mod-readWrite) :focus"
+    },
+    {
+    "command": "docmanager:rename",
+    "keys": [
+        "Accel Shift R"
+    ],
+    "selector": "body"
     }
   ]
 }
