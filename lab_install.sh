@@ -84,9 +84,11 @@ sudo touch ${log_file}
 sudo chmod 664 ${log_file}
 
 
-$conda_env_bin_dir/pip install   nbconvert  chardet   isort  black    
-$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black    jupyterlab
+#$conda_env_bin_dir/pip install   nbconvert  chardet   isort  black    
+#$conda_env_bin_dir/pip install  --upgrade nbconvert  chardet    isort  black    jupyterlab
 #pip install --upgrade jupyterlab
+pip install   nbconvert  chardet   isort  black    
+pip install  --upgrade nbconvert  chardet    isort  black    jupyterlab
 
 
 ### jupyterlab
@@ -378,7 +380,11 @@ curl -4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_jupyter
 #pip install --upgrade jupyterlab
 
 
+pip install   nbconvert  chardet   isort  black    
+pip install  --upgrade nbconvert  chardet    isort  black    jupyterlab
 
+
+pip install   black    
 
 
 # Reload systemd to recognize the new service
