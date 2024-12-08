@@ -236,7 +236,16 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
         "Accel Shift R"
     ],
     "selector": "body"
+    },
+    {
+    "args": {},
+    "command": "runmenu:run-all",
+    "keys": [
+      "Alt Shift R"
+    ],
+    "selector": "[data-jp-code-runner]"
     }
+
   ]
 }
 EOF
