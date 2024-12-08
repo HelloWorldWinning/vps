@@ -292,10 +292,7 @@ autocmd BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
 " Increase the maximum number of columns to display
 set maxfuncdepth=10000
 
-"autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
-
-highlight IncSearch gui=bold guifg=#8B0000 guibg=#FFB6C1 cterm=bold ctermfg=NONE ctermbg=NONE 
-autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))  
+autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 
 
