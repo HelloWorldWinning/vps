@@ -113,6 +113,7 @@ conda update -y nbconvert notebook   mistune isort
 
 # Install and enable the code formatter
 $conda_env_bin_dir/pip install --upgrade jupyterlab_code_formatter
+pip install --upgrade jupyterlab_code_formatter
 
 # Enable the server extension using the modern command
 jupyter server extension enable jupyterlab_code_formatter
