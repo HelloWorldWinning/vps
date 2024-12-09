@@ -29,7 +29,6 @@
     "editor.wordHighlightForeground": "#FFFFFF",
  // "editorLineNumber.activeForeground": "#ff0000",
     "editorLineNumber.activeForeground": "#fff68f",
-      "editorLineNumber.fontWeight": "bold",
     // "editorLineNumber.activeForeground": "#ffffff",
     // "editorLineNumber.activeBackground": "#ff0000",
     "terminal.background": "#32302f",
@@ -93,8 +92,7 @@
        // "foreground": "#FFFF54"
        // "foreground": "#ffac1c"
 //        "foreground": "#FFFF8A"
-          "fontStyle": "Demi-bold",
-          "foreground": "#fcfcac"
+          "foreground": "#feffa6"
         }
       },
       {
@@ -116,6 +114,15 @@
         }
       },
       {
+        "name": "variables and functions",
+        "scope": [
+          "support.function.python"
+        ],
+        "settings": {
+          "foreground": "#710e67"
+        }
+      },
+      {
         "name": "User-defined functions and variables",
         "scope": [
           "meta.parameter.type.variable",
@@ -131,13 +138,15 @@
           "entity.name.function",
           "entity.name.type",
           "variable.python",
+          "support.function.python",
           "variable.other.readwrite",
           "variable.parameter.function",
           "meta.function-call.generic.python",
           "support.class.python",
           "entity.name.import.python",
           "variable.other.readwrite.alias.python",
-          "variable.other.module.python"
+          "variable.other.module.python",
+          "support.function.python"
         ],
         "settings": {
           "foreground": "#09f418"
@@ -168,27 +177,12 @@
        // "foreground": "#f724f5"
           "foreground": "#fa05fa"
         }
-      },
-      {
-        "name": "variables and functions",
-        "scope": [
-      "entity.name.function.python",
-     "meta.function-call.generic.python",
-//     "meta.function-call.python",
-        ],
-        "settings": {
-//         "foreground": "#710e67",
-//       "foreground":"#eb54db" ,
-          "fontStyle": "bold"
-
-        }
       }
     ]
   },
 //"python.defaultInterpreterPath": "/root/anaconda3/envs/FT/bin/python",
 //"python.defaultInterpreterPath": "/root/anaconda3/envs/ray/bin/python",
-"python.defaultInterpreterPath": "/root/miniconda3/bin/python",
- "python.pythonPath":  "/root/miniconda3/bin/python",
+//"python.defaultInterpreterPath": "/root/miniconda3/bin/python",
   "editor.formatOnSave": true,
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
