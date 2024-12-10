@@ -85,7 +85,7 @@
         "scope": [
           "entity.name.function.member",
           "entity.name.function.python",
-   //     "source.python"
+          "source.python"
         ],
         "settings": {
           //"foreground": "#fafa5f"
@@ -93,17 +93,10 @@
        // "foreground": "#FFFF54"
        // "foreground": "#ffac1c"
 //        "foreground": "#FFFF8A"
-//        "fontStyle": "Demi-bold",
+          "fontStyle": "Demi-bold",
           "foreground": "#fcfcac"
         }
       },
-      {"scope": [
-    "entity.name.function.python",
-    "entity.name.function.definition.python"
-],
-"settings": {
-    "fontStyle": "bold"
-}},
       {
         "name": "functions and variables",
         "scope": [
@@ -209,19 +202,18 @@
    "terminal.integrated.fontFamily": "Source Code Pro",
   "vim.digraphs": {},
 
-
-  "editor.semanticTokenColorCustomizations": {
-        "enabled": true,
-        "rules": {
-            "function": {
-                "fontStyle": "bold",
-                "foreground": "#fa05fa"
-            },
-            "function.builtin": {
-                "fontStyle": ""
-            }
+"editor.semanticTokenColorCustomizations": {
+    "rules": {
+        "function": {
+            "fontStyle": "bold"
+        },
+        "function.builtin": {
+            "fontStyle": ""
         }
     }
+}
+
+
 
 
 }
