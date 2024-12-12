@@ -3,6 +3,9 @@
   "zenMode.centerLayout": false,
   "editor.lineNumbers": "relative",
   "workbench.colorCustomizations": {
+ "jumpy2.labelFontColor": "#FF1493",  
+ "jumpy2.labelBackgroundColor": "#2E2E2E",
+
 	   "tab.activeForeground": "#aa0000",
     "editor.background": "#32302f",
     "activityBar.background": "#32302f",
@@ -221,7 +224,11 @@
                 "fontStyle": ""
             }
         }
-    }
+    },
+    "jumpy2.jumperEmojis.jumperSet": [
+        
+        "🟢"
+    ]
 
 
 }
