@@ -150,7 +150,8 @@ hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black
 "hi Normal  ctermfg=White  guifg=White guifg=Black  ctermbg=Black guibg=#E4E1CF ctermbg=Black      
 "
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+"""hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
+hi CursorLineNr term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold guifg=#ff0000 guibg=NONE              
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
