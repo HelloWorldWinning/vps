@@ -75,41 +75,40 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
 #]
 
 TEXT_FILE_EXTENSIONS = [
-#   # Shell and config files
-#   '.sh', '.bash', '.zsh', '.fish',
-#   '.conf', '.ini', '.cfg', '.properties', '.env',
+    # Shell and config files
+    '.sh', '.bash', '.zsh', '.fish',
+    '.conf', '.ini', '.cfg', '.properties', '.env',
 
-#   # Data formats
-#   '.yml', '.yaml', '.json', '.toml',
-#   '.md', '.markdown',
-#   '.sql',
-#   '.log',
-#   '.csv', '.tsv',
-#   '.xml',
+    # Data formats
+    '.yml', '.yaml', '.json', '.toml',
+    '.md', '.markdown',
+    '.sql',
+    '.log',
+    '.csv', '.tsv',
+    '.xml',
 
-#   # Programming languages
-#   '.rs', '.go', '.java', '.kt', '.scala',
-#   '.rb', '.php',
-#   '.js', '.ts',
-#   '.css', '.scss', '.less',
-#   '.vue', '.jsx', '.tsx',
+    # Programming languages
+    '.rs', '.go', '.java', '.kt', '.scala',
+    '.rb', '.php',
+    '.js', '.ts',
+    '.css', '.scss', '.less',
+    '.vue', '.jsx', '.tsx',
 #   '.html', '.htm',
-#   '.c', '.cpp', '.h', '.hpp',
-#   '.cs', '.vb',
-#   '.pl', '.pm',
-#   '.swift',
-#   '.r',
-#   '.lua',
-#   '.tcl',
+    '.c', '.cpp', '.h', '.hpp',
+    '.cs', '.vb',
+    '.pl', '.pm',
+    '.swift',
+    '.r',
+    '.lua',
+    '.tcl',
 
     # Special config files
-#   '.dockerfile',
-#   '.gitignore', '.dockerignore',
-#   '.editorconfig',
-#   '.htaccess',
-#   '.nginx',
-    '.service', '.socket',
-#   '.timer'
+    '.dockerfile',
+    '.gitignore', '.dockerignore',
+    '.editorconfig',
+    '.htaccess',
+    '.nginx',
+    '.service', '.socket', '.timer'
 ]
 
 
