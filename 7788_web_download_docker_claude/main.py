@@ -76,6 +76,7 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
 
 TEXT_FILE_EXTENSIONS = [
 #   # Shell and config files
+    '.sh',
 #   '.sh', '.bash', '.zsh', '.fish',
 #   '.conf', '.ini', '.cfg', '.properties', '.env',
 
