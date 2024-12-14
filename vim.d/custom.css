@@ -1,0 +1,18 @@
+.current-line .line-numbers {
+    font-weight: 900 !important;
+}
+/* Example 1: Using .current-line-number */
+.current-line-number {
+    font-weight: bold !important;
+}
+
+/* Example 2: Using a more specific selector */
+.monaco-editor .margin .line-numbers .current-line-number {
+    font-weight: bold !important;
+}
+
+/* Example 3: If the current line has an active class */
+.line-numbers .active {
+    font-weight: bold !important;
+}
+

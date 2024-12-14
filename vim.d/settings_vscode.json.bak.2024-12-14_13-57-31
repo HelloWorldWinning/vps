@@ -1,14 +1,10 @@
 {
-
-
   "workbench.statusBar.alignment": "left",
   "zenMode.centerLayout": false,
   "editor.lineNumbers": "relative",
   "workbench.colorCustomizations": {
-
-
-	  "jumpy2.labelBackgroundColor": "#2E2E2E", 
-	   "jumpy2.labelFontColor": "#FF1493", 
+ "jumpy2.labelFontColor": "#FF1493",  
+ "jumpy2.labelBackgroundColor": "#2E2E2E",
 
 	   "tab.activeForeground": "#aa0000",
     "editor.background": "#32302f",
@@ -35,10 +31,7 @@
     "editor.wordHighlightStrongForeground": "#FFFFFF",
     "editor.wordHighlightForeground": "#FFFFFF",
  // "editorLineNumber.activeForeground": "#ff0000",
-    "editorLineNumber.activeForeground": "#ff0000",
-        "editor.lineNumbers": {
-        "fontWeight": "bold"
-    },
+    "editorLineNumber.activeForeground": "#fff68f",
       "editorLineNumber.fontWeight": "bold",
     // "editorLineNumber.activeForeground": "#ffffff",
     // "editorLineNumber.activeBackground": "#ff0000",
@@ -206,7 +199,6 @@
 //"python.defaultInterpreterPath": "/root/anaconda3/envs/FT/bin/python",
 //"python.defaultInterpreterPath": "/root/anaconda3/envs/ray/bin/python",
 "python.defaultInterpreterPath": "/root/miniconda3/bin/python",
-//"python.defaultInterpreterPath": "/root/miniconda3/envs/FT/bin/python",
  "python.pythonPath":  "/root/miniconda3/bin/python",
   "editor.formatOnSave": true,
   "[python]": {
@@ -233,14 +225,9 @@
             }
         }
     },
-
-"jumpy2.jumperEmojis.jumperSet": [
-    "🔴"
-],
-//"jumpy2.customKeys": "asdfgqwertjkliop"
-"jumpy2.customKeys": "asdfgqwertv"
-,
-"vscode_custom_css.imports": [
-    "file:///root/.vscode-server/data/Machine/custom.css"
-]
+    "jumpy2.jumperEmojis.jumperSet": [
+        
+        "🟢"
+    ],
+    "jumpy2.customKeys": "asdgqwrtjkliop"
 }
