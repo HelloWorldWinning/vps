@@ -187,6 +187,7 @@ wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubuserconte
 mkdir -p ~/.vscode-server/data/Machine/
 sleep 1
 wget --inet4-only -O  ~/.vscode-server/data/Machine/settings.json   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
+wget --inet4-only -O  ~/.vscode-server/data/Machine/custom.css   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/custom.css
 
 
 
