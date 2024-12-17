@@ -18,9 +18,7 @@ HOME_TEMPLATE = """
     <title>Web Content Extractor</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        html {
-            zoom: 200%;
-        }
+        html {zoom: 200%;}
 
         body {
             margin: 0;
@@ -31,33 +29,29 @@ HOME_TEMPLATE = """
             justify-content: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
-            padding: 1rem;
-            box-sizing: border-box;
         }
 
         .container {
             width: 90%;
-            max-width: 300px;  /* Reduced from 600px to account for zoom */
+            max-width: 600px;
             text-align: center;
-            padding: 1rem;     /* Reduced from 2rem to maintain proportions */
+            padding: 2rem;
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transform: translateY(-10%);  /* Adjust vertical position */
         }
 
         h1 {
             color: #1a1f36;
-            font-size: 1rem;  /* Reduced from 2rem */
+            font-size: 2rem;
             font-weight: 600;
-            margin-bottom: 0.25rem;  /* Reduced from 0.5rem */
+            margin-bottom: 0.5rem;
         }
 
         .description {
             color: #4f566b;
-            font-size: 0.55rem;  /* Reduced from 1.1rem */
-            margin-bottom: 1rem;  /* Reduced from 2rem */
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
             line-height: 1.5;
         }
 
@@ -68,16 +62,13 @@ HOME_TEMPLATE = """
 
         .input-container {
             position: relative;
-            margin-top: 0.5rem;  /* Reduced from 1rem */
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            margin-top: 1rem;
         }
 
         input[type="text"] {
-            width: 90%;  /* Slightly reduced width */
-            padding: 0.5rem 0.6rem;  /* Reduced from 1rem 1.2rem */
-            font-size: 0.5rem;  /* Reduced from 1rem */
+            width: 100%;
+            padding: 1rem 1.2rem;
+            font-size: 1rem;
             border: 2px solid #e4e9f2;
             border-radius: 12px;
             transition: all 0.3s ease;
@@ -102,8 +93,8 @@ HOME_TEMPLATE = """
         }
 
         .examples {
-            margin-top: 1rem;  /* Reduced from 2rem */
-            font-size: 0.45rem;  /* Reduced from 0.9rem */
+            margin-top: 2rem;
+            font-size: 0.9rem;
             color: #6b7280;
         }
     </style>
