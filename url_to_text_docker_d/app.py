@@ -14,13 +14,12 @@ templates = Jinja2Templates(directory="templates")
 HOME_TEMPLATE = """
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Web Content Extractor</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        html {
-            zoom: 200%;
-        }
+        html {zoom: 250%;}
 
         body {
             margin: 0;
@@ -31,33 +30,35 @@ HOME_TEMPLATE = """
             justify-content: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
-            padding: 1rem;
+            padding: 1.5rem;
             box-sizing: border-box;
+            position: relative;
+            transform: translateY(-30%) !important;
         }
 
         .container {
             width: 90%;
-            max-width: 300px;  /* Reduced from 600px to account for zoom */
+            max-width: 450px;  /* 150% of original 300px */
             text-align: center;
-            padding: 1rem;     /* Reduced from 2rem to maintain proportions */
+            padding: 1.5rem;   /* 150% of original 1rem */
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;  /* 150% of original 16px */
+            box-shadow: 0 15px 38px rgba(0, 0, 0, 0.05);
             position: relative;
-            transform: translateY(-10%);  /* Adjust vertical position */
+            transform: translateY(-10%);
         }
 
         h1 {
             color: #1a1f36;
-            font-size: 1rem;  /* Reduced from 2rem */
+            font-size: 1.5rem;  /* 150% of original 1rem */
             font-weight: 600;
-            margin-bottom: 0.25rem;  /* Reduced from 0.5rem */
+            margin-bottom: 0.375rem;
         }
 
         .description {
             color: #4f566b;
-            font-size: 0.55rem;  /* Reduced from 1.1rem */
-            margin-bottom: 1rem;  /* Reduced from 2rem */
+            font-size: 0.825rem;  /* 150% of original 0.55rem */
+            margin-bottom: 1.5rem;
             line-height: 1.5;
         }
 
@@ -68,18 +69,18 @@ HOME_TEMPLATE = """
 
         .input-container {
             position: relative;
-            margin-top: 0.5rem;  /* Reduced from 1rem */
+            margin-top: 0.75rem;
             width: 100%;
             display: flex;
             justify-content: center;
         }
 
         input[type="text"] {
-            width: 90%;  /* Slightly reduced width */
-            padding: 0.5rem 0.6rem;  /* Reduced from 1rem 1.2rem */
-            font-size: 0.5rem;  /* Reduced from 1rem */
-            border: 2px solid #e4e9f2;
-            border-radius: 12px;
+            width: 90%;
+            padding: 0.75rem 0.9rem;  /* 150% of original padding */
+            font-size: 0.75rem;  /* 150% of original 0.5rem */
+            border: 3px solid #e4e9f2;  /* 150% of original 2px */
+            border-radius: 18px;  /* 150% of original 12px */
             transition: all 0.3s ease;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
@@ -90,7 +91,7 @@ HOME_TEMPLATE = """
             outline: none;
             border-color: #5850ec;
             background: white;
-            box-shadow: 0 0 0 3px rgba(88, 80, 236, 0.1);
+            box-shadow: 0 0 0 4.5px rgba(88, 80, 236, 0.1);
         }
 
         input[type="text"]::placeholder {
@@ -102,8 +103,8 @@ HOME_TEMPLATE = """
         }
 
         .examples {
-            margin-top: 1rem;  /* Reduced from 2rem */
-            font-size: 0.45rem;  /* Reduced from 0.9rem */
+            margin-top: 1.5rem;
+            font-size: 0.675rem;  /* 150% of original 0.45rem */
             color: #6b7280;
         }
     </style>
@@ -119,7 +120,7 @@ HOME_TEMPLATE = """
         document.addEventListener('DOMContentLoaded', function() {
             const input = document.querySelector('input[type="text"]');
             let typingTimer;
-            const doneTypingInterval = 800; // ms
+            const doneTypingInterval = 800;
 
             input.addEventListener('input', function() {
                 clearTimeout(typingTimer);
