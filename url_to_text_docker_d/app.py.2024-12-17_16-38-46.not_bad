@@ -1,0 +1,139 @@
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+import httpx
+import uvicorn
+
+app = FastAPI()
+
+# Create templates directory
+templates = Jinja2Templates(directory="templates")
+
+# HTML templates as strings (in real app, these would be separate files)
+HOME_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Text Extractor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+        body {
+            margin: 20px;
+            font-family: 'Source Code Pro', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        form {
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-family: 'Source Code Pro', monospace;
+        }
+
+        input[type="submit"] {
+            display: none;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+    </style>
+    <script>
+        function submitForm(event) {
+            if (event.type === 'change' || (event.type === 'keydown' && event.keyCode === 13)) {
+                event.preventDefault();
+                document.getElementById('url-form').submit();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>URL Text Extractor</h1>
+    <form method="post" id="url-form" action="/extract">
+        <input type="text"
+               name="url"
+               required
+               placeholder="Enter URL here"
+               onchange="submitForm(event)"
+               onkeydown="submitForm(event)">
+        <input type="submit">
+    </form>
+</body>
+</html>
+"""
+
+RESULT_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extracted Text</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Source Code Pro', monospace;
+            line-height: 1.6;
+        }
+
+        #text-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="text-content">{{ text }}</div>
+</body>
+</html>
+"""
+
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return HOME_TEMPLATE
+
+
+@app.post("/extract", response_class=HTMLResponse)
+async def extract(url: str = Form(...)):
+    try:
+        # Backend API endpoint
+        api_url = "http://127.0.0.1:9966/url"
+        headers = {"Authorization": "Bearer _to_know_world"}
+        params = {"url": url}
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(api_url, headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+            text = data.get("text", "No text found.")
+
+            # Return only the extracted text in the result template
+            return RESULT_TEMPLATE.replace("{{ text }}", text)
+
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error accessing backend: {str(e)}"
+        )
+    except ValueError:
+        raise HTTPException(status_code=500, detail="Invalid response from backend")
+
+
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="0.0.0.0", port=9977, reload=False)

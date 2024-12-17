@@ -1,133 +1,212 @@
-from flask import Flask, request, render_template_string
-import requests
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+import httpx
+import uvicorn
 
-app = Flask(__name__)
+app = FastAPI()
 
-# HTML template with custom.css content added
-template = '''
-<!doctype html>
+# Create templates directory
+templates = Jinja2Templates(directory="templates")
+
+# HTML templates as strings (in real app, these would be separate files)
+HOME_TEMPLATE = """
+<!DOCTYPE html>
 <html>
 <head>
-    <title>URL Text Extractor</title>
-     <style>
-        html {
-            zoom: 2.0 ; /* This sets the zoom level to 175% */
-        }
-    </style>
+    <title>Web Content Extractor</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-        a {
-            text-decoration: none;
-        }
-
-        @font-face {
-            font-family: 'FZFangJunHeiS';
-            src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-        }
-
-        body, html * {
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-        }
-
-        pre, pre * {
-            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Existing styles */
         body {
-            margin: 20px;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
         }
-        #text-output {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    padding: 20px;
-    border: 1px solid #ccc;
-    width: 100%; /* Changed from max-width to width */
-    margin: 0 auto;
-    box-sizing: border-box;
-    font-size: 18px;
-    line-height: 1.6;
-    max-width: 90vw; /* Allows the element to take 90% of the viewport width but is not fixed */
-}
-        #url-input {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        #submit-btn {
-            display: none; /* Hide the submit button */
-        }
-        h1, h2 {
-            color: #333;
+
+        .container {
+            width: 90%;
+            max-width: 600px;
             text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
+
+        h1 {
+            color: #1a1f36;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: #4f566b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
         form {
-            margin-bottom: 30px;
-            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .input-container {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            font-size: 1rem;
+            border: 2px solid #e4e9f2;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #5850ec;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(88, 80, 236, 0.1);
+        }
+
+        input[type="text"]::placeholder {
+            color: #a0aec0;
+        }
+
+        input[type="submit"] {
+            display: none;
+        }
+
+        .examples {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #6b7280;
         }
     </style>
     <script>
-        // Submit the form when the URL input loses focus or when Enter key is pressed
-        function submitForm(event) {
-            if (event.type === 'change' || (event.type === 'keydown' && event.keyCode === 13)) {
-                event.preventDefault(); // Prevent default action
-                document.getElementById('url-form').submit();
+        function submitForm() {
+            const form = document.getElementById('url-form');
+            const input = document.querySelector('input[type="text"]');
+            if (input.value.trim() !== '') {
+                form.submit();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.querySelector('input[type="text"]');
+            let typingTimer;
+            const doneTypingInterval = 800; // ms
+
+            input.addEventListener('input', function() {
+                clearTimeout(typingTimer);
+                if (this.value) {
+                    typingTimer = setTimeout(submitForm, doneTypingInterval);
+                }
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitForm();
+                }
+            });
+        });
     </script>
 </head>
 <body>
-    <h1>URL Text Extractor</h1>
-    <form method="post" id="url-form">
-        <input type="text" name="url" id="url-input" required
-               placeholder="Enter URL here"
-               onchange="submitForm(event)"
-               onkeydown="submitForm(event)">
-        <input type="submit" id="submit-btn">
-    </form>
-    {% if text %}
-        <h2>Extracted Text:</h2>
-        <div id="text-output">{{ text }}</div>
-    {% endif %}
-    {% if error %}
-        <h2>Error:</h2>
-        <div id="text-output">{{ error }}</div>
-    {% endif %}
+    <div class="container">
+        <h1>Extract Web Content</h1>
+        <p class="description">Paste any webpage URL to extract its readable content, instantly cleaned and formatted.</p>
+        <form method="post" id="url-form" action="/extract">
+            <div class="input-container">
+                <input type="text"
+                       name="url"
+                       required
+                       placeholder="Paste a URL here..."
+                       autocomplete="off"
+                       spellcheck="false">
+            </div>
+        </form>
+        <div class="examples">
+            Works with articles, blog posts, news sites, and more
+        </div>
+    </div>
 </body>
 </html>
-'''
+"""
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    text = None
-    error = None
-    if request.method == 'POST':
-        url = request.form.get('url')
-        if url:
-            # Backend API endpoint
-            api_url = 'http://127.0.0.1:9966/url'
-            headers = {
-                'Authorization': 'Bearer _to_know_world'
-            }
-            params = {
-                'url': url
-            }
-            try:
-                # Send GET request to the backend API
-                response = requests.get(api_url, headers=headers, params=params)
-                response.raise_for_status()  # Raise an error for bad status codes
-                data = response.json()
-                text = data.get('text', 'No text found.')
-            except requests.exceptions.RequestException as e:
-                error = f'An error occurred: {e}'
-            except ValueError:
-                error = 'Invalid response from the backend API.'
-    return render_template_string(template, text=text, error=error)
+RESULT_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extracted Text</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9977, debug=False)
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Source Code Pro', monospace;
+            line-height: 1.6;
+        }
 
+        #text-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="text-content">{{ text }}</div>
+</body>
+</html>
+"""
+
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    return HOME_TEMPLATE
+
+
+@app.post("/extract", response_class=HTMLResponse)
+async def extract(url: str = Form(...)):
+    try:
+        # Backend API endpoint
+        api_url = "http://127.0.0.1:9966/url"
+        headers = {"Authorization": "Bearer _to_know_world"}
+        params = {"url": url}
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(api_url, headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+            text = data.get("text", "No text found.")
+
+            # Return only the extracted text in the result template
+            return RESULT_TEMPLATE.replace("{{ text }}", text)
+
+    except httpx.RequestError as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error accessing backend: {str(e)}"
+        )
+    except ValueError:
+        raise HTTPException(status_code=500, detail="Invalid response from backend")
+
+
+if __name__ == "__main__":
+    uvicorn.run("app:app", host="0.0.0.0", port=9977, reload=False)
