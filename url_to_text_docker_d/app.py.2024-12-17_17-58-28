@@ -17,7 +17,6 @@ HOME_TEMPLATE = """
 
 <head>
     <title>Web Content Extractor</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/favicon.ico">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         html {zoom: 250%;}
@@ -166,7 +165,6 @@ RESULT_TEMPLATE = """
 <html>
 <head>
     <title>Extracted Text</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/favicon.ico">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
         html {zoom: 200%;}
