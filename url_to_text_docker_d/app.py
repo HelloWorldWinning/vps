@@ -17,7 +17,8 @@ HOME_TEMPLATE = """
 <head>
     <title>Web Content Extractor</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap'); html {     zoom: 2.0;  }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        html {zoom: 200%;}
 
         body {
             margin: 0;
@@ -155,7 +156,8 @@ RESULT_TEMPLATE = """
 <head>
     <title>Extracted Text</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap'); html {     zoom: 2.0;  }
+        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+        html {zoom: 200%;}
 
         body {
             margin: 0;
