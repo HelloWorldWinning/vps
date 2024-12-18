@@ -99,9 +99,9 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#e9f024",
+          "foreground": "#870fd1",
           "style": "plain",
-          "template": "<b>12:29A 27-Wednesday ☵ </b>",
+          "template": "<b>10:04P Wednesday-18 ☵ </b>",
           "type": "text"
         }
       ],
