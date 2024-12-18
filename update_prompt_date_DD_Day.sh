@@ -33,7 +33,7 @@ format_date() {
 
     # Assemble the fixed-length first_part with 'a' or 'p'
  #  echo "$hour:$minute$am_pm_symbol $day-$padded_weekday"
-    echo "$hour:$minute$am_pm_symbol $padded_weekday-$day"
+    echo "$padded_weekday $hour:$minute$am_pm_symbol $day"
 }
 
 first_part=$(format_date "now")
