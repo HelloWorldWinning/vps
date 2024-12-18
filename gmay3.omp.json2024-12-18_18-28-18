@@ -14,7 +14,7 @@
           "font-weight": "bold"
         },
         {
-          "background": "#65000B",
+          "background": "#b00b0b",
           "foreground": "#ffffff",
           "powerline_symbol": "",
           "properties": {
