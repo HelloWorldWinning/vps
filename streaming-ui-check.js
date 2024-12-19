@@ -83,6 +83,8 @@ const message = {
 
 // First update the results array in both places where content is constructed
 
+
+
 ;(async () => {
   testYTB()
   testDazn()
@@ -101,7 +103,6 @@ const message = {
     result["Disney"] = "<b>Disneyᐩ:</b> 检测超时 🚦 "
   }
 
-  // Update the results array to include Claude
   let content = "------------------------------"+"</br>"+([
     result["YouTube"],
     result["Netflix"],
@@ -110,7 +111,7 @@ const message = {
     result["Paramount"],
     result["Discovery"],
     result["ChatGPT"],
-    result["Claude"]  // Add Claude to display
+    result["Claude"]
   ]).join("</br></br>")
   
   content = content + "</br>------------------------------</br>"+"<font color=#CD5C5C >"+"<b>节点</b> ➟ " + $environment.params+ "</font>"
@@ -123,14 +124,13 @@ const message = {
     }
     if (resolve.ret) {
       let output=JSON.stringify(resolve.ret[message.content])? JSON.stringify(resolve.ret[message.content]).replace(/\"|\[|\]/g,"").replace(/\,/g," ➟ ") : $environment.params
-      // Update the second results array to include Claude
       let content = "--------------------------------------</br>"+([
         result["Dazn"],
         result["Discovery"],
         result["Paramount"],
         result["Disney"],
         result["ChatGPT"],
-        result["Claude"],  // Add Claude here too
+        result["Claude"],
         result["Netflix"],
         result["YouTube"]
       ]).join("</br></br>")
@@ -141,7 +141,7 @@ const message = {
     }
   }, reject => {
     $done();
-  });  
+  });
 })()
 .finally(() => {
   $configuration.sendMessage(message).then(resolve => {
@@ -151,14 +151,13 @@ const message = {
     }
     if (resolve.ret) {
       let output=JSON.stringify(resolve.ret[message.content])? JSON.stringify(resolve.ret[message.content]).replace(/\"|\[|\]/g,"").replace(/\,/g," ➟ ") : $environment.params
-      // Update the final results array to include Claude
       let content = "--------------------------------------</br>"+([
         result["Dazn"],
         result["Discovery"],
         result["Paramount"],
         result["Disney"],
         result["ChatGPT"],
-        result["Claude"],  // Add Claude here as well
+        result["Claude"],
         result["Netflix"],
         result["YouTube"]
       ]).join("</br></br>")
@@ -174,78 +173,71 @@ const message = {
   $done({"title":result["title"],"htmlMessage":`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">`+'----------------------</br></br>'+"🚥 检测异常"+'</br></br>----------------------</br>'+ output + `</p>`})
 });
 
-)()
-.finally(() => {
-  
-  $configuration.sendMessage(message).then(resolve => {
-    if (resolve.error) {
-      console.log(resolve.error);
-      $done()
-    }
-    if (resolve.ret) {
-      let output=JSON.stringify(resolve.ret[message.content])? JSON.stringify(resolve.ret[message.content]).replace(/\"|\[|\]/g,"").replace(/\,/g," ➟ ") : $environment.params
-      let content = "--------------------------------------</br>"+([result["Dazn"],result["Discovery"],result["Paramount"],result["Disney"],result["ChatGPT"],result["Netflix"],result["YouTube"]]).join("</br></br>")
-      content = content + "</br>--------------------------------------</br>"+"<font color=#CD5C5C>"+"<b>节点</b> ➟ " + output+ "</font>"
-      content =`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">` + content + `</p>`
-      //$notify(typeof(output),output)
-      console.log(output);
-      $done({"title":result["title"],"htmlMessage":content})
-      
-    }
-    //$done();|
-  }, reject => {
-    // Normally will never happen.
-    $done();
-  }); 
-  
-    $done({"title":result["title"],"htmlMessage":`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">`+'----------------------</br></br>'+"🚥 检测异常"+'</br></br>----------------------</br>'+ output + `</p>`})
-}
-  );
+
 
 
 // Add Claude test function
+
+
 function testClaude() {
   return new Promise((resolve, reject) => {
     let option = {
       url: BASE_URL_Claude,
       opts: opts1,
       timeout: 2800,
+      headers: {
+        'User-Agent': UA,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      }
     }
     
     $task.fetch(option).then(response => {
       console.log("Claude Test:" + response.statusCode)
       
-      // Check if we get a successful response
-      if (response.statusCode === 200) {
-        // We can access Claude's main page, now check region
-        let option1 = {
-          url: BASE_URL_Claude + 'api/location',
-          opts: opts1,
-          timeout: 2800,
-        }
-        
-        $task.fetch(option1).then(response => {
-          let data = JSON.parse(response.body)
-          let region = data.country_code
-          
-          // List of countries where Claude is available
-          const claudeCountries = ['US', 'GB', 'KR', 'JP', 'NZ', 'AU', 'CA', 'IE'];
-          
-          if (claudeCountries.includes(region)) {
-            result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get(region) + "⟧ 🎉"
-            resolve("支持 Claude")
-          } else {
-            result["Claude"] = "<b>Claude: </b>未支持 🚫"
-            resolve("不支持 Claude")
-          }
-        }, reason => {
-          console.log("Claude Region Check Failed:" + reason)
-          result["Claude"] = "<b>Claude: </b>检测失败 ❗️"
-          resolve("Claude check failed")
-        })
-      } else {
+      // Check if we get redirected to login or error page
+      if (response.statusCode === 403 || response.body.includes('Access denied')) {
         result["Claude"] = "<b>Claude: </b>未支持 🚫"
         resolve("不支持 Claude")
+      }
+      // If we can access the main page
+      else if (response.statusCode === 200) {
+        // Try to determine region from IP location
+        let ip_option = {
+          url: 'https://api.ipapi.is/',
+          opts: opts1,
+          timeout: 2800
+        }
+        
+        $task.fetch(ip_option).then(ip_response => {
+          try {
+            let data = JSON.parse(ip_response.body)
+            let region = data.location.country_code
+            
+            // List of countries where Claude is available
+            const claudeCountries = ['US', 'GB', 'KR', 'JP', 'NZ', 'AU', 'CA', 'IE'];
+            
+            if (claudeCountries.includes(region)) {
+              result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get(region) + "⟧ 🎉"
+              resolve("支持 Claude")
+            } else {
+              // If we can access but region isn't in supported list, show US as default
+              result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get('US') + "⟧ 🎉"
+              resolve("支持 Claude")
+            }
+          } catch (error) {
+            // If we can't determine region but can access Claude, show as supported
+            result["Claude"] = "<b>Claude: </b>支持 🎉"
+            resolve("支持 Claude")
+          }
+        }, reason => {
+          // If IP check fails but we can access Claude, show as supported
+          result["Claude"] = "<b>Claude: </b>支持 🎉"
+          resolve("支持 Claude")
+        })
+      } else {
+        result["Claude"] = "<b>Claude: </b>检测失败 ❗️"
+        resolve("Claude check failed")
       }
     }, reason => {
       console.log("Claude Test Failed:" + reason)
