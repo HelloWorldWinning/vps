@@ -20,4 +20,4 @@ day2_low=$(xmllint --html --xpath "//div[@class='pull-left day actived']/followi
 # Output the formatted result
 echo "${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}" > ~/.weather_temperature
 
-rm "$temp_file"
+yes|  rm -r "$temp_file"
