@@ -1,12 +1,23 @@
-html_content=$(curl -m 10 -s 'http://www.weather.com.cn/weather/101040100.shtml')
-weather=$(echo "$html_content" |   grep -oP '(?<=class="wea">).*?(?=</p>)' |head -n2 | tr '\n' ';' | sed 's/;$//'  )
-weather=$(echo $weather | tr ';' '_')
-temperature=$(echo "$html_content" | grep -oP '(?<=<i>).*?(?=℃</i>)' |head -n 1 ) 
-export we_temp="${temperature}°C ${weather}"
+#!/bin/bash
 
-export weather_temperature="${temperature}°${weather}"
 
-# Save weather_temperature to a file
-echo $weather_temperature > ~/.weather_temperature
+temp_file=$(mktemp)
 
-echo $weather_temperature
+curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57516" > "$temp_file"
+
+# Day 1 queries (working)
+day1_day_weather=$(xmllint --html --xpath "//div[@class='pull-left day actived']/div[3]/text()" "$temp_file" 2>/dev/null)
+day1_high=$(xmllint --html --xpath "//div[@class='pull-left day actived']//div[@class='high']/text()" "$temp_file" 2>/dev/null | sed 's/℃/°/')
+day1_night_weather=$(xmllint --html --xpath "//div[@class='pull-left day actived']/div[8]/text()" "$temp_file" 2>/dev/null)
+day1_low=$(xmllint --html --xpath "//div[@class='pull-left day actived']//div[@class='low']/text()" "$temp_file" 2>/dev/null | sed 's/℃/°/')
+
+# Day 2 queries (corrected using following-sibling)
+day2_day_weather=$(xmllint --html --xpath "//div[@class='pull-left day actived']/following-sibling::div[1]/div[3]/text()" "$temp_file" 2>/dev/null)
+day2_high=$(xmllint --html --xpath "//div[@class='pull-left day actived']/following-sibling::div[1]//div[@class='high']/text()" "$temp_file" 2>/dev/null | sed 's/℃/°/')
+day2_night_weather=$(xmllint --html --xpath "//div[@class='pull-left day actived']/following-sibling::div[1]/div[8]/text()" "$temp_file" 2>/dev/null)
+day2_low=$(xmllint --html --xpath "//div[@class='pull-left day actived']/following-sibling::div[1]//div[@class='low']/text()" "$temp_file" 2>/dev/null | sed 's/℃/°/')
+
+# Output the formatted result
+echo "${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}" > ~/.weather_temperature
+
+rm "$temp_file"
