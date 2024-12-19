@@ -80,6 +80,9 @@ const message = {
   content: $environment.params
 };
 
+
+// First update the results array in both places where content is constructed
+
 ;(async () => {
   testYTB()
   testDazn()
@@ -88,45 +91,90 @@ const message = {
   console.log("NetFlix Result:"+result["Netflix"])
   console.log(`testDisneyPlus: region=${region}, status=${status}`)
   if (status==STATUS_COMING) {
-    //console.log(1)
     result["Disney"] = "<b>Disneyᐩ:</b> 即将登陆 ➟ "+'⟦'+flags.get(region.toUpperCase())+"⟧ ⚠️"
   } else if (status==STATUS_AVAILABLE){
-    //console.log(2)
     result["Disney"] = "<b>Disneyᐩ:</b> 支持 ➟ "+'⟦'+flags.get(region.toUpperCase())+"⟧ 🎉"
     console.log(result["Disney"])
   } else if (status==STATUS_NOT_AVAILABLE) {
-    //console.log(3)
     result["Disney"] = "<b>Disneyᐩ:</b> 未支持 🚫 "
   } else if (status==STATUS_TIMEOUT) {
     result["Disney"] = "<b>Disneyᐩ:</b> 检测超时 🚦 "
   }
 
-  let content = "------------------------------"+"</br>"+([result["YouTube"],result["Netflix"],result["Disney"],result["Dazn"],result["Paramount"],result["Discovery"],result["ChatGPT"],result["Claude"]]).join("</br></br>")
+  // Update the results array to include Claude
+  let content = "------------------------------"+"</br>"+([
+    result["YouTube"],
+    result["Netflix"],
+    result["Disney"],
+    result["Dazn"],
+    result["Paramount"],
+    result["Discovery"],
+    result["ChatGPT"],
+    result["Claude"]  // Add Claude to display
+  ]).join("</br></br>")
+  
   content = content + "</br>------------------------------</br>"+"<font color=#CD5C5C >"+"<b>节点</b> ➟ " + $environment.params+ "</font>"
   content =`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">` + content + `</p>`
-//  cnt = `<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">` +'----------------------</br></br>'+result["Disney"]+'</br></br>----------------------</br>'+$environment.params + `</p>`
-$configuration.sendMessage(message).then(resolve => {
+
+  $configuration.sendMessage(message).then(resolve => {
     if (resolve.error) {
       console.log(resolve.error);
       $done()
     }
     if (resolve.ret) {
       let output=JSON.stringify(resolve.ret[message.content])? JSON.stringify(resolve.ret[message.content]).replace(/\"|\[|\]/g,"").replace(/\,/g," ➟ ") : $environment.params
-      let content = "--------------------------------------</br>"+([result["Dazn"],result["Discovery"],result["Paramount"],result["Disney"],result["ChatGPT"],result["Netflix"],result["YouTube"]]).join("</br></br>")
+      // Update the second results array to include Claude
+      let content = "--------------------------------------</br>"+([
+        result["Dazn"],
+        result["Discovery"],
+        result["Paramount"],
+        result["Disney"],
+        result["ChatGPT"],
+        result["Claude"],  // Add Claude here too
+        result["Netflix"],
+        result["YouTube"]
+      ]).join("</br></br>")
       content = content + "</br>--------------------------------------</br>"+"<font color=#CD5C5C>"+"<b>节点</b> ➟ " + output+ "</font>"
       content =`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">` + content + `</p>`
-      //$notify(typeof(output),output)
       console.log(output);
       $done({"title":result["title"],"htmlMessage":content})
-      
     }
-    //$done();|
   }, reject => {
-    // Normally will never happen.
     $done();
   });  
-  //$done({"title":result["title"],"htmlMessage":content})
 })()
+.finally(() => {
+  $configuration.sendMessage(message).then(resolve => {
+    if (resolve.error) {
+      console.log(resolve.error);
+      $done()
+    }
+    if (resolve.ret) {
+      let output=JSON.stringify(resolve.ret[message.content])? JSON.stringify(resolve.ret[message.content]).replace(/\"|\[|\]/g,"").replace(/\,/g," ➟ ") : $environment.params
+      // Update the final results array to include Claude
+      let content = "--------------------------------------</br>"+([
+        result["Dazn"],
+        result["Discovery"],
+        result["Paramount"],
+        result["Disney"],
+        result["ChatGPT"],
+        result["Claude"],  // Add Claude here as well
+        result["Netflix"],
+        result["YouTube"]
+      ]).join("</br></br>")
+      content = content + "</br>--------------------------------------</br>"+"<font color=#CD5C5C>"+"<b>节点</b> ➟ " + output+ "</font>"
+      content =`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">` + content + `</p>`
+      console.log(output);
+      $done({"title":result["title"],"htmlMessage":content})
+    }
+  }, reject => {
+    $done();
+  }); 
+  
+  $done({"title":result["title"],"htmlMessage":`<p style="text-align: center; font-family: -apple-system; font-size: large; font-weight: thin">`+'----------------------</br></br>'+"🚥 检测异常"+'</br></br>----------------------</br>'+ output + `</p>`})
+});
+
+)()
 .finally(() => {
   
   $configuration.sendMessage(message).then(resolve => {
