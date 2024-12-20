@@ -1,8 +1,9 @@
 #!/bin/bash
 
+#GREEN='\033[0;32m'
 BOLD_BRIGHT_YELLOW='\033[1;38;5;226m'
 BOLD_AMBER_YELLOW='\033[1;38;5;222m'
-BOLD_YELLOW_4='\033[1;38;5;185m'
+BOLD_YELLOW_4='\033[1;38;5;185m' # Golden yellow
 
 GREEN='\033[0;38;5;185m'
 BOLD_RED_BACKGROUND='\033[0;45m'
@@ -19,6 +20,13 @@ get_container_details() {
     echo "$details"
 }
 
+#get_port_bindings() {
+#    local container_name="$1"
+#    local port_bindings=$(docker inspect "$container_name" | jq -r '.[] | .NetworkSettings.Ports | to_entries[] | select(.value != null) | "\(.value[0].HostPort):\(.key)"' | head -n 1)
+#    echo "$port_bindings"
+#}
+
+
 get_port_bindings() {
     local container_name="$1"
     local port_bindings=$(docker inspect "$container_name" | jq -r '
@@ -33,20 +41,12 @@ get_port_bindings() {
     fi
 }
 
-# Function to fetch and display the docker-compose path for a given container
+
+
 # Function to fetch and display the docker-compose path for a given container
 get_docker_compose_path() {
     local container_name="$1"
-    # Get working directory and config files separately
-    local working_dir=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.working_dir"]')
-    local config_file=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.config_files"]')
-
-    # Remove any duplicate paths and combine
-    if [[ -n "$working_dir" && -n "$config_file" ]]; then
-        local base_path=$(echo "$working_dir" | sed 's/\/\+/\//g')  # Replace multiple slashes with single slash
-        local final_path="${base_path}/${config_file}"
-        echo "$final_path" | sed 's/\/\+/\//g'  # Clean up any remaining double slashes
-    fi
+    docker inspect "$container_name" | jq -r '.[] | .Config.Labels | "\(.["com.docker.compose.project.working_dir"])/\(.["com.docker.compose.project.config_files"])"'
 }
 
 # Function to get container status
@@ -54,6 +54,9 @@ get_container_status() {
     local container_name="$1"
     docker inspect -f '{{.State.Status}}' "$container_name"
 }
+
+# Prompt for filter string
+#read -p "Enter filter string (leave empty for no filter): " filter_string
 
 echo -e "\n================= start  =========================\n"
 
@@ -70,10 +73,7 @@ if [ "$#" -eq 1 ]; then
         echo -e "${BOLD_RED}$port_bindings${NC}  ---  ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${CYAN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
     fi
 else
-    # Create a temporary file to store the output
-    temp_file=$(mktemp)
-
-    # List all containers and store their details
+    # List all containers (including stopped ones) and their details
     docker ps -a --format "{{.Names}}" | while read container_name; do
         details=$(get_container_details "$container_name")
         image_name=$(echo "$details" | cut -d: -f1)
@@ -81,25 +81,17 @@ else
         path=$(get_docker_compose_path "$container_name")
         status=$(get_container_status "$container_name")
         item="$image_name   ---   $container_name   ---   $port_bindings   ---   $path   ---   $status"
-        
-        # Store the formatted output with a sorting key
-        if [[ -z "$port_bindings" ]]; then
-            echo "0:${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}" >> "$temp_file"
-        else
-            # Extract first port number for sorting
-            port_num=$(echo "$port_bindings" | cut -d: -f1 | head -n1)
-            echo "${port_num}:${BOLD_RED}    $port_bindings    ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}" >> "$temp_file"
+        if [[ -z "$filter_string" || "$item" =~ $filter_string ]]; then
+            if [[ -z "$port_bindings" ]]; then
+                echo -e "${YELLOW}$path${NC}  --- ${RED}$status${NC} ---  ${GREEN}$image_name${NC}   ---   ${CYAN}$container_name${NC}"
+            else
+              # echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
+                echo -e "${BOLD_RED}    $port_bindings    ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
+            fi
+#           echo " "
+printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
         fi
     done
-
-    # Sort and display the output
-    sort -n -t: -k1 "$temp_file" | cut -d: -f2- | while read -r line; do
-        echo -e "$line"
-        printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
-    done
-
-    # Clean up temporary file
-    rm "$temp_file"
 fi
 
 echo -e "\n================= end  =========================\n"
