@@ -101,10 +101,11 @@ netstat_filter() {
     fi
 }
 
-netstat_filter_quick() {
-	    netstat -lpntu
-}
 
+
+netstat_filter_quick() {
+    netstat -lpntu | grep -v "Active" | grep -v "Proto" | sort -k 4 -t ":" -n
+}
 
 
 # Function to resolve domain to IP address
