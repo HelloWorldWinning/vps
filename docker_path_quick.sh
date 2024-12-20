@@ -34,20 +34,22 @@ get_port_bindings() {
 }
 
 # Function to fetch and display the docker-compose path for a given container
-# Function to fetch and display the docker-compose path for a given container
 get_docker_compose_path() {
     local container_name="$1"
-    # Get working directory and config files separately
-    local working_dir=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.working_dir"]')
-    local config_file=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.config_files"]')
-
-    # Remove any duplicate paths and combine
-    if [[ -n "$working_dir" && -n "$config_file" ]]; then
-        local base_path=$(echo "$working_dir" | sed 's/\/\+/\//g')  # Replace multiple slashes with single slash
-        local final_path="${base_path}/${config_file}"
-        echo "$final_path" | sed 's/\/\+/\//g'  # Clean up any remaining double slashes
+    local full_path=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.working_dir"] + "/" + .[].Config.Labels["com.docker.compose.project.config_files"]')
+    
+    # Fix path by removing duplicated directory pattern
+    if [[ -n "$full_path" ]]; then
+        # Get the directory name without the trailing slash
+        local dir_name=$(dirname "$full_path" | sed 's/\/$//')
+        local base_name=$(basename "$full_path")
+        
+        # Remove duplicated directory pattern if it exists
+        local clean_dir=$(echo "$dir_name" | sed -E "s|(.+)/\1|\1|g")
+        echo "${clean_dir}/${base_name}" | sed 's/\/\+/\//g'
     fi
 }
+
 
 # Function to get container status
 get_container_status() {
