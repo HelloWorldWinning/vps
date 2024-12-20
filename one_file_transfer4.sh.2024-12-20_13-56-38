@@ -41,12 +41,10 @@ then
     print_success "netcat-openbsd installed successfully"
 fi
 
+# Prompt the user with a 4-second timeout
+echo -e "${BOLD}Receiver (press Enter or wait 4s) or Sender (type anything):${RESET}"
+read -t 4 input
 
-
-
-# Prompt the user with a 7-second timeout
-echo -e "${BOLD}Receiver (press Enter or wait 7s) or Sender (type IP/domain):${RESET}"
-read -t 7  input
 if [ $? -gt 128 ] || [ -z "$input" ]; then
     # Receiver mode
     echo -e "${RED_BG}${WHITE_TEXT}${BOLD}  Receiver Mode  ${RESET}"
@@ -71,8 +69,7 @@ if [ $? -gt 128 ] || [ -z "$input" ]; then
 else
     # Sender mode
     echo -e "${GREEN_BG}${BLACK_TEXT}${BOLD}  Sender Mode  ${RESET}"
-    # Use the initial input as IP/domain
-    ip="$input"
+    read -p "IP or domain to send to: " ip
     read -p "Filename to send: " filename
     
     if [ ! -f "$filename" ]; then
