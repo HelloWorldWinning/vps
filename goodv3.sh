@@ -102,10 +102,24 @@ netstat_filter() {
 }
 
 
-
 netstat_filter_quick() {
-    netstat -lpntu | grep -v "Active" | grep -v "Proto" | sort -k 4 -t ":" -n
+    netstat -lpntu | grep -v "Active" | grep -v "Proto" | \
+    awk '{
+        # Add line type for sorting (1=udp6, 2=udp, 3=tcp6, 4=tcp)
+        if ($1=="udp6") type=1;
+        else if ($1=="udp") type=2;
+        else if ($1=="tcp6") type=3;
+        else if ($1=="tcp") type=4;
+        # Extract port number after colon
+        split($4,port,":");
+        # Print with type and port for sorting
+        printf "%d %s %s\n", type, port[2], $0;
+    }' | \
+    sort -k1,1n -k2,2n | \
+    cut -d' ' -f3-
 }
+
+
 
 
 # Function to resolve domain to IP address
