@@ -17,10 +17,16 @@ print_status() {
 }
 
 # Function to print success messages
+#print_success() {
+#   #echo -e "${GREEN_BG}${BLACK_TEXT}${BOLD} SUCCESS ${RESET} $1"
+#    echo -e "${RED_BG}${BOLD} SUCCESS ${RESET} $1"
+#}
+
+# Function to print success messages
 print_success() {
-   #echo -e "${GREEN_BG}${BLACK_TEXT}${BOLD} SUCCESS ${RESET} $1"
-    echo -e "${RED_BG}${BOLD} SUCCESS ${RESET} $1"
+    echo -e "${RED_FONT}${BOLD}SUCCESS${RESET} $1"
 }
+
 
 # Function to calculate and display MD5
 calculate_md5() {
