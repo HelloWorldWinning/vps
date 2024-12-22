@@ -22,6 +22,6 @@ day2_night_weather=$(xmllint --html --xpath "//div[@class='pull-left day actived
 day2_low=$(xmllint --html --xpath "//div[@class='pull-left day actived']/following-sibling::div[1]//div[@class='low']/text()" "$temp_file" 2>/dev/null | sed 's/℃//')
 
 # Output the formatted result
-echo "${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}" > ~/.weather_temperature
+echo "${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}" > /root/.weather_temperature
 
 yes|  /usr/bin/rm   -r "$temp_file"
