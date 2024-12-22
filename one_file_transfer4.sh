@@ -52,8 +52,8 @@ fi
 
 
 # Prompt the user with a 7-second timeout
-echo -e "${BOLD}Receiver (press Enter or wait 7s) or Sender (type IP/domain):${RESET}"
-read -t 7  input
+echo -e "${BOLD}Receiver (press Enter or wait 15s) or Sender (type IP/domain):${RESET}"
+read -t 15  input
 if [ $? -gt 128 ] || [ -z "$input" ]; then
     # Receiver mode
     echo -e "${RED_BG}${WHITE_TEXT}${BOLD}  Receiver Mode  ${RESET}"
