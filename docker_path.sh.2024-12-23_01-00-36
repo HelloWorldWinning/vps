@@ -38,20 +38,10 @@ get_port_bindings() {
 #}
 
 # Function to fetch and display the docker-compose path for a given container
-#get_docker_compose_path() {
-#    local container_name="$1"
-#    docker inspect "$container_name" | jq -r '.[] | .Config.Labels | "\(.["com.docker.compose.project.working_dir"])/\(.["com.docker.compose.project.config_files"])"'
-#}
-#
 get_docker_compose_path() {
     local container_name="$1"
-    local path=$(docker inspect "$container_name" | jq -r '.[0].Config.Labels | 
-        select(.["com.docker.compose.project.working_dir"] != null and .["com.docker.compose.project.config_files"] != null) |
-        .["com.docker.compose.project.working_dir"] + "/" + .["com.docker.compose.project.config_files"]' | 
-        sed 's://:/:g')  # Remove duplicate forward slashes
-    echo "$path"
+    docker inspect "$container_name" | jq -r '.[] | .Config.Labels | "\(.["com.docker.compose.project.working_dir"])/\(.["com.docker.compose.project.config_files"])"'
 }
-
 
 # Function to get container status
 get_container_status() {
