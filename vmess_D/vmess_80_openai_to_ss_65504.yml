@@ -117,5 +117,8 @@ routing:
     - vine.co
     - reddit
     - geosite:netflix
-    - geosite:disney
     - geosite:openai
+    - geosite:disney
+    - geosite:google
+    - geosite:duckduckgo
+    - geosite:bing
