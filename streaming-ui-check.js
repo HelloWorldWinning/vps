@@ -72,7 +72,7 @@ let result = {
   "Discovery" : "<b>Discoveryᐩ: </b>检测失败，请重试 ❗️",
   "ChatGPT" : "<b>ChatGPT: </b>检测失败，请重试 ❗️",
   "Claude" : "<b>Claude: </b>检测失败，请重试 ❗️"
-  //"Google": "Google 定位: 检测失败，请重试"
+  "Google": "Google 定位: 检测失败，请重试"
 
 }
 const message = {
