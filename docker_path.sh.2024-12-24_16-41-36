@@ -15,6 +15,7 @@ get_container_details() {
     echo "$details"
 }
 
+
 get_port_bindings() {
     local container_name="$1"
     local port_bindings=$(docker inspect "$container_name" | jq -r '
@@ -29,24 +30,28 @@ get_port_bindings() {
     fi
 }
 
+
+#get_port_bindings() {
+#    local container_name="$1"
+#    local port_bindings=$(docker inspect "$container_name" | jq -r '.[] | .NetworkSettings.Ports | to_entries[] | select(.value != null) | "\(.value[0].HostPort):\(.key)"' | head -n 1)
+#    echo "$port_bindings"
+#}
+
+# Function to fetch and display the docker-compose path for a given container
+#get_docker_compose_path() {
+#    local container_name="$1"
+#    docker inspect "$container_name" | jq -r '.[] | .Config.Labels | "\(.["com.docker.compose.project.working_dir"])/\(.["com.docker.compose.project.config_files"])"'
+#}
+#
 get_docker_compose_path() {
     local container_name="$1"
     local path=$(docker inspect "$container_name" | jq -r '.[0].Config.Labels | 
         select(.["com.docker.compose.project.working_dir"] != null and .["com.docker.compose.project.config_files"] != null) |
-        .["com.docker.compose.project.working_dir"] + "/" + .["com.docker.compose.project.config_files"]')
-    
-    if [[ -n "$path" ]]; then
-        # Extract the unique parts of the path
-        local dir_name=$(echo "$path" | grep -o '/[^/]*/[^/]*/' | head -1)
-        if [[ -n "$dir_name" ]]; then
-            # Remove duplicate directory patterns
-            local cleaned_path=$(echo "$path" | sed "s|$dir_name$dir_name|$dir_name|g")
-            echo "$cleaned_path" | sed 's://:/:g'
-        else
-            echo "$path" | sed 's://:/:g'
-        fi
-    fi
+        .["com.docker.compose.project.working_dir"] + "/" + .["com.docker.compose.project.config_files"]' | 
+        sed 's://:/:g')  # Remove duplicate forward slashes
+    echo "$path"
 }
+
 
 # Function to get container status
 get_container_status() {
@@ -86,7 +91,9 @@ else
             else
                 echo -e "${BOLD_RED} 【  $port_bindings  】 ${NC}   ---   ${YELLOW}$path${NC}  --- ${RED}$status${NC} ---   ${GREEN}$image_name${NC}  ---  ${CYAN}$container_name${NC}"
             fi
-            printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
+#           echo " "
+printf '\033[1;34m%*s\033[0m\n' "${COLUMNS:-$(tput cols)}" '' | sed 's/ /─/g'
+
         fi
     done
 fi
