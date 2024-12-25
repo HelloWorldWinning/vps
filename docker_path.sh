@@ -31,23 +31,40 @@ get_port_bindings() {
 
 get_docker_compose_path() {
     local container_name="$1"
-    local path=$(docker inspect "$container_name" | jq -r '.[0].Config.Labels | 
-        select(.["com.docker.compose.project.working_dir"] != null and .["com.docker.compose.project.config_files"] != null) |
-        .["com.docker.compose.project.working_dir"] + "/" + .["com.docker.compose.project.config_files"]')
+    local full_path=$(docker inspect "$container_name" | jq -r '.[].Config.Labels["com.docker.compose.project.working_dir"] + "/" + .[].Config.Labels["com.docker.compose.project.config_files"]')
     
-    if [[ -n "$path" ]]; then
-        # Extract the unique parts of the path
-        local dir_name=$(echo "$path" | grep -o '/[^/]*/[^/]*/' | head -1)
-        if [[ -n "$dir_name" ]]; then
-            # Remove duplicate directory patterns
-            local cleaned_path=$(echo "$path" | sed "s|$dir_name$dir_name|$dir_name|g")
-            echo "$cleaned_path" | sed 's://:/:g'
-        else
-            echo "$path" | sed 's://:/:g'
-        fi
+    # Fix path by removing duplicated directory pattern
+    if [[ -n "$full_path" ]]; then
+        # Get the directory name without the trailing slash
+        local dir_name=$(dirname "$full_path" | sed 's/\/$//')
+        local base_name=$(basename "$full_path")
+        
+        # Remove duplicated directory pattern if it exists
+        local clean_dir=$(echo "$dir_name" | sed -E "s|(.+)/\1|\1|g")
+        echo "${clean_dir}/${base_name}" | sed 's/\/\+/\//g'
     fi
 }
 
+
+#get_docker_compose_path() {
+#    local container_name="$1"
+#    local path=$(docker inspect "$container_name" | jq -r '.[0].Config.Labels | 
+#        select(.["com.docker.compose.project.working_dir"] != null and .["com.docker.compose.project.config_files"] != null) |
+#        .["com.docker.compose.project.working_dir"] + "/" + .["com.docker.compose.project.config_files"]')
+#    
+#    if [[ -n "$path" ]]; then
+#        # Extract the unique parts of the path
+#        local dir_name=$(echo "$path" | grep -o '/[^/]*/[^/]*/' | head -1)
+#        if [[ -n "$dir_name" ]]; then
+#            # Remove duplicate directory patterns
+#            local cleaned_path=$(echo "$path" | sed "s|$dir_name$dir_name|$dir_name|g")
+#            echo "$cleaned_path" | sed 's://:/:g'
+#        else
+#            echo "$path" | sed 's://:/:g'
+#        fi
+#    fi
+#}
+#
 # Function to get container status
 get_container_status() {
     local container_name="$1"
