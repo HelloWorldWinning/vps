@@ -234,7 +234,7 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
     {
     "command": "docmanager:rename",
     "keys": [
-        "Accel Shift R"
+        "Alt Shift R"
     ],
     "selector": "body"
     },
@@ -242,7 +242,7 @@ cat << "EOF" > ~/.jupyter/lab/user-settings/@jupyterlab/shortcuts-extension/shor
     "args": {},
     "command": "runmenu:run-all",
     "keys": [
-      "Alt Shift R"
+      "Accel Shift R"
     ],
     "selector": "[data-jp-code-runner]"
     }
