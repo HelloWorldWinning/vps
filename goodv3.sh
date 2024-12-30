@@ -770,6 +770,7 @@ ${Red_font_prefix}e${Font_color_suffix} install_ftp_server.sh
 ${Red_font_prefix}i${Font_color_suffix} do_zip.sh zip to /data 
 ${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
+${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
