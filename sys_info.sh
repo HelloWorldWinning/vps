@@ -84,7 +84,7 @@ fi
 output="${output} (up ${total_days} days)"
 
 # Display uptime
-echo -n "Uptime    : "
+echo -n "Up Time   : "
 echo $output | sed 's/, $//' | xargs
 
 # Rest of your existing script content
