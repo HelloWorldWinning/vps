@@ -116,6 +116,8 @@ routing:
     - twvid.com
     - vine.co
     - reddit
+    - webofscience
+    - clarivate
     - geosite:netflix
     - geosite:openai
     - geosite:disney
