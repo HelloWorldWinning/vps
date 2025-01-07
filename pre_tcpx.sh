@@ -98,6 +98,7 @@ apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
 sudo apt install -y ncdu duf ftp  dfc
+sudo apt install -y black
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 
