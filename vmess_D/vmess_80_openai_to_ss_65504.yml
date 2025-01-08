@@ -124,3 +124,13 @@ routing:
     - geosite:google
     - geosite:duckduckgo
     - geosite:bing
+    - geosite:bbc
+    - geosite:bahamut
+    - geosite:hulu
+    - geosite:hbo
+    - geosite:4chan
+    - geosite:fox
+    - geosite:abema
+    - geosite:dmm
+    - geosite:niconico
+    - geosite:pixiv
