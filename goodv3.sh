@@ -991,6 +991,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		84) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh  ) ;;
 		85) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh  ) ;;
 		86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh |tee testvps.log ;;
+		86) bash <(curl -fSsL yabs.sh) -i   ;;
 
 		87) prefer_ipv4;;
                 88) option_88_function ;;
