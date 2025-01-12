@@ -141,3 +141,4 @@ routing:
     - ip-api
     - alipay
     - deepseek
+    - researchgate
