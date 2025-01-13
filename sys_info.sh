@@ -33,7 +33,7 @@ minutes=$((remainder / 60))
 seconds=$((remainder % 60))
 
 #echo "Setup time: $days days, $hours hours, $minutes minutes, $seconds seconds"
-echo "Setup time: `setup_time`"
+echo "Setup Time: `setup_time`"
 
 # Get the total uptime in seconds
 total_seconds=$(cat /proc/uptime | awk '{print $1}' | cut -d. -f1)
