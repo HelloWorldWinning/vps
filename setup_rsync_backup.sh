@@ -38,7 +38,7 @@ REMOTE_BACKUP_PATH="/data/Backup/$(hostname)"
 log "Remote backup path set to: $REMOTE_BACKUP_PATH"
 
 # Prompt for Backup Path on VPS1
-read -t 10 -p "Enter the backup path on VPS1 [Default: current directory]: " LOCAL_BACKUP_PATH
+read -t 10 -p "Enter the backup path on VPS Source [Default: current directory]: " LOCAL_BACKUP_PATH
 if [[ -z "$LOCAL_BACKUP_PATH" ]]; then
     LOCAL_BACKUP_PATH="$(pwd)"
     log "No input provided. Using current directory: $LOCAL_BACKUP_PATH"

@@ -87,7 +87,9 @@ log "- The rsyncbackup user can run necessary commands without password."
 # Get and display hostname information
 HOSTNAME=$(hostname)
 log "-----------------------------------------------------"
-log "Current server hostname: $HOSTNAME"
+#log "Current server hostname: $HOSTNAME"
+log "Current server: $(tput bold)$(tput setaf 1)$HOSTNAME$(tput sgr0)"
+
 log "-----------------------------------------------------"
 log "If this is your backup SOURCE server (VPS1), enter 'y' to continue with backup setup."
 log "If this is your backup DESTINATION server (VPS2), enter 'n' to finish setup."
