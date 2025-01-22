@@ -18,9 +18,9 @@ resolve_ip() {
 }
 
 # Prompt for VPS2 IP or Domain
-read -p "Enter the IP address or domain of VPS2: " vps2_input
+read -p "Enter the IP address or domain of VPS Destination: " vps2_input
 if [[ -z "$vps2_input" ]]; then
-    log "VPS2 IP or domain is required."
+    log "VPS Destination  IP or domain is required."
     exit 1
 fi
 
@@ -53,10 +53,10 @@ BACKUP_SCRIPT="/usr/local/bin/rsync_backup.sh"
 CRON_JOB="0 */12 * * * $BACKUP_SCRIPT"
 
 # Ensure the remote backup directory exists on VPS2 using sudo
-log "Ensuring remote backup directory exists on VPS2..."
+log "Ensuring remote backup directory exists on VPS Destination..."
 ssh -p "$RSYNC_PORT" "$RSYNC_USER@$VPS2_IP" "sudo mkdir -p '$REMOTE_BACKUP_PATH' && sudo chown -R $RSYNC_USER:$RSYNC_USER '$REMOTE_BACKUP_PATH'"
 if [[ $? -ne 0 ]]; then
-    log "Failed to create remote backup directory on VPS2. Please check SSH connectivity and permissions."
+    log "Failed to create remote backup directory on VPS Destination. Please check SSH connectivity and permissions."
     exit 1
 fi
 log "Remote backup directory is ready."
