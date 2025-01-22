@@ -82,3 +82,19 @@ log "- The rsyncbackup user can run necessary commands without password."
 
 
 
+
+
+# Get and display hostname information
+HOSTNAME=$(hostname)
+log "Current server hostname: $HOSTNAME"
+log "-----------------------------"
+log "If this is your backup SOURCE server (VPS1), enter 'y' to continue with backup setup."
+log "If this is your backup DESTINATION server (VPS2), enter 'n' to finish setup."
+
+read -p "Do you want to proceed with setting up the backup configuration? [y/N] " response
+if [[ "$response" =~ ^[Yy]$ ]]; then
+    log "Downloading and running setup_rsync_backup.sh..."
+    curl -4s https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_rsync_backup.sh | bash
+else
+    log "Setup completed. No backup configuration will be performed on this server."
+fi
