@@ -256,31 +256,6 @@ EOF
 
 
 
-########### add lineNumbers
-
-
-# Create directories if they don't exist
-mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
-
-# Write settings to file
-cat > /root/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings << 'EOL'
-{
-    "autoStartDefaultKernel": true,
-    "codeCellConfig": {
-        "lineNumbers": true
-    }
-}
-EOL
-
-# Set proper permissions
-chmod 644 /root/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/tracker.jupyterlab-settings
-
-echo "Jupyter Lab settings have been configured successfully."
-
-########### end add lineNumbers
-
-
-
 
 #!/bin/bash
 
