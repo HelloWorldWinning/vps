@@ -451,6 +451,8 @@ sleep 6
 bash  <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )    
 bash  <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables_55000_rules.sh  )    
 bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+
+bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh )
 #/sbin/sysctl -p 
 #sysctl -p /etc/sysctl.conf 
 
