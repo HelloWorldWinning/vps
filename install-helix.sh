@@ -1,6 +1,16 @@
 #!/bin/bash
 # Remove existing helix directory
 echo 'export COLORTERM=truecolor' >> ~/.bashrc
+mkdir -p ~/.config/helix/
+cat > ~/.config/helix/config.toml << "EOF"
+theme = "acme"
+#inherits = "gruvbox"
+[editor]
+line-number = "relative"
+mouse = true
+EOF
+
+mkdir -p ~/src
 cd ~/src
 /usr/bin/rm -rf helix
 
