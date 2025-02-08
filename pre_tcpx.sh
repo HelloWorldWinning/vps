@@ -465,6 +465,11 @@ bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh   )
 
 
+
+
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
+
+
 reboot
 
 
