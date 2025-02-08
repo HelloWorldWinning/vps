@@ -1,5 +1,6 @@
 #!/bin/bash
 # Remove existing helix directory
+echo 'export COLORTERM=truecolor' >> ~/.bashrc
 cd ~/src
 /usr/bin/rm -rf helix
 
@@ -177,3 +178,4 @@ main
 
 
 sudo /usr/bin/rm  -rf /root/src/helix
+
