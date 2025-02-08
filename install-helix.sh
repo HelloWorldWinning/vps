@@ -174,3 +174,6 @@ main() {
 
 # Run the installation
 main
+
+
+sudo /usr/bin/rm  -rf /root/src/helix
