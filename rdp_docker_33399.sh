@@ -12,7 +12,7 @@ chmod 777 "$HOST_DOWNLOAD_DIR"  # Ensure proper permissions
 
 # Create docker-compose.yml
 cat > $COMPOSE_FILE << EOL
-version: '3.8'
+#version: '3.8'
 services:
   remote-desktop:
     image: scottyhardy/docker-remote-desktop:latest
@@ -68,9 +68,11 @@ docker-compose up -d
 if docker-compose ps | grep -q "remote-desktop"; then
     echo "Container is running successfully"
     echo "You can connect to the remote desktop using:"
+    echo "Downloads will be available in /downloads inside the container"
     echo "Host: $(hostname -I | awk '{print $1}')"
     echo "Port: 33399"
-    echo "Downloads will be available in /downloads inside the container"
+    echo "Username: ubuntu"
+    echo "Password: ubuntu"
 else
     echo "Error: Container failed to start"
     docker-compose logs

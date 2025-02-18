@@ -337,7 +337,8 @@ export HISTFILESIZE=-1
 
 ####  eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
-alias rg='/usr/bin/rg   --colors path:fg:Yellow   --color always --colors "match:fg:cyan" --colors "match:style:nobold"'
+alias rg='/usr/bin/rg   --colors path:fg:Red --color always --colors "match:fg:cyan" --colors "match:style:nobold"'
+#alias rg='/usr/bin/rg   --colors path:fg:Yellow   --color always --colors "match:fg:cyan" --colors "match:style:nobold"'
 ######   echo_To_bashrc.txt  end
 
 
