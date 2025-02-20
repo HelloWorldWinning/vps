@@ -25,7 +25,7 @@ chmod 777 /root/pre_tcpx.sh
 #cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
 #cron_job="@reboot sleep 10 ; yes | /root/pre_tcpx.sh  #${unique_id}"
 #cron_job="@reboot sleep 10 ; tmux new-session -d -s ins 'yes | /root/pre_tcpx.sh' #${unique_id}"
-cron_job="@reboot sleep 10 ;apt install -y sudo  &&   sudo tmux new-session -d -s ins -c /root 'yes | bash  pre_tcpx.sh' #${unique_id}"
+cron_job="@reboot sleep 20 ;apt install -y sudo  &&   sudo tmux new-session -d -s ins -c /root 'sudo yes | bash  pre_tcpx.sh' #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
