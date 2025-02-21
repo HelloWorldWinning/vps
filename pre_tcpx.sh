@@ -88,6 +88,8 @@ echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 
 apt install  -y sudo openssh-server
 
+sudo dpkg --configure -a
+
 sudo  apt update
 sudo  apt-get update
 
@@ -469,6 +471,8 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
 
+
+sudo dpkg --configure -a
 
 reboot
 
