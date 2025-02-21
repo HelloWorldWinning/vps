@@ -229,6 +229,7 @@ async def navigate(
         <html>
         <head>
             <meta charset="UTF-8">
+            <link rel="icon" href="/static/favicon.ico" sizes="any">
             <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
