@@ -120,7 +120,10 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
     path = unquote(path)
 
     # Safely construct the full path
-    full_path = os.path.normpath(os.path.join('/', path))
+  # full_path = os.path.normpath(os.path.join('/', path))
+#   full_path = os.path.normpath(os.path.join('/', path))
+    full_path = os.path.normpath(os.path.join("/Host", path))
+
     if not full_path.startswith('/'):
         # Prevent path traversal attacks
         raise HTTPException(status_code=404, detail="Path not found")
