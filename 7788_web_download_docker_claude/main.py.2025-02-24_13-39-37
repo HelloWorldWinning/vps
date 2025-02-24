@@ -28,45 +28,23 @@ def get_file_info(path: str) -> dict:
         'modified': datetime.fromtimestamp(stats.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
     }
 
-#def create_breadcrumb(path: str) -> str:
-#    """Create HTML breadcrumb navigation from path."""
-#    if path == '/':
-#        return '<a href="/" class="breadcrumb-item">/</a>'
-#
-#    parts = path.split('/')
-#    breadcrumb_parts = []
-#    current_path = ''
-#
-#    # Add root
-#    breadcrumb_parts.append('<a href="/" class="breadcrumb-item">/</a>')
-#
-#    # Add each directory
-#    for part in parts:
-#        if part:  # Skip empty parts
-#            current_path = os.path.join(current_path, part)
-#            encoded_path = quote(current_path.lstrip('/'))
-#            breadcrumb_parts.append(
-#                f'<a href="/{encoded_path}" class="breadcrumb-item">{part}</a>/'
-#            )
-#
-#    return ''.join(breadcrumb_parts)
 def create_breadcrumb(path: str) -> str:
     """Create HTML breadcrumb navigation from path."""
-    if path == '/Host':
-        return '<a href="/Host" class="breadcrumb-item">/</a>'
+    if path == '/':
+        return '<a href="/" class="breadcrumb-item">/</a>'
 
     parts = path.split('/')
     breadcrumb_parts = []
     current_path = ''
 
     # Add root
-    breadcrumb_parts.append('<a href="/Host" class="breadcrumb-item">/</a>')
+    breadcrumb_parts.append('<a href="/" class="breadcrumb-item">/</a>')
 
     # Add each directory
     for part in parts:
-        if part and part != 'Host':  # Skip empty parts and 'Host'
+        if part:  # Skip empty parts
             current_path = os.path.join(current_path, part)
-            encoded_path = quote(os.path.join('Host', current_path.lstrip('/')))
+            encoded_path = quote(current_path.lstrip('/'))
             breadcrumb_parts.append(
                 f'<a href="/{encoded_path}" class="breadcrumb-item">{part}</a>/'
             )
@@ -146,7 +124,7 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
 #   full_path = os.path.normpath(os.path.join('/', path))
     full_path = os.path.normpath(os.path.join("/Host", path))
 
-    if not full_path.startswith('/Host'):
+    if not full_path.startswith('/'):
         # Prevent path traversal attacks
         raise HTTPException(status_code=404, detail="Path not found")
 
@@ -167,10 +145,8 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         # Add parent directory link if not in root
         if full_path != '/':
             parent_full_path = os.path.dirname(full_path)
-#           parent_rel_path = os.path.relpath(parent_full_path, '/')
-            parent_rel_path = os.path.relpath(parent_full_path, '/Host')  # Change base
-            parent_url = quote(os.path.join('Host', parent_rel_path))  # Add Host to URL
-#           parent_url = quote(parent_rel_path)
+            parent_rel_path = os.path.relpath(parent_full_path, '/')
+            parent_url = quote(parent_rel_path)
             parent_info = get_file_info(parent_full_path)
             table_rows.append(f'''
                 <tr>
@@ -188,10 +164,8 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         # Add all directory contents
         for idx, item in enumerate(items, 1):
             item_full_path = os.path.join(full_path, item)
-            item_rel_path = os.path.relpath(item_full_path, '/Host')
-            item_url = quote(os.path.join('Host', item_rel_path))  # Add Host to URL
-#           item_url = quote(item_rel_path)
-
+            item_rel_path = os.path.relpath(item_full_path, '/')
+            item_url = quote(item_rel_path)
             item_info = get_file_info(item_full_path)
 
             if os.path.isdir(item_full_path):
