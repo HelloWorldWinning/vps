@@ -50,28 +50,30 @@ def get_file_info(path: str) -> dict:
 #            )
 #
 #    return ''.join(breadcrumb_parts)
+
 def create_breadcrumb(path: str) -> str:
     """Create HTML breadcrumb navigation from path."""
-    if path == '/Host':
-        return '<a href="/Host" class="breadcrumb-item">/</a>'
+    if path == '/':
+        return '<a href="/" class="breadcrumb-item">/</a>'
 
     parts = path.split('/')
     breadcrumb_parts = []
     current_path = ''
 
     # Add root
-    breadcrumb_parts.append('<a href="/Host" class="breadcrumb-item">/</a>')
+    breadcrumb_parts.append('<a href="/" class="breadcrumb-item">/</a>')
 
     # Add each directory
     for part in parts:
-        if part and part != 'Host':  # Skip empty parts and 'Host'
+        if part:  # Skip empty parts
             current_path = os.path.join(current_path, part)
-            encoded_path = quote(os.path.join('Host', current_path.lstrip('/')))
+            encoded_path = quote(current_path.lstrip('/'))
             breadcrumb_parts.append(
                 f'<a href="/{encoded_path}" class="breadcrumb-item">{part}</a>/'
             )
 
     return ''.join(breadcrumb_parts)
+
 
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = "a"
@@ -136,19 +138,22 @@ TEXT_FILE_EXTENSIONS = [
 ]
 
 
+
 @app.get("/{path:path}")
 async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authenticate)):
     # Decode URL-encoded path
     path = unquote(path)
 
-    # Safely construct the full path
-  # full_path = os.path.normpath(os.path.join('/', path))
-#   full_path = os.path.normpath(os.path.join('/', path))
-    full_path = os.path.normpath(os.path.join("/Host", path))
+    # Normalize the path
+    if path.startswith('Host/'):
+        path = path[5:]  # Remove 'Host/' prefix
 
-    if not full_path.startswith('/Host'):
-        # Prevent path traversal attacks
-        raise HTTPException(status_code=404, detail="Path not found")
+    # Safely construct the full path relative to root
+    full_path = os.path.normpath(os.path.join('/', path))
+
+    # Basic security check to prevent directory traversal
+    if '..' in full_path:
+        raise HTTPException(status_code=403, detail="Path traversal not allowed")
 
     if os.path.isdir(full_path):
         try:
@@ -159,7 +164,7 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         items.sort()
 
         # Create breadcrumb navigation
-        breadcrumb = create_breadcrumb(full_path)
+        breadcrumb = create_breadcrumb(full_path)  # Use the actual path for display
 
         # Prepare table rows
         table_rows: List[str] = []
@@ -167,10 +172,8 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         # Add parent directory link if not in root
         if full_path != '/':
             parent_full_path = os.path.dirname(full_path)
-#           parent_rel_path = os.path.relpath(parent_full_path, '/')
-            parent_rel_path = os.path.relpath(parent_full_path, '/Host')  # Change base
-            parent_url = quote(os.path.join('Host', parent_rel_path))  # Add Host to URL
-#           parent_url = quote(parent_rel_path)
+            parent_rel_path = parent_full_path.lstrip('/')
+            parent_url = quote(parent_rel_path if parent_rel_path else '')
             parent_info = get_file_info(parent_full_path)
             table_rows.append(f'''
                 <tr>
@@ -188,9 +191,38 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
         # Add all directory contents
         for idx, item in enumerate(items, 1):
             item_full_path = os.path.join(full_path, item)
-            item_rel_path = os.path.relpath(item_full_path, '/Host')
-            item_url = quote(os.path.join('Host', item_rel_path))  # Add Host to URL
-#           item_url = quote(item_rel_path)
+            item_rel_path = os.path.relpath(item_full_path, '/')
+            item_url = quote(item_rel_path)
+
+            item_info = get_file_info(item_full_path)
+
+            if os.path.isdir(item_full_path):
+                item_display = f"{item}/"
+                item_size = "-"
+                item_class = "folder"
+            else:
+                item_display = item
+                item_size = format_size(item_info['size'])
+                item_class = "file"
+
+            table_rows.append(f'''
+                <tr>
+                    <td>
+                        <div class="item-container">
+                            <span class="index-number">{idx}.</span>
+                            <a href="/{item_url}" class="{item_class}">{item_display}</a>
+                        </div>
+                    </td>
+                    <td class="size-col">{item_size}</td>
+                    <td>{item_info['modified']}</td>
+                </tr>
+            ''')
+
+        # Add all directory contents
+        for idx, item in enumerate(items, 1):
+            item_full_path = os.path.join(full_path, item)
+            item_rel_path = os.path.relpath(item_full_path, '/')
+            item_url = quote(f'Host/{item_rel_path}')
 
             item_info = get_file_info(item_full_path)
 
@@ -420,6 +452,19 @@ async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authe
             return FileResponse(full_path)
     else:
         raise HTTPException(status_code=404, detail="Path not found")
+
+@app.get("/")
+async def root(credentials: HTTPBasicCredentials = Depends(authenticate)):
+    return HTMLResponse(content="""
+        <html>
+        <head>
+            <meta http-equiv="refresh" content="0;url=/Host" />
+        </head>
+        <body>
+            Redirecting to /Host...
+        </body>
+        </html>
+    """)
 
 if __name__ == "__main__":
     import uvicorn
