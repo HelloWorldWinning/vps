@@ -61,7 +61,6 @@ def get_file_info(path: str) -> dict:
         ),
     }
 
-
 def create_breadcrumb(path: str) -> str:
     """Create HTML breadcrumb navigation from path."""
     if path == "/Host":
@@ -77,13 +76,44 @@ def create_breadcrumb(path: str) -> str:
     # Add each directory
     for part in parts:
         if part:  # Skip empty parts
-            current_path = os.path.join(current_path, part)
+            if not current_path and part == "Host":
+                current_path = "/Host"
+            else:
+                current_path = os.path.join(current_path, part)
+
             encoded_path = quote(current_path.lstrip("/"))
+            if part == "Host":
+                # Skip showing "Host" in the breadcrumb
+                continue
             breadcrumb_parts.append(
                 f'<a href="/{encoded_path}" class="breadcrumb-item">{html.escape(part)}</a>/'
             )
 
     return "".join(breadcrumb_parts)
+
+
+#def create_breadcrumb(path: str) -> str:
+#    """Create HTML breadcrumb navigation from path."""
+#    if path == "/Host":
+#        return '<a href="/" class="breadcrumb-item">/</a>'
+#
+#    parts = path.split("/")
+#    breadcrumb_parts = []
+#    current_path = ""
+#
+#    # Add root
+#    breadcrumb_parts.append('<a href="/" class="breadcrumb-item">/</a>')
+#
+#    # Add each directory
+#    for part in parts:
+#        if part:  # Skip empty parts
+#            current_path = os.path.join(current_path, part)
+#            encoded_path = quote(current_path.lstrip("/"))
+#            breadcrumb_parts.append(
+#                f'<a href="/{encoded_path}" class="breadcrumb-item">{html.escape(part)}</a>/'
+#            )
+#
+#    return "".join(breadcrumb_parts)
 
 
 # Mapping of file extensions to Pygments lexer names
