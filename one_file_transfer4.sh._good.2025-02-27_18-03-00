@@ -121,10 +121,7 @@ status=$?
 if [ $status -gt 128 ] || [ -z "$input" ]; then
     # Receiver mode
     echo -e "${RED_BG}${WHITE_TEXT}${BOLD}  Receiver Mode  ${RESET}"
-    
-    # Modified: Ask for filename with option to use original filename
-    read -t 10 -p "Filename to save data (leave empty to use original filename): " filename
-    # Default value is empty which will trigger using original filename
+    read -p "Filename to save data: " filename
     
     print_status "Starting receiver on port 9..."
     print_status "Waiting for sender to connect..."
@@ -132,31 +129,16 @@ if [ $status -gt 128 ] || [ -z "$input" ]; then
     # Record start time for receiving
     start_time=$(date +%s.%N)
     
-    # Create a temporary directory and file
-    temp_dir=$(mktemp -d)
-    temp_file="$temp_dir/data"
-    temp_meta="$temp_dir/metadata"
+    # Create a temporary file for nc output
+    temp_file=$(mktemp)
     
-    # First receive the metadata (the filename)
-    nc -l -p 9 > "$temp_meta"
-    
-    # Then receive the actual file data on port 10
-    print_status "Receiving file data..."
+    # Use pv to show progress if available
     if command -v pv &> /dev/null; then
-        nc -l -p 10 | pv > "$temp_file"
+        nc -l -p 9 | pv > "$temp_file"
         nc_status=${PIPESTATUS[0]}
     else
-        nc -l -p 10 > "$temp_file"
+        nc -l -p 9 > "$temp_file"
         nc_status=$?
-    fi
-    
-    # Extract the original filename from metadata
-    original_filename=$(cat "$temp_meta")
-    
-    # Determine final filename to use
-    if [ -z "$filename" ]; then
-        filename="$original_filename"
-        print_status "Using original filename: $filename"
     fi
     
     # Move temp file to destination if transfer was successful
@@ -164,11 +146,9 @@ if [ $status -gt 128 ] || [ -z "$input" ]; then
         mv "$temp_file" "$filename"
         transfer_success=true
     else
+        rm -f "$temp_file"
         transfer_success=false
     fi
-    
-    # Clean up temp directory
-    rm -rf "$temp_dir"
     
     # Record end time for receiving
     end_time=$(date +%s.%N)
@@ -206,33 +186,16 @@ else
         # Record start time for receiving
         start_time=$(date +%s.%N)
         
-        # Create a temporary directory and file
-        temp_dir=$(mktemp -d)
-        temp_file="$temp_dir/data"
-        temp_meta="$temp_dir/metadata"
+        # Create a temporary file for nc output
+        temp_file=$(mktemp)
         
-        # First receive the metadata (the filename)
-        nc -l -p 9 > "$temp_meta"
-        
-        # Then receive the actual file data on port 10
-        print_status "Receiving file data..."
+        # Use pv to show progress if available
         if command -v pv &> /dev/null; then
-            nc -l -p 10 | pv > "$temp_file"
+            nc -l -p 9 | pv > "$temp_file"
             nc_status=${PIPESTATUS[0]}
         else
-            nc -l -p 10 > "$temp_file"
+            nc -l -p 9 > "$temp_file"
             nc_status=$?
-        fi
-        
-        # Extract the original filename from metadata (if specified, otherwise use provided)
-        if [ -s "$temp_meta" ]; then
-            original_filename=$(cat "$temp_meta")
-            
-            # If provided filename is actually "auto" or empty, use original
-            if [ "$filename" = "auto" ] || [ -z "$filename" ]; then
-                filename="$original_filename"
-                print_status "Using original filename: $filename"
-            fi
         fi
         
         # Move temp file to destination if transfer was successful
@@ -240,11 +203,9 @@ else
             mv "$temp_file" "$filename"
             transfer_success=true
         else
+            rm -f "$temp_file"
             transfer_success=false
         fi
-        
-        # Clean up temp directory
-        rm -rf "$temp_dir"
         
         # Record end time for receiving
         end_time=$(date +%s.%N)
@@ -272,22 +233,18 @@ else
         print_status "Calculating source file MD5..."
         calculate_md5 "$filename"
         
-        print_status "Starting file transfer to $ip..."
+        print_status "Starting file transfer to $ip:9..."
         
         # Record start time for sending
         start_time=$(date +%s.%N)
         
-        # First send the basename of the file (just the filename without path)
-        basename "$filename" | nc -q 1 "$ip" 9
-        print_status "Metadata sent. Sending file data..."
-        
-        # Then send the actual file data on port 10
+        # Use pv to show progress if available
         if command -v pv &> /dev/null; then
-            pv "$filename" | nc -q 1 "$ip" 10
+            pv "$filename" | nc -q 1 "$ip" 9
             nc_status=${PIPESTATUS[1]}
         else
             print_status "Sending file... Please wait..."
-            nc -q 1 "$ip" 10 < "$filename"
+            nc -q 1 "$ip" 9 < "$filename"
             nc_status=$?
         fi
         
