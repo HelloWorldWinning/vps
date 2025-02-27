@@ -159,7 +159,8 @@ hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=ma
 ""set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
 ""set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
 """"""""set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\/%L\ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')} good
-set statusline+=\ \ \ \ \ \ \ \ \ %l\ \ %v\ \ \ \ \ \ %p%%\ \ %L\ \ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
+"""""""set statusline+=\ \ \ \ \ \ \ \ \ %l\ \ %v\ \ \ \ \ \ %p%%\ \ %L\ \ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
+set statusline+=\ \ \ \ \ \ \ \ \ %l\ \ %v\ \ %t\ \ \ \ %p%%\ \ %L\ \ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
 set laststatus=2
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
