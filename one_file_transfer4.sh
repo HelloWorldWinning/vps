@@ -24,6 +24,9 @@ print_status() {
     echo -e "${BLUE}${BOLD}[STATUS]${RESET} $1"
 }
 
+print_status_yellow() {
+    echo -e "${YELLOW}${BOLD}[STATUS]${RESET} $1"
+}
 # Function to print success messages
 print_success() {
     echo -e "${RED_FONT}${BOLD}SUCCESS${RESET} $1"
@@ -141,7 +144,8 @@ if [ $status -gt 128 ] || [ -z "$input" ]; then
     nc -l -p 9 > "$temp_meta"
     
     # Then receive the actual file data on port 10
-    print_status "Receiving file data..."
+  # print_status "Receiving file data..."
+    print_status_yellow "Receiving file data..."
     if command -v pv &> /dev/null; then
         nc -l -p 10 | pv > "$temp_file"
         nc_status=${PIPESTATUS[0]}
@@ -215,7 +219,8 @@ else
         nc -l -p 9 > "$temp_meta"
         
         # Then receive the actual file data on port 10
-        print_status "Receiving file data..."
+      # print_status "Receiving file data..."
+        print_status_yellow "Receiving file data..."
         if command -v pv &> /dev/null; then
             nc -l -p 10 | pv > "$temp_file"
             nc_status=${PIPESTATUS[0]}
