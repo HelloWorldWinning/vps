@@ -69,13 +69,6 @@ TEXT_FILE_EXTENSIONS = [
 async def read_path(path: str, credentials: HTTPBasicCredentials = Depends(authenticate)):
     # Decode the URL-encoded path (e.g. "root/data")
     path = unquote(path)  # This is the URL path relative to the host's root
-    # Handle double slashes by normalizing the path
-    while '//' in path:
-        path = path.replace('//', '/')
-
-    # Remove leading slash if present to avoid double slash when joining
-    if path.startswith('/'):
-        path = path.lstrip('/')
 
     # Map the URL path to the internal file system path by using the mounted /Host directory
     # For example, a URL path of "root/data" becomes internal path "/Host/root/data"

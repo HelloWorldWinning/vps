@@ -171,11 +171,6 @@ async def navigate(
 ):
     # Decode the subpath
     subpath = unquote(subpath)
-    # Handle double slashes by normalizing the path
-    while '//' in subpath:
-        subpath = subpath.replace('//', '/')
-    if subpath.startswith('/'):
-        subpath = subpath.lstrip('/')
     # Build the full path
   # full_path = os.path.normpath(os.path.join("/", subpath))
 #   full_path = os.path.normpath(os.path.join("/", subpath))
