@@ -8,7 +8,6 @@ mkdir -p "$PATH_DIR"
 
 # Create docker-compose.yml
 cat > "$PATH_DIR/docker-compose.yml" << 'EOL'
-version: '3.8'
 services:
   host_7788_download:
     image: oklove/webpage_port_7788_download
