@@ -87,7 +87,8 @@ echo "nameserver 8.8.4.4" |  tee -a /etc/resolv.conf
 echo "nameserver 8.8.8.8" |  tee -a /etc/resolv.conf
 
 ###apt install  -y sudo openssh-server
-sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
+#########sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
 
 sudo dpkg --configure -a
 
