@@ -342,6 +342,8 @@ bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/mai
 
 bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh )
 
+bash  <(curl -4Lk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh )
+
 # 106) 7777 
 bash  <(curl -4Lsk  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh) 
 # 101)
