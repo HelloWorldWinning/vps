@@ -58,7 +58,7 @@ done
 sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/openvpn-clients/*.ovpn
 #zip /root/openvpn-clients/vpn_client_100_configs.zip /root/openvpn-clients/*.ovpn
 cd /root/
-zip  /root/openvpn-clients/vpn_client_100_configs.zip openvpn-clients/*.ovpn  
+zip  /root/openvpn-clients/${hostname}_vpn_client_100_configs.zip openvpn-clients/*.ovpn  
 
 
 
@@ -71,7 +71,8 @@ echo "============================================"
 echo "Server IP: ${THIS_HOST_IP}"
 echo "Admin Port: 81"
 echo "Client configs location: /root/openvpn-clients/"
-echo "Client configs zip location: /root/openvpn-clients/vpn_client_100_configs.zip"
+#echo "Client configs zip location: /root/openvpn-clients/vpn_client_100_configs.zip"
+echo "Client configs zip location:  /root/openvpn-clients/${hostname}_vpn_client_100_configs.zip  "
 echo "Number of client configs processed: $(ls -1 /root/openvpn-clients/ | wc -l)"
 echo "============================================"
 
