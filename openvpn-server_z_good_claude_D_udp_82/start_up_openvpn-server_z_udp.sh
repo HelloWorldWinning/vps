@@ -28,7 +28,7 @@ sleep 10
 
 
 # Create directory for client configs
-mkdir -p /root/ovpn-clients_udp/
+mkdir -p /root/openvpn-clients_udp/
 
 # Get public IP address using multiple services
 for service in ifconfig.me icanhazip.com checkip.amazonaws.com; do
@@ -45,14 +45,21 @@ echo "Detected public IP: ${THIS_HOST_IP}"
 
 # Copy and modify client configuration files
 echo "Copying and modifying client configuration files..."
+#for i in {1..1000}; do
+#    docker cp openvpn_udp:/root/client_udp_${i}.ovpn /root/openvpn-clients_udp/ 2>/dev/null
+#done
+
+hostname=$(hostname)
 for i in {1..1000}; do
-    docker cp openvpn_udp:/root/client_udp_${i}.ovpn /root/ovpn-clients_udp/ 2>/dev/null
+  docker cp openvpn_udp:/root/client_udp_${i}.ovpn /root/openvpn-clients_udp/${hostname}_client_udp_${i}.ovpn 2>/dev/null
 done
 
-sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/ovpn-clients_udp/*.ovpn
-#zip /root/ovpn-clients_udp/vpn_client_udp_100_configs.zip /root/ovpn-clients_udp/*.ovpn
+
+
+sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/openvpn-clients_udp/*.ovpn
+#zip /root/openvpn-clients_udp/vpn_client_udp_100_configs.zip /root/openvpn-clients_udp/*.ovpn
 cd /root/
-zip  /root/ovpn-clients_udp/vpn_client_udp_1000_configs.zip ovpn-clients_udp/*.ovpn  
+zip  /root/openvpn-clients_udp/vpn_client_udp_1000_configs.zip openvpn-clients_udp/*.ovpn  
 
 
 
@@ -64,9 +71,9 @@ echo "OpenVPN Server Setup Complete"
 echo "============================================"
 echo "Server IP: ${THIS_HOST_IP}"
 echo "Admin Port: 82"
-echo "Client configs location: /root/ovpn-clients_udp/"
-echo "Client configs zip location: /root/ovpn-clients_udp/vpn_client_udp_1000_udp_configs.zip"
-echo "Number of client configs processed: $(ls -1 /root/ovpn-clients_udp/ | wc -l)"
+echo "Client configs location: /root/openvpn-clients_udp/"
+echo "Client configs zip location: /root/openvpn-clients_udp/vpn_client_udp_1000_udp_configs.zip"
+echo "Number of client configs processed: $(ls -1 /root/openvpn-clients_udp/ | wc -l)"
 echo "============================================"
 
 # Check if container is running
