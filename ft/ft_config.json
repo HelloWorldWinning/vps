@@ -312,7 +312,7 @@
           ["/weekly","/daily", "/monthly","/performance"],
           ["/status table","/balance","/stats", "/profit" ],
           [ "/logs","/show_config","/stop","/start"],
-	  ["/show_config","/forcelong","/forceshort"],
+	  ["/status","/show_config","/forcelong","/forceshort"],
           [ "/count", "/logs","/reload_config"]
       ]
     },

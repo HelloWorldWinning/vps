@@ -362,6 +362,7 @@
         "/profit"
       ],
       [
+        "/status",
         "/show_config",
         "/stop",
         "/start"
