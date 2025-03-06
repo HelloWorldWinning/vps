@@ -56,7 +56,7 @@ done
 
 
 sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/openvpn-clients/*.ovpn
-sed -i '$ a disable-ipv6' /root/openvpn-clients/*.ovpn
+sed -i '$ a block-ipv6' /root/openvpn-clients/*.ovpn
 #zip /root/openvpn-clients/vpn_client_100_configs.zip /root/openvpn-clients/*.ovpn
 cd /root/
 zip  /root/openvpn-clients/${hostname}_vpn_client_100_configs.zip openvpn-clients/*.ovpn  
