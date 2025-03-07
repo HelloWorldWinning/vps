@@ -1072,6 +1072,7 @@ netstat -tulnp | grep -E '166|177'
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 		d443) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh ) ;; 
 		udp54000) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh ) ;; 
+		udpre) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh    ) ;; 
 		run3g) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh ) ;; 
 		backup) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh ) ;; 
 		dd) yes |docker system prune -a --volumes  ;;

@@ -1,6 +1,6 @@
 #!/bin/bash
-# udp_redirect54000_54999.sh - Redirects UDP ports 54000-54999 to a specified endpoint
-# With persistent rules that survive system reboots
+# custom_udp_redirect.sh - A flexible UDP port redirect script
+# Supports custom port ranges, destinations, and target ports
 
 # Check if script is run as root
 if [ "$EUID" -ne 0 ]; then 
@@ -23,6 +23,30 @@ validate_ip() {
     fi
 }
 
+# Function to validate port or port range
+validate_port() {
+    local port=$1
+    # Check if it's a single port
+    if [[ $port =~ ^[0-9]+$ ]]; then
+        if [ "$port" -ge 1 ] && [ "$port" -le 65535 ]; then
+            return 0
+        fi
+        return 1
+    # Check if it's a port range
+    elif [[ $port =~ ^[0-9]+:[0-9]+$ ]]; then
+        local start_port=$(echo "$port" | cut -d':' -f1)
+        local end_port=$(echo "$port" | cut -d':' -f2)
+        if [ "$start_port" -ge 1 ] && [ "$start_port" -le 65535 ] && 
+           [ "$end_port" -ge 1 ] && [ "$end_port" -le 65535 ] && 
+           [ "$start_port" -le "$end_port" ]; then
+            return 0
+        fi
+        return 1
+    else
+        return 1
+    fi
+}
+
 # Function to convert domain to IP
 resolve_domain() {
     local domain=$1
@@ -35,22 +59,53 @@ resolve_domain() {
     echo "$ip"
 }
 
-# Get input from user
-echo -n "Enter IP address or domain name: "
-read -r input
+# Get UDP source port or port range from user
+echo -n "Enter UDP port or port range to redirect (e.g. 777 or 777:999): "
+read -r port_input
 
-# Validate/resolve input
-if validate_ip "$input"; then
-    target_ip=$input
-else
-    echo "Input is not an IP address, attempting to resolve as domain..."
-    target_ip=$(resolve_domain "$input")
-    echo "Resolved to IP: $target_ip"
+# Validate port input
+if ! validate_port "$port_input"; then
+    echo "Invalid port or port range. Must be between 1-65535."
+    exit 1
 fi
 
-# Add iptables rule for UDP port range redirect
-echo "Adding iptables rule to redirect UDP ports 54000-54999 to $target_ip:65503"
-iptables -t nat -A PREROUTING -p udp --dport 54000:54999 -j DNAT --to-destination "$target_ip:65503"
+# Get target IP or domain from user
+echo -n "Enter target IP address or domain name (leave empty for current VPS): "
+read -r target_input
+
+# Get current server IP if target is empty
+if [ -z "$target_input" ]; then
+    target_ip=$(hostname -I | awk '{print $1}')
+    echo "Using current VPS IP: $target_ip"
+else
+    # Validate/resolve input
+    if validate_ip "$target_input"; then
+        target_ip=$target_input
+    else
+        echo "Input is not an IP address, attempting to resolve as domain..."
+        target_ip=$(resolve_domain "$target_input")
+        echo "Resolved to IP: $target_ip"
+    fi
+fi
+
+# Get destination port from user
+echo -n "Enter destination port: "
+read -r dest_port
+
+# Validate destination port
+if ! [[ $dest_port =~ ^[0-9]+$ ]] || [ "$dest_port" -lt 1 ] || [ "$dest_port" -gt 65535 ]; then
+    echo "Invalid destination port. Must be between 1-65535."
+    exit 1
+fi
+
+# Prepare the iptables rule
+if [[ $port_input =~ ^[0-9]+:[0-9]+$ ]]; then
+    echo "Adding iptables rule to redirect UDP ports $port_input to $target_ip:$dest_port"
+    iptables -t nat -A PREROUTING -p udp --dport "$port_input" -j DNAT --to-destination "$target_ip:$dest_port"
+else
+    echo "Adding iptables rule to redirect UDP port $port_input to $target_ip:$dest_port"
+    iptables -t nat -A PREROUTING -p udp --dport "$port_input" -j DNAT --to-destination "$target_ip:$dest_port"
+fi
 
 # Save the rules and ensure they persist after reboot
 echo "Saving iptables rules..."
@@ -77,7 +132,7 @@ if [ -f /etc/debian_version ]; then
         netfilter-persistent save
     fi
     
-    # Create systemd service for iptables restoration if it doesn't exist
+    # Create systemd service for iptables restoration
     if [ ! -f /etc/systemd/system/iptables-restore.service ]; then
         cat > /etc/systemd/system/iptables-restore.service <<EOF
 [Unit]
@@ -125,5 +180,6 @@ fi
 
 # Verify the rule was added
 echo "Verifying rule..."
-iptables -t nat -L PREROUTING -n --line-numbers | grep 65503 || echo "No IPv4 rules found."
-echo "Done!"
+iptables -t nat -L PREROUTING -n --line-numbers | grep "$target_ip:$dest_port" || echo "No matching IPv4 rules found. Please check for errors."
+
+echo "UDP redirect configuration complete!"
