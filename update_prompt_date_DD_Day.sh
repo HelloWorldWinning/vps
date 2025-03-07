@@ -15,9 +15,9 @@ format_date() {
     # Determine 'a' or 'p' based on AM/PM
     local am_pm_symbol=""
     if [[ "$am_pm" == "AM" ]]; then
-        am_pm_symbol="A"
+        am_pm_symbol="AM"
     else
-        am_pm_symbol="P"
+        am_pm_symbol="PM"
     fi
 
     # Pad hour, minute, and day to two digits with leading zeros if necessary
@@ -33,7 +33,8 @@ format_date() {
 
     # Assemble the fixed-length first_part with 'a' or 'p'
  #  echo "$hour:$minute$am_pm_symbol $day-$padded_weekday"
-    echo "$padded_weekday $hour:$minute$am_pm_symbol $day"
+#   echo "$padded_weekday $hour:$minute$am_pm_symbol $day"
+    echo "$padded_weekday$hour:$minute$am_pm_symbol $day"
 }
 
 first_part=$(format_date "now")
