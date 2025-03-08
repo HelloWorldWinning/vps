@@ -8,6 +8,7 @@ cat << "EOF" > /root/openvpn-server_z_udp/docker-compose.yml
 services:
   openvpn:
     image: oklove/openvpn-server_z_udp
+#   network_mode: host
     container_name: openvpn_udp
     privileged: true
     ports:

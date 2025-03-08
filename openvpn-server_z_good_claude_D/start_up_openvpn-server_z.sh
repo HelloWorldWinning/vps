@@ -9,6 +9,7 @@ version: '3'
 services:
   openvpn:
     image: oklove/openvpn-server_z
+#   network_mode: host
     container_name: openvpn
     privileged: true
     ports:
