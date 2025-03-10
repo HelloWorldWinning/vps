@@ -25,36 +25,16 @@ format_date() {
     [ ${#minute} -eq 1 ] && minute="0$minute"
     [ ${#day} -eq 1 ] && day="0$day"
 
-### # Pad the weekday to 8 characters (left-justified)
-### local padded_weekday="$weekday"
-### while [ ${#padded_weekday} -lt 9 ]; do
-###     padded_weekday="$padded_weekday "
-### done
-
-local padded_weekday="$weekday"
-local target_length=9
-local current_length=${#padded_weekday}
-local padding_needed=$((target_length - current_length))
-local left_padding=$((padding_needed / 2))
-local right_padding=$((padding_needed - left_padding))
-
-# Add left padding
-while [ $left_padding -gt 0 ]; do
-    padded_weekday=" $padded_weekday"
-    left_padding=$((left_padding - 1))
-done
-
-# Add right padding
-while [ $right_padding -gt 0 ]; do
-    padded_weekday="$padded_weekday "
-    right_padding=$((right_padding - 1))
-done
+    # Pad the weekday to 8 characters (left-justified)
+    local padded_weekday="$weekday"
+    while [ ${#padded_weekday} -lt 9 ]; do
+        padded_weekday="$padded_weekday "
+    done
 
     # Assemble the fixed-length first_part with 'a' or 'p'
  #  echo "$hour:$minute$am_pm_symbol $day-$padded_weekday"
 #   echo "$padded_weekday $hour:$minute$am_pm_symbol $day"
-#   echo "$padded_weekday$hour:$minute $am_pm_symbol $day"
-    echo "$padded_weekday $day $hour:$minute $am_pm_symbol"
+    echo "$padded_weekday$hour:$minute$am_pm_symbol $day"
 }
 
 first_part=$(format_date "now")
