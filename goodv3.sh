@@ -714,6 +714,7 @@ ${Red_font_prefix}76${Font_color_suffix} aws   panel http://ip:8011 admin admin1
 ${Red_font_prefix}1777${Font_color_suffix} tuic
 ${Red_font_prefix}78${Font_color_suffix} new_nginx_conf.sh
 ${Red_font_prefix}79${Font_color_suffix} docker nginx 
+${Red_font_prefix}799${Font_color_suffix} docker nginx  can render index.html
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
 ${Red_font_prefix}81${Font_color_suffix} neovim and  to install: :PlugInstall :UpdateRemotePlugins ~/.config/nvim/init.vim
 ${Red_font_prefix}81a${Font_color_suffix} add vundle.sh to  ~/.vim/bundle
@@ -984,6 +985,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
                 1777)eval "${tuic}";;
                 78)eval "${new_nginx_conf}";;
                 79)eval "${new_nginx_conf_docker}";;
+		799) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker_html.sh  ) ;;
 		80)curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 		81) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh ) ;;
 		81a) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/bundle.sh    ) ;;
