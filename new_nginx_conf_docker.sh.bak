@@ -314,9 +314,9 @@ EOF
 
 # Function to create docker-compose.yml
 create_docker_compose() {
-    read -p "Enter docker-compose.yml full path (default: /data/nginx_docker_d): " DOCKER_COMPOSE_PATH
+    read -p "Enter docker-compose.yml full path (default: /root/nginx_docker_d): " DOCKER_COMPOSE_PATH
     if [[ -z "$DOCKER_COMPOSE_PATH" ]]; then
-        DOCKER_COMPOSE_PATH="/data/nginx_docker_d"
+        DOCKER_COMPOSE_PATH="/root/nginx_docker_d"
     fi
     
     # Create directory if it doesn't exist
