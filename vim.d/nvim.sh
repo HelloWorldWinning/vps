@@ -18,10 +18,52 @@ pip install pynvim
 pip3 install neovim
 pip3 install pynvim
 
-curl  --ipv4 -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-
-chmod u+x /usr/bin/nvim.appimage
+#curl  --ipv4 -Lo  /usr/bin/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+#chmod u+x /usr/bin/nvim.appimage
 #./nvim.appimage
+#
+#
+
+
+# Check that jq is installed
+if ! command -v jq >/dev/null; then
+  echo "Error: 'jq' is required but not installed. Please install jq and try again."
+sudo apt-get install -y jq
+apt-get install -y jq
+sudo apt install -y jq
+apt install -y jq
+fi
+
+echo "Fetching stable Neovim release info..."
+# This endpoint returns the latest stable release (not a pre-release)
+RELEASE_JSON=$(curl -sL "https://api.github.com/repos/neovim/neovim/releases/latest")
+
+# Get the stable release tag
+STABLE_TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+echo "Stable release: $STABLE_TAG"
+
+# Define the asset name (change this if you need a different build, e.g. arm64)
+ASSET_NAME="nvim-linux-x86_64.appimage"
+
+# Extract the download URL for the desired asset
+APPIMAGE_URL=$(echo "$RELEASE_JSON" | jq -r --arg asset "$ASSET_NAME" '.assets[] | select(.name == $asset) | .browser_download_url')
+
+if [ -z "$APPIMAGE_URL" ]; then
+    echo "Error: Asset '$ASSET_NAME' not found in the stable release."
+    exit 1
+fi
+
+echo "Downloading $ASSET_NAME from: $APPIMAGE_URL"
+curl --ipv4 -Lo /usr/bin/nvim.appimage "$APPIMAGE_URL"
+
+echo "Setting executable permissions..."
+chmod u+x /usr/bin/nvim.appimage
+
+echo "Neovim AppImage has been downloaded and installed at /usr/bin/nvim.appimage"
+
+
+
+#
 
 NVIM_PATH="/usr/bin/nvim.appimage"
 SYMLINK_PATH="/usr/bin/nvim"

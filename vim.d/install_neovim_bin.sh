@@ -1,0 +1,75 @@
+#!/bin/bash
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Define installation directory
+INSTALL_DIR="$HOME/.local/nvim"
+BIN_DIR="$HOME/.local/bin"
+
+# Create necessary directories
+mkdir -p "$INSTALL_DIR"
+mkdir -p "$BIN_DIR"
+
+echo "=== Installing dependencies ==="
+sudo apt update
+sudo apt install -y ninja-build gettext cmake unzip curl git
+
+echo "=== Cloning Neovim repository ==="
+# Use a temporary directory for building
+BUILD_DIR=$(mktemp -d)
+cd "$BUILD_DIR"
+git clone https://github.com/neovim/neovim
+cd neovim
+
+echo "=== Building Neovim ==="
+make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX="$INSTALL_DIR"
+
+echo "=== Installing Neovim to $INSTALL_DIR ==="
+make install
+
+echo "=== Creating symlink to $BIN_DIR ==="
+ln -sf "$INSTALL_DIR/bin/nvim" "$BIN_DIR/nvim"
+
+# Add to PATH if not already there
+if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
+    echo "=== Adding $BIN_DIR to PATH ==="
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+    echo "Please run 'source ~/.bashrc' or start a new terminal session to update your PATH."
+fi
+
+echo "=== Cleaning up build files ==="
+cd "$HOME"
+rm -rf "$BUILD_DIR"
+
+echo "=== Neovim installation completed ==="
+echo "You can now run Neovim using: $BIN_DIR/nvim"
+echo "Current Neovim version:"
+"$BIN_DIR/nvim" --version | head -n 1
+
+# Check if the installation was successful
+if [ -x "$BIN_DIR/nvim" ]; then
+    echo "=== Installation successful! ==="
+else
+    echo "=== Installation failed! ==="
+    exit 1
+fi
+
+
+# Define the path to your bashrc file
+BASHRC="$HOME/.bashrc"
+
+# Comment out the old alias if it exists and is not already commented out
+if grep -q "^alias nn='/usr/bin/nvim.appimage'" "$BASHRC"; then
+    sed -i "s|^alias nn='/usr/bin/nvim.appimage'|# alias nn='/usr/bin/nvim.appimage'|" "$BASHRC"
+    echo "Old alias commented out."
+fi
+
+# Append the new alias if it does not already exist
+if ! grep -q "^alias nn='/root/.local/bin/nvim'" "$BASHRC"; then
+    echo "alias nn='/root/.local/bin/nvim'" >> "$BASHRC"
+    echo "New alias added."
+fi
+
+# Source the updated bashrc file to apply changes immediately
+source "$BASHRC"
+echo "Bashrc reloaded."
+
