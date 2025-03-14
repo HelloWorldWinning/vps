@@ -11,6 +11,10 @@ alias tls='tmux list-sessions'
 alias txlw='tmux list-windows '
 alias txkill='tmux kill-session -t'
 
+alias tn='tmux new-session -s '
+alias tnw='tmux new-window -t '
+
+
 # List all sessions
 alias tl='tmux list-sessions'
 
