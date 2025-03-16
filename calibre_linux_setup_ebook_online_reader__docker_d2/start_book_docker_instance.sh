@@ -6,7 +6,7 @@ mkdir -p /data/calibre-library
 
 # Create docker-compose.yml
 cat > /data/book_docker_d/docker-compose.yml << 'EOF'
-version: '3'
+#version: '3'
 services:
   calibre:
     image: oklove/calibre1
