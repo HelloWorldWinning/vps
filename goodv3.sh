@@ -717,6 +717,7 @@ ${Red_font_prefix}79${Font_color_suffix} docker nginx
 ${Red_font_prefix}799${Font_color_suffix} docker nginx  can render index.html
 ${Red_font_prefix}80${Font_color_suffix} check commands new_nginx_conf.txt.sh
 ${Red_font_prefix}81${Font_color_suffix} neovim and  to install: :PlugInstall :UpdateRemotePlugins ~/.config/nvim/init.vim
+${Red_font_prefix}811${Font_color_suffix} install_neovim_bin.sh (host install)
 ${Red_font_prefix}81a${Font_color_suffix} add vundle.sh to  ~/.vim/bundle
 ${Red_font_prefix}82${Font_color_suffix} git clone vps
 ${Red_font_prefix}83${Font_color_suffix} md file to html
