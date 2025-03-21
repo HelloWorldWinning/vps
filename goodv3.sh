@@ -1009,6 +1009,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		94) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh  ) ;;
 		2) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path_quick.sh ) ;;
 		22) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh ) ;;
+		d2) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh ) ;;
 		0)
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh  ) 			
 bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh  ) ;;
@@ -1080,7 +1081,7 @@ netstat -tulnp | grep -E '166|177'
 		run3g) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh ) ;; 
 		backup) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh ) ;; 
 		dd) yes |docker system prune -a --volumes  ;;
-
+		d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh )  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
