@@ -680,6 +680,7 @@ ${Red_font_prefix}49${Font_color_suffix} shadowrocket rust + many plugins(kcptun
 ${Red_font_prefix}8${Font_color_suffix} eval "netstat -lpntu"
 ${Red_font_prefix}tt${Font_color_suffix} "read -p "script to run ":  ${x}"
 ${Red_font_prefix}56${Font_color_suffix} rdp_docker_33399.sh
+${Red_font_prefix}drpd${Font_color_suffix} install_rdesktop_33389.sh  abc:abc
 ${Red_font_prefix}566${Font_color_suffix} (amd64)一键安装 远程桌面 echo xfce4-session>/home/<rdp_username>/.xsession ; sudo service xrdp stop /status
 ${Red_font_prefix}57${Font_color_suffix} delete user  'getent passwd | awk -F: '{ print \$1}'|sort'
 ${Red_font_prefix}58${Font_color_suffix} bash <(curl -fsSL https://git.io/hysteria.sh)
@@ -872,6 +873,8 @@ bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps
                 566)eval "$rdp";;
                 56)
 bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh  )    ;;
+                drdp)
+bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rdesktop_33389.sh  )    ;;
                 57)eval "$delete_user";;
                 58)eval "$hysteria";
 sed -i 's/8.8.8.8/8.8.4.4/g'  /etc/hihy/conf/hihyServer.json
