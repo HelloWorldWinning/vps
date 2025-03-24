@@ -25,7 +25,8 @@ services:
 ##    - TZ=Etc/UTC
       - TZ=Asia/Shanghai
       - DOCKER_MODS=linuxserver/mods:universal-package-install
-      - INSTALL_PACKAGES=font-noto-cjk
+#     - INSTALL_PACKAGES=font-noto-cjk
+      - INSTALL_PACKAGES=font-wqy-zenhei
       - LC_ALL=zh_CN.UTF-8
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock #optional
