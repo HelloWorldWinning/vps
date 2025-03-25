@@ -71,5 +71,6 @@ fi
 
 # Source the updated bashrc file to apply changes immediately
 source "$BASHRC"
+source /root/.bashrc
 echo "Bashrc reloaded."
 
