@@ -58,14 +58,14 @@ fi
 BASHRC="$HOME/.bashrc"
 
 # Comment out the old alias if it exists and is not already commented out
-if grep -q "^alias k='/usr/bin/nvim.appimage'" "$BASHRC"; then
-    sed -i "s|^alias k='/usr/bin/nvim.appimage'|# alias k='/usr/bin/nvim.appimage'|" "$BASHRC"
+if grep -q "^alias nn='/usr/bin/nvim.appimage'" "$BASHRC"; then
+    sed -i "s|^alias nn='/usr/bin/nvim.appimage'|# alias nn='/usr/bin/nvim.appimage'|" "$BASHRC"
     echo "Old alias commented out."
 fi
 
 # Append the new alias if it does not already exist
-if ! grep -q "^alias k='/root/.local/bin/nvim'" "$BASHRC"; then
-    echo "alias k='/root/.local/bin/nvim'" >> "$BASHRC"
+if ! grep -q "^alias nn='/root/.local/bin/nvim'" "$BASHRC"; then
+    echo "alias nn='/root/.local/bin/nvim'" >> "$BASHRC"
     echo "New alias added."
 fi
 
