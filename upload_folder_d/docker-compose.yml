@@ -7,4 +7,5 @@ services:
       - "7777:7777"   
     volumes:
       - /data/upload_folder:/data/upload_folder
+      - /data/:/data/
         # Map the current directory on the host to /usr/src/app in the container
