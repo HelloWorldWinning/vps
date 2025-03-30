@@ -1085,6 +1085,7 @@ netstat -tulnp | grep -E '166|177'
 		backup) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh ) ;; 
 		dd) yes |docker system prune -a --volumes  ;;
 		d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh )  ;;
+		dt) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh)  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
