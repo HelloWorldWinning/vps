@@ -5,12 +5,16 @@
 delete_to_tmp() {
     for item in "$@"; do
         if [ -e "$item" ]; then
+            # Extract the basename for the destination
+            base_name=$(basename "$item")
+            
             # First try to remove any existing destination
-            if [ -e "/tmp/$item" ]; then
-                rm -rf "/tmp/$item"
+            if [ -e "/tmp/$base_name" ]; then
+                rm -rf "/tmp/$base_name"
             fi
+            
             # Then move with verbose output
-            mv -v "$item" /tmp/
+            mv -v "$item" "/tmp/$base_name"
         else
             echo "Warning: $item does not exist"
         fi
