@@ -5,11 +5,6 @@
 delete_to_tmp() {
     for item in "$@"; do
         if [ -e "$item" ]; then
-            # First try to remove any existing destination
-            if [ -e "/tmp/$item" ]; then
-                rm -rf "/tmp/$item"
-            fi
-            # Then move with verbose output
             mv -v "$item" /tmp/
         else
             echo "Warning: $item does not exist"
