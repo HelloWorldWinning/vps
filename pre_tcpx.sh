@@ -476,6 +476,32 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
 
 
+##########
+##########
+##########
+##########
+##########
+# First, get the content of the script
+curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh > /tmp/tmp-move.sh
+
+# Then, create a function in .bashrc with the content
+echo 'dt() {' > /tmp/dt_function
+cat /tmp/tmp-move.sh >> /tmp/dt_function
+echo '}' >> /tmp/dt_function
+
+# Replace the existing dt function in .bashrc
+sed -i '/dt()/,/}/d' ~/.bashrc
+cat /tmp/dt_function >> ~/.bashrc
+
+# Clean up
+rm /tmp/tmp-move.sh /tmp/dt_function
+##########
+##########
+##########
+##########
+##########
+
+
 sudo dpkg --configure -a
 
 reboot
