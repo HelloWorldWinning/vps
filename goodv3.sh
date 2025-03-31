@@ -65,6 +65,23 @@ docker-compose up -d
 }
 
 
+ins_dt() {
+# First, get the content of the script
+curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh > /tmp/tmp-move.sh
+
+# Then, create a function in .bashrc with the content
+echo 'dt() {' > /tmp/dt_function
+cat /tmp/tmp-move.sh >> /tmp/dt_function
+echo '}' >> /tmp/dt_function
+
+# Replace the existing dt function in .bashrc
+sed -i '/dt()/,/}/d' ~/.bashrc
+cat /tmp/dt_function >> ~/.bashrc
+
+# Clean up
+rm /tmp/tmp-move.sh /tmp/dt_function
+
+}
 
 
 
@@ -1086,6 +1103,7 @@ netstat -tulnp | grep -E '166|177'
 		dd) yes |docker system prune -a --volumes  ;;
 		d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh )  ;;
 		dt) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh)  ;;
+		dttt) ins_dt ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
