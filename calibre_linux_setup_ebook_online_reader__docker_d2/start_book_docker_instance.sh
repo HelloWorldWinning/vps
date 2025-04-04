@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # Create necessary directories
-mkdir -p /data/book_docker_d
+#mkdir -p /data/book_docker_d
+mkdir -p /root/book_docker_d
 mkdir -p /data/calibre-library
 
 # Create docker-compose.yml
-cat > /data/book_docker_d/docker-compose.yml << 'EOF'
+####cat > /data/book_docker_d/docker-compose.yml << 'EOF'
+cat > /root/book_docker_d/docker-compose.yml << 'EOF'
 #version: '3'
 services:
   calibre:
@@ -45,7 +47,8 @@ docker run --rm \
 rm -rf /tmp/books
 
 # Start the service using docker-compose
-cd /data/book_docker_d
+#cd /data/book_docker_d
+cd /root/book_docker_d
 #docker compose down || true  # Ensure any existing service is stopped
 docker-compose down
 sleep 2
