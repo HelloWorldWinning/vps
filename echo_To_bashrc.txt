@@ -109,6 +109,7 @@ alias s='exa -la --sort=size'
 alias n='exa -la'
 alias ls='exa -a'
 alias tree='exa -Tla'
+alias tre='/usr/bin/tree'
 alias t='exa -lT -L 2'
 
 alias fw='/usr/lib/cargo/bin/fd --changed-within   '
