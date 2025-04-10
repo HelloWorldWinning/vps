@@ -67,7 +67,8 @@ Description=Jupyter Notebook
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter lab  --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/  --LabApp.default_url="/doc"    '
+ExecStart=/bin/bash -c 'source $conda_setup_script && conda activate $conda_env_name && jupyter lab --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/ --LabApp.default_url="/doc"'
+####ExecStart=/bin/bash -c 'source $conda_setup_script; conda activate $conda_env_name; $conda_env_bin_dir/jupyter lab  --port=${port} --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/  --LabApp.default_url="/doc"' 
 User=root
 Environment="PATH=$conda_env_bin_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 StandardOutput=append:${log_file}
