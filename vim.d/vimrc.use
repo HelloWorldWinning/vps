@@ -156,7 +156,8 @@ hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=ma
 
 set laststatus=2
 
-set statusline+=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ %l🍎%v\ \ %{hostname()}\ %{expand('%:p')}
+""set statusline+=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ %l🍎%v\ \ %{hostname()}\ %{expand('%:p')}
+set statusline+=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ %l-%v\ \ \ %{hostname()}\ %{expand('%:p')}
 
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
