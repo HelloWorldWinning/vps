@@ -13,9 +13,9 @@ services:
     image: oklove/webpage_port_7788_download
     container_name: host_7788_download
     ports:
-#     - "7788:7788"
+      - "7788:7788"
 #     - "78:7788"
-      - "77:7788"
+#     - "77:7788"
 #     - "17:7788"
     volumes:
       - /:/Host
