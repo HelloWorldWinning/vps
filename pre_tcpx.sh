@@ -428,8 +428,8 @@ sleep 5
 
 wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;
 
-apt update -y 
 apt upgrade -y  
+apt update -y 
 apt install iptables wireguard -y 
 wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf 
 sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf 
