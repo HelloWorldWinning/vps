@@ -11,72 +11,62 @@ export PATH
 #
 
 # Create a file called fix_and_run.sh
-
-cat > /root/ultimate_wrapper.sh << 'EOF'
+cat > /root/fix_and_run.sh << 'EOF'
 #!/bin/bash
-# Set all environment variables to avoid interaction
+# Set environment variables
 export DEBIAN_FRONTEND=noninteractive
 export APT_LISTCHANGES_FRONTEND=none
-export NEEDRESTART_MODE=a
-export NEEDRESTART_SUSPEND=1
 
-# Configure debconf for non-interactive mode
-echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+# Create a function that wraps all apt/apt-get operations
+apt_noninteractive() {
+  command=$1
+  shift
+  if [ "$command" = "apt" ] || [ "$command" = "apt-get" ]; then
+    echo "Running non-interactive: $command $@"
+    $command -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
+  else
+    $command "$@"
+  fi
+}
 
-# Create wrapper scripts that ALWAYS say yes and use non-interactive options
+# Create temporary wrapping scripts
 mkdir -p /tmp/wrappers
-
 cat > /tmp/wrappers/apt << 'WRAPPEREOF'
 #!/bin/bash
-yes | /usr/bin/apt -y -qq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
+/usr/bin/apt -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
 WRAPPEREOF
 
 cat > /tmp/wrappers/apt-get << 'WRAPPEREOF'
 #!/bin/bash
-yes | /usr/bin/apt-get -y -qq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
-WRAPPEREOF
-
-cat > /tmp/wrappers/dpkg << 'WRAPPEREOF'
-#!/bin/bash
-yes | /usr/bin/dpkg --force-confdef --force-confold "$@"
+/usr/bin/apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
 WRAPPEREOF
 
 chmod +x /tmp/wrappers/apt
 chmod +x /tmp/wrappers/apt-get
-chmod +x /tmp/wrappers/dpkg
 
-# Put our wrappers first in PATH
+# Modify the PATH to use our wrappers first
 export PATH="/tmp/wrappers:$PATH"
 
-# Create a wrapper function for bash to pipe 'yes' to any command with apt
-function_to_add='
-yes_to_apt() {
-  if [[ "$1" == "apt" || "$1" == "apt-get" || "$1" == "dpkg" ]]; then
-    yes | command "$@"
-  else
-    command "$@"
-  fi
-}
-'
+# Modify all direct apt operations in the script
+sed -i 's/apt update/apt-get update/g' /root/pre_tcpx.sh
+sed -i 's/apt upgrade/apt-get upgrade/g' /root/pre_tcpx.sh
+sed -i 's/apt install/apt-get install/g' /root/pre_tcpx.sh
+sed -i 's/apt-get -y/apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"/g' /root/pre_tcpx.sh
 
-# Add this function to a temporary .bashrc
-echo "$function_to_add" > /tmp/temp_bashrc
-echo 'alias apt="yes_to_apt apt"' >> /tmp/temp_bashrc
-echo 'alias apt-get="yes_to_apt apt-get"' >> /tmp/temp_bashrc
-echo 'alias dpkg="yes_to_apt dpkg"' >> /tmp/temp_bashrc
+# Also fix any potential interactive dpkg reconfiguration
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Force bash to use our temporary .bashrc
-export BASH_ENV=/tmp/temp_bashrc
-
-# Run the script with all our safeguards in place
-echo "Running pre_tcpx.sh with strongest non-interactive settings..."
-bash --rcfile /tmp/temp_bashrc /root/pre_tcpx.sh < <(yes)
+# Run the script with our interceptors in place
+echo "Running pre_tcpx.sh with non-interactive settings..."
+bash /root/pre_tcpx.sh
 
 # Clean up
-rm -rf /tmp/wrappers /tmp/temp_bashrc
+rm -rf /tmp/wrappers
+
 EOF
 
-chmod +x /root/ultimate_wrapper.sh
+# Make it executable
+chmod +x /root/fix_and_run.sh
 
 # Use a simpler cron entry
 
@@ -106,10 +96,7 @@ chmod 777 /root/pre_tcpx.sh
 ####cron_job="@reboot sleep 20 ; apt install -y sudo && sudo tmux new-session -d -s ins -c /root 'export DEBIAN_FRONTEND=noninteractive; yes | sudo bash pre_tcpx.sh' #${unique_id}"
 ###########cron_job="@reboot sleep 20 ; apt install -y sudo && sudo DEBIAN_FRONTEND=noninteractive tmux new-session -d -s ins -c /root 'sudo bash -c \"export DEBIAN_FRONTEND=noninteractive; export APT_LISTCHANGES_FRONTEND=none; sed -i \\\"s/apt upgrade -y/DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\\\\\\\"--force-confdef\\\\\\\" -o Dpkg::Options::=\\\\\\\"--force-confold\\\\\\\" upgrade/g\\\" pre_tcpx.sh && bash pre_tcpx.sh\"' #${unique_id}"
 
-#cron_job="@reboot sleep 20 ; apt install -y sudo && sudo tmux new-session -d -s ins -c /root '/root/fix_and_run.sh' #${unique_id}"
-
-# Use a simple cron entry with maximum non-interactive settings for the initial sudo install
-cron_job="@reboot sleep 20 ; yes | DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" install sudo && sudo tmux new-session -d -s ins -c /root '/root/ultimate_wrapper.sh' #${unique_id}"
+cron_job="@reboot sleep 20 ; apt install -y sudo && sudo tmux new-session -d -s ins -c /root '/root/fix_and_run.sh' #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
