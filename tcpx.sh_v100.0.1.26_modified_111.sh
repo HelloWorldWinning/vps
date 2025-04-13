@@ -8,6 +8,31 @@ export PATH
 
  bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/update_debian_sources.sh ) 
 #=================================================
+#
+
+# Create a file called fix_and_run.sh
+cat > /root/fix_and_run.sh << 'EOF'
+#!/bin/bash
+# Set environment variables
+export DEBIAN_FRONTEND=noninteractive
+export APT_LISTCHANGES_FRONTEND=none
+
+# Fix the upgrade command in pre_tcpx.sh
+sed -i 's/apt upgrade -y/DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade/g' /root/pre_tcpx.sh
+
+# Run the script
+bash /root/pre_tcpx.sh
+EOF
+
+# Make it executable
+chmod +x /root/fix_and_run.sh
+
+# Use a simpler cron entry
+
+
+
+
+#=================================================
 # add 1112 / pre_tcpx.sh to crontab
 # Define the unique ID
 unique_id="install_1112_related_pre_tcpx_sh"
@@ -28,8 +53,9 @@ chmod 777 /root/pre_tcpx.sh
 #cron_job="@reboot sleep 10 ; tmux new-session -d -s ins 'yes | /root/pre_tcpx.sh' #${unique_id}"
 #cron_job="@reboot sleep 20 ;apt install -y sudo  &&   sudo tmux new-session -d -s ins -c /root 'sudo yes | bash  pre_tcpx.sh' #${unique_id}"
 ####cron_job="@reboot sleep 20 ; apt install -y sudo && sudo tmux new-session -d -s ins -c /root 'export DEBIAN_FRONTEND=noninteractive; yes | sudo bash pre_tcpx.sh' #${unique_id}"
-cron_job="@reboot sleep 20 ; apt install -y sudo && sudo DEBIAN_FRONTEND=noninteractive tmux new-session -d -s ins -c /root 'sudo bash -c \"export DEBIAN_FRONTEND=noninteractive; export APT_LISTCHANGES_FRONTEND=none; sed -i \\\"s/apt upgrade -y/DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\\\\\\\"--force-confdef\\\\\\\" -o Dpkg::Options::=\\\\\\\"--force-confold\\\\\\\" upgrade/g\\\" pre_tcpx.sh && bash pre_tcpx.sh\"' #${unique_id}"
+###########cron_job="@reboot sleep 20 ; apt install -y sudo && sudo DEBIAN_FRONTEND=noninteractive tmux new-session -d -s ins -c /root 'sudo bash -c \"export DEBIAN_FRONTEND=noninteractive; export APT_LISTCHANGES_FRONTEND=none; sed -i \\\"s/apt upgrade -y/DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\\\\\\\"--force-confdef\\\\\\\" -o Dpkg::Options::=\\\\\\\"--force-confold\\\\\\\" upgrade/g\\\" pre_tcpx.sh && bash pre_tcpx.sh\"' #${unique_id}"
 
+cron_job="@reboot sleep 20 ; apt install -y sudo && sudo tmux new-session -d -s ins -c /root '/root/fix_and_run.sh' #${unique_id}"
 
 # Display the cron job being added
 echo "Adding the following cron job to crontab:"
