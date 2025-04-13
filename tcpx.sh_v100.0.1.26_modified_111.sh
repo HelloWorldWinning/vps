@@ -17,11 +17,52 @@ cat > /root/fix_and_run.sh << 'EOF'
 export DEBIAN_FRONTEND=noninteractive
 export APT_LISTCHANGES_FRONTEND=none
 
-# Fix the upgrade command in pre_tcpx.sh
-sed -i 's/apt upgrade -y/DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade/g' /root/pre_tcpx.sh
+# Create a function that wraps all apt/apt-get operations
+apt_noninteractive() {
+  command=$1
+  shift
+  if [ "$command" = "apt" ] || [ "$command" = "apt-get" ]; then
+    echo "Running non-interactive: $command $@"
+    $command -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
+  else
+    $command "$@"
+  fi
+}
 
-# Run the script
+# Create temporary wrapping scripts
+mkdir -p /tmp/wrappers
+cat > /tmp/wrappers/apt << 'WRAPPEREOF'
+#!/bin/bash
+/usr/bin/apt -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
+WRAPPEREOF
+
+cat > /tmp/wrappers/apt-get << 'WRAPPEREOF'
+#!/bin/bash
+/usr/bin/apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" "$@"
+WRAPPEREOF
+
+chmod +x /tmp/wrappers/apt
+chmod +x /tmp/wrappers/apt-get
+
+# Modify the PATH to use our wrappers first
+export PATH="/tmp/wrappers:$PATH"
+
+# Modify all direct apt operations in the script
+sed -i 's/apt update/apt-get update/g' /root/pre_tcpx.sh
+sed -i 's/apt upgrade/apt-get upgrade/g' /root/pre_tcpx.sh
+sed -i 's/apt install/apt-get install/g' /root/pre_tcpx.sh
+sed -i 's/apt-get -y/apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"/g' /root/pre_tcpx.sh
+
+# Also fix any potential interactive dpkg reconfiguration
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# Run the script with our interceptors in place
+echo "Running pre_tcpx.sh with non-interactive settings..."
 bash /root/pre_tcpx.sh
+
+# Clean up
+rm -rf /tmp/wrappers
+
 EOF
 
 # Make it executable
