@@ -14,6 +14,8 @@ services:
     hostname : ${host_name} 
 ##  restart: unless-stopped
     restart: always
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - "166:166"
     volumes:
@@ -29,6 +31,8 @@ services:
     hostname : "${host_name}"
  ## restart: unless-stopped
     restart: always
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - "1666:1666"
     volumes:
