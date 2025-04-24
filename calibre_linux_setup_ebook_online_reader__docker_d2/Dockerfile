@@ -1,10 +1,14 @@
-FROM python:3.9-slim
+#FROM python:3.9-slim
+FROM  python:3.13-slim
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 #ENV CALIBRE_LIBRARY_PATH=/data/calibre-library
 ENV CALIBRE_LIBRARY_PATH=/calibre-library
 ENV EBOOK_DOWNLOAD_PATH=/books
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 # Install necessary dependencies
 #   git \
