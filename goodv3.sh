@@ -742,6 +742,7 @@ ${Red_font_prefix}83${Font_color_suffix} md file to html
 ${Red_font_prefix}84${Font_color_suffix} ports  转发
 ${Red_font_prefix}85${Font_color_suffix} clean_footprint
 ${Red_font_prefix}86${Font_color_suffix} 融合怪命令
+${Red_font_prefix}866${Font_color_suffix} https://github.com/masonr/yet-another-bench-script
 ${Red_font_prefix}87${Font_color_suffix} prefer_ipv4
 ${Red_font_prefix}88${Font_color_suffix} get_fraud_score
 ${Red_font_prefix}89${Font_color_suffix} some notes
