@@ -20,7 +20,7 @@ outbounds:
 - protocol: freedom
   settings: {}
 - protocol: blackhole
-  tag: block
+  tag: blocked
   settings: {}
 - protocol: shadowsocks
   tag: ss-openai
@@ -36,23 +36,10 @@ outbounds:
 routing:
   domainStrategy: AsIs
   rules:
-
-
   - type: field
-    outboundTag: block
     ip:
     - geoip:private
-
-
-
-  - type: field
     outboundTag: block
-    domain:
-    - next-page-server.ciborski.com
-    - nexus-websocket-a.intercom.io
-    - anonymous-communication.ghostery.net
-
-
   - type: field
     outboundTag: ss-openai
     domain:
