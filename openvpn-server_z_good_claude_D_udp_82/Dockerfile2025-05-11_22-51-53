@@ -14,9 +14,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install easy-rsa
-#RUN wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/v3.1.2/EasyRSA-3.1.2.tgz \
-RUN EASYRSA_LATEST=$(curl -s4 https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -d\" -f4) && \
-    wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST#v}.tgz \
+RUN wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/v3.1.2/EasyRSA-3.1.2.tgz \
     && mkdir -p /etc/openvpn/easy-rsa \
     && tar xzf /tmp/easy-rsa.tgz --strip-components=1 --no-same-owner --directory /etc/openvpn/easy-rsa \
     && rm -f /tmp/easy-rsa.tgz
