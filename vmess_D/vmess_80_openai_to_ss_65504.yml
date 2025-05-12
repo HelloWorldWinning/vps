@@ -48,7 +48,7 @@ routing:
   - type: field
     outboundTag: block
     domain:
-    - anonymous-communication.ghostery.net
+    - geoip:private
 
 
   - type: field
@@ -158,3 +158,4 @@ routing:
     - cloudflare
     - next-page-server.ciborski.com
     - nexus-websocket-a.intercom.io
+    - anonymous-communication.ghostery.net
