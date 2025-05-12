@@ -48,8 +48,6 @@ routing:
   - type: field
     outboundTag: block
     domain:
-    - next-page-server.ciborski.com
-    - nexus-websocket-a.intercom.io
     - anonymous-communication.ghostery.net
 
 
@@ -158,3 +156,5 @@ routing:
     - webofscience
     - clarivate
     - cloudflare
+    - next-page-server.ciborski.com
+    - nexus-websocket-a.intercom.io
