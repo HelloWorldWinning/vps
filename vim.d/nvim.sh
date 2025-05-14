@@ -205,6 +205,14 @@ EOF
 
 
 
+/root/miniconda3/bin/python -m pip install pynvim
+/root/miniconda3/bin/python -m pip install neovim
+python -m pip install pynvim
+python -m pip install neovim
+
+
+
+
 
 
 

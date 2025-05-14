@@ -71,7 +71,9 @@ fi
 
 
 /root/miniconda3/bin/python -m pip install pynvim
+/root/miniconda3/bin/python -m pip install neovim
 python -m pip install pynvim
+python -m pip install neovim
 
 
 # Source the updated bashrc file to apply changes immediately
