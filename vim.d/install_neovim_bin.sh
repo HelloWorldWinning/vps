@@ -69,7 +69,13 @@ if ! grep -q "^alias k='/root/.local/bin/nvim'" "$BASHRC"; then
     echo "New alias added."
 fi
 
+
+/root/miniconda3/bin/python -m pip install pynvim
+python -m pip install pynvim
+
+
 # Source the updated bashrc file to apply changes immediately
+
 source "$BASHRC"
 source /root/.bashrc
 echo "Bashrc reloaded."
