@@ -375,12 +375,20 @@ sysctl -p
 }
 
 
-#today_all=$(curl -s --max-time 10 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" | tail -3 | head -n 1 | awk '{print $5,$7}')
-today_all=$(curl -s --max-time 10 "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps%2Fmain%2Fgoodv3.sh&label=try&icon=alarm&color=%23198754" | tail -3 | head -n 1 | awk '{print $5,$7}')
-#echo $today_all
+##today_all=$(curl -s --max-time 10 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" | tail -3 | head -n 1 | awk '{print $5,$7}')
+#today_all=$(curl -s --max-time 10 "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps%2Fmain%2Fgoodv3.sh&label=try&icon=alarm&color=%23198754" | tail -3 | head -n 1 | awk '{print $5,$7}')
+##echo $today_all
+#
+#today_hit=$(echo "${today_all}"|cut -d" " -f1)
+#all_hit=$(echo "${today_all}"|cut -d" " -f2)
 
-today_hit=$(echo "${today_all}"|cut -d" " -f1)
-all_hit=$(echo "${today_all}"|cut -d" " -f2)
+
+# METHOD 2 - Pattern matching (8ms, but more reliable)
+response=$(curl -s --max-time 10 "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fraw.githubusercontent.com%2FHelloWorldWinning%2Fvps%2Fmain%2Fgoodv3.sh&label=try&icon=alarm&color=%23198754")
+hit_data=$(echo "$response" | grep -o '[0-9]* / [0-9]*' | head -1)
+today_hit=$(echo "$hit_data" | cut -d' ' -f1)
+all_hit=$(echo "$hit_data" | cut -d' ' -f3)
+
 
 
 
