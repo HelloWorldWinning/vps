@@ -15,9 +15,9 @@ services:
     ports:
       - "188:8080"
     volumes:
-      - /data/calibre-library:/library
+      - /data/calibre-library:/calibre-library
     command: >
-      calibre-server /library 
+      calibre-server /calibre-library 
       --enable-auth 
       --disable-use-bonjour 
       --log /var/log/calibre-server.log 
@@ -81,9 +81,6 @@ check_calibre_status() {
 
     if [ -n "$PORT_STATUS" ]; then
         echo "🌐 Port 188: LISTENING"
-	# Get public IP and create URL
-public_ip=$(curl -s ifconfig.me)
-echo "Access your service at: http://$public_ip:188"
     else
         echo "🌐 Port 188: NOT LISTENING"
     fi
