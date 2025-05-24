@@ -350,3 +350,45 @@ autocmd BufEnter * if &filetype != 'python' | set nowriteany | endif
 
 
 highlight Function ctermfg=213 guifg=#ff5fff
+
+" Function to run shfmt formatter
+function! ShfmtFormat()
+    if executable('shfmt')
+        try
+            " Save current view
+            let l:view = winsaveview()
+            " Format the buffer using shfmt with default settings (tabs)
+            silent! undojoin | %!shfmt -
+            " Restore view
+            call winrestview(l:view)
+        catch /.*/
+            echohl ErrorMsg | echo "shfmt formatting failed" | echohl None
+        endtry
+    endif
+endfunction
+
+" Updated WriteShell function to precisely preserve cursor position
+function! WriteShell()
+    " Save the current cursor position (line and column)
+    let l:pos = getpos('.')
+    " Call the shfmt formatter
+    call ShfmtFormat()
+    " Write the buffer to file
+    write
+    " Restore the cursor position
+    call setpos('.', l:pos)
+endfunction
+
+function! WriteQuitShell()
+    call ShfmtFormat()
+    write
+    quit
+endfunction
+
+" Map custom commands for shell script files only
+autocmd FileType sh cnoreabbrev <buffer> w :call WriteShell()<CR>
+autocmd FileType sh cnoreabbrev <buffer> wq :call WriteQuitShell()<CR>
+autocmd FileType bash cnoreabbrev <buffer> w :call WriteShell()<CR>
+autocmd FileType bash cnoreabbrev <buffer> wq :call WriteQuitShell()<CR>
+autocmd FileType zsh cnoreabbrev <buffer> w :call WriteShell()<CR>
+autocmd FileType zsh cnoreabbrev <buffer> wq :call WriteQuitShell()<CR>

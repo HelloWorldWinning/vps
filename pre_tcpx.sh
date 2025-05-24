@@ -95,7 +95,7 @@ sudo dpkg --configure -a
 sudo  apt update
 sudo  apt-get update
 
-sudo apt install -y  python3-pynvim vnstat
+sudo apt install -y  python3-pynvim vnstat  shfmt
 
 apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 
