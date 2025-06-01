@@ -7,8 +7,6 @@ let g:fzf_vim = {}
 "Plug 'ludovicchabant/vim-copilot'
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'folke/flash.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 
 Plug 'sainnhe/sonokai'
@@ -399,15 +397,5 @@ autocmd FileType bash cnoreabbrev <buffer> w :call WriteShell()<CR>
 autocmd FileType bash cnoreabbrev <buffer> wq :call WriteQuitShell()<CR>
 autocmd FileType zsh cnoreabbrev <buffer> w :call WriteShell()<CR>
 autocmd FileType zsh cnoreabbrev <buffer> wq :call WriteQuitShell()<CR>
-
-
-" Flash keybindings
-nnoremap s <cmd>lua require("flash").jump()<cr>
-xnoremap s <cmd>lua require("flash").jump()<cr>
-onoremap s <cmd>lua require("flash").jump()<cr>
-
-nnoremap S <cmd>lua require("flash").treesitter()<cr>
-xnoremap S <cmd>lua require("flash").treesitter()<cr>
-onoremap S <cmd>lua require("flash").treesitter()<cr>
 
 
