@@ -1,4 +1,6 @@
 #!/bin/bash
+#  install app here 2025-06-02_02-50-06
+# 
 # Description:
 # This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
 
@@ -500,9 +502,12 @@ rm /tmp/tmp-move.sh /tmp/dt_function
 ##########
 ##########
 ##########
-
+# install app here 2025-06-02_02-50-06
 
 sudo dpkg --configure -a
+
+wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && sudo mv dysk /usr/local/bin/
+
 
 reboot
 
