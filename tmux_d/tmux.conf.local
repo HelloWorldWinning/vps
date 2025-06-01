@@ -655,3 +655,15 @@ bind-key e kill-window -t:+1
 #bind-key v new-window -n ""
 bind-key n new-window -n ""
 bind-key v new-window -a -n ""
+
+
+
+bind -n M-j previous-window
+bind -n M-l next-window
+
+
+
+
+
+
+
