@@ -163,7 +163,10 @@ hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=ma
 """"""""set statusline+=\ \ \ \ \ \ \ \ \ %l\ \ %v\ \ %t\ \ \ \ %p%%\ \ %L\ \ \ \ %{hostname()}\ \ \ \ \ %{expand('%:p')}
 """set statusline+=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ %l🍎%v\ \ %{hostname()}\ %{expand('%:p')}    
 """"""set statusline+=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ %l-%v\ \ \ %{hostname()}\ %{expand('%:p')}    
-set statusline=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ \ %v\ \ \ %{hostname()}\ \ %{expand('%:p')}       
+"""""set statusline=\ \ \ \ \ \ \ %p%%\ \ %L\ \ %t\ \ \ %v\ \ \ %{hostname()}\ \ %{expand('%:p')}       
+
+highlight StatusLineCol ctermbg=214 ctermfg=0 guibg=#ffa500 guifg=#000000 cterm=bold gui=bold
+set statusline+=\ \ \ \ \ \ \ \ %L\ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 set laststatus=2
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
