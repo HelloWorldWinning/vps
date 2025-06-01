@@ -660,10 +660,4 @@ bind-key v new-window -a -n ""
 
 bind -n M-j previous-window
 bind -n M-l next-window
-
-
-
-
-
-
-
+bind -n M-q kill-window
