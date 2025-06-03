@@ -14,6 +14,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'folke/flash.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'echasnovski/mini.animate'  
 
 Plug 'tpope/vim-repeat'     " Add this for dot repeat support
 Plug 'ggandor/leap.nvim'    " The main plugin
@@ -435,3 +436,18 @@ onoremap s <cmd>lua require("flash").jump()<cr>
 nnoremap S <cmd>lua require("flash").treesitter()<cr>
 xnoremap S <cmd>lua require("flash").treesitter()<cr>
 onoremap S <cmd>lua require("flash").treesitter()<cr>
+
+
+
+" Add mini.animate config
+lua << EOF
+require('mini.animate').setup({
+  cursor = {
+    enable = false,
+  },
+  scroll = {
+    timing = function(_, n) return 80 / n end,
+  },
+})
+EOF
+
