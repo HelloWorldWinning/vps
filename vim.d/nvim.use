@@ -440,15 +440,15 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 
 
 
-" Add mini.animate config
-lua << EOF
-require('mini.animate').setup({
-  cursor = {
-    enable = false,
-  },
-  scroll = {
-    timing = function(_, n) return 80 / n end,
-  },
-})
-EOF
-
+"" Add mini.animate config
+"lua << EOF
+"require('mini.animate').setup({
+"  cursor = {
+"    enable = false,
+"  },
+"  scroll = {
+"    timing = function(_, n) return 80 / n end,
+"  },
+"})
+"EOF
+"
