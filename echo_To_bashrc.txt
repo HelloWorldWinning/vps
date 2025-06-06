@@ -470,3 +470,6 @@ ee() {
        --colors 'line:none' \
        --regexp "[^/]*${search_term}[^/]*"
 }
+
+
+alias cf='colordiff -u '

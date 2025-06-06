@@ -97,7 +97,7 @@ sudo dpkg --configure -a
 sudo  apt update
 sudo  apt-get update
 
-sudo apt install -y  python3-pynvim vnstat  shfmt
+sudo apt install -y  python3-pynvim vnstat  shfmt   colordiff
 
 apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 
@@ -507,6 +507,15 @@ rm /tmp/tmp-move.sh /tmp/dt_function
 sudo dpkg --configure -a
 
 wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && sudo mv dysk /usr/local/bin/
+
+
+cat > /etc/colordiffrc << 'EOF'
+plain=off
+oldtext=darkred
+newtext=white
+diffstuff=cyan
+cvsstuff=magenta
+EOF
 
 
 reboot
