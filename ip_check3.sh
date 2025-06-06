@@ -188,6 +188,23 @@ output+="-------------------------------\n"
 ipqs_output=$(get_ipqualityscore_data "$ip")
 output+="\n$ipqs_output"
 
+
+
+
+# Extract FraudScore for summary display
+fraud_score_summary=""
+if [[ -n "$ipqs_output" ]]; then
+  fraud_score_summary=$(echo "$ipqs_output" | grep "FraudScore:" | head -1)
+fi
+
+# Add separator and fraud score summary
+if [[ -n "$fraud_score_summary" ]]; then
+  output+="\n-------------------------------"
+  output+="\n$fraud_score_summary"
+fi
+
+
+
 echo -e "$output"
 
 echo "----------------------------------------------------------------------"
