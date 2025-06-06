@@ -140,9 +140,9 @@ get_ipqualityscore_data() {
 	display_field "DevBrand" "$device_brand"
 	display_field "DevModel" "$device_model"
 
-	echo "-------------------------------"
-	echo "📊 API INFO:"
-	display_field "RequestID" "$request_id"
+########echo "-------------------------------"
+########echo "📊 API INFO:"
+########display_field "RequestID" "$request_id"
 }
 
 echo -n "Enter an IP or domain: "
