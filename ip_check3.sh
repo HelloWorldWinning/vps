@@ -34,13 +34,24 @@ get_ipqualityscore_data() {
 	fi
 
 	# Function to check and display field only if not N/A, null, or empty
-	display_field() {
-		local label="$1"
-		local value="$2"
-		if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" ]]; then
-			printf "%-10s: %s\n" "$label" "$value"
-		fi
-	}
+########display_field() {
+########	local label="$1"
+########	local value="$2"
+########	if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" ]]; then
+########		printf "%-10s: %s\n" "$label" "$value"
+########	fi
+########}
+
+# Function to check and display field only if not N/A, null, empty, or "Premium required."
+display_field() {
+        local label="$1"
+        local value="$2"
+        if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" && "$value" != "Premium required." ]]; then
+                printf "%-10s: %s\n" "$label" "$value"
+        fi
+}
+
+
 
 	# Extract ALL IPQualityScore data fields
 	local fraud_score=$(echo "$ipqs_data" | jq -r '.fraud_score // empty')
