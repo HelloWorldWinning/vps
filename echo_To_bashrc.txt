@@ -1,4 +1,4 @@
-#!/bin/bash
+#export EDITOR=/usr/bin/vim!/bin/bash
 ###### echo_To_bashrc.txt   start 
 ###echo_To_bashrc_txt_unique_id
 
@@ -15,7 +15,8 @@ fi
 
 ######  eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
-export EDITOR=/usr/bin/vim
+#export EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/nvim
 #######export setup_time_first="${date}"
 ###########echo  export setup_time_first=\"`date`\"   >> ~/.bashrc 
 #######  echo  "export setup_time_first=\"$(date)\""   >> ~/.bashrc
