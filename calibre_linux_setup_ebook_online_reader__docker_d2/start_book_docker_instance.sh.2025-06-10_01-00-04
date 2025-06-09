@@ -3,7 +3,7 @@
 # Create necessary directories
 #mkdir -p /data/book_docker_d
 mkdir -p /root/book_docker_d
-mkdir -p /data/library
+mkdir -p /data/calibre-library
 
 # Create docker-compose.yml
 ####cat > /data/book_docker_d/docker-compose.yml << 'EOF'
@@ -15,7 +15,7 @@ services:
     ports:
       - "188:8080"
     volumes:
-      - /data/library:/library
+      - /data/calibre-library:/library
     command: >
       calibre-server /library 
       --enable-auth 
@@ -38,10 +38,10 @@ git pull origin main
 
 # Use Docker container to add books to calibre library
 docker run --rm \
-  -v /data/library:/library \
+  -v /data/calibre-library:/calibre-library \
   -v /tmp/books:/tmp/books \
   oklove/calibre1 \
-  calibredb add -r /tmp/books/* --library-path /library
+  calibredb add -r /tmp/books/* --library-path /calibre-library
 
 # Clean up temporary books directory
 rm -rf /tmp/books
@@ -52,8 +52,7 @@ cd /root/book_docker_d
 #docker compose down || true  # Ensure any existing service is stopped
 docker-compose down
 sleep 2
-#docker-compose up -d
-docker-compose up -d --pull always
+docker-compose up -d
 
 echo "Calibre server has been started on port 188"
 
