@@ -93,6 +93,7 @@ services:
   xray:
     image: ${DOCKER_IMAGE}
     container_name: xray_docker_instance
+    user: root
     volumes:
       - ./config.json:/config.json
     network_mode: "host"  # Changed from ports mapping to network: host
