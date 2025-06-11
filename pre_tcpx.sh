@@ -182,6 +182,7 @@ prefer_ipv4() {
 prefer_ipv4
 
 
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
 
 
 mkdir -p /root/themes/
@@ -283,7 +284,6 @@ EOF
 #if [ "$REPLY" -eq 1 ]; then
 #    # commands for when REPLY equals 1
 #    echo "You selected option 1"
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
 #else
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh) 
 ## Define the configuration file path
