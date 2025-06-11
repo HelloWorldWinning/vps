@@ -182,7 +182,6 @@ prefer_ipv4() {
 prefer_ipv4
 
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
 
 
 mkdir -p /root/themes/
@@ -337,6 +336,7 @@ EOF
 
 ########### vmess end
 
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )  
 #  dns_test_claude.sh
 bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh' )
 
