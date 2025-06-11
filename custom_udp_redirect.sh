@@ -60,12 +60,25 @@ resolve_domain() {
 }
 
 # Get UDP source port or port range from user
-echo -n "Enter UDP port or port range to redirect (e.g. 777 or 777:999): "
-read -r port_input
+#echo -n "Enter UDP port or port range to redirect (e.g. 777 or 777:999): "
+#read -r port_input
 
+
+echo -n "Enter UDP port or port range to redirect (e.g. 777 or 777:999) [default: 822]: "
+read -r port_input
+port_input=${port_input:-822}
 # Validate port input
 if ! validate_port "$port_input"; then
     echo "Invalid port or port range. Must be between 1-65535."
+    exit 1
+fi
+
+echo -n "Enter destination port [default: 82]: "
+read -r dest_port
+dest_port=${dest_port:-82}
+# Validate destination port
+if ! [[ $dest_port =~ ^[0-9]+$ ]] || [ "$dest_port" -lt 1 ] || [ "$dest_port" -gt 65535 ]; then
+    echo "Invalid destination port. Must be between 1-65535."
     exit 1
 fi
 
@@ -89,14 +102,8 @@ else
 fi
 
 # Get destination port from user
-echo -n "Enter destination port: "
-read -r dest_port
-
-# Validate destination port
-if ! [[ $dest_port =~ ^[0-9]+$ ]] || [ "$dest_port" -lt 1 ] || [ "$dest_port" -gt 65535 ]; then
-    echo "Invalid destination port. Must be between 1-65535."
-    exit 1
-fi
+#echo -n "Enter destination port: "
+#read -r dest_port
 
 # Prepare the iptables rule
 if [[ $port_input =~ ^[0-9]+:[0-9]+$ ]]; then
