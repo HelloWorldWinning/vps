@@ -846,7 +846,9 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		11) eval $dd_debian11;;
 		12) eval $dd_1;;
 #	13) eval $s5;;
- 	13) bash  <(curl -4LkSs https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh )       ;;
+#	13) bash  <(curl -4LkSs https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh )       ;;
+     	       13) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gost.sh )     ;;
+
 		13.1) eval $realm2;;
 		14)eval  "${nf}"  | tee netflix.log ;;
         	15) eval $nfFree;;
