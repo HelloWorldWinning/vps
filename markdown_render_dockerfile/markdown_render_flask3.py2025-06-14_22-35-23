@@ -1,12 +1,4 @@
-from flask import (
-    Flask,
-    render_template_string,
-    request,
-    Response,
-    send_from_directory,
-    abort,
-    url_for,
-)
+from flask import Flask, render_template_string, request, Response, send_from_directory, abort, url_for
 import markdown2
 import markdown
 import os
@@ -20,11 +12,10 @@ from xml.etree import ElementTree as etree
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
-# Change this to point to the /Host directory
-MARKDOWN_DIR = "/Host"
+MARKDOWN_DIR = '/'
 
-username = os.getenv("USERNAME")
-password = os.getenv("PASSWORD")
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
 # Check if username and password are provided
 if username and password:
@@ -33,33 +24,35 @@ else:
     users = {"a": "a"}  # Default users if username and password
 
 
+
+
+
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
-        md.inlinePatterns.register(
-            StrikethroughInlineProcessor(r"~~(.+?)~~"), "strikethrough", 175
-        )
-
+        md.inlinePatterns.register(StrikethroughInlineProcessor(r'~~(.+?)~~'), 'strikethrough', 175)
 
 class StrikethroughInlineProcessor(InlineProcessor):
     def handleMatch(self, m, data):
-        el = etree.Element("del")
+        el = etree.Element('del')
         el.text = m.group(1)
         return el, m.start(0), m.end(0)
-
 
 class CheckboxPreprocessor(Preprocessor):
     def run(self, lines):
         new_lines = []
         for line in lines:
-            line = line.replace("- [ ]", '<input type="checkbox" disabled>')
-            line = line.replace("- [x]", '<input type="checkbox" checked disabled>')
+            line = line.replace('- [ ]', '<input type="checkbox" disabled>')
+            line = line.replace('- [x]', '<input type="checkbox" checked disabled>')
             new_lines.append(line)
         return new_lines
 
-
 class CheckboxExtension(Extension):
     def extendMarkdown(self, md):
-        md.preprocessors.register(CheckboxPreprocessor(), "checkbox", 25)
+        md.preprocessors.register(CheckboxPreprocessor(), 'checkbox', 25)
+
+
+
+
 
 
 @auth.verify_password
@@ -67,22 +60,19 @@ def verify_password(username, password):
     if username in users and users[username] == password:
         return username
 
-
 def is_markdown_file(filename):
-    return filename.endswith((".md", ".mdx", ".markdown", ".mkd"))
-
+    return filename.endswith(('.md','.mdx' ,'.markdown', '.mkd'))
 
 def is_image_file(filename):
-    return filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".svg"))
+    return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg'))
 
-
-@app.route("/")
-@app.route("/<path:subpath>")
+@app.route('/')
+@app.route('/<path:subpath>')
 @auth.login_required
-def list_files(subpath=""):
+def list_files(subpath=''):
     current_dir = os.path.join(MARKDOWN_DIR, subpath)
     if not os.path.abspath(current_dir).startswith(MARKDOWN_DIR):
-        return "Unauthorized access", 403
+        return 'Unauthorized access', 403
 
     current_dir = os.path.normpath(current_dir)
 
@@ -100,29 +90,22 @@ def list_files(subpath=""):
                 elif entry.is_dir():
                     directories.append(entry.name)
     except FileNotFoundError:
-        return "Directory not found", 404
+        return 'Directory not found', 404
 
     markdown_files.sort()
     text_files.sort()
     directories.sort()
 
     hostname = os.uname().nodename
-
-    # Build path display without showing /Host prefix
-    if subpath:
-        path_parts = subpath.split("/")
-        path_links = []
-        for i in range(len(path_parts)):
-            if path_parts[i]:
-                path = "/".join(path_parts[: i + 1])
-                link = f'<a href="{url_for("list_files", subpath=path)}">{path_parts[i]}</a>'
-                path_links.append(link)
-        path_str = f'{hostname} /{"/".join(path_links)}'
-    else:
-        path_str = f"{hostname} /"
-
-    return render_template_string(
-        """
+    path_parts = subpath.split('/')
+    path_links = []
+    for i in range(len(path_parts)):
+        if path_parts[i]:
+            path = '/'.join(path_parts[:i+1])
+            link = f'<a href="{url_for("list_files", subpath=path)}">{path_parts[i]}</a>'
+            path_links.append(link)
+    path_str = f'{hostname} /{"/".join(path_links)}'
+    return render_template_string('''
         <!DOCTYPE html>
         <html>
         <head>
@@ -188,17 +171,11 @@ def list_files(subpath=""):
             </div>
         </body>
         </html>
-    """,
-        markdown_files=markdown_files,
-        text_files=text_files,
-        directories=directories,
-        subpath=subpath,
-        path_str=path_str,
-    )
+    ''', markdown_files=markdown_files, text_files=text_files, directories=directories, subpath=subpath, path_str=path_str)
 
 
-@app.route("/markdown/<path:subpath>/<filename>")
-@app.route("/md/<path:subpath>/<filename>")
+@app.route('/markdown/<path:subpath>/<filename>')
+@app.route('/md/<path:subpath>/<filename>')
 @auth.login_required
 def serve_file(subpath, filename):
     file_path = os.path.join(MARKDOWN_DIR, subpath, filename)
@@ -209,24 +186,19 @@ def serve_file(subpath, filename):
 
     if is_markdown_file(filename):
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                content = markdown.markdown(
-                    content,
-                    extensions=[
-                        CheckboxExtension(),
-                        "toc",
-                        "fenced_code",
-                        "tables",
-                        StrikethroughExtension(),
-                    ],
-                )
+                content = markdown.markdown(content, extensions=[
+                    CheckboxExtension(),
+                    'toc',
+                    'fenced_code',
+                    'tables',
+                    StrikethroughExtension()
+                ])
 
-                content = content.replace("- [ ]", '<input type="checkbox" disabled>')
-                content = content.replace(
-                    "- [x]", '<input type="checkbox" checked disabled>'
-                )
-                full_html = f"""
+                content = content.replace('- [ ]', '<input type="checkbox" disabled>')
+                content = content.replace('- [x]', '<input type="checkbox" checked disabled>')
+                full_html = f'''
     <!DOCTYPE html>
     <html>
     <head>
@@ -307,10 +279,10 @@ opacity: 0.7;
 
 
 body > div > ul > li > a  {{
-  color : #d41e5b!important;
+	color : #d41e5b!important;
 }}
 body > div > ul > li> ul > li > a  {{
-  color : #2b36d6!important ;
+	color : #2b36d6!important ;
 }}
 
 
@@ -320,8 +292,8 @@ body > div > ul > li> ul > li > a  {{
     </head>
     <body>{content}</body>
     </html>
-"""
-                return Response(full_html, mimetype="text/html")
+'''
+                return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
     elif is_image_file(filename):
@@ -329,13 +301,11 @@ body > div > ul > li> ul > li > a  {{
     else:
         return abort(404)
 
-
 def is_text_file(filename):
-    return filename.endswith(".txt")
+    return filename.endswith('.txt')
 
-
-@app.route("/text/<path:subpath>/<filename>")
-@app.route("/txt/<path:subpath>/<filename>")
+@app.route('/text/<path:subpath>/<filename>')
+@app.route('/txt/<path:subpath>/<filename>')
 @auth.login_required
 def txt_file(subpath, filename):
     file_path = os.path.join(MARKDOWN_DIR, subpath, filename)
@@ -346,15 +316,11 @@ def txt_file(subpath, filename):
 
     if is_text_file(filename):
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                content = (
-                    content.replace("&", "&amp;")
-                    .replace("<", "&lt;")
-                    .replace(">", "&gt;")
-                )
-                content = "<pre>" + content + "</pre>"
-                full_html = f"""
+                content = content.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                content = '<pre>' + content + '</pre>'
+                full_html = f'''
                     <!DOCTYPE html>
                     <html>
                     <head>
@@ -389,13 +355,13 @@ def txt_file(subpath, filename):
                     </head>
                     <body>{content}</body>
                     </html>
-                """
-                return Response(full_html, mimetype="text/html")
+                '''
+                return Response(full_html, mimetype='text/html')
         except FileNotFoundError:
             return "File not found", 404
     else:
         return abort(404)
 
+if __name__ == '__main__':
+    app.run(debug=False, host='0.0.0.0', port=177)
 
-if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=177)
