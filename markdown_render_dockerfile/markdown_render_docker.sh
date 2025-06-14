@@ -18,8 +18,6 @@ cd /root/markdown_render_docker
 
 # Use a heredoc to write the docker-compose.yml file
 cat << EOF > docker-compose.yml
-version: '3.8'
-
 services:
   markdown-app:
     image: oklove/markdown:latest
