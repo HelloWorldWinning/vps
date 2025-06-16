@@ -244,7 +244,7 @@ def serve_file(subpath, filename):
             body {{
                   font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
             padding: 20px;
-            line-height: 140% ;
+            line-height: 1.6;
             text-align: justify;
             text-justify: inter-word;
                   }}
@@ -368,7 +368,7 @@ def txt_file(subpath, filename):
                             }}
                             body {{
                                 font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
-                            line-height: 140%  ;
+                            line-height: 1.6;
                             padding: 25px;
                             white-space: pre-wrap;
                             word-wrap: break-word;
