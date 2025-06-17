@@ -284,7 +284,7 @@ def serve_file(subpath, filename):
    h1 {{
     color:   #ffffff;
     background-color:  #AC083F   ;
-    padding: 10px 30px 10px 30px;
+    padding: 15px 30px 15px 30px;
     border-radius: 5px;
     text-align: center;
     font-family: 'Roboto Mono', monospace;
@@ -293,7 +293,7 @@ def serve_file(subpath, filename):
     }}
 h2  {{
     display: inline;
-    padding: 10px 30px 10px 30px;
+    padding: 10px 17px 10px 17px;
     background-color: #1826e9;
     color: #ffffff;
     border-radius: 5px;
