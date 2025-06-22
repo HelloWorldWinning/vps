@@ -178,13 +178,115 @@ const message = {
 
 // Add Claude test function
 
-
-function testClaude() {
+	function testClaude() {
   return new Promise((resolve, reject) => {
+    // First, let's test if we can access Claude's chat interface
+    let option = {
+      url: 'https://claude.ai/api/organizations',  // This endpoint is more reliable for testing
+      opts: opts1,
+      timeout: 2800,
+      headers: {
+        'User-Agent': UA,
+        'Accept': 'application/json',
+        'Accept-Language': 'en-US,en;q=0.9',
+      }
+    }
+    
+    $task.fetch(option).then(response => {
+      console.log("Claude Test Status:" + response.statusCode)
+      console.log("Claude Response Headers:" + JSON.stringify(response.headers))
+      
+      // If we get a 403 with specific Claude error
+      if (response.statusCode === 403) {
+        // Check if it's a regional restriction
+        if (response.body && response.body.includes('not available in your location')) {
+          result["Claude"] = "<b>Claude: </b>未支持 🚫"
+          resolve("不支持 Claude")
+          return
+        }
+      }
+      
+      // If we get redirected to login or get a success response, Claude is available
+      if (response.statusCode === 200 || response.statusCode === 401 || response.statusCode === 307) {
+        // Try to get region information using Claude's own detection
+        let region_option = {
+          url: 'https://claude.ai/cdn-cgi/trace',
+          opts: opts1,
+          timeout: 2000,
+          headers: {
+            'User-Agent': UA,
+          }
+        }
+        
+        $task.fetch(region_option).then(region_response => {
+          try {
+            // Parse the trace response to get location
+            let trace_data = region_response.body
+            let region_match = trace_data.match(/loc=([A-Z]{2})/)
+            
+            if (region_match && region_match[1]) {
+              let region = region_match[1]
+              
+              // List of countries where Claude is officially available
+              const claudeCountries = ['US', 'GB', 'AU', 'CA', 'DE', 'FR', 'IT', 'ES', 'NL', 'SE', 'CH', 'IE'];
+              
+              if (claudeCountries.includes(region)) {
+                result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get(region) + "⟧ 🎉"
+                resolve("支持 Claude")
+              } else {
+                // Even if not in official list, if we can access it, show as supported
+                result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get(region) + "⟧ 🎉"
+                resolve("支持 Claude")
+              }
+            } else {
+              // Can't determine region but can access
+              result["Claude"] = "<b>Claude: </b>支持 🎉"
+              resolve("支持 Claude")
+            }
+          } catch (error) {
+            console.log("Region parse error: " + error)
+            // If we can't parse region but got a good response, assume supported
+            result["Claude"] = "<b>Claude: </b>支持 🎉"
+            resolve("支持 Claude")
+          }
+        }, reason => {
+          // Region check failed but main check passed
+          result["Claude"] = "<b>Claude: </b>支持 🎉"
+          resolve("支持 Claude")
+        })
+      } 
+      // If we get other error codes that indicate regional blocking
+      else if (response.statusCode === 451) {  // 451 = Unavailable For Legal Reasons
+        result["Claude"] = "<b>Claude: </b>未支持 🚫"
+        resolve("不支持 Claude")
+      }
+      else {
+        // For other status codes, let's check the response body
+        if (response.body && (response.body.includes('not available') || response.body.includes('restricted'))) {
+          result["Claude"] = "<b>Claude: </b>未支持 🚫"
+          resolve("不支持 Claude")
+        } else {
+          result["Claude"] = "<b>Claude: </b>检测失败 ❗️"
+          resolve("Claude check failed")
+        }
+      }
+    }, reason => {
+      console.log("Claude Test Failed:" + reason)
+      // Network timeout or connection error
+      result["Claude"] = "<b>Claude: </b>检测超时 🚦"
+      resolve("Claude timeout")
+    })
+  })
+}
+
+// Alternative simpler version if the above doesn't work:
+function testClaudeSimple() {
+  return new Promise((resolve, reject) => {
+    // Test the main Claude page
     let option = {
       url: BASE_URL_Claude,
-      opts: opts1,
-      timeout: 9800,
+      opts: opts,  // Note: using opts instead of opts1 to allow redirects
+      timeout: 2800,
       headers: {
         'User-Agent': UA,
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -193,54 +295,38 @@ function testClaude() {
     }
     
     $task.fetch(option).then(response => {
-      console.log("Claude Test:" + response.statusCode)
+      console.log("Claude Simple Test:" + response.statusCode)
       
-      // Check if we get redirected to login or error page
-      if (response.statusCode === 403 || response.body.includes('Access denied')) {
+      // Check final URL after redirects
+      let finalUrl = response.headers['X-Originating-URL'] || response.headers['Location'] || ''
+      console.log("Final URL: " + finalUrl)
+      
+      // If we're redirected to a regional block page
+      if (finalUrl.includes('unavailable') || finalUrl.includes('restricted')) {
         result["Claude"] = "<b>Claude: </b>未支持 🚫"
         resolve("不支持 Claude")
+        return
       }
-      // If we can access the main page
-      else if (response.statusCode === 200) {
-        // Try to determine region from IP location
-        let ip_option = {
-          url: 'https://api.ipapi.is/',
-          opts: opts1,
-          timeout: 9800
-        }
-        
-        $task.fetch(ip_option).then(ip_response => {
-          try {
-            let data = JSON.parse(ip_response.body)
-            let region = data.location.country_code
-            
-            // List of countries where Claude is available
-            const claudeCountries = ['US', 'GB', 'KR', 'JP', 'NZ', 'AU', 'CA', 'IE'];
-            
-            if (claudeCountries.includes(region)) {
-              result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get(region) + "⟧ 🎉"
-              resolve("支持 Claude")
-            } else {
-              // If we can access but region isn't in supported list, show US as default
-              result["Claude"] = "<b>Claude: </b>支持 " + arrow + "⟦" + flags.get('US') + "⟧ 🎉"
-              resolve("支持 Claude")
-            }
-          } catch (error) {
-            // If we can't determine region but can access Claude, show as supported
-            result["Claude"] = "<b>Claude: </b>支持 🎉"
-            resolve("支持 Claude")
-          }
-        }, reason => {
-          // If IP check fails but we can access Claude, show as supported
+      
+      // Check response body for availability indicators
+      if (response.body) {
+        if (response.body.includes('Create new chat') || response.body.includes('claude-ai') || response.statusCode === 200) {
+          // Successfully loaded Claude interface
           result["Claude"] = "<b>Claude: </b>支持 🎉"
           resolve("支持 Claude")
-        })
+        } else if (response.body.includes('not available') || response.body.includes('restricted')) {
+          result["Claude"] = "<b>Claude: </b>未支持 🚫"
+          resolve("不支持 Claude")
+        } else {
+          result["Claude"] = "<b>Claude: </b>检测失败 ❗️"
+          resolve("Claude check uncertain")
+        }
       } else {
         result["Claude"] = "<b>Claude: </b>检测失败 ❗️"
         resolve("Claude check failed")
       }
     }, reason => {
-      console.log("Claude Test Failed:" + reason)
+      console.log("Claude Simple Test Failed:" + reason)
       result["Claude"] = "<b>Claude: </b>检测超时 🚦"
       resolve("Claude timeout")
     })
