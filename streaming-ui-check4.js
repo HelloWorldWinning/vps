@@ -184,7 +184,7 @@ function testClaude() {
     let option = {
       url: BASE_URL_Claude,
       opts: opts1,
-      timeout: 2800,
+      timeout: 9800,
       headers: {
         'User-Agent': UA,
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -206,7 +206,7 @@ function testClaude() {
         let ip_option = {
           url: 'https://api.ipapi.is/',
           opts: opts1,
-          timeout: 2800
+          timeout: 9800
         }
         
         $task.fetch(ip_option).then(ip_response => {
