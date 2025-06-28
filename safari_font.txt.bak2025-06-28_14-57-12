@@ -1,16 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
+
 @font-face {
   font-family: 'FZFangJunHeiS';
   src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
 }
-
+/*****
 @font-face {
   font-family: 'PingFang SC';
   src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Light_300.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'PingFang SC';
+  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Regular_400.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+*******/
 
 .source-code-pro-body {
   font-family: "Source Code Pro", monospace !important;
@@ -26,19 +35,9 @@
 
 html, body, * {
   font-weight: 300 !important ;
-  font-family: "Source Code Pro", "PingFang SC", "FZFangJunHeiS", monospace !important ;
+  font-family: "Source Code Pro", "FZFangJunHeiS", monospace !important ;
   line-height: 140%;
 }
-
-
 /****
 rgb(252,240,217) good bg
 238 226 204 so 
-
-@font-face {
-  font-family: 'PingFang SC';
-  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Regular_400.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-*******/
