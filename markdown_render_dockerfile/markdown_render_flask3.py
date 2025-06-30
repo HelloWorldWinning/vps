@@ -288,12 +288,13 @@ h1 {{
     padding: 15px 30px;
     border-radius: 5px;
     text-align: center;
-    font-family: 'Source Code Pro', 
-    font-weight: 400;
+    font-family: 'Source Code Pro',
+    font-weight: 400 !important;
     line-height: 1.4;
 }}
 
 h2 {{
+ text-align: left;
     display: inline-block;
     padding: 10px 17px;
     background-color: #1826e9;
