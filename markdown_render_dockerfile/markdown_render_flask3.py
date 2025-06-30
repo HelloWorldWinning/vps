@@ -295,7 +295,7 @@ h1 {{
 
 h2 {{
  text-align: left;
-    display: inline-block;
+    display: block;
     padding: 10px 17px;
     background-color: #1826e9;
     color: #ffffff;
