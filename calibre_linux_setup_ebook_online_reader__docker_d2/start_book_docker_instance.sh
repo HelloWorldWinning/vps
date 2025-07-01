@@ -53,7 +53,7 @@ cd /root/book_docker_d
 docker-compose down
 sleep 2
 #docker-compose up -d
-docker-compose up -d --pull always
+docker compose up -d --pull always
 
 echo "Calibre server has been started on port 188"
 
