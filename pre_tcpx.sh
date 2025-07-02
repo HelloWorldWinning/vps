@@ -70,7 +70,8 @@ rm crontab.tmp
 
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" > /root/acme-cron.log 2>&1; systemctl start nginx && systemctl start xray") | crontab -
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" > /root/acme-cron.log 2>&1; systemctl start nginx ; systemctl start xray") | crontab -
-(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" --force  > /root/acme-cron.log 2>&1; systemctl start nginx ; systemctl start xray") | crontab -
+#(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; systemctl stop xray; \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" --force  > /root/acme-cron.log 2>&1; systemctl start nginx ; systemctl start xray") | crontab -
+(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx ; sleep 10 ; systemctl stop xray ; sleep 10 ; docker-compose -f /root/xray_docker_d/docker-compose.yml down ; sleep 10 ; "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" --force > /root/acme-cron.log 2>&1 ; docker-compose -f /root/xray_docker_d/docker-compose.yml up -d ; systemctl start nginx ; systemctl start xray") | crontab -
 
 
 #cat >>/etc/hosts<<EOF
