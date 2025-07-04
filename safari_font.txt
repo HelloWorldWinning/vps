@@ -32,6 +32,14 @@ html, body, * {
 
 
 /****
+
+html {
+  writing-mode: vertical-rl;
+  -webkit-writing-mode: vertical-rl;
+  -epub-writing-mode: vertical-rl;
+  direction: rtl;
+}
+
 rgb(252,240,217) good bg
 238 226 204 so 
 
@@ -41,4 +49,5 @@ rgb(252,240,217) good bg
   font-weight: 400;
   font-style: normal;
 }
+
 *******/
