@@ -3,7 +3,7 @@
 # Ghost Docker Compose Startup Script
 # This script sets up and runs Ghost CMS with all data stored in /data/ghost_d/
 
-set -e  # Exit on any error
+set -e # Exit on any error
 
 # Configuration
 GHOST_PATH="/data/ghost_d"
@@ -22,24 +22,24 @@ echo -e "${GREEN}=== Ghost CMS Docker Setup ===${NC}"
 
 # Function to get public IP
 get_public_ip() {
-    local public_ip=""
-    
-    # Try multiple methods to get public IP
-    if command -v curl &> /dev/null; then
-        public_ip=$(curl -s https://ipv4.icanhazip.com/ 2>/dev/null || curl -s https://api.ipify.org 2>/dev/null || curl -s https://checkip.amazonaws.com 2>/dev/null)
-    elif command -v wget &> /dev/null; then
-        public_ip=$(wget -qO- https://ipv4.icanhazip.com/ 2>/dev/null || wget -qO- https://api.ipify.org 2>/dev/null)
-    fi
-    
-    # Clean up the IP (remove any whitespace)
-    public_ip=$(echo "$public_ip" | tr -d '[:space:]')
-    
-    # Validate IP format
-    if [[ $public_ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        echo "$public_ip"
-    else
-        echo "localhost"
-    fi
+	local public_ip=""
+
+	# Try multiple methods to get public IP
+	if command -v curl &>/dev/null; then
+		public_ip=$(curl -s https://ipv4.icanhazip.com/ 2>/dev/null || curl -s https://api.ipify.org 2>/dev/null || curl -s https://checkip.amazonaws.com 2>/dev/null)
+	elif command -v wget &>/dev/null; then
+		public_ip=$(wget -qO- https://ipv4.icanhazip.com/ 2>/dev/null || wget -qO- https://api.ipify.org 2>/dev/null)
+	fi
+
+	# Clean up the IP (remove any whitespace)
+	public_ip=$(echo "$public_ip" | tr -d '[:space:]')
+
+	# Validate IP format
+	if [[ $public_ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+		echo "$public_ip"
+	else
+		echo "localhost"
+	fi
 }
 
 # Get domain/IP from user
@@ -48,55 +48,31 @@ echo -e "Enter your domain or IP address (e.g., yourdomain.com or 192.168.1.100)
 echo -e "Press Enter to use public IP automatically"
 read -p "Domain/IP: " user_input
 
-# Get port from user
-echo -e "${YELLOW}Ghost Port Configuration:${NC}"
-echo -e "Enter the port for Ghost (default: 3001)"
-echo -e "Press Enter to use default port 3001"
-read -p "Port: " user_port
-
-# Set default port if empty
-if [ -z "$user_port" ]; then
-    user_port="3001"
-    echo -e "${GREEN}Using default port: 3001${NC}"
-else
-    # Validate port number
-    if [[ $user_port =~ ^[0-9]+$ ]] && [ "$user_port" -ge 1 ] && [ "$user_port" -le 65535 ]; then
-        echo -e "${GREEN}Using port: ${user_port}${NC}"
-    else
-        echo -e "${RED}Invalid port number. Using default: 3001${NC}"
-        user_port="3001"
-    fi
-fi
-
 if [ -z "$user_input" ]; then
-    # No input provided, get public IP
-    echo -e "${YELLOW}Detecting public IP...${NC}"
-    public_ip=$(get_public_ip)
-    if [ "$public_ip" != "localhost" ]; then
-        GHOST_URL="http://${public_ip}:${user_port}"
-        echo -e "${GREEN}Using public IP: ${public_ip}${NC}"
-    else
-        GHOST_URL="http://localhost:${user_port}"
-        echo -e "${YELLOW}Could not detect public IP, using localhost${NC}"
-    fi
+	# No input provided, get public IP
+	echo -e "${YELLOW}Detecting public IP...${NC}"
+	public_ip=$(get_public_ip)
+	if [ "$public_ip" != "localhost" ]; then
+		GHOST_URL="http://${public_ip}:3001"
+		echo -e "${GREEN}Using public IP: ${public_ip}${NC}"
+	else
+		GHOST_URL="http://localhost:3001"
+		echo -e "${YELLOW}Could not detect public IP, using localhost${NC}"
+	fi
 else
-    # User provided input
-    # Remove http:// or https:// if present
-    user_input=$(echo "$user_input" | sed 's|^https\?://||')
-    
-    # Check if it's an IP address or domain
-    if [[ $user_input =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        # It's an IP address
-        GHOST_URL="http://${user_input}:${user_port}"
-    else
-        # It's a domain
-        if [ "$user_port" != "80" ]; then
-            GHOST_URL="http://${user_input}:${user_port}"
-        else
-            GHOST_URL="http://${user_input}"
-        fi
-    fi
-    echo -e "${GREEN}Using URL: ${GHOST_URL}${NC}"
+	# User provided input
+	# Remove http:// or https:// if present
+	user_input=$(echo "$user_input" | sed 's|^https\?://||')
+
+	# Check if it's an IP address or domain
+	if [[ $user_input =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+		# It's an IP address
+		GHOST_URL="http://${user_input}:3001"
+	else
+		# It's a domain
+		GHOST_URL="http://${user_input}:3001"
+	fi
+	echo -e "${GREEN}Using URL: ${GHOST_URL}${NC}"
 fi
 
 echo ""
@@ -110,14 +86,15 @@ mkdir -p "${GHOST_PATH}/redis-data"
 
 # Create docker-compose.yml
 echo -e "${YELLOW}Creating docker-compose.yml...${NC}"
-cat > "${GHOST_PATH}/docker-compose.yml" << EOF
+cat >"${GHOST_PATH}/docker-compose.yml" <<EOF
+
 services:
   ghost:
     image: ghost:5-alpine
     container_name: ghost-app
     restart: unless-stopped
     ports:
-      - "${user_port}:2368"
+      - "3001:2368"
     environment:
       # Database configuration
       database__client: mysql
@@ -260,7 +237,7 @@ EOF
 
 # Create .env file
 echo -e "${YELLOW}Creating .env file...${NC}"
-cat > "${GHOST_PATH}/.env" << EOF
+cat >"${GHOST_PATH}/.env" <<EOF
 # Ghost Configuration
 GHOST_URL=${GHOST_URL}
 GHOST_PATH=${GHOST_PATH}
@@ -277,7 +254,7 @@ EOF
 
 # Create additional configuration file for email troubleshooting
 echo -e "${YELLOW}Creating email troubleshooting guide...${NC}"
-cat > "${GHOST_PATH}/email-config-examples.md" << 'EOF'
+cat >"${GHOST_PATH}/email-config-examples.md" <<'EOF'
 # Ghost Email Configuration Examples
 
 ## Issue: Admin login fails with "Failed to send email" error
@@ -372,7 +349,7 @@ security__staffDeviceVerification: false
 
 EOF
 echo -e "${YELLOW}Creating backup script...${NC}"
-cat > "${GHOST_PATH}/backup.sh" << 'EOF'
+cat >"${GHOST_PATH}/backup.sh" <<'EOF'
 #!/bin/bash
 
 # Ghost Backup Script
@@ -407,7 +384,7 @@ chmod +x "${GHOST_PATH}/backup.sh"
 
 # Create update script
 echo -e "${YELLOW}Creating update script...${NC}"
-cat > "${GHOST_PATH}/update.sh" << 'EOF'
+cat >"${GHOST_PATH}/update.sh" <<'EOF'
 #!/bin/bash
 
 set -e
@@ -452,20 +429,20 @@ chmod -R 755 "${GHOST_PATH}"
 cd "${GHOST_PATH}"
 
 # Check if Docker and Docker Compose are installed
-if ! command -v docker &> /dev/null; then
-    echo -e "${RED}Docker is not installed. Please install Docker first.${NC}"
-    exit 1
+if ! command -v docker &>/dev/null; then
+	echo -e "${RED}Docker is not installed. Please install Docker first.${NC}"
+	exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/null; then
-    echo -e "${RED}Docker Compose is not installed. Please install Docker Compose first.${NC}"
-    exit 1
+if ! command -v docker-compose &>/dev/null && ! docker compose version &>/dev/null; then
+	echo -e "${RED}Docker Compose is not installed. Please install Docker Compose first.${NC}"
+	exit 1
 fi
 
 # Check if containers are already running
 if docker compose ps | grep -q "Up"; then
-    echo -e "${YELLOW}Ghost containers are already running. Stopping them first...${NC}"
-    docker compose down
+	echo -e "${YELLOW}Ghost containers are already running. Stopping them first...${NC}"
+	docker compose down
 fi
 
 # Start Ghost services
@@ -482,9 +459,9 @@ docker compose ps
 
 # Show logs if any service failed
 if docker compose ps | grep -q "Exit"; then
-    echo -e "${RED}Some services failed to start. Showing logs:${NC}"
-    docker compose logs
-    exit 1
+	echo -e "${RED}Some services failed to start. Showing logs:${NC}"
+	docker compose logs
+	exit 1
 fi
 
 echo -e "${GREEN}=== Ghost CMS Setup Complete! ===${NC}"
@@ -498,9 +475,9 @@ echo -e "${GREEN}   - MySQL (3306), Redis (6379), MailHog (1025/8025) are only a
 echo -e "${GREEN}   - Only Ghost web port (3001) is exposed for public access${NC}"
 echo ""
 if [[ $GHOST_URL == *"localhost"* ]]; then
-    echo -e "${YELLOW}Note: You're using localhost. Ghost will only be accessible from this server.${NC}"
-    echo -e "${YELLOW}To access from other machines, restart with a public IP or domain.${NC}"
-    echo ""
+	echo -e "${YELLOW}Note: You're using localhost. Ghost will only be accessible from this server.${NC}"
+	echo -e "${YELLOW}To access from other machines, restart with a public IP or domain.${NC}"
+	echo ""
 fi
 echo -e "${YELLOW}Important files:${NC}"
 echo -e "  - Ghost content: ${GHOST_PATH}/ghost-content"
