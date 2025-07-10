@@ -1115,6 +1115,7 @@ netstat -tulnp | grep -E '166|177'
 		dd) yes |docker system prune -a --volumes  ;;
 		d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh )  ;;
 		dt) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh)  ;;
+		ghost) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ghost-startup_docker.sh );;
 		dttt) ins_dt ;;
 #	00)eval "exit";;
 		q)eval "exit";;
