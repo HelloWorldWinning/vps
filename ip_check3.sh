@@ -12,148 +12,84 @@ resolve_domain_to_ip() {
 	fi
 }
 
-get_ipqualityscore_data() {
+get_abuseipdb_data() {
 	local input="$1"
-	local ipqs_data
+	local abuseipdb_data
 
-	# Replace with your IPQualityScore API key
-	API_ipqualityscore="qiDrd9HwzZ7CPlyaveUmS8GYx4egf9nh"
+	# AbuseIPDB API key
+	API_KEY="0889e1ce519207cc34b2f0f19aeee2060ccf5d165b21f6ab543cb9202c76ef6968eea6025d2e38a1"
 
-	if [[ -z "$API_ipqualityscore" || "$API_ipqualityscore" == "YOUR_API_KEY_HERE" ]]; then
-		echo "IPQualityScore API key not set"
+	if [[ -z "$API_KEY" || "$API_KEY" == "YOUR_API_KEY_HERE" ]]; then
+		echo "AbuseIPDB API key not set"
 		return
 	fi
 
-	ipqs_data=$(curl -s "https://ipqualityscore.com/api/json/ip/$API_ipqualityscore/$input?strictness=1&allow_public_access_points=true&fast=false&mobile=true&lighter_penalties=false")
+	abuseipdb_data=$(curl -sG https://api.abuseipdb.com/api/v2/check \
+		--data-urlencode "ipAddress=$input" \
+		--data-urlencode "maxAgeInDays=90" \
+		-H "Key: $API_KEY" \
+		-H "Accept: application/json")
 
 	# Check if API call was successful
-	local success=$(echo "$ipqs_data" | jq -r '.success // false')
-	if [[ "$success" != "true" ]]; then
-		echo "IPQualityScore API Error: $(echo "$ipqs_data" | jq -r '.message // "Unknown error"')"
+	if [[ -z "$abuseipdb_data" ]] || [[ "$abuseipdb_data" == *"error"* ]]; then
+		echo "AbuseIPDB API Error: Unable to fetch data"
 		return
 	fi
 
-	# Function to check and display field only if not N/A, null, or empty
-########display_field() {
-########	local label="$1"
-########	local value="$2"
-########	if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" ]]; then
-########		printf "%-10s: %s\n" "$label" "$value"
-########	fi
-########}
+	# Function to check and display field only if not N/A, null, empty, or false
+	display_field() {
+		local label="$1"
+		local value="$2"
+		if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" && "$value" != "[]" ]]; then
+			printf "%-10s: %s\n" "$label" "$value"
+		fi
+	}
 
-# Function to check and display field only if not N/A, null, empty, or "Premium required."
-display_field() {
-        local label="$1"
-        local value="$2"
-        if [[ -n "$value" && "$value" != "N/A" && "$value" != "null" && "$value" != "false" && "$value" != "Premium required." ]]; then
-                printf "%-10s: %s\n" "$label" "$value"
-        fi
-}
+	# Extract AbuseIPDB data fields
+	local ip_address=$(echo "$abuseipdb_data" | jq -r '.data.ipAddress // empty')
+	local is_public=$(echo "$abuseipdb_data" | jq -r '.data.isPublic // empty')
+	local ip_version=$(echo "$abuseipdb_data" | jq -r '.data.ipVersion // empty')
+	local is_whitelisted=$(echo "$abuseipdb_data" | jq -r '.data.isWhitelisted // empty')
+	local abuse_confidence_score=$(echo "$abuseipdb_data" | jq -r '.data.abuseConfidenceScore // empty')
+	local country_code=$(echo "$abuseipdb_data" | jq -r '.data.countryCode // empty')
+	local usage_type=$(echo "$abuseipdb_data" | jq -r '.data.usageType // empty')
+	local isp=$(echo "$abuseipdb_data" | jq -r '.data.isp // empty')
+	local domain=$(echo "$abuseipdb_data" | jq -r '.data.domain // empty')
+	local hostnames=$(echo "$abuseipdb_data" | jq -r '.data.hostnames | join(", ") // empty')
+	local is_tor=$(echo "$abuseipdb_data" | jq -r '.data.isTor // empty')
+	local total_reports=$(echo "$abuseipdb_data" | jq -r '.data.totalReports // empty')
+	local num_distinct_users=$(echo "$abuseipdb_data" | jq -r '.data.numDistinctUsers // empty')
+	local last_reported_at=$(echo "$abuseipdb_data" | jq -r '.data.lastReportedAt // empty')
 
-
-
-	# Extract ALL IPQualityScore data fields
-	local fraud_score=$(echo "$ipqs_data" | jq -r '.fraud_score // empty')
-	local abuse_velocity=$(echo "$ipqs_data" | jq -r '.abuse_velocity // empty')
-	local bot_status=$(echo "$ipqs_data" | jq -r '.bot_status // empty')
-	local recent_abuse=$(echo "$ipqs_data" | jq -r '.recent_abuse // empty')
-
-	local proxy=$(echo "$ipqs_data" | jq -r '.proxy // empty')
-	local vpn=$(echo "$ipqs_data" | jq -r '.vpn // empty')
-	local tor=$(echo "$ipqs_data" | jq -r '.tor // empty')
-	local active_vpn=$(echo "$ipqs_data" | jq -r '.active_vpn // empty')
-	local active_proxy=$(echo "$ipqs_data" | jq -r '.active_proxy // empty')
-
-	local malware_risk=$(echo "$ipqs_data" | jq -r '.malware_risk // empty')
-	local phishing_risk=$(echo "$ipqs_data" | jq -r '.phishing_risk // empty')
-	local suspicious_activity=$(echo "$ipqs_data" | jq -r '.suspicious_activity // empty')
-	local honeypot=$(echo "$ipqs_data" | jq -r '.honeypot // empty')
-	local leaked_credentials=$(echo "$ipqs_data" | jq -r '.leaked_credentials // empty')
-
-	local country_code=$(echo "$ipqs_data" | jq -r '.country_code // empty')
-	local region=$(echo "$ipqs_data" | jq -r '.region // empty')
-	local city=$(echo "$ipqs_data" | jq -r '.city // empty')
-	local timezone=$(echo "$ipqs_data" | jq -r '.timezone // empty')
-	local latitude=$(echo "$ipqs_data" | jq -r '.latitude // empty')
-	local longitude=$(echo "$ipqs_data" | jq -r '.longitude // empty')
-	local zip_code=$(echo "$ipqs_data" | jq -r '.zip_code // empty')
-
-	local isp=$(echo "$ipqs_data" | jq -r '.ISP // empty')
-	local organization=$(echo "$ipqs_data" | jq -r '.organization // empty')
-	local asn=$(echo "$ipqs_data" | jq -r '.ASN // empty')
-	local host=$(echo "$ipqs_data" | jq -r '.host // empty')
-
-	local connection_type=$(echo "$ipqs_data" | jq -r '.connection_type // empty')
-	local mobile=$(echo "$ipqs_data" | jq -r '.mobile // empty')
-	local residential=$(echo "$ipqs_data" | jq -r '.residential // empty')
-	local is_crawler=$(echo "$ipqs_data" | jq -r '.is_crawler // empty')
-
-	local operating_system=$(echo "$ipqs_data" | jq -r '.operating_system // empty')
-	local browser=$(echo "$ipqs_data" | jq -r '.browser // empty')
-	local device_brand=$(echo "$ipqs_data" | jq -r '.device_brand // empty')
-	local device_model=$(echo "$ipqs_data" | jq -r '.device_model // empty')
-
-	local request_id=$(echo "$ipqs_data" | jq -r '.request_id // empty')
-
-	# Display all available fields in ip_check3.sh format (only non-empty/non-N/A values)
+	# Display all available fields in organized format
 	echo "-------------------------------"
-	echo "🎯 FRAUD & RISK:"
-	[[ -n "$fraud_score" ]] && printf "%-10s: %s%%\n" "FraudScore" "$fraud_score"
-	display_field "AbuseVel" "$abuse_velocity"
-	[[ "$bot_status" == "true" ]] && display_field "Bot" "$bot_status"
-	[[ "$recent_abuse" == "true" ]] && display_field "RecentAb" "$recent_abuse"
+	echo "🎯 ABUSE & REPUTATION:"
+	[[ -n "$abuse_confidence_score" ]] && printf "%-10s: %s%%\n" "AbuseScore" "$abuse_confidence_score"
+	[[ -n "$total_reports" && "$total_reports" != "0" ]] && display_field "Reports" "$total_reports"
+	[[ -n "$num_distinct_users" && "$num_distinct_users" != "0" ]] && display_field "Reporters" "$num_distinct_users"
+	display_field "LastReport" "$last_reported_at"
 
 	echo "-------------------------------"
 	echo "🔒 ANONYMIZATION:"
-	[[ "$proxy" == "true" ]] && display_field "Proxy" "$proxy"
-	[[ "$vpn" == "true" ]] && display_field "VPN" "$vpn"
-	[[ "$tor" == "true" ]] && display_field "Tor" "$tor"
-	[[ "$active_vpn" == "true" ]] && display_field "ActiveVPN" "$active_vpn"
-	[[ "$active_proxy" == "true" ]] && display_field "ActivePrxy" "$active_proxy"
-
-	echo "-------------------------------"
-	echo "🛡️ SECURITY:"
-	[[ "$malware_risk" == "true" ]] && display_field "Malware" "$malware_risk"
-	[[ "$phishing_risk" == "true" ]] && display_field "Phishing" "$phishing_risk"
-	[[ "$suspicious_activity" == "true" ]] && display_field "Suspicious" "$suspicious_activity"
-	[[ "$honeypot" == "true" ]] && display_field "Honeypot" "$honeypot"
-	[[ "$leaked_credentials" == "true" ]] && display_field "LeakedCred" "$leaked_credentials"
+	[[ "$is_tor" == "true" ]] && display_field "Tor" "$is_tor"
+	display_field "UsageType" "$usage_type"
 
 	echo "-------------------------------"
 	echo "🌍 GEOGRAPHIC:"
 	display_field "CountryC" "$country_code"
-	display_field "Region" "$region"
-	display_field "City" "$city"
-	display_field "Timezone" "$timezone"
-	display_field "Latitude" "$latitude"
-	display_field "Longitude" "$longitude"
-	display_field "ZipCode" "$zip_code"
 
 	echo "-------------------------------"
 	echo "🏢 NETWORK:"
 	display_field "ISP" "$isp"
-	display_field "Org" "$organization"
-	display_field "ASN" "$asn"
-	display_field "Host" "$host"
+	display_field "Domain" "$domain"
+	display_field "Hostnames" "$hostnames"
 
 	echo "-------------------------------"
-	echo "📱 CONNECTION:"
-	display_field "ConnType" "$connection_type"
-	[[ "$mobile" == "true" ]] && display_field "Mobile" "$mobile"
-	[[ "$residential" == "true" ]] && display_field "Residential" "$residential"
-	[[ "$is_crawler" == "true" ]] && display_field "Crawler" "$is_crawler"
-
-	echo "-------------------------------"
-	echo "💻 DEVICE:"
-	display_field "OS" "$operating_system"
-	display_field "Browser" "$browser"
-	display_field "DevBrand" "$device_brand"
-	display_field "DevModel" "$device_model"
-
-########echo "-------------------------------"
-########echo "📊 API INFO:"
-########display_field "RequestID" "$request_id"
+	echo "📊 IP INFO:"
+	display_field "IP" "$ip_address"
+	display_field "IPVersion" "$ip_version"
+	[[ "$is_public" == "true" ]] && display_field "Public" "$is_public"
+	[[ "$is_whitelisted" == "true" ]] && display_field "Whitelisted" "$is_whitelisted"
 }
 
 echo -n "Enter an IP or domain: "
@@ -195,26 +131,21 @@ output+="-------------------------------\n"
 [[ -n "$org" ]] && output+="Org       : $org\n"
 [[ -n "$country" ]] && output+="Country   : $country\n"
 
-# Get IPQualityScore data instead of Scamalytics
-ipqs_output=$(get_ipqualityscore_data "$ip")
-output+="\n$ipqs_output"
+# Get AbuseIPDB data
+abuseipdb_output=$(get_abuseipdb_data "$ip")
+output+="\n$abuseipdb_output"
 
-
-
-
-# Extract FraudScore for summary display
-fraud_score_summary=""
-if [[ -n "$ipqs_output" ]]; then
-  fraud_score_summary=$(echo "$ipqs_output" | grep "FraudScore:" | head -1)
+# Extract AbuseScore for summary display
+abuse_score_summary=""
+if [[ -n "$abuseipdb_output" ]]; then
+	abuse_score_summary=$(echo "$abuseipdb_output" | grep "AbuseScore:" | head -1)
 fi
 
-# Add separator and fraud score summary
-if [[ -n "$fraud_score_summary" ]]; then
-  output+="\n-------------------------------"
-  output+="\n$fraud_score_summary"
+# Add separator and abuse score summary
+if [[ -n "$abuse_score_summary" ]]; then
+	output+="\n-------------------------------"
+	output+="\n$abuse_score_summary"
 fi
-
-
 
 echo -e "$output"
 
