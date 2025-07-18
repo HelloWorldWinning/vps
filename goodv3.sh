@@ -1117,6 +1117,7 @@ netstat -tulnp | grep -E '166|177'
 		dt) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh)  ;;
 		ghost) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ghost-startup_docker.sh );;
 		jelly) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jellyfin.sh  );;
+		libre) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_libretv.sh );;
 		dttt) ins_dt ;;
 #	00)eval "exit";;
 		q)eval "exit";;
