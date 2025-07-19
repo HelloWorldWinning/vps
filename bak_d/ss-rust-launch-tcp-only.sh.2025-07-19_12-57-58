@@ -34,8 +34,6 @@ cat > ${CONFIG_FILE} << 'EOL'
 }
 EOL
 
-cp "$CONFIG_FILE" "$DOCKER_COMPOSE_DIR"
-
 # Create docker-compose configuration file for shadowsocks-rust
 echo "Creating Docker Compose configuration..."
 cat > ${DOCKER_COMPOSE_FILE} << EOL
@@ -48,8 +46,7 @@ services:
     ports:
       - "65504:65504/tcp"
     volumes:
-   #  - ${CONFIG_FILE}:${CONFIG_FILE}:ro
-      - ./config.json:${CONFIG_FILE}:ro
+      - ${CONFIG_FILE}:${CONFIG_FILE}:ro
 EOL
 
 # Pull the latest image
