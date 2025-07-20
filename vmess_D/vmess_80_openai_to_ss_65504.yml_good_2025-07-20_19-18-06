@@ -37,23 +37,18 @@ routing:
   domainStrategy: AsIs
   rules:
 
+
   - type: field
     outboundTag: block
     ip:
     - geoip:private
 
 
+
   - type: field
     outboundTag: block
     domain:
     - geoip:private
-
-
-  # ADD THIS NEW RULE HERE
-  - type: field
-    outboundTag: freedom
-    domain:
-    - googlevideo.com
 
 
   - type: field
@@ -137,7 +132,7 @@ routing:
     - geosite:netflix
     - geosite:openai
     - geosite:disney
-    - geosite:google   ########
+    - geosite:google
     - geosite:duckduckgo
     - geosite:bing
     - geosite:bbc
