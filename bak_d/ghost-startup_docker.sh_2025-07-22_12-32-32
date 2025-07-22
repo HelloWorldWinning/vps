@@ -7,31 +7,6 @@ set -e  # Exit on any error
 
 # Configuration
 GHOST_PATH="/data/ghost_d"
-
-# Prompt user for new path
-echo "Current GHOST_PATH: $GHOST_PATH"
-read -p "Enter new GHOST_PATH (press Enter to keep current): " new_path
-
-# Update GHOST_PATH if input provided, otherwise keep default
-if [ -n "$new_path" ]; then
-    GHOST_PATH="$new_path"
-    echo "GHOST_PATH updated to: $GHOST_PATH"
-else
-    echo "GHOST_PATH unchanged: $GHOST_PATH"
-fi
-
-# Export the variable to make it available in the current session
-export GHOST_PATH
-
-
-
-
-
-
-
-
-
-
 MYSQL_ROOT_PASSWORD="ghostrootpass123"
 MYSQL_DATABASE="ghost"
 MYSQL_USER="ghostuser"
