@@ -537,5 +537,5 @@ ul() {
         echo -e "-----------------------------"
         echo -e " $abspath"
         echo -e " $compressed"
-        echo -e " $total_h  Estimate Unzipped"
+        echo -e " $total_h  Estimate if Unzipped"
 }
