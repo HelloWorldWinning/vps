@@ -486,25 +486,56 @@ alias a='acli rovodev run'
 
 
 
+
+
+
 ul() {
-    echo -e " Size\tFile"
-    unzip -l "$1" \
-    | awk 'NR>3 {print $1, $4}' \
-    | grep -v "^--------" \
-    | grep -v "^$" \
-    | head -n -2 \
-    | sort -n \
-    | numfmt --field=1 --to=iec \
-    | awk '{
-        n = split($2, a, "/");
-        fname = a[n];
-        fpath = "";
-        for (i=1; i<n; ++i) fpath = fpath a[i] "/";
-        color = "\033[1;31m";    
-        reset = "\033[0m";
-        printf " %-8s %s%s%s%s\n", $1, fpath, color, fname, reset;
-    }'
+        # Absolute path
+        abspath=$(readlink -f "$1")
+        # Compressed size (on disk, human readable)
+        compressed=$(du -sh "$abspath" 2>/dev/null | awk '{print $1}')
+
+        # Uncompressed size - More robust approach
+        total=$(unzip -l "$1" | awk '
+        /^[ ]*[0-9]/ && NF >= 4 && $4 !~ /\/$/ { 
+            total += $1 
+        }
+        END { 
+            if (total > 0) print total
+            else print "0"
+        }
+    ')
+
+        # Format total size with fallback - handle scientific notation
+        if [[ -n "$total" && "$total" != "0" ]]; then
+                # Convert scientific notation to integer if needed
+                total_int=$(printf "%.0f" "$total" 2>/dev/null)
+                total_h=$(echo "$total_int" | numfmt --to=iec 2>/dev/null)
+                [[ -z "$total_h" ]] && total_h="$total bytes"
+        else
+                total_h="Unknown"
+        fi
+
+        # Output
+        echo -e " Size\tFile"
+        unzip -l "$1" |
+                awk 'NR>3 {print $1, $4}' |
+                grep -v "^--------" |
+                grep -v "^$" |
+                head -n -2 |
+                sort -n |
+                numfmt --field=1 --to=iec |
+                awk '{
+            n = split($2, a, "/");
+            fname = a[n];
+            fpath = "";
+            for (i=1; i<n; ++i) fpath = fpath a[i] "/";
+            color = "\033[1;31m";
+            reset = "\033[0m";
+            printf " %-8s %s%s%s%s\n", $1, fpath, color, fname, reset;
+        }'
+        echo -e "-----------------------------"
+        echo -e " $abspath"
+        echo -e " $compressed"
+        echo -e " $total_h  Estimate Unzipped"
 }
-
-
-
