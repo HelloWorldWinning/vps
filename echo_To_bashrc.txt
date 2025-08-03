@@ -486,7 +486,7 @@ alias a='acli rovodev run'
 
 
 
-unzipl() {
+ul() {
     echo -e " Size\tFile"
     unzip -l "$1" \
     | awk 'NR>3 {print $1, $4}' \
