@@ -483,3 +483,28 @@ export GEMINI_API_KEY=''
 
 alias alog='acli rovodev auth login'
 alias a='acli rovodev run'
+
+
+
+unzipl() {
+    echo -e " Size\tFile"
+    unzip -l "$1" \
+    | awk 'NR>3 {print $1, $4}' \
+    | grep -v "^--------" \
+    | grep -v "^$" \
+    | head -n -2 \
+    | sort -n \
+    | numfmt --field=1 --to=iec \
+    | awk '{
+        n = split($2, a, "/");
+        fname = a[n];
+        fpath = "";
+        for (i=1; i<n; ++i) fpath = fpath a[i] "/";
+        color = "\033[1;31m";    
+        reset = "\033[0m";
+        printf " %-8s %s%s%s%s\n", $1, fpath, color, fname, reset;
+    }'
+}
+
+
+
