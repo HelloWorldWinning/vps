@@ -115,9 +115,8 @@ uname -r
 echo -n "TCP CC    : "
 sysctl -n net.ipv4.tcp_congestion_control
 
-# Display Swap Information (converted to GB like RAM)
 echo -n "Swap      : "
-free -m | awk '/Swap:/ {total=$2/1024; used=$3/1024; available=$4/1024; printf "%5.1f | %5.1f | %5.1f G\n", available, used, total}'
+free -m | awk '/Swap:/ {printf "%5s | %5s | %5s M\n", $4, $3, $2}'
 
 # Display Memory Information
 echo -n "RAM       : "
