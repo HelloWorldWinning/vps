@@ -62,13 +62,14 @@ html, body, * {
 }
 
 
-
 html {
-  writing-mode: vertical-rl;
-  -webkit-writing-mode: vertical-rl;
-  -epub-writing-mode: vertical-rl;
-  direction: rtl;
+  writing-mode: vertical-rl;     /* vertical text, lines on the right */
+  /* direction: rtl;   <-- remove or flip to ltr */
+  direction: ltr;                /* first line at the top */
+  text-align: start !important;  /* keeps “flush-top” alignment */
 }
+
+
 
 rgb(252,240,217) good bg
 238 226 204 so 
