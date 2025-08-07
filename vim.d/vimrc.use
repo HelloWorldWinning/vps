@@ -33,7 +33,7 @@ Plug 'MunifTanjim/nui.nvim'
 
 Plug 'morhetz/gruvbox'
 Plug 'habamax/vim-pire'
-Plug  'nicolasacquaviva/better-default'
+Plug  'HelloWorldWinning/better-default'
 Plug 'tyrannicaltoucan/vim-quantum'
 "colorshceme gruvbox    
 Plug 'hrsh7th/nvim-cmp'
