@@ -521,6 +521,8 @@ diffstuff=cyan
 cvsstuff=magenta
 EOF
 
+sudo apt install fuse  -y
+apt install fuse  -y
 
 reboot
 
