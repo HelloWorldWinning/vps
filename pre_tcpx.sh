@@ -520,6 +520,7 @@ wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x 
 
 cat > /etc/colordiffrc << 'EOF'
 newtext=white
+banner=no
 EOF
 
 sudo apt install fuse  -y
