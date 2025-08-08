@@ -512,13 +512,14 @@ sudo dpkg --configure -a
 
 wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && sudo mv dysk /usr/local/bin/
 
+#plain=off
+#oldtext=darkred
+#newtext=white
+#diffstuff=cyan
+#cvsstuff=magenta
 
 cat > /etc/colordiffrc << 'EOF'
-plain=off
-oldtext=darkred
 newtext=white
-diffstuff=cyan
-cvsstuff=magenta
 EOF
 
 sudo apt install fuse  -y
