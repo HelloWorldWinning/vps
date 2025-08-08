@@ -539,3 +539,6 @@ ul() {
         echo -e " $compressed"
         echo -e " $total_h  Estimate if Unzipped"
 }
+
+
+export RCLONE_FUSERMOUNT=/usr/bin/fusermount3
