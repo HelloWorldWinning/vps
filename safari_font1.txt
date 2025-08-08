@@ -46,19 +46,12 @@ html, body, * {
 
 
 
-
-
-
-
-
-
 /****
 text-align: left !important;
 
 html, body, * {
   font-weight: 300 !important ;
   font-family: "Source Code Pro", "PingFang SC", "FZFangJunHeiS " !important ;
-  line-height: 140%;
 }
 
 
@@ -83,5 +76,6 @@ rgb(252,240,217) good bg
 
 
 
+  line-height: 140%;
 
 *******/
