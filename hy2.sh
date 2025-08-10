@@ -35,7 +35,7 @@ echo
 read -rp "Enter ACME domain(s) for your cert (comma or space separated, REQUIRED): " DOMAINS_INPUT
 DOMAINS_INPUT="${DOMAINS_INPUT:-}"
 if [[ -z "$DOMAINS_INPUT" ]]; then
-  err "At least one domain is required (e.g., nl.zhulei.eu.org)."
+  err "At least one domain is required (e.g., nl.eu.org)."
   exit 1
 fi
 
