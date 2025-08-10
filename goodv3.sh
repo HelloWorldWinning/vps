@@ -1121,6 +1121,7 @@ netstat -tulnp | grep -E '166|177'
 		libre) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_libretv.sh );;
 		gcp) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_gcp_login_email2.sh );;
 		dttt) ins_dt ;;
+		hy2) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh )   ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
