@@ -151,4 +151,5 @@ fi
 # Continue the script
 echo "Additional operations can go here."
  
-bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_MoeClub_InstallNET.sh') -d 12 -v 64 -a --ip-addr $ipAddr --ip-gate $ipGate --ip-mask $subnetMask
+#bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_MoeClub_InstallNET.sh') -d 12 -v 64 -a --ip-addr $ipAddr --ip-gate $ipGate --ip-mask $subnetMask
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_MoeClub_InstallNET.sh') -d 13 -v 64 -a --ip-addr $ipAddr --ip-gate $ipGate --ip-mask $subnetMask
