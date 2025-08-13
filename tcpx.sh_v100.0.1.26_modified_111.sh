@@ -2027,6 +2027,9 @@ check_sys_official_bbr() {
     12)
       echo "deb http://deb.debian.org/debian bookworm-backports main" >/etc/apt/sources.list.d/bookworm-backports.list
       ;;
+    13)
+      echo "deb http://deb.debian.org/debian trixie-backports main" >/etc/apt/sources.list.d/trixie-backports.list
+      ;;
     *)
       echo -e "[Error] 不支持当前系统 ${os_name} ${os_version} ${os_arch} !" && exit 1
       ;;
