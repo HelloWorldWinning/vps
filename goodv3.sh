@@ -960,6 +960,8 @@ yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinni
                 444)eval "$pre_InstallNET_modified_chu_debian12" ;;
                 4)  
 		bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current.sh' ) ;;
+                dd13)  
+		bash  <(curl -4Lk   'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current13.sh' ) ;;
 		4441) bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh' )    ;; 
                 65)eval "$ss_rust2" ;;
           #     66)eval "$ping_local_fast" ;;
