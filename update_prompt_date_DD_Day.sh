@@ -91,6 +91,13 @@ else
     second_part=$(cat "$symbol_state_file")
 fi
 
+
+if [[ $(lsb_release -is) == "Debian" ]] && [[ $(lsb_release -rs) == "13" ]]; then
+	second_part="  "
+fi
+
+
+
 combined_template="<b>$first_part$second_part </b>"
 
 # Update the config file
