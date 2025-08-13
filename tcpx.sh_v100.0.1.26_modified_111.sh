@@ -1466,7 +1466,7 @@ num=111
 
 apt install  -y  sudo 
 sudo apt update
-sudo apt full-upgrade
+sudo apt full-upgrade -y
 sudo apt install  -y linux-image-amd64 linux-headers-amd64
 
     optimizing_system

@@ -531,12 +531,12 @@ rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/ht
 
 
 
-#sudo apt update
-#sudo apt full-upgrade 
-#sudo apt install -y  linux-image-amd64 linux-headers-amd64 
-#sudo reboot
-
+sudo apt update
+sudo apt full-upgrade  -y
+sudo apt install -y  linux-image-amd64 linux-headers-amd64 
 sudo reboot
+
+#sudo reboot
 
 
 
