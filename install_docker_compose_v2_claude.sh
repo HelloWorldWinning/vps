@@ -55,3 +55,16 @@ docker rm $(docker ps -a -q --filter ancestor=hello-world)
 docker rmi hello-world
 docker --version
 docker compose version
+
+#################
+sudo tee /usr/local/bin/docker-compose > /dev/null << 'EOF'
+#!/bin/bash
+docker compose "$@"
+EOF
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose version
+
+
+
