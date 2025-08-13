@@ -122,7 +122,9 @@ git config --global core.editor "vim"
 
 #apt install fzf -y
 
-apt install docker-compose -y
+#apt install docker-compose -y
+### compose v2 install
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 #####bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v1_claude.sh )  
 
 apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
@@ -364,8 +366,8 @@ nameserver 8.8.8.8
 nameserver 1.0.0.1
 EOF
 
-## compose v2 install
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
+### compose v2 install
+#bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh  )
 
