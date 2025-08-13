@@ -1463,6 +1463,12 @@ num=111
     startecn
     optimizing_system_johnrosen1
     startbbrcake
+
+apt install  -y  sudo 
+sudo apt update
+sudo apt full-upgrade
+sudo apt install  -y linux-image-amd64 linux-headers-amd64
+
     optimizing_system
     ;;
   99)
