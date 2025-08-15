@@ -41,7 +41,10 @@ docker run -d \
 
 if [ $? -eq 0 ]; then
 	echo "✓ LibreTV container started successfully!"
-	echo "✓ Access it at: http://localhost:8899"
+	#echo "✓ Access it at: http://localhost:8899"
+	# Get public IP and display access URL
+PUBLIC_IP=$(curl -s http://checkip.amazonaws.com/ || curl -s https://ipinfo.io/ip || curl -s https://icanhazip.com/)
+echo "✓ Access it at: http://$PUBLIC_IP:8899"
 	echo "✓ Password: tv"
 else
 	echo "✗ Failed to start LibreTV container"
