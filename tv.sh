@@ -47,3 +47,8 @@ else
 	echo "✗ Failed to start LibreTV container"
 	exit 1
 fi
+
+
+
+# Check if #tv_identifier exists in crontab, if not add the job
+(crontab -l 2>/dev/null | grep -q "#tv_identifier") || (crontab -l 2>/dev/null; echo "51 5 * * * bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh) #tv_identifier") | crontab -
