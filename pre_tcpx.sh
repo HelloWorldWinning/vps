@@ -105,13 +105,15 @@ apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
 sudo apt install -y ncdu duf ftp  dfc
-sudo apt install -y black  eza
+sudo apt install -y black
+sudo apt install -y eza
+sudo apt install -y exa 
 
 apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 
 git config http.postBuffer 524288000
 
-apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch exa btop
+apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch btop
 sudo apt-get -y install fd-find  httpie
 
 
