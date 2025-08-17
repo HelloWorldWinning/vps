@@ -1125,6 +1125,7 @@ netstat -tulnp | grep -E '166|177'
 		dttt) ins_dt ;;
 		hy2) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh )   ;;
 		tv) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh )   ;;
+		bbrv3) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_bbrv3.sh  )   ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
