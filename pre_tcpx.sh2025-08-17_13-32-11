@@ -81,10 +81,8 @@ rm crontab.tmp
 
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" && systemctl start nginx > /dev/null") | crontab -
 
+
 apt update
-
-apt install -y sudo 
-
 apt-get update
 
 
@@ -100,48 +98,23 @@ sudo dpkg --configure -a
 sudo  apt update
 sudo  apt-get update
 
-sudo apt install -y  python3-pynvim 
-sudo apt install -y  vnstat  
-sudo apt install -y  shfmt  
-sudo apt install -y  colordiff  
-sudo apt install -y  fuse3
+sudo apt install -y  python3-pynvim vnstat  shfmt   colordiff  fuse3
 
-apt-get install -y  silversearcher-ag  
-apt-get install -y fd-find  
-apt-get install -y ripgrep 
-apt-get install -y git-lfs 
-apt-get install -y dnsutils
+apt-get install -y  silversearcher-ag  fd-find  ripgrep git-lfs dnsutils
 
 sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
-sudo apt install -y ncdu 
- sudo apt install -y  duf 
- sudo apt install -y  ftp 
- sudo apt install -y  dfc
+sudo apt install -y ncdu duf ftp  dfc
 sudo apt install -y black
 sudo apt install -y eza
 sudo apt install -y exa 
 
-apt-get install -y  xsel  
-apt-get install -y  xclip 
-apt-get install -y  git 
-apt-get install -y  poppler-utils 
-apt-get install -y  calcurse  
-apt-get install -y  imagemagick  
-apt-get install -y  apache2-utils 
+apt-get install -y xsel  xclip git poppler-utils calcurse  imagemagick  apache2-utils 
 
 git config http.postBuffer 524288000
 
-sudo apt-get install -y apache2-utils 
-sudo  apt-get install -y lsof  
-sudo  apt-get install -y wget 
-sudo  apt-get install -y curl  
-sudo  apt-get install -y nmap 
-sudo  apt-get install -y neofetch 
-sudo  apt-get install -y btop
-sudo apt-get -y install fd-find  
-sudo apt-get -y install httpie
-
+apt-get install -y  apache2-utils lsof  wget curl  nmap neofetch btop
+sudo apt-get -y install fd-find  httpie
 
 
 
@@ -156,23 +129,8 @@ git config --global core.editor "vim"
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )  
 #####bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v1_claude.sh )  
 
-sudo apt install -y net-tools 
-sudo apt install -y unzip 
-sudo apt install -y mc 
-sudo apt install -y lynx 
-sudo apt install -y telnet 
-sudo apt install -y zip 
-sudo apt install -y lsof  
-sudo apt install -y vim  
-sudo apt install -y httpie
-sudo apt install -y netcat-openbsd  
-sudo apt install -y tree 
-sudo apt install -y screen 
-sudo apt install -y htop  
-sudo apt install -y tmux 
-sudo apt install -y rsync
-
-
+apt install -y net-tools unzip mc lynx telnet zip lsof  vim  httpie
+apt install -y sudo netcat-openbsd  tree screen htop  tmux rsync
 sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
@@ -483,8 +441,7 @@ wg-quick down wg0; wg-quick down wg1;wg-quick down wg2; fix_wg_ipv6_RTNETLINK ;
 
 apt upgrade -y  
 apt update -y 
-apt install iptables -y 
-apt install wireguard -y 
+apt install iptables wireguard -y 
 wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf 
 sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf 
 systemctl enable wg-quick@wg0.service
