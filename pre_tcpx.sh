@@ -134,6 +134,10 @@ echo '--ipv4' >> ~/.curlrc
 echo 'inet4_only = on'  >> ~/.wgetrc
 #alias tls="tmux list-sessions"
 
+
+ln -s /usr/bin/python3 /usr/local/bin/python
+
+
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 ###########
 
