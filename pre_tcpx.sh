@@ -580,6 +580,11 @@ rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/ht
 
 
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh )
+
+
+
+
 sudo apt update
 sudo apt full-upgrade  -y
 sudo apt install -y  linux-image-amd64 linux-headers-amd64 
