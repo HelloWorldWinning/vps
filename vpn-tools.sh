@@ -41,7 +41,8 @@ echo "  OpenVPN: $OPENVPN_DIR"
 echo "  WireGuard: $WIREGUARD_DIR"
 
 mkdir -p /root/wg_clients
-unzip /data/d.share/vpn-tools/wireguard/wireguard-export2025-08-18_10.zip -d /root/wg_clients
+#unzip /data/d.share/vpn-tools/wireguard/wireguard-export2025-08-18_10.zip -d /root/wg_clients
+unzip -o /data/d.share/vpn-tools/wireguard/wireguard-export2025-08-18_10.zip -d /root/wg_clients
 mv /data/d.share/vpn-tools/wireguard/wireguard-export2025-08-18_10.zip /root/wg_clients/
 
 # Optional: List downloaded files
