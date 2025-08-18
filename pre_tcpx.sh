@@ -588,6 +588,15 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 sudo apt update
 sudo apt full-upgrade  -y
 sudo apt install -y  linux-image-amd64 linux-headers-amd64 
+
+
+sudo apt install systemd-timesyncd  -y 
+sudo systemctl enable systemd-timesyncd
+sudo systemctl start systemd-timesyncd
+sudo timedatectl set-ntp true
+
+
+
 sudo reboot
 
 #sudo reboot
