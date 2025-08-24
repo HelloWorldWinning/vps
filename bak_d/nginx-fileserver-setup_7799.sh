@@ -51,13 +51,12 @@ INSTALL_DIR="/root/d.share_instance"
 echo "📁 Creating installation directory: $INSTALL_DIR"
 run_cmd mkdir -p "$INSTALL_DIR"
 
-# Create the docker-compose.yml file with automatic restart
+# Create the docker-compose.yml file
 echo "📝 Creating docker-compose.yml..."
 run_cmd tee "$INSTALL_DIR/docker-compose.yml" >/dev/null <<'EOF'
 services:
   nginx:
     image: nginx
-    restart: unless-stopped
     volumes:
       # Mount your data directory to /data inside container
       - /data/d.share:/data
@@ -78,7 +77,7 @@ services:
       }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 EOF
 
-echo "✅ docker-compose.yml created with automatic restart policy"
+echo "✅ docker-compose.yml created"
 
 # Change to the installation directory
 cd "$INSTALL_DIR"
@@ -110,13 +109,55 @@ if docker-compose ps | grep -q "Up"; then
 	echo "   - Restart server: cd $INSTALL_DIR && docker-compose restart"
 	echo "   - View logs: cd $INSTALL_DIR && docker-compose logs -f"
 	echo "   - Check status: cd $INSTALL_DIR && docker-compose ps"
-	echo ""
-	echo "🔄 The server will automatically restart after system reboots"
 else
 	echo "❌ Failed to start nginx file server. Check the logs:"
 	docker-compose logs
 	exit 1
 fi
+
+# Create a simple management script
+echo "📝 Creating management script..."
+run_cmd tee "$INSTALL_DIR/manage.sh" >/dev/null <<'EOF'
+#!/bin/bash
+# Nginx File Server Management Script
+
+case "$1" in
+    start)
+        echo "Starting nginx file server..."
+        docker-compose up -d
+        ;;
+    stop)
+        echo "Stopping nginx file server..."
+        docker-compose down
+        ;;
+    restart)
+        echo "Restarting nginx file server..."
+        docker-compose restart
+        ;;
+    status)
+        echo "Nginx file server status:"
+        docker-compose ps
+        ;;
+    logs)
+        echo "Nginx file server logs:"
+        docker-compose logs -f
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status|logs}"
+        echo ""
+        echo "Available commands:"
+        echo "  start   - Start the file server"
+        echo "  stop    - Stop the file server" 
+        echo "  restart - Restart the file server"
+        echo "  status  - Show service status"
+        echo "  logs    - Show and follow logs"
+        exit 1
+        ;;
+esac
+EOF
+
+run_cmd chmod +x "$INSTALL_DIR/manage.sh"
+echo "✅ Management script created at $INSTALL_DIR/manage.sh"
 
 echo ""
 echo "🎉 Installation completed successfully!"
@@ -125,6 +166,6 @@ echo "📋 Summary:"
 echo "   ✅ Docker and Docker Compose verified"
 echo "   ✅ Data directory created: $DATA_DIR"
 echo "   ✅ Nginx file server running on port 7799"
-echo "   ✅ Automatic restart configured"
+echo "   ✅ Management script available"
 echo ""
-echo "🚀 Your file server is ready to use and will start automatically!"
+echo "🚀 Your file server is ready to use!"
