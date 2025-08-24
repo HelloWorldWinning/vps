@@ -1129,6 +1129,7 @@ netstat -tulnp | grep -E '166|177'
 		vpn_tools) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh )  ;;
 		chrony) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh )  ;;
 		d7799) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh  )  ;;
+		webtop) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_webtop.sh )  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
