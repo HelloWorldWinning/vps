@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# minimal: write docker-compose.yml and start it
+
+set -euo pipefail
+
+DIR="/root/webtop_d"
+mkdir -p "$DIR"
+
+cat >"$DIR/docker-compose.yml" <<'YAML'
+services:
+  webtop:
+    image: lscr.io/linuxserver/webtop:latest
+    container_name: webtop
+    security_opt:
+      - seccomp:unconfined # optional, helps some desktop apps on older hosts
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Tokyo
+      - CUSTOM_USER=a
+      - PASSWORD=a
+      - SUBFOLDER=/           # optional
+      - TITLE=Webtop          # optional
+    volumes:
+      - ./webtop-config:/config
+      # - /var/run/docker.sock:/var/run/docker.sock  # optional: manage host Docker from Webtop
+      # - /dev/dri:/dev/dri                          # optional: GPU acceleration on open-source drivers
+    ports:
+#      - "3000:3000"  # HTTP (for reverse proxy only; browser access should use HTTPS)
+#     - "3001:3001"  # HTTPS (self-signed)
+      - "8300:3000"  # HTTP
+    shm_size: "1gb"   # optional, keeps modern browsers from crashing
+    restart: unless-stopped
+YAML
+
+cd "$DIR"
+mkdir -p webtop-config
+docker compose up -d
