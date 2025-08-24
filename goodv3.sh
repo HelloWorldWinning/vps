@@ -1128,6 +1128,7 @@ netstat -tulnp | grep -E '166|177'
 		bbrv3) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_bbrv3.sh  )   ;;
 		vpn_tools) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh )  ;;
 		chrony) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh )  ;;
+		7799) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh  )  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		

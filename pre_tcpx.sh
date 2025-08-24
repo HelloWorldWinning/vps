@@ -582,6 +582,7 @@ rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/ht
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh )
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh  )  
 
 
 

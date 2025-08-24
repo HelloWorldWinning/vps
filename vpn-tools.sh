@@ -28,9 +28,11 @@ WG_APK_NAME=$(echo "$WG_HTML" | grep -o 'com\.wireguard\.android-[0-9]\+\.[0-9]\
 if [ -n "$WG_APK_NAME" ]; then
 	echo "Latest WireGuard APK: $WG_APK_NAME"
 	wget -4 -P "$WIREGUARD_DIR" "https://download.wireguard.com/android-client/$WG_APK_NAME"
+	wget -4 -P "$WIREGUARD_DIR" https://download.wireguard.com/windows-client/wireguard-installer.exe
 else
 	echo "Failed to get latest WireGuard APK URL, using fallback..."
 	wget -4 -P "$WIREGUARD_DIR" https://download.wireguard.com/android-client/com.wireguard.android-1.0.20250531.apk
+	wget -4 -P "$WIREGUARD_DIR" https://download.wireguard.com/windows-client/wireguard-installer.exe
 fi
 
 wget -4 -P "$WIREGUARD_DIR" https://github.com/HelloWorldWinning/vps/raw/refs/heads/main/backup_D/wireguard-export2025-08-18_10.zip
