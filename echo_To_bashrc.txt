@@ -265,7 +265,8 @@ export PATH="/root/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/b
 
 #### eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 
-alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'  
+######alias wea='source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh)'  
+alias wea='curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash'
 
 
 alias agi='ag --ignore-dir   '
