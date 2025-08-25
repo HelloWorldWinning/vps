@@ -36,6 +36,9 @@ day2_low=$(echo "$day2_section" | grep 'low' | head -1 | sed 's/.*low">\([0-9]*\
 
 # Format and output the result
 result="${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}"
+if [ "$result" = "_" ]; then
+    result=""
+fi
 
 # Save to file and display result
 echo "$result" > /root/.weather_temperature
