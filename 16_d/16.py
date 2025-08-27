@@ -62,8 +62,6 @@ def get_file_info(path: str) -> dict:
     }
 
 
-
-
 def create_breadcrumb(path: str) -> str:
     """Create HTML breadcrumb navigation from path."""
     if path == "/Host":
@@ -100,7 +98,7 @@ def create_breadcrumb(path: str) -> str:
 
 
 #
-#def create_breadcrumb(path: str) -> str:
+# def create_breadcrumb(path: str) -> str:
 #    """Create HTML breadcrumb navigation from path."""
 #    if path == "/Host":
 #        return '<a href="/" class="breadcrumb-item">/</a>'
@@ -131,7 +129,7 @@ def create_breadcrumb(path: str) -> str:
 #    return "".join(breadcrumb_parts)
 
 
-#def create_breadcrumb(path: str) -> str:
+# def create_breadcrumb(path: str) -> str:
 #    """Create HTML breadcrumb navigation from path."""
 #    if path == "/Host":
 #        return '<a href="/" class="breadcrumb-item">/</a>'
@@ -176,6 +174,7 @@ LEXER_MAPPING = {
     ".go": "go",
     ".php": "php",
     ".rs": "rust",
+    ".toml": "toml",
     ".swift": "swift",
     ".txt": "text",
     ".bat": "bat",
@@ -194,6 +193,111 @@ LEXER_MAPPING = {
     # Add more mappings as needed
 }
 
+LEXER_MAPPING.update(
+    {
+        # Systems & compiled
+        ".zig": "zig",
+        ".nim": "nim",
+        ".hs": "haskell",
+        ".kt": "kotlin",
+        ".kts": "kotlin",  # Gradle Kotlin DSL
+        ".scala": "scala",
+        ".fs": "fsharp",
+        ".fsx": "fsharp",
+        ".vb": "vbnet",
+        ".d": "d",
+        ".cr": "crystal",
+        ".erl": "erlang",
+        ".hrl": "erlang",
+        ".ex": "elixir",
+        ".exs": "elixir",
+        ".ml": "ocaml",
+        ".mli": "ocaml",
+        ".rkt": "racket",
+        ".scm": "scheme",
+        ".lisp": "common-lisp",
+        ".cl": "common-lisp",  # note: conflicts with OpenCL; see notes below
+        ".jl": "julia",
+        ".lua": "lua",
+        ".tcl": "tcl",
+        ".hx": "haxe",
+        ".elm": "elm",
+        ".adb": "ada",
+        ".ads": "ada",
+        # Web, data, APIs
+        ".graphql": "graphql",
+        ".gql": "graphql",
+        ".proto": "protobuf",
+        ".rst": "rst",  # reStructuredText
+        ".adoc": "asciidoc",
+        ".tex": "tex",
+        ".bib": "bibtex",
+        ".mdx": "markdown",
+        ".qml": "qml",
+        # Shells & scripting
+        ".ps1": "powershell",
+        ".psm1": "powershell",
+        ".zsh": "zsh",
+        ".fish": "fish",
+        ".awk": "awk",
+        # Build & config
+        ".make": "make",
+        ".cmake": "cmake",
+        ".sbt": "scala",
+        ".gradle": "groovy",
+        ".groovy": "groovy",
+        ".dockerfile": "docker",  # when saved with an extension
+        ".hcl": "hcl",
+        ".tf": "terraform",
+        ".tfvars": "terraform",
+        ".nix": "nix",
+        ".bzl": "starlark",  # Bazel/Starlark files
+        ".properties": "properties",
+        ".env": "properties",  # dotenv is key=value friendly with properties
+        ".jinja": "jinja",
+        ".j2": "jinja",
+        # SQL flavors (optional but handy)
+        ".psql": "postgresql",
+        ".mysql": "mysql",
+        # Low-level / HDL / shaders
+        ".asm": "nasm",
+        ".nasm": "nasm",
+        ".s": "gas",
+        ".vhdl": "vhdl",
+        ".v": "verilog",  # note: conflicts with Coq; see notes below
+        ".sv": "systemverilog",
+        ".glsl": "glsl",
+        ".vert": "glsl",
+        ".frag": "glsl",
+        # Python-adjacent
+        ".pyx": "cython",
+        ".pxd": "cython",
+        ".pxi": "cython",
+        # Diff / patches
+        ".diff": "diff",
+        ".patch": "diff",
+    }
+)
+
+
+LEXER_MAPPING.update(
+    {
+        # Rust ecosystem & common companions
+        ".ll": "llvm",  # LLVM IR (e.g., rustc -C emit=llvm-ir)
+        ".s": "gas",  # assembly emitted by rustc/LLVM
+        ".S": "gas",  # uppercase variant, just in case
+        ".svd": "xml",  # ARM CMSIS SVD files for embedded Rust
+        ".vert": "glsl",  # shaders often used with wgpu
+        ".frag": "glsl",
+        ".glsl": "glsl",
+        ".nix": "nix",  # Nix flakes/devshells for Rust toolchains
+        ".proto": "protobuf",  # prost/tonic codegen inputs
+        ".graphql": "graphql",  # async-graphql etc.
+        ".cmake": "cmake",  # interop/cxx/cbindgen helper projects
+        ".bzl": "python",  # rules_rust (safe default lexer)
+    }
+)
+
 
 @app.get("/", response_class=HTMLResponse)
 async def root(
@@ -211,13 +315,13 @@ async def navigate(
     # Decode the subpath
     subpath = unquote(subpath)
     # Handle double slashes by normalizing the path
-    while '//' in subpath:
-        subpath = subpath.replace('//', '/')
-    if subpath.startswith('/'):
-        subpath = subpath.lstrip('/')
+    while "//" in subpath:
+        subpath = subpath.replace("//", "/")
+    if subpath.startswith("/"):
+        subpath = subpath.lstrip("/")
     # Build the full path
-  # full_path = os.path.normpath(os.path.join("/", subpath))
-#   full_path = os.path.normpath(os.path.join("/", subpath))
+    # full_path = os.path.normpath(os.path.join("/", subpath))
+    #   full_path = os.path.normpath(os.path.join("/", subpath))
     full_path = os.path.normpath(os.path.join("/Host", subpath))
 
     if not full_path.startswith("/Host"):
