@@ -372,7 +372,7 @@ e() {
     shift
     local additional_terms=("$@")
  #  /usr/local/bin/fd --absolute-path --color=never "$search_term" "${additional_terms[@]}" | \
-    /usr/lib/cargo/bin/fd  -H  --absolute-path --color=never "$search_term" "${additional_terms[@]}" | \
+    /usr/lib/cargo/bin/fd --unrestricted   -H  --absolute-path --color=never "$search_term" "${additional_terms[@]}" | \
         rg --color=always \
            --colors 'match:fg:yellow' \
            --colors 'line:none' \
@@ -388,7 +388,7 @@ eee() {
     local search_term="$1"
     shift
     local additional_terms=("$@")
-    /usr/lib/cargo/bin/fd --list-details  --strip-cwd-prefix  --color=never  "$search_term" "${additional_terms[@]}" | \
+    /usr/lib/cargo/bin/fd  --unrestricted   --list-details  --strip-cwd-prefix  --color=never  "$search_term" "${additional_terms[@]}" | \
         rg --color=always \
            --colors 'match:fg:yellow' \
            --colors 'line:none' \
@@ -430,7 +430,7 @@ ee() {
     trap 'rm -f "$tmp_file"' EXIT
 
     # Step 1: Collect all matches using the original ee function's core
-    /usr/lib/cargo/bin/fd --list-details --strip-cwd-prefix --color=never "$search_term" "${additional_terms[@]}" | \
+    /usr/lib/cargo/bin/fd  --unrestricted   --list-details --strip-cwd-prefix --color=never "$search_term" "${additional_terms[@]}" | \
         rg --color=never --regexp "[^/]*${search_term}[^/]*" > "$tmp_file"
 
     # Step 2: Process and sort the results

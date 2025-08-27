@@ -576,7 +576,7 @@ EOF
 
 sudo apt install fuse  -y
 apt install fuse  -y
-#rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html
+rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html
 
 
 
