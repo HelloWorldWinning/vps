@@ -600,6 +600,20 @@ sudo apt install -y  linux-image-amd64 linux-headers-amd64
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh )
 
+
+######## for nvim 
+pip install   pynvim
+pip install   jedi
+
+pip3 install   pynvim
+pip3 install   jedi
+
+########
+
+
+
+
+
 sudo reboot
 
 #sudo reboot
