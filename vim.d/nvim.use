@@ -452,3 +452,38 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 "})
 "EOF
 "
+
+
+
+" Function to run rustfmt formatter
+function! RustfmtFormat()
+    if executable('rustfmt')
+        try
+            silent! undojoin | %!rustfmt --emit stdout
+        catch /.*/
+            echohl ErrorMsg | echo "rustfmt formatting failed" | echohl None
+        endtry
+    endif
+endfunction
+
+" Updated WriteRust function to precisely preserve cursor position
+function! WriteRust()
+    " Save the current cursor position (line and column)
+    let l:pos = getpos('.')
+    " Call the rustfmt formatter
+    call RustfmtFormat()
+    " Write the buffer to file
+    write
+    " Restore the cursor position
+    call setpos('.', l:pos)
+endfunction
+
+function! WriteQuitRust()
+    call RustfmtFormat()
+    write
+    quit
+endfunction
+
+" Map custom commands for Rust files only
+autocmd FileType rust cnoreabbrev <buffer> w :call WriteRust()<CR>
+autocmd FileType rust cnoreabbrev <buffer> wq :call WriteQuitRust()<CR>
