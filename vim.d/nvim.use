@@ -459,7 +459,7 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 function! RustfmtFormat()
     if executable('rustfmt')
         try
-            silent! undojoin | %!rustfmt --emit stdout
+            silent! undojoin | %!rustfmt --edition 2024  --emit stdout
         catch /.*/
             echohl ErrorMsg | echo "rustfmt formatting failed" | echohl None
         endtry
