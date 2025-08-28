@@ -299,6 +299,118 @@ LEXER_MAPPING.update(
 )
 
 
+LEXER_MAPPING.update(
+    {
+        # Rust ecosystem & common companions
+        ".ll": "llvm",  # LLVM IR (e.g., rustc -C emit=llvm-ir)
+        ".s": "gas",  # assembly emitted by rustc/LLVM
+        ".S": "gas",  # uppercase variant, just in case
+        ".svd": "xml",  # ARM CMSIS SVD files for embedded Rust
+        ".vert": "glsl",  # shaders often used with wgpu
+        ".frag": "glsl",
+        ".glsl": "glsl",
+        ".nix": "nix",  # Nix flakes/devshells for Rust toolchains
+        ".proto": "protobuf",  # prost/tonic codegen inputs
+        ".graphql": "graphql",  # async-graphql etc.
+        ".cmake": "cmake",  # interop/cxx/cbindgen helper projects
+        ".bzl": "python",  # rules_rust (safe default lexer)
+        # Python ecosystem
+        ".py": "python",
+        ".pyi": "python",  # type stubs
+        ".pyx": "cython",  # Cython files
+        ".pxd": "cython",  # Cython declaration files
+        ".ipynb": "json",  # Jupyter notebooks
+        ".pyc": "text",  # compiled Python (binary)
+        ".pyo": "text",  # optimized Python bytecode
+        ".whl": "text",  # wheel files (zip archives)
+        # Docker ecosystem
+        ".dockerignore": "text",
+        # Nginx configuration
+        ".conf": "nginx",  # nginx config files
+        # Debian/Ubuntu packaging
+        ".deb": "text",  # binary package
+        ".changes": "text",  # debian changes file
+        ".dsc": "text",  # debian source control
+        ".orig": "text",  # original source tarball marker
+        # Conda/Mamba environment files
+        ".lock": "yaml",  # conda-lock files
+        # Web technologies (often used with Python/Docker)
+        ".html": "html",
+        ".htm": "html",
+        ".css": "css",
+        ".js": "javascript",
+        ".ts": "typescript",
+        ".jsx": "jsx",
+        ".tsx": "tsx",
+        ".vue": "vue",
+        ".scss": "scss",
+        ".sass": "sass",
+        ".less": "less",
+        # Configuration formats
+        ".ini": "ini",
+        ".cfg": "ini",
+        ".conf": "nginx",  # can be nginx or apache
+        ".config": "text",
+        ".env": "bash",  # environment files
+        ".service": "ini",  # systemd service files
+        # Files without extensions (use full filename as key)
+        "Dockerfile": "dockerfile",
+        "Containerfile": "dockerfile",  # Podman alternative
+        "Dockerfile.dev": "dockerfile",
+        "Dockerfile.prod": "dockerfile",
+        "docker-compose.yml": "yaml",
+        "docker-compose.yaml": "yaml",
+        "compose.yml": "yaml",
+        "compose.yaml": "yaml",
+        # Python project files
+        "requirements.txt": "text",
+        "requirements-dev.txt": "text",
+        "setup.py": "python",
+        "setup.cfg": "ini",
+        "pyproject.toml": "toml",
+        "poetry.lock": "toml",
+        "Pipfile": "toml",
+        "Pipfile.lock": "json",
+        "tox.ini": "ini",
+        ".python-version": "text",  # pyenv
+        "environment.yml": "yaml",  # conda environment
+        "environment.yaml": "yaml",
+        "conda-meta": "json",  # conda package metadata
+        # Nginx files
+        "nginx.conf": "nginx",
+        "mime.types": "nginx",
+        "fastcgi_params": "nginx",
+        "proxy_params": "nginx",
+        # Debian control files
+        "control": "text",  # debian/control
+        "changelog": "text",  # debian/changelog
+        "copyright": "text",  # debian/copyright
+        "rules": "makefile",  # debian/rules
+        "compat": "text",  # debian/compat
+        "watch": "text",  # debian/watch
+        "sources.list": "text",  # apt sources
+        "apt.conf": "text",  # apt configuration
+        # Build/CI files
+        "Makefile": "makefile",
+        "makefile": "makefile",
+        "Cargo.lock": "toml",  # Rust dependency lock file
+        "Justfile": "make",  # just command runner (Rust alternative to make)
+        "justfile": "make",
+        ".gitignore": "text",
+        ".dockerignore": "text",
+        ".env": "bash",
+        ".env.example": "bash",
+        ".env.local": "bash",
+        "Procfile": "text",  # Heroku process file
+        # CI/CD files
+        ".gitlab-ci.yml": "yaml",
+        ".github": "yaml",  # GitHub Actions (directory)
+        "action.yml": "yaml",  # GitHub Action
+        "action.yaml": "yaml",
+    }
+)
+
+
 @app.get("/", response_class=HTMLResponse)
 async def root(
     request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)
