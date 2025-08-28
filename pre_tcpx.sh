@@ -81,6 +81,7 @@ rm crontab.tmp
 
 #(crontab -l 2>/dev/null; echo "44 4 * * * systemctl stop nginx && \"/root/.acme.sh\"/acme.sh --cron --home \"/root/.acme.sh\" && systemctl start nginx > /dev/null") | crontab -
 
+echo 'export COLORTERM=truecolor' >> ~/.bashrc
 apt update
 
 apt install -y sudo 
@@ -603,6 +604,7 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 
 ######## for nvim 
+
 pip install   pynvim
 pip install   jedi
 
