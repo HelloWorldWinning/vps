@@ -611,9 +611,9 @@ pip install   jedi
 pip3 install   pynvim
 pip3 install   jedi
 
+
+npm i -g typescript-language-server typescript
 ########
-
-
 
 
 
