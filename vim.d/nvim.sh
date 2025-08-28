@@ -210,7 +210,11 @@ EOF
 python -m pip install pynvim
 python -m pip install neovim
 
+pip install   pynvim
+pip install   jedi
 
+pip3 install   pynvim
+pip3 install   jedi
 
 
 
