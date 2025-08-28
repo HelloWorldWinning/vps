@@ -54,7 +54,9 @@ done
  #  echo "$hour:$minute$am_pm_symbol $day-$padded_weekday"
 #   echo "$padded_weekday $hour:$minute$am_pm_symbol $day"
 #   echo "$padded_weekday$hour:$minute $am_pm_symbol $day"
-    echo "$padded_weekday $day $hour:$minute $am_pm_symbol"
+ #  echo "$padded_weekday $day $hour:$minute $am_pm_symbol"
+ #  echo "$padded_weekday $day $hour:$minute $am_pm_symbol"
+    echo "$padded_weekday $day $am_pm_symbol $hour:$minute"   
 }
 
 first_part=$(format_date "now")
