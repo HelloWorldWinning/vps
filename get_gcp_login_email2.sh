@@ -17,11 +17,11 @@ if ! command -v curl &>/dev/null; then
 	exit 1
 fi
 
-## Check for gcloud
-#if ! command -v gcloud &>/dev/null; then
-#	echo "Error: gcloud CLI is not installed." >&2
-#	exit 1
-#fi
+# Check for gcloud
+if ! command -v gcloud &>/dev/null; then
+	echo "Error: gcloud CLI is not installed." >&2
+	exit 1
+fi
 
  
 ## Function to install gcloud CLI
