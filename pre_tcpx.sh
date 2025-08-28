@@ -527,7 +527,8 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 
 
-bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
+#bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rust.sh  )
 
 
 bash <(curl -f4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh )  
