@@ -885,7 +885,8 @@ Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
 		41)eval $install_docker;;
 		41.1)eval $install_nginx;;
 		41.2)eval "$probe_x" ;;
-		42)eval $install_docker_ccaa;;
+#	42)eval $install_docker_ccaa;;
+		ccaa)eval $install_docker_ccaa;;
 		43)eval "$bashrc";;
 		44)eval "$jupyter_notebook_remote_access";;
 		45)eval "$latest_arm_kernel";;
