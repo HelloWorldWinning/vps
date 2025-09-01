@@ -47,6 +47,8 @@ fi
 
 # Start the container with host networking so the tunnel is in the host namespace
 log "Starting '${CONTAINER_NAME}' (host networking) with hostname '${HOST_HNAME}'..."
+#--restart unless-stopped \
+
 docker run -d \
 	--name "${CONTAINER_NAME}" \
 	--cap-add=NET_ADMIN \
@@ -55,7 +57,7 @@ docker run -d \
 	--hostname "${HOST_HNAME}" \
 	-e NB_SETUP_KEY="${NB_SETUP_KEY}" \
 	-v "${VOLUME_NAME}:/var/lib/netbird" \
-	--restart unless-stopped \
+	--restart always \
 	"${IMAGE}"
 
 # Show quick status
