@@ -732,7 +732,7 @@ ${Red_font_prefix}68${Font_color_suffix} azure relative
 ${Red_font_prefix}69${Font_color_suffix} aws_arm_dd ${Red_font_prefix}ARM${Font_color_suffix}
 ${Red_font_prefix}70${Font_color_suffix} docker_socks5_serjs
 ${Red_font_prefix}71${Font_color_suffix} install_freenom.sh
-${Red_font_prefix}72${Font_color_suffix} rename vps
+${Red_font_prefix}rename${Font_color_suffix} rename vps
 ${Red_font_prefix}7${Font_color_suffix} receive on 9
 ${Red_font_prefix}9${Font_color_suffix} send on 9
 ${Red_font_prefix}75${Font_color_suffix} docker azure panel ip:8888  1 19860826
@@ -985,7 +985,7 @@ others for input location
 		69)eval "$aws_arm_dd";;
                 70)eval "$docker_socks5_serjs" ;;
                 71)eval "$install_freenom" ;;
-                72)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
+                rename)read -p 'user name =>': USER_NAME &&  hostnamectl set-hostname $USER_NAME 
 cat >>/etc/hosts<<EOF
 $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
