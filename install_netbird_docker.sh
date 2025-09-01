@@ -68,3 +68,7 @@ log "Quick checks you can run:"
 echo "  ip addr show wt0            # Interface should now be on the HOST"
 echo "  ip route | grep 100.        # Routes for NetBird range should be present"
 # echo "  ping -c 3 100.105.160.165   # Ping your US peer's NetBird IP from HOST"
+
+ip route | grep 100
+
+
