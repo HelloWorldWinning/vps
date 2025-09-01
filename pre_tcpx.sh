@@ -602,8 +602,9 @@ sudo apt install -y  linux-image-amd64 linux-headers-amd64
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh )
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh ) 
 
-######## for nvim 
+######## for nvim start
 
 pip install   pynvim
 pip install   jedi
@@ -613,7 +614,7 @@ pip3 install   jedi
 
 
 npm i -g typescript-language-server typescript
-########
+######## for nvim  end
 
 
 
