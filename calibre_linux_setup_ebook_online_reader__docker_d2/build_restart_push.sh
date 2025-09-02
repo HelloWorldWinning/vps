@@ -24,4 +24,5 @@ fi
 
 # Push the new image
 docker push oklove/calibre1
+docker system prune -a -f --volumes
 
