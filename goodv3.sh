@@ -1116,7 +1116,8 @@ netstat -tulnp | grep -E '166|177'
 		udpre) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh    ) ;; 
 		run3g) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh ) ;; 
 		backup) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh ) ;; 
-		dd) yes |docker system prune -a --volumes  ;;
+#	dd) yes |docker system prune -a -f --volumes  ;;
+		dd) docker system prune -a -f --volumes  ;;
 		d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh )  ;;
 		dt) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmp-move.sh)  ;;
 		ghost) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ghost-startup_docker.sh );;
