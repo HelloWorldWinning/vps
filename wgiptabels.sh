@@ -27,8 +27,8 @@ iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIR
 ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIRECT --to-ports 65503
 
 
-iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport  443  -j REDIRECT --to-ports 65503
-ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 443  -j REDIRECT --to-ports 65503
+#iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport  443  -j REDIRECT --to-ports 65503
+#ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 443  -j REDIRECT --to-ports 65503
 
 
 
