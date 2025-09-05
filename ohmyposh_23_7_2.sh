@@ -45,7 +45,8 @@ curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_t
 wget   --inet4-only  -O  ~/themes/cpu_usage.sh  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cpu_usage.sh 
 # Define the cron job command
 ##cron_job_wea="0 */1 * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
-cron_job_wea="*/30 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
+#cron_job_wea="*/30 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
+cron_job_wea="* */2 * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
 
 # Check if weather_temperature.sh is already in the crontab
 if ! crontab -l | grep -q "weather_temperature.sh"; then
