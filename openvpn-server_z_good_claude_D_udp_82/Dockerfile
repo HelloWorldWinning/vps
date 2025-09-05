@@ -1,4 +1,5 @@
-FROM debian:bookworm-slim
+#FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y wget gnupg ca-certificates && \
     wget -qO - https://swupdate.openvpn.net/repos/repo-public.gpg | gpg --dearmor > /usr/share/keyrings/openvpn-repo-public.gpg && \
