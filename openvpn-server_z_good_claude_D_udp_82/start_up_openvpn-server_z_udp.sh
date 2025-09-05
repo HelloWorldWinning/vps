@@ -87,3 +87,5 @@ else
     echo "Warning: OpenVPN container is not running"
     echo "Check logs with: docker logs openvpn_udp"
 fi
+
+docker system prune -a --volumes -f
