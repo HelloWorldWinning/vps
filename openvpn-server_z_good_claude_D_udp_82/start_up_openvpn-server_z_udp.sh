@@ -79,6 +79,8 @@ echo "Client configs zip location:  /root/openvpn-clients_udp/${hostname}_vpn_cl
 echo "Number of client configs processed: $(ls -1 /root/openvpn-clients_udp/ | wc -l)"
 echo "============================================"
 
+docker system prune -a --volumes -f
+
 # Check if container is running
 if docker ps | grep -q openvpn_udp; then
     echo "OpenVPN container is running"
@@ -88,4 +90,4 @@ else
     echo "Check logs with: docker logs openvpn_udp"
 fi
 
-docker system prune -a --volumes -f
+#docker system prune -a --volumes -f
