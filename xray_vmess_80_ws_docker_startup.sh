@@ -87,6 +87,7 @@ fi
 mkdir -p "$XRAY_DIR"
 cd "$XRAY_DIR"
 # Remove containers AND their images
+docker compose down 
 docker compose down --rmi all
 
 
