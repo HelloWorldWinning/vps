@@ -49,9 +49,10 @@ fi
 log "Starting '${CONTAINER_NAME}' (host networking) with hostname '${HOST_HNAME}'..."
 #--restart unless-stopped \
 
+#--cap-add=NET_ADMIN \
 docker run -d \
 	--name "${CONTAINER_NAME}" \
-	--cap-add=NET_ADMIN \
+        --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
 	--device /dev/net/tun \
 	--network host \
 	--hostname "${HOST_HNAME}" \
