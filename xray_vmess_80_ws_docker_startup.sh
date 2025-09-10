@@ -85,6 +85,13 @@ fi
 
 # Create directory and download config
 mkdir -p "$XRAY_DIR"
+cd "$XRAY_DIR"
+# Remove containers AND their images
+docker compose down --rmi all
+
+
+
+
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config > "$XRAY_DIR/config.json"
 
 # Create docker-compose.yml
@@ -107,13 +114,13 @@ EOL
 cd "$XRAY_DIR"
 
 # Stop existing containers and remove them
-docker-compose down
+#docker compose down
 
 # Pull latest image
-docker-compose pull
+docker compose pull
 
 # Start containers in detached mode
-docker-compose up -d
+docker compose up -d
 
 # Wait for container to start
 sleep 3
