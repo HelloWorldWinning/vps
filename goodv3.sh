@@ -1135,6 +1135,7 @@ netstat -tulnp | grep -E '166|177'
 		webtop) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_webtop.sh )  ;;
 		wg_newer) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh   )  ;;
 		netbird) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh )  ;;
+		nb) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh )  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		

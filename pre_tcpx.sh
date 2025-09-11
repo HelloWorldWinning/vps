@@ -622,6 +622,7 @@ pip3 install   jedi
 npm i -g typescript-language-server typescript
 ######## for nvim  end
 
+sudo apt install -y bsdmainutils 
 
 
 sudo reboot

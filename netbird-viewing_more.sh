@@ -1,0 +1,408 @@
+#!/usr/bin/env bash
+# netbird-viewing.sh — pretty “view-only” NetBird peers in your terminal
+# Dependencies: curl, jq, column
+set -Eeuo pipefail
+
+# --- Defaults (you can hardcode a fallback like 'default' if you want) ---
+# Example of your requested style: NETBIRD_TOKEN=${NETBIRD_TOKEN:-default}
+NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_jZgdKbt8LL0h9mR7tIBGelb47ZZRog2XLmgq}" # export NETBIRD_TOKEN=nbp_...
+NETBIRD_API="${NETBIRD_API:-https://api.netbird.io/api}"                   # self-host: https://your-mgmt:33073/api
+NETBIRD_TIMEOUT="${NETBIRD_TIMEOUT:-30}"
+
+# --- CLI parsing / help ---
+show_help() {
+	cat <<'EOF'
+Usage:
+  netbird-viewing.sh [list] [--connected] [--name SUBSTR] [--ip SUBSTR] [--group SUBSTR]
+                     [--csv] [--json] [--wide] [--sort FIELD] [--watch [N]]
+                     [-t TOKEN] [-b BASE_URL]
+
+Subcommands:
+  list            (default) show table
+  json            show filtered JSON
+  csv             export CSV
+  detail ID       show a single peer (pretty JSON)
+
+Options:
+  --connected         only connected peers
+  --name SUBSTR       filter by name (case-insensitive regex ok)
+  --ip SUBSTR         filter by IP (regex ok)
+  --group SUBSTR      filter by group name (regex ok)
+  --wide              extra columns (HOSTNAME, KERNEL, UI)
+  --sort FIELD        name (default) | ip | last_seen | connected
+  --watch [N]         refresh every N seconds (default 5)
+  -t, --token TOKEN   token (or set NETBIRD_TOKEN)
+  -b, --base-url URL  API base (default: https://api.netbird.io/api)
+  -h, --help          this help
+
+Examples:
+  NETBIRD_TOKEN=nbp_xxx ./netbird-viewing.sh
+  ./netbird-viewing.sh --connected --group vps --wide
+  ./netbird-viewing.sh --name mac --csv > peers.csv
+  ./netbird-viewing.sh detail d2vd6arl0ubs73bbs300
+  ./netbird-viewing.sh --watch 3
+EOF
+}
+
+cmd="list"
+ONLY_CONNECTED=0
+NAME=""
+IPF=""
+GRP=""
+WIDE=0
+SORT="name"
+WATCH=0
+INTERVAL=5
+PEER_ID=""
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	list | json | csv)
+		cmd="$1"
+		shift
+		;;
+	detail)
+		cmd="detail"
+		PEER_ID="${2-}"
+		shift 2
+		;;
+	--connected)
+		ONLY_CONNECTED=1
+		shift
+		;;
+	--name)
+		NAME="${2-}"
+		shift 2
+		;;
+	--ip)
+		IPF="${2-}"
+		shift 2
+		;;
+	--group)
+		GRP="${2-}"
+		shift 2
+		;;
+	--wide)
+		WIDE=1
+		shift
+		;;
+	--sort)
+		SORT="${2-name}"
+		shift 2
+		;;
+	--watch)
+		WATCH=1
+		if [[ "${2-}" =~ ^[0-9]+$ ]]; then
+			INTERVAL="$2"
+			shift 2
+		else shift 1; fi
+		;;
+	-t | --token)
+		NETBIRD_TOKEN="${2-}"
+		shift 2
+		;;
+	-b | --base-url)
+		NETBIRD_API="${2-}"
+		shift 2
+		;;
+	-h | --help)
+		show_help
+		exit 0
+		;;
+	*)
+		echo "Unknown arg: $1"
+		show_help
+		exit 1
+		;;
+	esac
+done
+
+# --- Checks ---
+#need() { command -v "$1" >/dev/null 2>&1 || {
+#	echo "Missing dependency: $1"
+#	exit 2
+#}; }
+#need curl
+#need jq
+#need column
+
+
+
+
+# --- Auto-installing dependency checker ---
+need() {
+    local cmd="$1"
+    local package="${2:-$1}"  # Use second argument as package name, or default to command name
+    
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Missing dependency: $cmd"
+        echo "Attempting to install $package..."
+        
+        # Detect package manager and install
+        if command -v apt >/dev/null 2>&1; then
+            sudo apt update && sudo apt install -y "$package"
+        elif command -v yum >/dev/null 2>&1; then
+            sudo yum install -y "$package"
+        elif command -v dnf >/dev/null 2>&1; then
+            sudo dnf install -y "$package"
+        elif command -v pacman >/dev/null 2>&1; then
+            sudo pacman -S --noconfirm "$package"
+        elif command -v apk >/dev/null 2>&1; then
+            sudo apk add "$package"
+        else
+            echo "Error: No supported package manager found (apt, yum, dnf, pacman, apk)"
+            echo "Please install $package manually"
+            exit 2
+        fi
+        
+        # Verify installation succeeded
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            echo "Error: Failed to install $cmd"
+            exit 2
+        else
+            echo "Successfully installed $cmd"
+        fi
+    fi
+}
+
+# --- Usage examples ---
+need curl
+need jq
+need column bsdmainutils  # command name differs from package name
+
+
+
+if [[ -z "$NETBIRD_TOKEN" || "$NETBIRD_TOKEN" == "default" ]]; then
+	echo "Error: NETBIRD_TOKEN is not set. Set it or pass -t TOKEN."
+	exit 3
+fi
+
+# --- Helpers ---
+api_get() {
+	local path="$1"
+	curl -fsS "${NETBIRD_API}${path}" \
+		-H "Accept: application/json" \
+		-H "Authorization: Token ${NETBIRD_TOKEN}" \
+		--connect-timeout 10 --max-time "${NETBIRD_TIMEOUT}"
+}
+
+gen_sort_expr() {
+	case "$SORT" in
+	name) echo '(.name // "" | ascii_downcase)' ;;
+	ip) echo '(.ip // "")' ;;
+	last_seen) echo '(.last_seen // "")' ;;
+	connected) echo '[ (if .connected then 0 else 1 end), (.name // "" | ascii_downcase) ]' ;;
+	*) echo '(.name // "" | ascii_downcase)' ;;
+	esac
+}
+
+build_jq_common() {
+	local SORT_EXPR
+	SORT_EXPR="$(gen_sort_expr)"
+	local JQ_COMMON
+	JQ_COMMON="$(
+		cat <<'JQ'
+def matches(s; q): (q == "" or ((s // "") | test(q; "i")));
+map(select( ($only_connected == 0) or (.connected == true) ))
+| map(select(
+    matches(.name; $name)
+    and matches(.ip; $ip)
+    and ( ($group == "") or ( any(.groups[]?; .name | test($group; "i")) ) )
+  ))
+| sort_by( __SORT_EXPR__ )
+JQ
+	)"
+	# inject the sort expression safely
+	JQ_COMMON="${JQ_COMMON/__SORT_EXPR__/$SORT_EXPR}"
+	printf '%s' "$JQ_COMMON"
+}
+
+# --- Rendering: Table (TSV -> column) ---
+render_table() {
+	local NOW_TS
+	NOW_TS=$(date -u +%s)
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	local JQ_TSV
+	JQ_TSV="$(
+		cat <<'JQ'
+# Parse RFC3339(Z) with optional fractional seconds, to epoch
+def parse_time(s):
+  (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
+
+# Humanize seconds as "Xd Xh", "Xh Ym", "Xm Zs", or "Xs" (filter form)
+def humanize:
+  if (.|tonumber) < 0 then "0s ago"
+  else
+    ( (. /86400)|floor ) as $d |
+    ( ((. %86400)/3600)|floor ) as $h |
+    ( ((. % 3600)/60)|floor ) as $m |
+    ( (. % 60)|floor ) as $s |
+    if   $d > 0 then "\($d)d" + (if $h>0 then " \($h)h" else "" end) + " ago"
+    elif $h > 0 then "\($h)h" + (if $m>0 then " \($m)m" else "" end) + " ago"
+    elif $m > 0 then "\($m)m" + (if $s>0 then " \($s)s" else "" end) + " ago"
+    else "\($s)s ago" end
+  end;
+
+# Compute seen_ago for a peer (empty if no last_seen)
+def seen_ago(p):
+  (p.last_seen // "") as $ls |
+  if $ls == "" then "" else
+    ($now - (parse_time($ls))) | humanize
+  end;
+
+def header:       ["No.","NAME","DNS_LABEL","SEEN_AGO","IP","CITY","OS","VER","CONN","LAST_SEEN","GROUPS"];
+def header_wide:  ["No.","NAME","DNS_LABEL","SEEN_AGO","IP","CITY","OS","VER","CONN","LAST_SEEN","GROUPS","HOSTNAME","KERNEL","UI"];
+
+def base_row(idx; p):
+  [ (idx + 1),                                # No.
+    (p.name//""),                             # NAME
+    (p.dns_label//""),                        # DNS_LABEL
+    (seen_ago(p)),                            # SEEN_AGO
+    (p.ip//""),                               # IP
+    (p.city_name//""),                        # CITY
+    ((p.os//"")|split(" ")[0]),               # OS
+    (p.version//""),                          # VER
+    (if p.connected then "✓" else "✗" end),   # CONN
+    (p.last_seen//""),                        # LAST_SEEN
+    ((p.groups//[])|map(.name)|join(","))     # GROUPS
+  ];
+
+def wide_row(idx; p):
+  base_row(idx; p) + [ (p.hostname//""), (p.kernel_version//""), (p.ui_version//"") ];
+
+# Number the rows AFTER filtering & sorting
+to_entries as $rows
+| ( if $wide==1 or $wide==true then (header_wide|@tsv) else (header|@tsv) end ),
+( $rows[] |
+    .key as $idx | .value as $p |
+    if $wide==1 or $wide==true
+      then (wide_row($idx; $p)|@tsv)
+      else (base_row($idx; $p)|@tsv)
+    end
+)
+JQ
+	)"
+	api_get "/peers" |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--arg group "$GRP" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			--argjson wide "$WIDE" \
+			--argjson now "$NOW_TS" \
+			"$JQ_COMMON | $JQ_TSV" |
+		column -t -s $'\t'
+}
+
+# --- Rendering: CSV ---
+render_csv() {
+	local NOW_TS
+	NOW_TS=$(date -u +%s)
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	local JQ_CSV
+	JQ_CSV="$(
+		cat <<'JQ'
+def parse_time(s): (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
+
+# Humanize seconds (filter form)
+def humanize:
+  if (.|tonumber) < 0 then "0s ago"
+  else
+    ( (. /86400)|floor ) as $d |
+    ( ((. %86400)/3600)|floor ) as $h |
+    ( ((. % 3600)/60)|floor ) as $m |
+    ( (. % 60)|floor ) as $s |
+    if   $d > 0 then "\($d)d" + (if $h>0 then " \($h)h" else "" end) + " ago"
+    elif $h > 0 then "\($h)h" + (if $m>0 then " \($m)m" else "" end) + " ago"
+    elif $m > 0 then "\($m)m" + (if $s>0 then " \($s)s" else "" end) + " ago"
+    else "\($s)s ago" end
+  end;
+
+def seen_ago(p):
+  (p.last_seen // "") as $ls |
+  if $ls == "" then "" else
+    ($now - (parse_time($ls))) | humanize
+  end;
+
+# Number rows after filtering & sorting
+to_entries as $rows
+|
+( ["no","name","dns_label","seen_ago","ip","city","os","version","connected","last_seen","groups"]
+  + ( if $wide==1 or $wide==true then ["hostname","kernel","ui"] else [] end )
+| @csv ),
+( $rows[] |
+  .key as $idx | .value as $p |
+  ( [ ($idx+1),
+      ($p.name//""), ($p.dns_label//""), (seen_ago($p)),
+      ($p.ip//""), ($p.city_name//""), ($p.os//""), ($p.version//""),
+      ($p.connected|tostring), ($p.last_seen//""), (($p.groups//[])|map(.name)|join(","))
+    ]
+    + ( if $wide==1 or $wide==true then [ ($p.hostname//""), ($p.kernel_version//""), ($p.ui_version//"") ] else [] end )
+  ) | @csv
+)
+JQ
+	)"
+	api_get "/peers" |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--arg group "$GRP" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			--argjson wide "$WIDE" \
+			--argjson now "$NOW_TS" \
+			"$JQ_COMMON | $JQ_CSV"
+}
+
+# --- Rendering: JSON (unchanged shape, still filtered/sorted) ---
+render_json() {
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	api_get "/peers" |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--arg group "$GRP" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			"$JQ_COMMON"
+}
+
+# --- Detail by ID ---
+render_detail() {
+	local id="$1"
+	[[ -n "$id" ]] || {
+		echo "detail: missing PEER_ID"
+		exit 1
+	}
+	api_get "/peers/${id}" | jq
+}
+
+# --- Simple watch loop (no fragile quoting) ---
+watch_loop() {
+	trap 'exit 0' INT
+	while :; do
+		printf '\033c' || true # clear screen
+		render_table
+		echo
+		date -u +"Updated: %Y-%m-%d %H:%M:%SZ (UTC)"
+		sleep "$INTERVAL"
+	done
+}
+
+# --- Execute ---
+if [[ "$WATCH" -eq 1 ]]; then
+	watch_loop
+	exit 0
+fi
+
+case "$cmd" in
+list) render_table ;;
+json) render_json ;;
+csv) render_csv ;;
+detail) render_detail "$PEER_ID" ;;
+*)
+	show_help
+	exit 1
+	;;
+esac
