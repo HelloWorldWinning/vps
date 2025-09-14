@@ -592,6 +592,7 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh  )  
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh )  
 
 
 sudo apt update
