@@ -1,5 +1,5 @@
 #!/bin/bash
-DIR="/root/port1777_markdown_D"
+DIR="/root/port7778_D"
 mkdir -p $DIR
 cd $DIR
 
@@ -24,7 +24,7 @@ services:
     ports:
       - "7778:7778"
     volumes:
-      - /data/file_recv_api_d:/saving_path
+      - /data/files_recv_d:/saving_path
     healthcheck:               # (compose-level mirror of image healthcheck is fine)
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:7778/healthz"]
       interval: 15s
