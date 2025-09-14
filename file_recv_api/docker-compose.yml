@@ -1,0 +1,19 @@
+services:
+  file-recv-api:
+    build:
+      context: .          # path containing Dockerfile + src/ + Cargo.toml
+      dockerfile: Dockerfile
+    image: oklove/file-recv-api:latest
+    container_name: file-recv-api
+    restart: unless-stopped
+    environment:
+      API_PASSWD: "kkb"
+      TIMEZONE: "Asia/Shanghai"
+      SAVING_PATH: "/saving_path"
+      PORT: "7778"
+      RUST_LOG: "info"
+    ports:
+      - "7778:7778"
+    volumes:
+      - /data/file_recv_api_d:/saving_path
+

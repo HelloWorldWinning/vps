@@ -1,0 +1,421 @@
+use axum::{
+    Router,
+    extract::{BodyStream, DefaultBodyLimit, Multipart, Query, State},
+    http::{HeaderMap, StatusCode},
+    response::{IntoResponse, Response},
+    routing::{get, post, put},
+};
+use chrono::{Datelike, Utc};
+use chrono_tz::Tz;
+use futures_util::StreamExt;
+use std::{
+    collections::{HashMap, HashSet},
+    env,
+    io::ErrorKind,
+    net::SocketAddr,
+    path::{Path, PathBuf},
+};
+use tokio::{
+    fs::{self, File},
+    io::AsyncWriteExt,
+};
+use tracing::{error, info, warn};
+use tracing_subscriber::{EnvFilter, fmt};
+
+#[derive(Clone)]
+struct AppState {
+    base_path: PathBuf,
+    allowed_exts: HashSet<String>,
+    api_passwd: String,
+    tz: Tz,
+}
+
+#[derive(Debug)]
+struct BadRequest(&'static str);
+impl IntoResponse for BadRequest {
+    fn into_response(self) -> Response {
+        (StatusCode::BAD_REQUEST, self.0).into_response()
+    }
+}
+
+#[derive(Debug)]
+struct Unauthorized;
+impl IntoResponse for Unauthorized {
+    fn into_response(self) -> Response {
+        (StatusCode::UNAUTHORIZED, "unauthorized").into_response()
+    }
+}
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // Logging
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    fmt::Subscriber::builder()
+        .with_env_filter(env_filter)
+        .init();
+
+    // Required: API_PASSWD
+    let api_passwd =
+        env::var("API_PASSWD").expect("Missing env var API_PASSWD (e.g., API_PASSWD=kkb)");
+
+    // TIMEZONE
+    let tz_str = env::var("TIMEZONE").unwrap_or_else(|_| "Asia/Shanghai".to_string());
+    let tz: Tz = tz_str.parse().unwrap_or_else(|_| {
+        eprintln!(
+            "WARN: TIMEZONE='{}' not recognized. Falling back to Asia/Shanghai.",
+            tz_str
+        );
+        chrono_tz::Asia::Shanghai
+    });
+
+    // SAVING_PATH
+    let base_path =
+        PathBuf::from(env::var("SAVING_PATH").unwrap_or_else(|_| "/saving_path".into()));
+
+    // PORT
+    let port: u16 = env::var("PORT")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(7778);
+
+    // Allowed extensions
+    // Preferred name (correct spelling, underscores)
+    // Back-compat: accept hyphenated and misspelled envs too, with warnings.
+    let default_exts = DEFAULT_ALLOWED_EXTS.to_string();
+    let allowed_exts_raw = if let Ok(v) = env::var("FILE_TYPES_EXTENSION") {
+        v
+    } else if let Ok(v) = env::var("FILE_TYPES_EXTENTION") {
+        warn!("Env var FILE_TYPES_EXTENTION is misspelled; please use FILE_TYPES_EXTENSION.");
+        v
+    } else if let Ok(v) = env::var("FILE-TYPES-EXTENTION") {
+        warn!(
+            "Env var FILE-TYPES-EXTENTION contains a hyphen and is misspelled; prefer FILE_TYPES_EXTENSION."
+        );
+        v
+    } else {
+        default_exts.clone()
+    };
+
+    let allowed_exts = parse_exts(&allowed_exts_raw);
+
+    info!("FileRecvAPI starting on 0.0.0.0:{port}");
+    info!("TIMEZONE: {}", tz);
+    info!("SAVING_PATH: {}", base_path.display());
+    info!(
+        "Allowed extensions ({}): {:?}",
+        allowed_exts.len(),
+        allowed_exts
+    );
+
+    let state = AppState {
+        base_path,
+        allowed_exts,
+        api_passwd,
+        tz,
+    };
+
+    let app = Router::new()
+        // Multipart upload (field name must be "file")
+        .route("/", post(upload_multipart))
+        // Raw (non-multipart) upload
+        .route("/raw", put(upload_raw))
+        // Health
+        .route("/healthz", get(|| async { "ok" }))
+        // No global body limit; we stream to disk.
+        .layer(DefaultBodyLimit::disable())
+        .with_state(state);
+
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    axum::serve(tokio::net::TcpListener::bind(addr).await?, app).await?;
+    Ok(())
+}
+
+// ---------- Handlers ----------
+
+async fn upload_multipart(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Query(query): Query<HashMap<String, String>>,
+    mut multipart: Multipart,
+) -> Result<Response, Response> {
+    // Auth
+    if !auth_ok(&state.api_passwd, &headers, &query) {
+        return Err(Unauthorized.into_response());
+    }
+
+    // Content-Type sanity check with helpful message (common curl mistake: using -d instead of -F)
+    if let Some(ct) = headers.get("content-type").and_then(|v| v.to_str().ok()) {
+        let ct = ct.to_ascii_lowercase();
+        if ct.starts_with("multipart/form-data") && !ct.contains("boundary=") {
+            return Err(BadRequest(
+                "multipart/form-data missing boundary; use curl -F 'file=@path'",
+            )
+            .into_response());
+        }
+    }
+
+    // Iterate to find the first 'file' field
+    while let Some(field) = multipart
+        .next_field()
+        .await
+        .map_err(|_| BadRequest("invalid multipart form").into_response())?
+    {
+        if field.name() != Some("file") {
+            continue;
+        }
+
+        let orig_name = field
+            .file_name()
+            .map(|s| s.to_string())
+            .unwrap_or_else(|| "upload.bin".to_string());
+
+        let file_name = sanitize_file_name(&orig_name);
+        let ext = extension_of(&file_name);
+
+        // choose subdir by extension
+        let subdir = ext
+            .as_ref()
+            .filter(|e| state.allowed_exts.contains(&e.to_ascii_lowercase()))
+            .map(|e| format!("{}_D", e))
+            .unwrap_or_else(|| "others_D".to_string());
+
+        // date-dir
+        let now = Utc::now().with_timezone(&state.tz);
+        let dir = state
+            .base_path
+            .join(&subdir)
+            .join(format!("{:04}", now.year()))
+            .join(format!("{:02}", now.month()))
+            .join(format!("{:02}", now.day()));
+
+        fs::create_dir_all(&dir)
+            .await
+            .map_err(|e| server_err(format!("failed to create dir: {e}")))?;
+
+        // temp file path (hidden + .part suffix)
+        let tmp_path = dir.join(format!(".{}.part-{:08x}", file_name, rand::random::<u32>()));
+
+        // stream to temp
+        let mut tmp = File::create(&tmp_path)
+            .await
+            .map_err(|e| server_err(format!("failed to create temp file: {e}")))?;
+
+        let mut field_stream = field;
+        while let Some(chunk) = field_stream
+            .chunk()
+            .await
+            .map_err(|e| cleanup_and_500(&tmp_path, format!("read error (multipart): {e}")))?
+        {
+            tmp.write_all(&chunk)
+                .await
+                .map_err(|e| cleanup_and_500(&tmp_path, format!("write error: {e}")))?;
+        }
+
+        tmp.flush()
+            .await
+            .map_err(|e| cleanup_and_500(&tmp_path, format!("flush error: {e}")))?;
+
+        // finalize: rename to target, resolving collisions
+        let final_path = finalize_move_with_collision(&tmp_path, &dir, &file_name)
+            .await
+            .map_err(|e| server_err(format!("finalize error: {e}")))?;
+
+        // success: return absolute path (plain text)
+        let dest_str = final_path.to_string_lossy().to_string();
+        return Ok((StatusCode::OK, dest_str).into_response());
+    }
+
+    Err(BadRequest("missing multipart field 'file'").into_response())
+}
+
+async fn upload_raw(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Query(query): Query<HashMap<String, String>>,
+    mut body: BodyStream,
+) -> Result<Response, Response> {
+    // Auth
+    if !auth_ok(&state.api_passwd, &headers, &query) {
+        return Err(Unauthorized.into_response());
+    }
+
+    // filename: query ?filename=... or header X-Filename
+    let file_name = query
+        .get("filename")
+        .cloned()
+        .or_else(|| {
+            headers
+                .get("x-filename")
+                .and_then(|v| v.to_str().ok())
+                .map(|s| s.to_string())
+        })
+        .map(|s| sanitize_file_name(&s))
+        .unwrap_or_else(|| "upload.bin".to_string());
+
+    let ext = extension_of(&file_name);
+
+    // subdir by extension
+    let subdir = ext
+        .as_ref()
+        .filter(|e| state.allowed_exts.contains(&e.to_ascii_lowercase()))
+        .map(|e| format!("{}_D", e))
+        .unwrap_or_else(|| "others_D".to_string());
+
+    // date-dir
+    let now = Utc::now().with_timezone(&state.tz);
+    let dir = state
+        .base_path
+        .join(&subdir)
+        .join(format!("{:04}", now.year()))
+        .join(format!("{:02}", now.month()))
+        .join(format!("{:02}", now.day()));
+    fs::create_dir_all(&dir)
+        .await
+        .map_err(|e| server_err(format!("failed to create dir: {e}")))?;
+
+    // temp file
+    let tmp_path = dir.join(format!(".{}.part-{:08x}", file_name, rand::random::<u32>()));
+
+    let mut tmp = File::create(&tmp_path)
+        .await
+        .map_err(|e| server_err(format!("failed to create temp file: {e}")))?;
+
+    while let Some(next) = body.next().await {
+        let chunk =
+            next.map_err(|e| cleanup_and_500(&tmp_path, format!("read error (raw): {e}")))?;
+        tmp.write_all(&chunk)
+            .await
+            .map_err(|e| cleanup_and_500(&tmp_path, format!("write error: {e}")))?;
+    }
+
+    tmp.flush()
+        .await
+        .map_err(|e| cleanup_and_500(&tmp_path, format!("flush error: {e}")))?;
+
+    // finalize
+    let final_path = finalize_move_with_collision(&tmp_path, &dir, &file_name)
+        .await
+        .map_err(|e| server_err(format!("finalize error: {e}")))?;
+
+    let dest_str = final_path.to_string_lossy().to_string();
+    Ok((StatusCode::OK, dest_str).into_response())
+}
+
+// ---------- Helpers ----------
+
+const DEFAULT_ALLOWED_EXTS: &str = "pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,json,xml,html,css,js,ts,py,java,c,cpp,cs,go,rs,rb,php,sh,bat,ps1,sql,yaml,yml,ini,log,jpg,jpeg,png,gif,bmp,svg,webp,tiff,ico,mp3,wav,aac,flac,ogg,m4a,mp4,mov,mkv,avi,webm,wmv,zip,rar,7z,tar,gz,bz2";
+
+fn parse_exts(list: &str) -> HashSet<String> {
+    list.split(',')
+        .map(|s| s.trim())
+        .filter(|s| !s.is_empty())
+        .map(|s| s.trim_start_matches('.').to_ascii_lowercase())
+        .collect()
+}
+
+fn sanitize_file_name(input: &str) -> String {
+    // Keep only final path component; strip any dirs.
+    let base = Path::new(input)
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("upload.bin");
+    // Disallow weird NULs or slashes (very conservative).
+    base.chars()
+        .filter(|&c| c != '/' && c != '\\' && c != '\0')
+        .collect()
+}
+
+fn extension_of(file_name: &str) -> Option<String> {
+    Path::new(file_name)
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|s| s.trim_start_matches('.').to_ascii_lowercase())
+}
+
+fn auth_ok(secret: &str, headers: &HeaderMap, query: &HashMap<String, String>) -> bool {
+    // Query param
+    if let Some(q) = query.get("api_passwd") {
+        if q == secret {
+            return true;
+        }
+    }
+    // X-Api-Passwd header
+    if let Some(h) = headers.get("x-api-passwd").and_then(|v| v.to_str().ok()) {
+        if h == secret {
+            return true;
+        }
+    }
+    // Authorization: Bearer <token>
+    if let Some(auth) = headers.get("authorization").and_then(|v| v.to_str().ok()) {
+        if let Some(token) = auth
+            .strip_prefix("Bearer ")
+            .or_else(|| auth.strip_prefix("bearer "))
+        {
+            if token == secret {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+async fn finalize_move_with_collision(
+    tmp_path: &Path,
+    dir: &Path,
+    file_name: &str,
+) -> std::io::Result<PathBuf> {
+    let (stem, ext_owned) = split_stem_ext(file_name);
+    let ext = ext_owned.as_deref(); // Option<&str>
+
+    let mut i: u32 = 0;
+    loop {
+        let candidate = if i == 0 {
+            make_name(dir, &stem, ext)
+        } else {
+            make_name(dir, &format!("{}_{}", stem, i), ext)
+        };
+
+        match fs::rename(&tmp_path, &candidate).await {
+            Ok(_) => return Ok(candidate),
+            Err(e) if e.kind() == ErrorKind::AlreadyExists => i += 1,
+            Err(e) => {
+                let _ = fs::remove_file(tmp_path).await;
+                return Err(e);
+            }
+        }
+    }
+}
+
+fn split_stem_ext(name: &str) -> (String, Option<String>) {
+    let p = Path::new(name);
+    let stem = p
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("file")
+        .to_string();
+    let ext = p
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|s| s.to_string());
+    (stem, ext)
+}
+
+fn make_name(dir: &Path, stem: &str, ext: Option<&str>) -> PathBuf {
+    match ext {
+        Some(e) if !e.is_empty() => dir.join(format!("{stem}.{e}")),
+        _ => dir.join(stem),
+    }
+}
+
+fn cleanup_and_500(tmp_path: &Path, msg: String) -> Response {
+    // Best-effort cleanup
+    if let Err(e) = std::fs::remove_file(tmp_path) {
+        error!("cleanup failed for {}: {}", tmp_path.display(), e);
+    }
+    server_err(msg)
+}
+
+fn server_err(msg: String) -> Response {
+    error!("{}", msg);
+    (StatusCode::INTERNAL_SERVER_ERROR, msg).into_response()
+}

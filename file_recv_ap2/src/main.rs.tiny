@@ -1,0 +1,23 @@
+use axum::{routing::get, Router};
+use std::{env, net::SocketAddr};
+use tokio::net::TcpListener;
+use tracing::info;
+use tracing_subscriber::{fmt, EnvFilter};
+
+async fn health() -> &'static str { "ok" }
+async fn root() -> &'static str { "file-recv-api test" }
+
+#[tokio::main]
+async fn main() {
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    fmt::Subscriber::builder().with_env_filter(env_filter).init();
+
+    let port: u16 = env::var("PORT").ok().and_then(|s| s.parse().ok()).unwrap_or(7778);
+    let app = Router::new()
+        .route("/healthz", get(health))
+        .route("/", get(root));
+
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    info!("Test server listening on http://{addr}");
+    axum::serve(TcpListener::bind(addr).await.unwrap(), app).await.unwrap();
+}

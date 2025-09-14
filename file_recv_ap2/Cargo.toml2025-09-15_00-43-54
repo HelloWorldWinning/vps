@@ -1,0 +1,17 @@
+[package]
+name = "file-recv-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.7", features = ["multipart"] }
+bytes = "1"
+chrono = { version = "0.4", features = ["clock"] }
+chrono-tz = "0.8"
+futures-util = "0.3"
+rand = "0.8"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "fs", "io-util", "net"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+

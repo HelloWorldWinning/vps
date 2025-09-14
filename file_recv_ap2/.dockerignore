@@ -1,0 +1,6 @@
+target
+.git
+Dockerfile
+docker-compose.yml
+build.sh
+

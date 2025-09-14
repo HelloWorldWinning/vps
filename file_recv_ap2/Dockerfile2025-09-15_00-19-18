@@ -1,0 +1,42 @@
+# ---- Builder ----
+FROM rust:slim-trixie AS builder
+WORKDIR /app
+
+# Copy only what's needed to compile
+COPY Cargo.toml ./
+# If you have a Cargo.lock, you can uncomment the next line.
+# COPY Cargo.lock ./
+COPY src ./src
+
+# Build the real release binary (no placeholder/dummy step)
+RUN cargo build --release
+
+# ---- Runner ----
+FROM debian:trixie-slim AS runner
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates tzdata curl \
+ && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+# Copy the compiled binary from the builder stage
+COPY --from=builder /app/target/release/file-recv-api /usr/local/bin/file-recv-api
+
+# Create the saving path and a non-root user (optional but good hygiene)
+RUN useradd -r -s /usr/sbin/nologin appuser \
+ && mkdir -p /saving_path \
+ && chown -R appuser:appuser /saving_path
+
+# Healthcheck helps catch regressions at runtime
+HEALTHCHECK --interval=15s --timeout=3s --retries=5 \
+  CMD curl -fsS http://127.0.0.1:7778/healthz || exit 1
+
+ENV TIMEZONE="Asia/Shanghai" \
+    SAVING_PATH="/saving_path" \
+    PORT="7778" \
+    RUST_LOG="info"
+# API_PASSWD has no default for security.
+
+EXPOSE 7778
+USER appuser
+ENTRYPOINT ["/usr/local/bin/file-recv-api"]
+
