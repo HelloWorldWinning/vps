@@ -1,0 +1,15 @@
+
+services:
+  flask_app:
+    image: oklove/port1777_md
+    container_name: port1777_md_others
+    ports:
+      - "1777:1777"
+    volumes:
+      - /:/Host
+
+    restart: always
+    environment:
+      # Pygments style used ONLY for Markdown code blocks
+      # Examples: "manni" (default), "monokai", "friendly", "github-dark"
+      - markdown_theme=manni
