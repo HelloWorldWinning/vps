@@ -596,6 +596,11 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh   )  
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh  ) 
+
+
+
+
 sudo apt update
 sudo apt full-upgrade  -y
 sudo apt install -y  linux-image-amd64 linux-headers-amd64 
