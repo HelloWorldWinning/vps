@@ -20,7 +20,7 @@ services:
       PORT: "7778"
       RUST_LOG: "info"
       # Optional: override allowed extensions (commas, spaces OK)
-      FILE_TYPES_EXTENSION: "pdf, doc, docx, xls, xlsx, ppt, pptx, txt, md, csv, json, xml, html, css, js, ts, py, java, c, cpp, cs, go, rs, rb, php, sh, bat, ps1, sql, yaml, yml, ini, log, jpg, jpeg, png, gif, bmp, svg, webp, tiff, ico, mp3, wav, aac, flac, ogg, m4a, mp4, mov, mkv, avi, webm, wmv, zip, rar, 7z, tar, gz, bz2"
+      FILE_TYPES_EXTENSION: "conf, pdf, doc, docx, xls, xlsx, ppt, pptx, txt, md, csv, json, xml, html, css, js, ts, py, java, c, cpp, cs, go, rs, rb, php, sh, bat, ps1, sql, yaml, yml, ini, log, jpg, jpeg, png, gif, bmp, svg, webp, tiff, ico, mp3, wav, aac, flac, ogg, m4a, mp4, mov, mkv, avi, webm, wmv, zip, rar, 7z, tar, gz, bz2"
     ports:
       - "7778:7778"
     volumes:
