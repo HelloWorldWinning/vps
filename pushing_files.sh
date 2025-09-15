@@ -10,6 +10,7 @@ API_PASSWD="kkb"
 # --- Colors for better output ---
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+BOLD_RED='\033[1;31m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
@@ -39,7 +40,8 @@ upload_file() {
 
 	if echo "${response}" | jq -e '.saved_success == true' >/dev/null; then
 		saved_path=$(echo "${response}" | jq -r '.path')
-		echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+#	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}"
 	else
 		echo -e "${RED} FAILED: ${file_path} -> Server Response: ${response}${NC}"
 	fi
@@ -74,7 +76,8 @@ if ! nc -z -w 5 "$API_HOST" "$API_PORT"; then
 	echo -e "${RED}Error: Server '${API_HOST}' is not reachable on port '${API_PORT}'. Please check the address and ensure the service is running.${NC}"
 	exit 1
 fi
-echo -e "${GREEN}Server is online.${NC}"
+#echo -e "${GREEN}Server is online.${NC}"
+echo -e "${BOLD_RED}Server is online.${NC}"
 echo "---"
 
 # === Step 2: Collect All File/Folder Paths ===
