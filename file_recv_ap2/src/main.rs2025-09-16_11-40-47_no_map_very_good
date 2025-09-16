@@ -28,8 +28,6 @@ struct AppState {
     allowed_exts: HashSet<String>,
     api_passwd: String,
     tz: Tz,
-    // (host_prefix, container_prefix)
-    host_mappings: Vec<(PathBuf, PathBuf)>,
 }
 
 #[derive(serde::Serialize)]
@@ -133,25 +131,6 @@ async fn main() -> anyhow::Result<()> {
 
     let allowed_exts = parse_exts(&allowed_exts_raw);
 
-    // HOST_MAPPING_PATHS (optional)
-    // Format: "<HOST_PREFIX>:<CONTAINER_PREFIX>[; <HOST2>:<CONT2>, ...]"
-    let host_mappings = env::var("HOST_MAPPING_PATHS")
-        .ok()
-        .map(|s| parse_host_mappings(&s))
-        .unwrap_or_default();
-
-    if host_mappings.is_empty() {
-        info!("HOST_MAPPING_PATHS: none");
-    } else {
-        // Log as "container -> host" for clarity
-        let mappings_str = host_mappings
-            .iter()
-            .map(|(host, cont)| format!("{} -> {}", cont.display(), host.display()))
-            .collect::<Vec<_>>()
-            .join(", ");
-        info!("HOST_MAPPING_PATHS: {}", mappings_str);
-    }
-
     info!("FileRecvAPI starting on 0.0.0.0:{port}");
     info!("TIMEZONE: {}", tz);
     info!("SAVING_PATH: {}", base_path.display());
@@ -166,7 +145,6 @@ async fn main() -> anyhow::Result<()> {
         allowed_exts,
         api_passwd,
         tz,
-        host_mappings,
     };
 
     let app = Router::new()
@@ -275,9 +253,8 @@ async fn upload_multipart(
             .await
             .map_err(|e| server_err(format!("finalize error: {e}")))?;
 
-        // success: return JSON (optionally map to host path)
-        let exposed = map_to_host_path(&final_path, &state.host_mappings);
-        let dest_str = exposed.to_string_lossy().to_string();
+        // success: return JSON
+        let dest_str = final_path.to_string_lossy().to_string();
         return Ok(json_ok(dest_str));
     }
 
@@ -356,8 +333,7 @@ async fn upload_raw(
         .await
         .map_err(|e| server_err(format!("finalize error: {e}")))?;
 
-    let exposed = map_to_host_path(&final_path, &state.host_mappings);
-    let dest_str = exposed.to_string_lossy().to_string();
+    let dest_str = final_path.to_string_lossy().to_string();
     Ok(json_ok(dest_str))
 }
 
@@ -479,40 +455,3 @@ fn server_err(msg: String) -> Response {
     error!("{}", msg);
     json_err(StatusCode::INTERNAL_SERVER_ERROR, msg)
 }
-
-// ---------- Host path mapping helpers ----------
-
-fn parse_host_mappings(list: &str) -> Vec<(PathBuf, PathBuf)> {
-    // Accept ';' or ',' as separators between rules.
-    list.split(|c| c == ';' || c == ',')
-        .filter_map(|pair| {
-            let pair = pair.trim();
-            if pair.is_empty() {
-                return None;
-            }
-            // Format: "<HOST_PREFIX>:<CONTAINER_PREFIX>"
-            let mut parts = pair.splitn(2, ':');
-            let host = parts.next()?.trim();
-            let container = parts.next()?.trim();
-            if host.is_empty() || container.is_empty() {
-                return None;
-            }
-            Some((PathBuf::from(host), PathBuf::from(container)))
-        })
-        .collect()
-}
-
-
-/// If `path` starts with any container prefix from the mappings, replace that prefix with the
-/// corresponding host prefix. Otherwise, return the original path unchanged.
-fn map_to_host_path(path: &Path, mappings: &[(PathBuf, PathBuf)]) -> PathBuf {
-    for (host_prefix, container_prefix) in mappings {
-        if path.starts_with(container_prefix) {
-            if let Ok(rest) = path.strip_prefix(container_prefix) {
-                return host_prefix.join(rest);
-            }
-        }
-    }
-    path.to_path_buf()
-}
-
