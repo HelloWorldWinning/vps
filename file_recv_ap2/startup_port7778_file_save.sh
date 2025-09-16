@@ -17,6 +17,7 @@ services:
       API_PASSWD: "kkb"
       TIMEZONE: "Asia/Shanghai"
       SAVING_PATH: "/saving_path"
+      HOST_MAPPING_PATHS: "/data/file_recv_d:/saving_path"
       PORT: "7778"
       RUST_LOG: "info"
       # Optional: override allowed extensions (commas, spaces OK)
