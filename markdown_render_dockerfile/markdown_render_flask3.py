@@ -134,9 +134,9 @@ def list_files(subpath=""):
                     font-family: 'FZFangJunHeiS';
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }
-                body {   font-family:  "SF Pro"  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+                body * {   font-family:  "SF Pro" , -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
                 }
-                pre { background-color: #ffffff; 
+                pre * { background-color: #ffffff; 
 
                  font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
                 white-space: pre-wrap; word-wrap: break-word; }
