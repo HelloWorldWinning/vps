@@ -134,12 +134,8 @@ def list_files(subpath=""):
                     font-family: 'FZFangJunHeiS';
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }
-                body {   font-family:  "SF Pro"  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-                }
-                pre { background-color: #ffffff; 
-
-                 font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-                white-space: pre-wrap; word-wrap: break-word; }
+                body { font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; }
+                pre { background-color: #ffffff; font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace; white-space: pre-wrap; word-wrap: break-word; }
                 .card-container {
                     display: flex;
                     flex-wrap: wrap;
@@ -245,18 +241,8 @@ def serve_file(subpath, filename):
                 font-family: 'FZFangJunHeiS';
                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
             }}
-
-
-
-@font-face {{
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-    font-display: swap;
-}}
-
-
             body {{
-                  font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+                  font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
             padding: 20px;
             line-height: 140% ;
             text-align: justify;
@@ -264,8 +250,7 @@ def serve_file(subpath, filename):
                   }}
             pre {{
             background-color: #ffffff;
-
-font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
                 white-space: pre-wrap;
                 word-wrap: break-word;
 
@@ -303,7 +288,7 @@ h1 {{
     padding: 15px 30px;
     border-radius: 5px;
     text-align: center;
-    font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+    font-family: 'Source Code Pro',
     font-weight: 400 !important;
     line-height: 1.4;
 }}
@@ -388,30 +373,19 @@ def txt_file(subpath, filename):
                                 font-family: 'FZFangJunHeiS';
                                 src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                             }}
-
-
-@font-face {{
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-    font-display: swap;
-}}
-
-
                             body {{
-                                font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-
-                            text-align: justify !important;
-
+                                font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
                             line-height: 140%  ;
                             padding: 25px;
                             white-space: pre-wrap;
                             word-wrap: break-word;
+                            text-align: justify;
                             text-justify: inter-word;
                             }}
 
                             pre {{
                             background-color: #ffffff;
-                            font-family:  "SF Pro",  -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+                            font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
                             white-space: pre-wrap;
                             word-wrap: break-word;
 
