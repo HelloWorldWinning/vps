@@ -19,6 +19,7 @@ services:
       # Pygments style used ONLY for Markdown code blocks
       # Examples: "manni" (default), "monokai", "friendly", "github-dark"
       - markdown_theme=manni
+      - TZ=Asia/Shanghai
 
 EOF
 
