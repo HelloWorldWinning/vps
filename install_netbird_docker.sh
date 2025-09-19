@@ -58,8 +58,9 @@ docker run -d \
 	--hostname "${HOST_HNAME}" \
 	-e NB_SETUP_KEY="${NB_SETUP_KEY}" \
 	-v "${VOLUME_NAME}:/var/lib/netbird" \
-	--restart  unless-stopped \
-	"${IMAGE}"
+	--restart always \
+	"${IMAGE}" \
+	sh -c "sleep 20; exec /usr/local/bin/netbird service run"
 
 # Show quick status
 log "Container '${CONTAINER_NAME}' started."
