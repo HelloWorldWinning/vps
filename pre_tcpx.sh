@@ -617,6 +617,7 @@ bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh ) 
 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh   )
 ######## for nvim start
 
 pip install   pynvim
