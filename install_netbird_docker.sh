@@ -58,7 +58,7 @@ docker run -d \
 	--hostname "${HOST_HNAME}" \
 	-e NB_SETUP_KEY="${NB_SETUP_KEY}" \
 	-v "${VOLUME_NAME}:/var/lib/netbird" \
-	--restart always \
+	--restart  unless-stopped \
 	"${IMAGE}"
 
 # Show quick status
