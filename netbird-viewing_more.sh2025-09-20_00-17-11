@@ -117,46 +117,60 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
+# --- Checks ---
+#need() { command -v "$1" >/dev/null 2>&1 || {
+#	echo "Missing dependency: $1"
+#	exit 2
+#}; }
+#need curl
+#need jq
+#need column
+
+
+
+
 # --- Auto-installing dependency checker ---
 need() {
-	local cmd="$1"
-	local package="${2:-$1}" # Use second argument as package name, or default to command name
-
-	if ! command -v "$cmd" >/dev/null 2>&1; then
-		echo "Missing dependency: $cmd"
-		echo "Attempting to install $package..."
-
-		# Detect package manager and install
-		if command -v apt >/dev/null 2>&1; then
-			sudo apt update && sudo apt install -y "$package"
-		elif command -v yum >/dev/null 2>&1; then
-			sudo yum install -y "$package"
-		elif command -v dnf >/dev/null 2>&1; then
-			sudo dnf install -y "$package"
-		elif command -v pacman >/dev/null 2>&1; then
-			sudo pacman -S --noconfirm "$package"
-		elif command -v apk >/dev/null 2>&1; then
-			sudo apk add "$package"
-		else
-			echo "Error: No supported package manager found (apt, yum, dnf, pacman, apk)"
-			echo "Please install $package manually"
-			exit 2
-		fi
-
-		# Verify installation succeeded
-		if ! command -v "$cmd" >/dev/null 2>&1; then
-			echo "Error: Failed to install $cmd"
-			exit 2
-		else
-			echo "Successfully installed $cmd"
-		fi
-	fi
+    local cmd="$1"
+    local package="${2:-$1}"  # Use second argument as package name, or default to command name
+    
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Missing dependency: $cmd"
+        echo "Attempting to install $package..."
+        
+        # Detect package manager and install
+        if command -v apt >/dev/null 2>&1; then
+            sudo apt update && sudo apt install -y "$package"
+        elif command -v yum >/dev/null 2>&1; then
+            sudo yum install -y "$package"
+        elif command -v dnf >/dev/null 2>&1; then
+            sudo dnf install -y "$package"
+        elif command -v pacman >/dev/null 2>&1; then
+            sudo pacman -S --noconfirm "$package"
+        elif command -v apk >/dev/null 2>&1; then
+            sudo apk add "$package"
+        else
+            echo "Error: No supported package manager found (apt, yum, dnf, pacman, apk)"
+            echo "Please install $package manually"
+            exit 2
+        fi
+        
+        # Verify installation succeeded
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            echo "Error: Failed to install $cmd"
+            exit 2
+        else
+            echo "Successfully installed $cmd"
+        fi
+    fi
 }
 
 # --- Usage examples ---
 need curl
 need jq
-need column bsdmainutils # command name differs from package name
+need column bsdmainutils  # command name differs from package name
+
+
 
 if [[ -z "$NETBIRD_TOKEN" || "$NETBIRD_TOKEN" == "default" ]]; then
 	echo "Error: NETBIRD_TOKEN is not set. Set it or pass -t TOKEN."
@@ -278,11 +292,7 @@ JQ
 			--argjson wide "$WIDE" \
 			--argjson now "$NOW_TS" \
 			"$JQ_COMMON | $JQ_TSV" |
-		column -t -s $'\t' |
-		# Single continuous splitter line (Unicode box-drawing single line)
-		awk 'function line(n){for(i=1;i<=n;i++)printf "─"; printf "\n"}
-		     NR==1{print; line_len=length($0); line(line_len); next}
-		     {print; line(length($0)>line_len?length($0):line_len)}'
+		column -t -s $'\t'
 }
 
 # --- Rendering: CSV ---
