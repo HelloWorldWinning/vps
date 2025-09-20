@@ -615,7 +615,8 @@ sudo apt install -y  linux-image-amd64 linux-headers-amd64
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh )
 
-bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh ) 
+#bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh ) 
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh  ) 
 
 bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh   )
 ######## for nvim start
