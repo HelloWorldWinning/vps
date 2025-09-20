@@ -12,6 +12,57 @@ CONTAINER_NAME="netbird"
 IMAGE="netbirdio/netbird:latest"
 VOLUME_NAME="netbird-client"
 
+
+# --- Optional preflight: deregister existing peer, stop/remove container, delete image ---
+log "Preflight: checking for existing '${CONTAINER_NAME}' to deregister and clean up..."
+
+# If the container exists, attempt to deregister the peer from management using it
+if docker ps -a --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
+  log "Found existing container '${CONTAINER_NAME}'. Attempting peer deregistration..."
+
+  if docker inspect -f '{{.State.Running}}' "${CONTAINER_NAME}" 2>/dev/null | grep -q '^true$'; then
+    # Use the running container to deregister the peer
+    docker exec --privileged "${CONTAINER_NAME}" sh -lc \
+      '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
+  else
+    # Container exists but isn't running—spin up a one-shot helper to deregister using the same volume
+    docker run --rm \
+      --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
+      --device /dev/net/tun \
+      --network host \
+      -v "${VOLUME_NAME}:/var/lib/netbird" \
+      "${IMAGE}" \
+      sh -lc '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
+  fi
+
+  log "Stopping and removing existing container '${CONTAINER_NAME}'..."
+  docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+fi
+
+# If the persistent volume exists (but maybe no container), try deregistration via a one-shot helper
+if docker volume inspect "${VOLUME_NAME}" >/dev/null 2>&1; then
+  log "Ensuring peer is deregistered using volume '${VOLUME_NAME}' (one-shot helper)..."
+  docker run --rm \
+    --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
+    --device /dev/net/tun \
+    --network host \
+    -v "${VOLUME_NAME}:/var/lib/netbird" \
+    "${IMAGE}" \
+    sh -lc '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
+fi
+
+# Remove the local image so we always pull fresh later
+if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
+  log "Removing local image ${IMAGE}..."
+  docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
+fi
+# --- end preflight ---
+
+
+
+
+
+
 # You can override NB_SETUP_KEY by exporting it before running the script.
 NB_SETUP_KEY="${NB_SETUP_KEY:-F52A5E7F-2A31-4390-9B15-4AF53172A1EA}"
 
