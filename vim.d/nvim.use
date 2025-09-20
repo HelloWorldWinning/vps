@@ -272,7 +272,6 @@ lua <<EOF
 
 
 
-lua <<EOF
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
   -- Define/override config for ts_ls, then enable it
