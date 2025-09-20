@@ -1142,7 +1142,7 @@ netstat -tulnp | grep -E '166|177'
 		gdu) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh  )  ;;
 		p) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh )  ;;
 		netbird_de) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh )  ;;
-		re_info) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh  )  ;;
+		reinfo) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh  )  ;;
 
 
 
