@@ -1,3 +1,21 @@
+# 1) Make sure venv is available
+sudo apt update
+sudo apt install -y python3-venv  # (on some systems: python3.11-venv or python3.12-venv)
+
+# 2) Make a venv (any path/name is fine)
+python3 -m venv ~/.venvs/vim_nvim_pip_related
+
+# 3) Activate it (your prompt should show "(vim_nvim_pip_related)")
+source ~/.venvs/vim_nvim_pip_related/bin/activate
+
+# 4) Upgrade pip and install your packages
+python -m pip install --upgrade pip
+
+
+
+
+
+
 apt install -y sudo 
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg git vim
