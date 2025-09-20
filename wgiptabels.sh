@@ -23,9 +23,11 @@ fi
 
 # Add iptables rules
 echo "Adding iptables rules..."
-iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIRECT --to-ports 65503
-ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIRECT --to-ports 65503
+#iptables  -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIRECT --to-ports 65503
+#ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 55000:60000 -j REDIRECT --to-ports 65503
 
+iptables  -t nat -A PREROUTING -i "$net_card" -p udp --dport 58000:60000 -j REDIRECT --to-ports 65503
+ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 58000:60000 -j REDIRECT --to-ports 65503
 
 #iptables -t nat -A PREROUTING -i "$net_card" -p udp --dport  443  -j REDIRECT --to-ports 65503
 #ip6tables -t nat -A PREROUTING -i "$net_card" -p udp --dport 443  -j REDIRECT --to-ports 65503

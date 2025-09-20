@@ -10,6 +10,8 @@
 IF_PRE_UP_SCRIPT="/etc/network/if-pre-up.d/iptables_55000_rules"
 LOG_FILE="/var/log/iptables_55000_rules.log"
 
+ports_range="58000:60000"
+
 # Function to check if the script is run as root
 check_root() {
     if [ "$(id -u)" -ne 0 ]; then
@@ -44,12 +46,12 @@ log() {
 log "Applying iptables and ip6tables rules for interface: $IFACE"
 
 # Apply iptables rule for IPv4
-/sbin/iptables -t nat -C PREROUTING -i "$IFACE" -p udp --dport 55000:60000 -j DNAT --to-destination :65503 2>/dev/null || \
-/sbin/iptables -t nat -A PREROUTING -i "$IFACE" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+/sbin/iptables -t nat -C PREROUTING -i "$IFACE" -p udp  --dport 58000:60000 -j DNAT --to-destination :65503 2>/dev/null || \
+/sbin/iptables -t nat -A PREROUTING -i "$IFACE" -p udp  --dport 58000:60000 -j DNAT --to-destination :65503
 
 # Apply ip6tables rule for IPv6
-/sbin/ip6tables -t nat -C PREROUTING -i "$IFACE" -p udp --dport 55000:60000 -j DNAT --to-destination :65503 2>/dev/null || \
-/sbin/ip6tables -t nat -A PREROUTING -i "$IFACE" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+/sbin/ip6tables -t nat -C PREROUTING -i "$IFACE" -p udp --dport 58000:60000 -j DNAT --to-destination :65503 2>/dev/null || \
+/sbin/ip6tables -t nat -A PREROUTING -i "$IFACE" -p udp --dport 58000:60000 -j DNAT --to-destination :65503
 
 log "Rules applied successfully for interface: $IFACE"
 
@@ -72,16 +74,16 @@ apply_rules_now() {
         echo "Applying rules to interface: ${iface}"
 
         # Apply iptables rule for IPv4 if not already present
-        if ! /sbin/iptables -t nat -C PREROUTING -i "${iface}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503 2>/dev/null; then
-            /sbin/iptables -t nat -A PREROUTING -i "${iface}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+        if ! /sbin/iptables -t nat -C PREROUTING -i "${iface}" -p udp --dport  58000:60000 -j DNAT --to-destination :65503 2>/dev/null; then
+            /sbin/iptables -t nat -A PREROUTING -i "${iface}" -p udp --dport   58000:60000 -j DNAT --to-destination :65503
             echo "Applied IPv4 rule to interface: ${iface}"
         else
             echo "IPv4 rule already exists for interface: ${iface}"
         fi
 
         # Apply ip6tables rule for IPv6 if not already present
-        if ! /sbin/ip6tables -t nat -C PREROUTING -i "${iface}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503 2>/dev/null; then
-            /sbin/ip6tables -t nat -A PREROUTING -i "${iface}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+        if ! /sbin/ip6tables -t nat -C PREROUTING -i "${iface}" -p udp --dport 58000:60000 -j DNAT --to-destination :65503 2>/dev/null; then
+            /sbin/ip6tables -t nat -A PREROUTING -i "${iface}" -p udp --dport  58000:60000 -j DNAT --to-destination :65503
             echo "Applied IPv6 rule to interface: ${iface}"
         else
             echo "IPv6 rule already exists for interface: ${iface}"

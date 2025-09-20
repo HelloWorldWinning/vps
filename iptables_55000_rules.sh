@@ -19,11 +19,17 @@ create_iptables_script() {
 # Identify the first network interface with BROADCAST capability
 net_card=$(ip addr | grep BROADCAST | head -1 | awk '{print $2}' | cut -d ":" -f1)
 
-# Apply iptables rule for IPv4
-iptables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+## Apply iptables rule for IPv4
+#iptables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+## Apply ip6tables rule for IPv6
+#ip6tables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
 
-# Apply ip6tables rule for IPv6
-ip6tables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 55000:60000 -j DNAT --to-destination :65503
+
+
+iptables  -t nat -A PREROUTING -i "${net_card}" -p udp --dport 58000:60000 -j DNAT --to-destination :65503
+ip6tables -t nat -A PREROUTING -i "${net_card}" -p udp --dport 58000:60000 -j DNAT --to-destination :65503
+
+
 EOF
 
     # Make the script executable
