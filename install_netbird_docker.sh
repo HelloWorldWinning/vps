@@ -13,42 +13,50 @@ IMAGE="netbirdio/netbird:latest"
 VOLUME_NAME="netbird-client"
 
 
-# --- Optional preflight: deregister existing peer, stop/remove container, delete image ---
-log "Preflight: checking for existing '${CONTAINER_NAME}' to deregister and clean up..."
 
-# If the container exists, attempt to deregister the peer from management using it
-if docker ps -a --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
-  log "Found existing container '${CONTAINER_NAME}'. Attempting peer deregistration..."
 
-  if docker inspect -f '{{.State.Running}}' "${CONTAINER_NAME}" 2>/dev/null | grep -q '^true$'; then
-    # Use the running container to deregister the peer
-    docker exec --privileged "${CONTAINER_NAME}" sh -lc \
-      '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
-  else
-    # Container exists but isn't running—spin up a one-shot helper to deregister using the same volume
-    docker run --rm \
-      --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
-      --device /dev/net/tun \
-      --network host \
-      -v "${VOLUME_NAME}:/var/lib/netbird" \
-      "${IMAGE}" \
-      sh -lc '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
-  fi
 
-  log "Stopping and removing existing container '${CONTAINER_NAME}'..."
-  docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+# --- Preflight: deregister existing peer, stop/remove container, delete image ---
+
+# Fallback logger only if not already defined
+if ! command -v log >/dev/null 2>&1; then
+  log() { printf '[%s] %s\n' "$(date +'%F %T')" "$*"; }
 fi
 
-# If the persistent volume exists (but maybe no container), try deregistration via a one-shot helper
-if docker volume inspect "${VOLUME_NAME}" >/dev/null 2>&1; then
-  log "Ensuring peer is deregistered using volume '${VOLUME_NAME}' (one-shot helper)..."
+# Ensure defaults exist even if this block is moved earlier accidentally
+: "${CONTAINER_NAME:=netbird}"
+: "${IMAGE:=netbirdio/netbird:latest}"
+: "${VOLUME_NAME:=netbird-client}"
+
+log "Preflight: attempting peer deregistration and cleanup for '${CONTAINER_NAME}'..."
+
+# Helper: run netbird in a one-shot container against the persisted volume
+nb_one_shot_deregister() {
   docker run --rm \
-    --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
-    --device /dev/net/tun \
-    --network host \
     -v "${VOLUME_NAME}:/var/lib/netbird" \
     "${IMAGE}" \
-    sh -lc '/usr/local/bin/netbird deregister || /usr/local/bin/netbird logout || /usr/local/bin/netbird down' || true
+    sh -lc 'command -v netbird >/dev/null 2>&1 || ln -s /usr/local/bin/netbird /usr/bin/netbird 2>/dev/null || true; \
+            netbird deregister || netbird logout || true'
+}
+
+# If the container exists, try deregister via exec; else try one-shot helper
+if docker ps -a --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
+  log "Found existing container '${CONTAINER_NAME}'. Trying in-container deregistration..."
+  if docker inspect -f '{{.State.Running}}' "${CONTAINER_NAME}" 2>/dev/null | grep -q '^true$'; then
+    docker exec "${CONTAINER_NAME}" sh -lc 'netbird deregister || netbird logout || true' || true
+  else
+    log "Container is stopped; using one-shot helper against volume '${VOLUME_NAME}'..."
+    nb_one_shot_deregister || true
+  fi
+
+  log "Stopping and removing container '${CONTAINER_NAME}'..."
+  docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+else
+  # No container—still try to deregister using the volume if present
+  if docker volume inspect "${VOLUME_NAME}" >/dev/null 2>&1; then
+    log "No container found; using one-shot helper against volume '${VOLUME_NAME}'..."
+    nb_one_shot_deregister || true
+  fi
 fi
 
 # Remove the local image so we always pull fresh later
@@ -56,6 +64,8 @@ if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
   log "Removing local image ${IMAGE}..."
   docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
 fi
+
+log "Preflight cleanup complete."
 # --- end preflight ---
 
 
