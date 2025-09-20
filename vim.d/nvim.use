@@ -270,12 +270,20 @@ lua <<EOF
     })
   })
 
-  -- Set up lspconfig.
+
+
+lua <<EOF
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['ts_ls'].setup {
-    capabilities = capabilities
-  }
+
+  -- Define/override config for ts_ls, then enable it
+  vim.lsp.config('ts_ls', {
+    capabilities = capabilities,
+    -- on_attach = function(client, bufnr) ... end,
+    -- settings = { ... },
+  })
+  vim.lsp.enable('ts_ls')
+
+
 EOF
 
 
