@@ -1141,6 +1141,7 @@ netstat -tulnp | grep -E '166|177'
 		savefile) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh     )  ;;
 		gdu) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh  )  ;;
 		p) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh )  ;;
+		netbird_de) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh )  ;;
 #	00)eval "exit";;
 		q)eval "exit";;
 		
