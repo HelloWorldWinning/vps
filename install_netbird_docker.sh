@@ -16,7 +16,8 @@ VOLUME_NAME="netbird-client"
 
 
 
-# --- Preflight: deregister existing peer, stop/remove container, delete image ---
+
+# --- Preflight: only if a running 'netbird' exists ---
 
 # Fallback logger only if not already defined
 if ! command -v log >/dev/null 2>&1; then
@@ -26,49 +27,33 @@ fi
 # Ensure defaults exist even if this block is moved earlier accidentally
 : "${CONTAINER_NAME:=netbird}"
 : "${IMAGE:=netbirdio/netbird:latest}"
-: "${VOLUME_NAME:=netbird-client}"
 
-log "Preflight: attempting peer deregistration and cleanup for '${CONTAINER_NAME}'..."
+# Proceed ONLY if the container is present AND running
+if docker ps \
+    --filter "name=^${CONTAINER_NAME}$" \
+    --filter "status=running" \
+    --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
 
-# Helper: run netbird in a one-shot container against the persisted volume
-nb_one_shot_deregister() {
-  docker run --rm \
-    -v "${VOLUME_NAME}:/var/lib/netbird" \
-    "${IMAGE}" \
-    sh -lc 'command -v netbird >/dev/null 2>&1 || ln -s /usr/local/bin/netbird /usr/bin/netbird 2>/dev/null || true; \
-            netbird deregister || netbird logout || true'
-}
+  log "Found running container '${CONTAINER_NAME}'. Deregistering and cleaning up..."
 
-# If the container exists, try deregister via exec; else try one-shot helper
-if docker ps -a --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
-  log "Found existing container '${CONTAINER_NAME}'. Trying in-container deregistration..."
-  if docker inspect -f '{{.State.Running}}' "${CONTAINER_NAME}" 2>/dev/null | grep -q '^true$'; then
-    docker exec "${CONTAINER_NAME}" sh -lc 'netbird deregister || netbird logout || true' || true
-  else
-    log "Container is stopped; using one-shot helper against volume '${VOLUME_NAME}'..."
-    nb_one_shot_deregister || true
-  fi
+  # Best-effort deregistration from inside the running container
+  docker exec "${CONTAINER_NAME}" sh -lc 'netbird deregister || netbird logout || true' || true
 
+  # Stop & remove the container
   log "Stopping and removing container '${CONTAINER_NAME}'..."
   docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
-else
-  # No container—still try to deregister using the volume if present
-  if docker volume inspect "${VOLUME_NAME}" >/dev/null 2>&1; then
-    log "No container found; using one-shot helper against volume '${VOLUME_NAME}'..."
-    nb_one_shot_deregister || true
+
+  # Remove the local image so we always pull fresh later
+  if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
+    log "Removing local image ${IMAGE}..."
+    docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
   fi
-fi
 
-# Remove the local image so we always pull fresh later
-if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
-  log "Removing local image ${IMAGE}..."
-  docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
+  log "Preflight cleanup complete."
+else
+  log "No running '${CONTAINER_NAME}' found; skipping preflight."
 fi
-
-log "Preflight cleanup complete."
 # --- end preflight ---
-
-
 
 
 
