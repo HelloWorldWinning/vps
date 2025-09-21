@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# netbird-viewing.sh — pretty "view-only" NetBird peers in your terminal
+# netbird-viewing.sh — pretty “view-only” NetBird peers in your terminal
 # Dependencies: curl, jq, column
 set -Eeuo pipefail
 
@@ -8,7 +8,6 @@ set -Eeuo pipefail
 NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_jZgdKbt8LL0h9mR7tIBGelb47ZZRog2XLmgq}" # export NETBIRD_TOKEN=nbp_...
 NETBIRD_API="${NETBIRD_API:-https://api.netbird.io/api}"                   # self-host: https://your-mgmt:33073/api
 NETBIRD_TIMEOUT="${NETBIRD_TIMEOUT:-30}"
-TZ="${TZ:-Asia/Shanghai}"                                                  # Set default timezone
 
 # --- CLI parsing / help ---
 show_help() {
@@ -217,13 +216,6 @@ render_table() {
 def parse_time(s):
   (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
 
-# Format timestamp to "YYYY-MM-DD HH:MM:SS" in local timezone
-def format_time(s):
-  (s // "") as $ts |
-  if $ts == "" then "" else
-    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime | strftime("%Y-%m-%d %H:%M:%S"))
-  end;
-
 # Humanize seconds as "Xd Xh", "Xh Ym", "Xm Zs", or "Xs" (filter form)
 def humanize:
   if (.|tonumber) < 0 then "0s ago"
@@ -258,7 +250,7 @@ def base_row(idx; p):
     ((p.os//"")|split(" ")[0]),               # OS
     (p.version//""),                          # VER
     (if p.connected then "✓" else "✗" end),   # CONN
-    (format_time(p.last_seen)),               # LAST_SEEN - formatted
+    (p.last_seen//""),                        # LAST_SEEN
     ((p.groups//[])|map(.name)|join(","))     # GROUPS
   ];
 
@@ -304,13 +296,6 @@ render_csv() {
 		cat <<'JQ'
 def parse_time(s): (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
 
-# Format timestamp to "YYYY-MM-DD HH:MM:SS"
-def format_time(s):
-  (s // "") as $ts |
-  if $ts == "" then "" else
-    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | strftime("%Y-%m-%d %H:%M:%S"))
-  end;
-
 # Humanize seconds (filter form)
 def humanize:
   if (.|tonumber) < 0 then "0s ago"
@@ -342,7 +327,7 @@ to_entries as $rows
   ( [ ($idx+1),
       ($p.name//""), ($p.dns_label//""), (seen_ago($p)),
       ($p.ip//""), ($p.city_name//""), ($p.os//""), ($p.version//""),
-      ($p.connected|tostring), (format_time($p.last_seen)), (($p.groups//[])|map(.name)|join(","))
+      ($p.connected|tostring), ($p.last_seen//""), (($p.groups//[])|map(.name)|join(","))
     ]
     + ( if $wide==1 or $wide==true then [ ($p.hostname//""), ($p.kernel_version//""), ($p.ui_version//"") ] else [] end )
   ) | @csv

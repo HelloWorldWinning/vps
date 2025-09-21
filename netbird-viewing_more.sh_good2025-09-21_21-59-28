@@ -8,7 +8,6 @@ set -Eeuo pipefail
 NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_jZgdKbt8LL0h9mR7tIBGelb47ZZRog2XLmgq}" # export NETBIRD_TOKEN=nbp_...
 NETBIRD_API="${NETBIRD_API:-https://api.netbird.io/api}"                   # self-host: https://your-mgmt:33073/api
 NETBIRD_TIMEOUT="${NETBIRD_TIMEOUT:-30}"
-TZ="${TZ:-Asia/Shanghai}"                                                  # Set default timezone
 
 # --- CLI parsing / help ---
 show_help() {
@@ -217,11 +216,11 @@ render_table() {
 def parse_time(s):
   (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
 
-# Format timestamp to "YYYY-MM-DD HH:MM:SS" in local timezone
+# Format timestamp to "YYYY-MM-DD HH:MM:SS"
 def format_time(s):
   (s // "") as $ts |
   if $ts == "" then "" else
-    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime | strftime("%Y-%m-%d %H:%M:%S"))
+    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | strftime("%Y-%m-%d %H:%M:%S"))
   end;
 
 # Humanize seconds as "Xd Xh", "Xh Ym", "Xm Zs", or "Xs" (filter form)
