@@ -360,8 +360,8 @@ def header: ["No.","NAME","DNS_LABEL","IP","PUBLIC_IP","CONN","SEEN_AGO","LAST_S
 
 def base_row(idx; p):
   [ (idx + 1),                                           # No.
-    (p.fqdn//""),                                        # NAME
-    (p.fqdn // "" | split(".")[0]),                      # DNS_LABEL  
+    (p.fqdn // "" | split(".")[0]),                      # NAME (DNS_LABEL part)
+    (p.fqdn//""),                                        # DNS_LABEL (full FQDN)
     ((p.netbirdIp//"") | split("/")[0]),                 # IP (private NetBird IP)
     (((p.iceCandidateEndpoint.remote // "") | split(":")[0]) // ""), # PUBLIC_IP (empty if not found)
     (if p.status == "Connected" then "✓" else "✗" end), # CONN
@@ -443,8 +443,8 @@ to_entries as $rows
 ( $rows[] |
   .key as $idx | .value as $p |
   ( [ ($idx+1),
-      ($p.fqdn//""), 
-      ($p.fqdn // "" | split(".")[0]), 
+      ($p.fqdn // "" | split(".")[0]),  # NAME (first part of FQDN)
+      ($p.fqdn//""),                    # DNS_LABEL (full FQDN)
       (($p.netbirdIp//"") | split("/")[0]),
       (((p.iceCandidateEndpoint.remote // "") | split(":")[0]) // ""),
       ($p.status == "Connected"), 
