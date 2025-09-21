@@ -245,19 +245,19 @@ def seen_ago(p):
     ($now - (parse_time($ls))) | humanize
   end;
 
-def header:       ["No.","NAME","DNS_LABEL","SEEN_AGO","IP","CITY","OS","VER","CONN","LAST_SEEN","GROUPS"];
-def header_wide:  ["No.","NAME","DNS_LABEL","SEEN_AGO","IP","CITY","OS","VER","CONN","LAST_SEEN","GROUPS","HOSTNAME","KERNEL","UI"];
+def header:       ["No.","NAME","DNS_LABEL","IP","CONN","OS","CITY","VER","SEEN_AGO","LAST_SEEN","GROUPS"];
+def header_wide:  ["No.","NAME","DNS_LABEL","IP","CONN","OS","CITY","VER","SEEN_AGO","LAST_SEEN","GROUPS","HOSTNAME","KERNEL","UI"];
 
 def base_row(idx; p):
   [ (idx + 1),                                # No.
     (p.name//""),                             # NAME
     (p.dns_label//""),                        # DNS_LABEL
-    (seen_ago(p)),                            # SEEN_AGO
     (p.ip//""),                               # IP
-    (p.city_name//""),                        # CITY
-    ((p.os//"")|split(" ")[0]),               # OS
-    (p.version//""),                          # VER
     (if p.connected then "✓" else "✗" end),   # CONN
+    ((p.os//"")|split(" ")[0]),               # OS
+    (p.city_name//""),                        # CITY
+    (p.version//""),                          # VER
+    (seen_ago(p)),                            # SEEN_AGO
     (format_time(p.last_seen)),               # LAST_SEEN - formatted
     ((p.groups//[])|map(.name)|join(","))     # GROUPS
   ];
@@ -304,11 +304,11 @@ render_csv() {
 		cat <<'JQ'
 def parse_time(s): (s | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime);
 
-# Format timestamp to "YYYY-MM-DD HH:MM:SS"
+# Format timestamp to "YYYY-MM-DD HH:MM:SS" in local timezone
 def format_time(s):
   (s // "") as $ts |
   if $ts == "" then "" else
-    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | strftime("%Y-%m-%d %H:%M:%S"))
+    ($ts | sub("\\.[0-9]+Z$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime | strftime("%Y-%m-%d %H:%M:%S"))
   end;
 
 # Humanize seconds (filter form)
