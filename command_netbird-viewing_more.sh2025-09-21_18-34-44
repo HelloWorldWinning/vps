@@ -9,7 +9,7 @@ TZ="${TZ:-Asia/Shanghai}"
 
 # --- CLI parsing / help ---
 show_help() {
-  cat <<'EOF'
+	cat <<'EOF'
 Usage:
   command_netbird-viewing_more.sh [list] [--connected] [--name SUBSTR] [--ip SUBSTR]
                                   [--csv] [--json] [--wide] [--sort FIELD] [--watch [N]]
@@ -49,89 +49,89 @@ INTERVAL=5
 PEER_FQDN=""
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-  list | json | csv)
-    cmd="$1"
-    shift
-    ;;
-  detail)
-    cmd="detail"
-    PEER_FQDN="${2-}"
-    shift 2
-    ;;
-  --connected)
-    ONLY_CONNECTED=1
-    shift
-    ;;
-  --name)
-    NAME="${2-}"
-    shift 2
-    ;;
-  --ip)
-    IPF="${2-}"
-    shift 2
-    ;;
-  --wide)
-    WIDE=1
-    shift
-    ;;
-  --sort)
-    SORT="${2-name}"
-    shift 2
-    ;;
-  --watch)
-    WATCH=1
-    if [[ "${2-}" =~ ^[0-9]+$ ]]; then
-      INTERVAL="$2"
-      shift 2
-    else shift 1; fi
-    ;;
-  -h | --help)
-    show_help
-    exit 0
-    ;;
-  *)
-    echo "Unknown arg: $1"
-    show_help
-    exit 1
-    ;;
-  esac
+	case "$1" in
+	list | json | csv)
+		cmd="$1"
+		shift
+		;;
+	detail)
+		cmd="detail"
+		PEER_FQDN="${2-}"
+		shift 2
+		;;
+	--connected)
+		ONLY_CONNECTED=1
+		shift
+		;;
+	--name)
+		NAME="${2-}"
+		shift 2
+		;;
+	--ip)
+		IPF="${2-}"
+		shift 2
+		;;
+	--wide)
+		WIDE=1
+		shift
+		;;
+	--sort)
+		SORT="${2-name}"
+		shift 2
+		;;
+	--watch)
+		WATCH=1
+		if [[ "${2-}" =~ ^[0-9]+$ ]]; then
+			INTERVAL="$2"
+			shift 2
+		else shift 1; fi
+		;;
+	-h | --help)
+		show_help
+		exit 0
+		;;
+	*)
+		echo "Unknown arg: $1"
+		show_help
+		exit 1
+		;;
+	esac
 done
 
 # --- Auto-installing dependency checker ---
 need() {
-  local cmd="$1"
-  local package="${2:-$1}" # Use second argument as package name, or default to command name
+	local cmd="$1"
+	local package="${2:-$1}" # Use second argument as package name, or default to command name
 
-  if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Missing dependency: $cmd"
-    echo "Attempting to install $package..."
+	if ! command -v "$cmd" >/dev/null 2>&1; then
+		echo "Missing dependency: $cmd"
+		echo "Attempting to install $package..."
 
-    # Detect package manager and install
-    if command -v apt >/dev/null 2>&1; then
-      sudo apt update && sudo apt install -y "$package"
-    elif command -v yum >/dev/null 2>&1; then
-      sudo yum install -y "$package"
-    elif command -v dnf >/dev/null 2>&1; then
-      sudo dnf install -y "$package"
-    elif command -v pacman >/dev/null 2>&1; then
-      sudo pacman -S --noconfirm "$package"
-    elif command -v apk >/dev/null 2>&1; then
-      sudo apk add "$package"
-    else
-      echo "Error: No supported package manager found (apt, yum, dnf, pacman, apk)"
-      echo "Please install $package manually"
-      exit 2
-    fi
+		# Detect package manager and install
+		if command -v apt >/dev/null 2>&1; then
+			sudo apt update && sudo apt install -y "$package"
+		elif command -v yum >/dev/null 2>&1; then
+			sudo yum install -y "$package"
+		elif command -v dnf >/dev/null 2>&1; then
+			sudo dnf install -y "$package"
+		elif command -v pacman >/dev/null 2>&1; then
+			sudo pacman -S --noconfirm "$package"
+		elif command -v apk >/dev/null 2>&1; then
+			sudo apk add "$package"
+		else
+			echo "Error: No supported package manager found (apt, yum, dnf, pacman, apk)"
+			echo "Please install $package manually"
+			exit 2
+		fi
 
-    # Verify installation succeeded
-    if ! command -v "$cmd" >/dev/null 2>&1; then
-      echo "Error: Failed to install $cmd"
-      exit 2
-    else
-      echo "Successfully installed $cmd"
-    fi
-  fi
+		# Verify installation succeeded
+		if ! command -v "$cmd" >/dev/null 2>&1; then
+			echo "Error: Failed to install $cmd"
+			exit 2
+		else
+			echo "Successfully installed $cmd"
+		fi
+	fi
 }
 
 need jq
@@ -139,127 +139,101 @@ need column bsdmainutils
 
 # --- Get NetBird status JSON ---
 get_netbird_status() {
-  local json=""
-  local is_docker=false
-  local public_ip=""
-  
-  # First try host version
-  if command -v netbird >/dev/null 2>&1; then
-    # Try different timeout methods for cross-platform compatibility
-    if command -v timeout >/dev/null 2>&1; then
-      json=$(timeout "$NETBIRD_TIMEOUT" netbird status --json 2>/dev/null)
-    elif command -v gtimeout >/dev/null 2>&1; then
-      json=$(gtimeout "$NETBIRD_TIMEOUT" netbird status --json 2>/dev/null)
-    else
-      # No timeout available, run directly
-      json=$(netbird status --json 2>/dev/null)
-    fi
-    
-    if [[ -n "$json" && "$json" != "null" ]]; then
-      echo "$json"
-      return 0
-    fi
-  fi
-  
-  # Then try docker version
-  if command -v docker >/dev/null 2>&1; then
-    local container_id
-    container_id=$(docker ps -q --filter "ancestor=netbirdio/netbird:latest" | head -1)
-    if [[ -n "$container_id" ]]; then
-      if command -v timeout >/dev/null 2>&1; then
-        json=$(timeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null)
-      elif command -v gtimeout >/dev/null 2>&1; then
-        json=$(gtimeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null)
-      else
-        json=$(docker exec "$container_id" netbird status --json 2>/dev/null)
-      fi
-      
-      if [[ -n "$json" && "$json" != "null" ]]; then
-        # Get public IP for docker host using multiple methods
-        public_ip=$(get_public_ip)
-        echo "$json" | jq --arg public_ip "$public_ip" '. + {"_is_docker": true, "_host_public_ip": $public_ip}'
-        return 0
-      fi
-    fi
-    
-    # Try by name if no container found by image
-    container_id=$(docker ps -q --filter "name=netbird" | head -1)
-    if [[ -n "$container_id" ]]; then
-      if command -v timeout >/dev/null 2>&1; then
-        json=$(timeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null)
-      elif command -v gtimeout >/dev/null 2>&1; then
-        json=$(gtimeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null)
-      else
-        json=$(docker exec "$container_id" netbird status --json 2>/dev/null)
-      fi
-      
-      if [[ -n "$json" && "$json" != "null" ]]; then
-        # Get public IP for docker host using multiple methods
-        public_ip=$(get_public_ip)
-        echo "$json" | jq --arg public_ip "$public_ip" '. + {"_is_docker": true, "_host_public_ip": $public_ip}'
-        return 0
-      fi
-    fi
-  fi
-  
-  echo "Error: Unable to get netbird status. Make sure netbird is running (host or docker)." >&2
-  exit 3
+	local json=""
+	local is_docker=false
+	local public_ip=""
+
+	# First try host version
+	if command -v netbird >/dev/null 2>&1; then
+		if json=$(timeout "$NETBIRD_TIMEOUT" netbird status --json 2>/dev/null); then
+			echo "$json"
+			return 0
+		fi
+	fi
+
+	# Then try docker version
+	if command -v docker >/dev/null 2>&1; then
+		local container_id
+		container_id=$(docker ps -q --filter "ancestor=netbirdio/netbird:latest" | head -1)
+		if [[ -n "$container_id" ]]; then
+			if json=$(timeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null); then
+				# Get public IP for docker host using multiple methods
+				public_ip=$(get_public_ip)
+				echo "$json" | jq --arg public_ip "$public_ip" '. + {"_is_docker": true, "_host_public_ip": $public_ip}'
+				return 0
+			fi
+		fi
+
+		# Try by name if no container found by image
+		container_id=$(docker ps -q --filter "name=netbird" | head -1)
+		if [[ -n "$container_id" ]]; then
+			if json=$(timeout "$NETBIRD_TIMEOUT" docker exec "$container_id" netbird status --json 2>/dev/null); then
+				# Get public IP for docker host using multiple methods
+				public_ip=$(get_public_ip)
+				echo "$json" | jq --arg public_ip "$public_ip" '. + {"_is_docker": true, "_host_public_ip": $public_ip}'
+				return 0
+			fi
+		fi
+	fi
+
+	echo "Error: Unable to get netbird status. Make sure netbird is running (host or docker)." >&2
+	exit 3
 }
 
 # --- Get public IP using multiple methods ---
 get_public_ip() {
-  local ip=""
-  
-  # Method 1: ip.sb (fast and reliable)
-  if [[ -z "$ip" ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 ip.sb 2>/dev/null | head -1)
-  fi
-  
-  # Method 2: ipify.org
-  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://api.ipify.org 2>/dev/null)
-  fi
-  
-  # Method 3: icanhazip.com
-  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://icanhazip.com 2>/dev/null | tr -d '\n\r')
-  fi
-  
-  # Method 4: httpbin.org
-  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://httpbin.org/ip 2>/dev/null | jq -r '.origin // empty' 2>/dev/null)
-  fi
-  
-  # Method 5: checkip.amazonaws.com
-  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://checkip.amazonaws.com 2>/dev/null | tr -d '\n\r')
-  fi
-  
-  # Validate IP format
-  if [[ "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "$ip"
-  else
-    echo ""
-  fi
+	local ip=""
+
+	# Method 1: ip.sb (fast and reliable)
+	if [[ -z "$ip" ]]; then
+		ip=$(timeout 5 curl -s --connect-timeout 3 ip.sb 2>/dev/null | head -1)
+	fi
+
+	# Method 2: ipify.org
+	if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		ip=$(timeout 5 curl -s --connect-timeout 3 https://api.ipify.org 2>/dev/null)
+	fi
+
+	# Method 3: icanhazip.com
+	if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		ip=$(timeout 5 curl -s --connect-timeout 3 https://icanhazip.com 2>/dev/null | tr -d '\n\r')
+	fi
+
+	# Method 4: httpbin.org
+	if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		ip=$(timeout 5 curl -s --connect-timeout 3 https://httpbin.org/ip 2>/dev/null | jq -r '.origin // empty' 2>/dev/null)
+	fi
+
+	# Method 5: checkip.amazonaws.com
+	if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		ip=$(timeout 5 curl -s --connect-timeout 3 https://checkip.amazonaws.com 2>/dev/null | tr -d '\n\r')
+	fi
+
+	# Validate IP format
+	if [[ "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+		echo "$ip"
+	else
+		echo ""
+	fi
 }
 
 # --- Helpers ---
 gen_sort_expr() {
-  case "$SORT" in
-  name) echo '(.fqdn // "" | ascii_downcase)' ;;
-  ip) echo '(.netbirdIp // "")' ;;
-  last_seen) echo '(.lastStatusUpdate // "")' ;;
-  connected) echo '[ (if .status == "Connected" then 0 else 1 end), (.fqdn // "" | ascii_downcase) ]' ;;
-  *) echo '(.fqdn // "" | ascii_downcase)' ;;
-  esac
+	case "$SORT" in
+	name) echo '(.fqdn // "" | ascii_downcase)' ;;
+	ip) echo '(.netbirdIp // "")' ;;
+	last_seen) echo '(.lastStatusUpdate // "")' ;;
+	connected) echo '[ (if .status == "Connected" then 0 else 1 end), (.fqdn // "" | ascii_downcase) ]' ;;
+	*) echo '(.fqdn // "" | ascii_downcase)' ;;
+	esac
 }
 
 build_jq_common() {
-  local SORT_EXPR
-  SORT_EXPR="$(gen_sort_expr)"
-  local JQ_COMMON
-  JQ_COMMON="$(
-    cat <<'JQ'
+	local SORT_EXPR
+	SORT_EXPR="$(gen_sort_expr)"
+	local JQ_COMMON
+	JQ_COMMON="$(
+		cat <<'JQ'
 def matches(s; q): (q == "" or ((s // "") | test(q; "i")));
 
 # Extract self info
@@ -302,21 +276,21 @@ end) as $self_public_ip |
   ))
 | sort_by( __SORT_EXPR__ )
 JQ
-  )"
-  # inject the sort expression safely
-  JQ_COMMON="${JQ_COMMON/__SORT_EXPR__/$SORT_EXPR}"
-  printf '%s' "$JQ_COMMON"
+	)"
+	# inject the sort expression safely
+	JQ_COMMON="${JQ_COMMON/__SORT_EXPR__/$SORT_EXPR}"
+	printf '%s' "$JQ_COMMON"
 }
 
 # --- Rendering: Table (TSV -> column) ---
 render_table() {
-  local NOW_TS
-  NOW_TS=$(date -u +%s)
-  local JQ_COMMON
-  JQ_COMMON="$(build_jq_common)"
-  local JQ_TSV
-  JQ_TSV="$(
-    cat <<'JQ'
+	local NOW_TS
+	NOW_TS=$(date -u +%s)
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	local JQ_TSV
+	JQ_TSV="$(
+		cat <<'JQ'
 # Parse timestamps and convert to local time display format
 def parse_time(s):
   if (s // "") == "" then empty 
@@ -377,30 +351,30 @@ to_entries as $rows
     (base_row($idx; $p)|@tsv)
 )
 JQ
-  )"
-  get_netbird_status |
-    jq -r \
-      --arg name "$NAME" \
-      --arg ip "$IPF" \
-      --argjson only_connected "$ONLY_CONNECTED" \
-      --argjson now "$NOW_TS" \
-      "$JQ_COMMON | $JQ_TSV" |
-    column -t -s $'\t' |
-    # Single continuous splitter line (Unicode box-drawing single line)
-    awk 'function line(n){for(i=1;i<=n;i++)printf "─"; printf "\n"}
+	)"
+	get_netbird_status |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			--argjson now "$NOW_TS" \
+			"$JQ_COMMON | $JQ_TSV" |
+		column -t -s $'\t' |
+		# Single continuous splitter line (Unicode box-drawing single line)
+		awk 'function line(n){for(i=1;i<=n;i++)printf "─"; printf "\n"}
          NR==1{print; line_len=length($0); line(line_len); next}
          {print; line(length($0)>line_len?length($0):line_len)}'
 }
 
 # --- Rendering: CSV ---
 render_csv() {
-  local NOW_TS
-  NOW_TS=$(date -u +%s)
-  local JQ_COMMON
-  JQ_COMMON="$(build_jq_common)"
-  local JQ_CSV
-  JQ_CSV="$(
-    cat <<'JQ'
+	local NOW_TS
+	NOW_TS=$(date -u +%s)
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	local JQ_CSV
+	JQ_CSV="$(
+		cat <<'JQ'
 def parse_time(s):
   if (s // "") == "" then empty 
   else
@@ -454,56 +428,56 @@ to_entries as $rows
   ) | @csv
 )
 JQ
-  )"
-  get_netbird_status |
-    jq -r \
-      --arg name "$NAME" \
-      --arg ip "$IPF" \
-      --argjson only_connected "$ONLY_CONNECTED" \
-      --argjson now "$NOW_TS" \
-      "$JQ_COMMON | $JQ_CSV"
+	)"
+	get_netbird_status |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			--argjson now "$NOW_TS" \
+			"$JQ_COMMON | $JQ_CSV"
 }
 
 # --- Rendering: JSON (unchanged shape, still filtered/sorted) ---
 render_json() {
-  local JQ_COMMON
-  JQ_COMMON="$(build_jq_common)"
-  get_netbird_status |
-    jq -r \
-      --arg name "$NAME" \
-      --arg ip "$IPF" \
-      --argjson only_connected "$ONLY_CONNECTED" \
-      "$JQ_COMMON"
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	get_netbird_status |
+		jq -r \
+			--arg name "$NAME" \
+			--arg ip "$IPF" \
+			--argjson only_connected "$ONLY_CONNECTED" \
+			"$JQ_COMMON"
 }
 
 # --- Detail by FQDN ---
 render_detail() {
-  local fqdn="$1"
-  [[ -n "$fqdn" ]] || {
-    echo "detail: missing PEER_FQDN"
-    exit 1
-  }
-  get_netbird_status | jq --arg fqdn "$fqdn" '
+	local fqdn="$1"
+	[[ -n "$fqdn" ]] || {
+		echo "detail: missing PEER_FQDN"
+		exit 1
+	}
+	get_netbird_status | jq --arg fqdn "$fqdn" '
     .peers.details[] | select(.fqdn == $fqdn)
   '
 }
 
 # --- Simple watch loop (no fragile quoting) ---
 watch_loop() {
-  trap 'exit 0' INT
-  while :; do
-    printf '\033c' || true # clear screen
-    render_table
-    echo
-    date +"Updated: %Y-%m-%d %H:%M:%S (%Z)"
-    sleep "$INTERVAL"
-  done
+	trap 'exit 0' INT
+	while :; do
+		printf '\033c' || true # clear screen
+		render_table
+		echo
+		date +"Updated: %Y-%m-%d %H:%M:%S (%Z)"
+		sleep "$INTERVAL"
+	done
 }
 
 # --- Execute ---
 if [[ "$WATCH" -eq 1 ]]; then
-  watch_loop
-  exit 0
+	watch_loop
+	exit 0
 fi
 
 case "$cmd" in
@@ -512,7 +486,7 @@ json) render_json ;;
 csv) render_csv ;;
 detail) render_detail "$PEER_FQDN" ;;
 *)
-  show_help
-  exit 1
-  ;;
+	show_help
+	exit 1
+	;;
 esac
