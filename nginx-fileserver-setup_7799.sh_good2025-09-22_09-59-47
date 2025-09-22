@@ -37,65 +37,30 @@ if ! command -v docker-compose &>/dev/null; then
 fi
 echo "✅ Docker Compose is available"
 
-# Check and handle data directory
+# Create the data directory
 DATA_DIR="/data/d.share"
-if [[ -d "$DATA_DIR" ]]; then
-	echo "✅ Data directory already exists: $DATA_DIR (preserving existing files)"
-else
-	echo "📁 Creating data directory: $DATA_DIR"
-	run_cmd mkdir -p "$DATA_DIR"
-	# Set proper permissions for the data directory
-	run_cmd chmod 755 "$DATA_DIR"
-	echo "✅ Data directory created and permissions set"
-fi
+echo "📁 Creating data directory: $DATA_DIR"
+run_cmd mkdir -p "$DATA_DIR"
+
+# Set proper permissions for the data directory
+run_cmd chmod 755 "$DATA_DIR"
+echo "✅ Data directory created and permissions set"
 
 # Create the installation directory
 INSTALL_DIR="/root/d.share_instance"
-echo "📁 Preparing installation directory: $INSTALL_DIR"
+echo "📁 Creating installation directory: $INSTALL_DIR"
 run_cmd mkdir -p "$INSTALL_DIR"
-
-# Clean up existing instance if it exists
-if [[ -f "$INSTALL_DIR/docker-compose.yml" ]]; then
-	echo "🧹 Cleaning up existing instance..."
-	cd "$INSTALL_DIR"
-	
-	# Stop and remove existing containers
-	if docker-compose ps | grep -q "Up\|Exit"; then
-		echo "   - Stopping existing containers..."
-		docker-compose down || true
-	fi
-	
-	# Remove any orphaned containers with the same name pattern
-	CONTAINER_NAME=$(docker ps -a --filter "name=dshare_instance-nginx" --format "{{.Names}}" | head -1)
-	if [[ -n "$CONTAINER_NAME" ]]; then
-		echo "   - Removing orphaned container: $CONTAINER_NAME"
-		docker rm -f "$CONTAINER_NAME" || true
-	fi
-	
-	# Clean up any containers that might have the old naming pattern
-	docker ps -a --filter "name=nginx" --filter "ancestor=nginx" --format "{{.Names}}" | while read container; do
-		if [[ "$container" =~ (dshare|d\.share) ]]; then
-			echo "   - Removing container: $container"
-			docker rm -f "$container" || true
-		fi
-	done
-	
-	echo "✅ Existing instance cleaned up"
-else
-	echo "ℹ️  No existing instance found"
-fi
 
 # Create the docker-compose.yml file with automatic restart
 echo "📝 Creating docker-compose.yml..."
 run_cmd tee "$INSTALL_DIR/docker-compose.yml" >/dev/null <<'EOF'
 services:
   nginx:
-    image: nginx:latest
-    container_name: dshare_fileserver
+    image: nginx
     restart: unless-stopped
     volumes:
       # Mount your data directory to /data inside container
-      - /data/d.share:/data:ro
+      - /data/d.share:/data
     ports:
       - "7799:80"
     # Configure nginx to serve root path from /data directory
@@ -109,20 +74,7 @@ services:
           autoindex on;
           autoindex_exact_size off;
           autoindex_localtime on;
-          
-          # Security headers
-          add_header X-Frame-Options SAMEORIGIN;
-          add_header X-Content-Type-Options nosniff;
-          
-          # Enable CORS for file access
-          add_header Access-Control-Allow-Origin *;
-          add_header Access-Control-Allow-Methods \"GET, OPTIONS\";
-          add_header Access-Control-Allow-Headers \"Range\";
         }
-        
-        # Handle large files
-        client_max_body_size 0;
-        proxy_max_temp_file_size 0;
       }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 EOF
 
@@ -133,14 +85,14 @@ cd "$INSTALL_DIR"
 
 # Pull the nginx image
 echo "📥 Pulling nginx Docker image..."
-docker pull nginx:latest
+docker pull nginx
 
 # Start the service
 echo "🚀 Starting the nginx file server..."
 docker-compose up -d
 
 # Wait a moment for the service to start
-sleep 5
+sleep 3
 
 # Check if the service is running
 if docker-compose ps | grep -q "Up"; then
@@ -148,13 +100,7 @@ if docker-compose ps | grep -q "Up"; then
 	echo ""
 	echo "🌐 Access your file server at:"
 	echo "   - http://localhost:7799"
-	
-	# Get the first non-loopback IP
-	SERVER_IP=$(hostname -I | awk '{print $1}')
-	if [[ -n "$SERVER_IP" ]]; then
-		echo "   - http://$SERVER_IP:7799"
-	fi
-	
+	echo "   - http://$(hostname -I | awk '{print $1}'):7799"
 	echo ""
 	echo "📁 File directory: $DATA_DIR"
 	echo "⚙️  Installation directory: $INSTALL_DIR"
@@ -166,12 +112,6 @@ if docker-compose ps | grep -q "Up"; then
 	echo "   - Check status: cd $INSTALL_DIR && docker-compose ps"
 	echo ""
 	echo "🔄 The server will automatically restart after system reboots"
-	
-	# Show container info
-	echo ""
-	echo "📊 Container Status:"
-	docker-compose ps
-	
 else
 	echo "❌ Failed to start nginx file server. Check the logs:"
 	docker-compose logs
@@ -183,8 +123,7 @@ echo "🎉 Installation completed successfully!"
 echo ""
 echo "📋 Summary:"
 echo "   ✅ Docker and Docker Compose verified"
-echo "   ✅ Data directory ready: $DATA_DIR"
-echo "   ✅ Previous instance cleaned up (if existed)"
+echo "   ✅ Data directory created: $DATA_DIR"
 echo "   ✅ Nginx file server running on port 7799"
 echo "   ✅ Automatic restart configured"
 echo ""
