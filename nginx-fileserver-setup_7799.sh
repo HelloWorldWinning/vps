@@ -85,6 +85,68 @@ else
 	echo "ℹ️  No existing instance found"
 fi
 
+# Create custom nginx configuration file
+echo "📝 Creating nginx configuration file..."
+run_cmd tee "$INSTALL_DIR/nginx.conf" >/dev/null <<'EOF'
+charset utf-8;
+
+server {
+    listen 80;
+    server_name localhost;
+    
+    # Set charset for all responses
+    charset utf-8;
+    
+    location / {
+        alias /data/;
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+        
+        # Force UTF-8 charset for directory listings and files
+        charset utf-8;
+        
+        # Security headers
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        
+        # Enable CORS for file access
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, OPTIONS";
+        add_header Access-Control-Allow-Headers "Range";
+        
+        # Ensure proper content type for text files
+        location ~* \.(txt|log|conf|ini|cfg)$ {
+            add_header Content-Type "text/plain; charset=utf-8";
+        }
+        
+        # Ensure proper content type for various file types
+        location ~* \.(html|htm)$ {
+            add_header Content-Type "text/html; charset=utf-8";
+        }
+        
+        location ~* \.(css)$ {
+            add_header Content-Type "text/css; charset=utf-8";
+        }
+        
+        location ~* \.(js)$ {
+            add_header Content-Type "application/javascript; charset=utf-8";
+        }
+        
+        location ~* \.(json)$ {
+            add_header Content-Type "application/json; charset=utf-8";
+        }
+        
+        location ~* \.(xml)$ {
+            add_header Content-Type "application/xml; charset=utf-8";
+        }
+    }
+    
+    # Handle large files
+    client_max_body_size 0;
+}
+EOF
+
 # Create the docker-compose.yml file with automatic restart
 echo "📝 Creating docker-compose.yml..."
 run_cmd tee "$INSTALL_DIR/docker-compose.yml" >/dev/null <<'EOF'
@@ -96,34 +158,10 @@ services:
     volumes:
       # Mount your data directory to /data inside container
       - /data/d.share:/data:ro
+      # Mount custom nginx config
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "7799:80"
-    # Configure nginx to serve root path from /data directory
-    command: >
-      sh -c "echo 'server {
-        listen 80;
-        server_name localhost;
-        
-        location / {
-          alias /data/;
-          autoindex on;
-          autoindex_exact_size off;
-          autoindex_localtime on;
-          
-          # Security headers
-          add_header X-Frame-Options SAMEORIGIN;
-          add_header X-Content-Type-Options nosniff;
-          
-          # Enable CORS for file access
-          add_header Access-Control-Allow-Origin *;
-          add_header Access-Control-Allow-Methods \"GET, OPTIONS\";
-          add_header Access-Control-Allow-Headers \"Range\";
-        }
-        
-        # Handle large files
-        client_max_body_size 0;
-        proxy_max_temp_file_size 0;
-      }' > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 EOF
 
 echo "✅ docker-compose.yml created with automatic restart policy"
