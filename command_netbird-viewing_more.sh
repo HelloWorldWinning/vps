@@ -207,41 +207,79 @@ get_netbird_status() {
 }
 
 # --- Get public IP using multiple methods ---
+#get_public_ip() {
+#  local ip=""
+#  
+#  # Method 1: ip.sb (fast and reliable)
+#  if [[ -z "$ip" ]]; then
+#    ip=$(timeout 5 curl -s --connect-timeout 3 ip.sb 2>/dev/null | head -1)
+#  fi
+#  
+#  # Method 2: ipify.org
+#  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    ip=$(timeout 5 curl -s --connect-timeout 3 https://api.ipify.org 2>/dev/null)
+#  fi
+#  
+#  # Method 3: icanhazip.com
+#  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    ip=$(timeout 5 curl -s --connect-timeout 3 https://icanhazip.com 2>/dev/null | tr -d '\n\r')
+#  fi
+#  
+#  # Method 4: httpbin.org
+#  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    ip=$(timeout 5 curl -s --connect-timeout 3 https://httpbin.org/ip 2>/dev/null | jq -r '.origin // empty' 2>/dev/null)
+#  fi
+#  
+#  # Method 5: checkip.amazonaws.com
+#  if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    ip=$(timeout 5 curl -s --connect-timeout 3 https://checkip.amazonaws.com 2>/dev/null | tr -d '\n\r')
+#  fi
+#  
+#  # Validate IP format
+#  if [[ "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+#    echo "$ip"
+#  else
+#    echo ""
+#  fi
+#}
+
+
 get_public_ip() {
   local ip=""
-  
-  # Method 1: ip.sb (fast and reliable)
+
+  # Method 1: ip.sb
   if [[ -z "$ip" ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 ip.sb 2>/dev/null | head -1)
+    ip=$(curl -s --connect-timeout 3 --max-time 5 http://ip.sb 2>/dev/null | head -1)
   fi
-  
-  # Method 2: ipify.org
+
+  # Method 2: ipify.org (HTTPS)
   if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://api.ipify.org 2>/dev/null)
+    ip=$(curl -s --connect-timeout 3 --max-time 5 https://api.ipify.org 2>/dev/null)
   fi
-  
+
   # Method 3: icanhazip.com
   if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://icanhazip.com 2>/dev/null | tr -d '\n\r')
+    ip=$(curl -s --connect-timeout 3 --max-time 5 https://icanhazip.com 2>/dev/null | tr -d '\n\r')
   fi
-  
+
   # Method 4: httpbin.org
   if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://httpbin.org/ip 2>/dev/null | jq -r '.origin // empty' 2>/dev/null)
+    ip=$(curl -s --connect-timeout 3 --max-time 5 https://httpbin.org/ip 2>/dev/null | jq -r '.origin // empty' 2>/dev/null)
   fi
-  
+
   # Method 5: checkip.amazonaws.com
   if [[ -z "$ip" || ! "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    ip=$(timeout 5 curl -s --connect-timeout 3 https://checkip.amazonaws.com 2>/dev/null | tr -d '\n\r')
+    ip=$(curl -s --connect-timeout 3 --max-time 5 https://checkip.amazonaws.com 2>/dev/null | tr -d '\n\r')
   fi
-  
-  # Validate IP format
+
   if [[ "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "$ip"
   else
     echo ""
   fi
 }
+
+
 
 # --- Helpers ---
 gen_sort_expr() {
