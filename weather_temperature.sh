@@ -2,7 +2,8 @@
 
 # Create temp file and download data
 temp_file=$(mktemp)
-curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57516" > "$temp_file"
+#curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57516" > "$temp_file"
+curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57687.html" > "$temp_file"
 
 # Extract Day 1 data
 # Get the weather conditions between "day-item"> and <, looking at lines after "actived"
