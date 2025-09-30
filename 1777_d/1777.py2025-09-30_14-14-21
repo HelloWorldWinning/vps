@@ -763,7 +763,7 @@ async def render_markdown_with_mistune(
 
     .markdown-body {
       max-width: 1000px;
-      margin: 12px auto;
+      margin: 24px auto;
       background: white;
       padding: 20px 24px;
       border-radius: 6px;
