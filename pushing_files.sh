@@ -41,6 +41,8 @@ upload_file() {
 	if echo "${response}" | jq -e '.saved_success == true' >/dev/null; then
 		saved_path=$(echo "${response}" | jq -r '.path')
 #	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+#
+                echo -e "-------------------------------------------------------------------------------------------------------------"
 		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}"
 	else
 		echo -e "${RED} FAILED: ${file_path} -> Server Response: ${response}${NC}"
@@ -65,7 +67,8 @@ command -v nc >/dev/null 2>&1 || {
 
 # === Step 1: Get Target Server and Check Connectivity ===
 echo -e "${CYAN}Step 1: Target Server${NC}"
-read -p "Please enter the destination domain or IP address: " API_HOST
+#read -p "Please enter the destination domain or IP address: " API_HOST
+read -p "destination domain or IP: " API_HOST
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Domain or IP is a mandatory requirement.${NC}"
 	exit 1
@@ -77,8 +80,9 @@ if ! nc -z -w 5 "$API_HOST" "$API_PORT"; then
 	exit 1
 fi
 #echo -e "${GREEN}Server is online.${NC}"
+echo "---------------------------------"
 echo -e "${BOLD_RED}Server is online.${NC}"
-echo "---"
+echo "---------------------------------"
 
 # === Step 2: Collect All File/Folder Paths ===
 echo -e "${CYAN}Step 2: Files and Folders to Upload${NC}"
