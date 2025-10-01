@@ -43,9 +43,7 @@ upload_file() {
 #	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
 #
 		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}"
-               # echo -e "-------------------------------------------------------------------------------------------------------------"
-	        echo "$(printf '%*s' $(($(tput cols) * 95 / 100)) '' | tr ' ' -)"
-
+                echo -e "-------------------------------------------------------------------------------------------------------------"
 	else
 		echo -e "${RED} FAILED: ${file_path} -> Server Response: ${response}${NC}"
 	fi
@@ -139,8 +137,7 @@ fi
 # === Step 4: Wait for Completion ===
 echo "---"
 echo "Waiting for all ${process_count} uploads to complete..."
-#echo -e "-------------------------------------------------------------------------------------------------------------"
-echo "$(printf '%*s' $(($(tput cols) * 95 / 100)) '' | tr ' ' -)"
+echo -e "-------------------------------------------------------------------------------------------------------------"
 wait
 #echo "---"
 echo -e "${GREEN}All tasks finished.${NC}"
