@@ -103,7 +103,7 @@ if [ ${#all_items[@]} -eq 0 ]; then
 	echo -e "${RED}Error: No paths were entered.${NC}"
 	exit 1
 fi
-#echo "---"
+echo "---"
 
 # === Step 3: Process and Upload All Collected Paths ===
 echo -e "${CYAN}Processing ${#all_items[@]} item(s)...${NC}"
@@ -138,7 +138,7 @@ fi
 
 
 # === Step 4: Wait for Completion ===
-#echo "---"
+echo "---"
 echo "Waiting for all ${process_count} uploads to complete..."
 #echo -e "-------------------------------------------------------------------------------------------------------------"
 echo "$(printf '%*s' $(($(tput cols) * ${with_len}/ 100)) '' | tr ' ' -)"
