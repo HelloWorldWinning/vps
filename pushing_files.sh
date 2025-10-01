@@ -42,8 +42,8 @@ upload_file() {
 		saved_path=$(echo "${response}" | jq -r '.path')
 #	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
 #
-                echo -e "-------------------------------------------------------------------------------------------------------------"
 		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+                echo -e "-------------------------------------------------------------------------------------------------------------"
 	else
 		echo -e "${RED} FAILED: ${file_path} -> Server Response: ${response}${NC}"
 	fi
@@ -68,7 +68,7 @@ command -v nc >/dev/null 2>&1 || {
 # === Step 1: Get Target Server and Check Connectivity ===
 echo -e "${CYAN}Step 1: Target Server${NC}"
 #read -p "Please enter the destination domain or IP address: " API_HOST
-read -p "destination domain or IP: " API_HOST
+read -p "destination domain or IP:   " API_HOST
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Domain or IP is a mandatory requirement.${NC}"
 	exit 1
@@ -86,7 +86,9 @@ echo "---------------------------------"
 
 # === Step 2: Collect All File/Folder Paths ===
 echo -e "${CYAN}Step 2: Files and Folders to Upload${NC}"
-echo "Enter one file/folder path per line. Press ENTER on an empty line when you are done."
+#echo "Enter one file/folder path per line. Press ENTER on an empty line when you are done."
+echo -e  "Enter one file/folder path per line. \nPress ENTER on an empty line when you are done."
+echo "---------------------------------"
 
 declare -a all_items=()
 while IFS= read -r item; do
@@ -131,9 +133,11 @@ if [ "$process_count" -eq 0 ]; then
 	exit 1
 fi
 
+
 # === Step 4: Wait for Completion ===
 echo "---"
 echo "Waiting for all ${process_count} uploads to complete..."
+echo -e "-------------------------------------------------------------------------------------------------------------"
 wait
-echo "---"
+#echo "---"
 echo -e "${GREEN}All tasks finished.${NC}"
