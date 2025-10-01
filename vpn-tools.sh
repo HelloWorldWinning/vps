@@ -82,3 +82,7 @@ find /root/wg_clients -maxdepth 1 -name "00_dd_*" -type f | while IFS= read -r f
 done
 
 echo "QR code generation complete!"
+
+
+# android
+bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_v2rayng_latest.sh )
