@@ -8,6 +8,7 @@ API_PORT="7778"
 API_PASSWD="kkb"
 
 # --- Colors for better output ---
+with_len=92
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 BOLD_RED='\033[1;31m'
@@ -42,9 +43,9 @@ upload_file() {
 		saved_path=$(echo "${response}" | jq -r '.path')
 #	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
 #
-		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}\n$(printf '%*s' $(($(tput cols) * ${with_len} / 100)) '' | tr ' ' -)"
                # echo -e "-------------------------------------------------------------------------------------------------------------"
-	        echo "$(printf '%*s' $(($(tput cols) * 95 / 100)) '' | tr ' ' -)"
+	#       echo "$(printf '%*s' $(($(tput cols) * ${with_len} / 100)) '' | tr ' ' -)"
 
 	else
 		echo -e "${RED} FAILED: ${file_path} -> Server Response: ${response}${NC}"
@@ -70,7 +71,7 @@ command -v nc >/dev/null 2>&1 || {
 # === Step 1: Get Target Server and Check Connectivity ===
 echo -e "${CYAN}Step 1: Target Server${NC}"
 #read -p "Please enter the destination domain or IP address: " API_HOST
-read -p "destination domain or IP:   " API_HOST
+read -p "destination domain or IP:  " API_HOST
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Domain or IP is a mandatory requirement.${NC}"
 	exit 1
@@ -140,7 +141,7 @@ fi
 echo "---"
 echo "Waiting for all ${process_count} uploads to complete..."
 #echo -e "-------------------------------------------------------------------------------------------------------------"
-echo "$(printf '%*s' $(($(tput cols) * 95 / 100)) '' | tr ' ' -)"
+echo "$(printf '%*s' $(($(tput cols) * ${with_len}/ 100)) '' | tr ' ' -)"
 wait
 #echo "---"
 echo -e "${GREEN}All tasks finished.${NC}"
