@@ -76,7 +76,12 @@ python -m pip install pynvim
 python -m pip install neovim
 
 
+
+bash  <(curl -L4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh  )
+
+
 # Source the updated bashrc file to apply changes immediately
+
 
 source "$BASHRC"
 source /root/.bashrc

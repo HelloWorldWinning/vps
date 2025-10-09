@@ -235,6 +235,6 @@ pip3 install   pynvim
 pip3 install   jedi
 
 
-bash  <(curl -L4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh  )
+
 
 
