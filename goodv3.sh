@@ -1027,6 +1027,7 @@ nohup ./AWS-Panel-linux-amd64 > /dev/null 2>&1 &
 		80)curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 		81) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh ) ;;
 		811) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh ) ;;
+		nvim) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh ) ;;
 		81a) bash  <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/bundle.sh    ) ;;
 		82)git clone https://github.com/HelloWorldWinning/vps.git ;;
 		83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh  | bash;;
