@@ -1145,6 +1145,7 @@ netstat -tulnp | grep -E '166|177'
 		p) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh )  ;;
 		netbird_de) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh )  ;;
 		reinfo) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh  )  ;;
+		run_inodes) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh )  ;;
 
 
 
