@@ -81,6 +81,19 @@ ensure_pkg() {
 setup_target() {
 	info "Starting Restic Target VPS setup..."
 
+	# Install restic & ssh if needed
+	if ! command -v restic &>/dev/null; then
+		info "Installing restic..."
+		ensure_pkg restic
+		success "Restic installed."
+	else
+		success "Restic is already installed."
+	fi
+	if ! command -v ssh &>/dev/null; then
+		info "Installing OpenSSH client..."
+		ensure_pkg openssh-client
+		success "OpenSSH client installed."
+	fi
 	# restic user
 	if id "restic" &>/dev/null; then
 		warn "User 'restic' already exists. Skipping user creation."
