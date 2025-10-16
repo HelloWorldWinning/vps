@@ -29,20 +29,21 @@ echo ""
 echo "=== Step 3: Setting up alias in ~/.bashrc ==="
 ALIAS_LINE="alias f='bash $CACHED_SCRIPT'"
 
-# Comment out old alias lines containing "alias f="
-if grep -q "^alias f=" "$HOME/.bashrc" 2>/dev/null; then
-    sed -i "s/^alias f=/# alias f=/" "$HOME/.bashrc"
-    echo "✓ Old alias(es) commented out"
+# Check if alias already exists
+if grep -Fq "alias f=" "$HOME/.bashrc" 2>/dev/null; then
+    # Update existing alias
+    sed -i "/alias f=/c\\$ALIAS_LINE" "$HOME/.bashrc"
+    echo "✓ Alias updated in ~/.bashrc"
+else
+    # Add new alias
+    echo "" >> "$HOME/.bashrc"
+    echo "# Auto-generated alias for cached script" >> "$HOME/.bashrc"
+    echo "$ALIAS_LINE" >> "$HOME/.bashrc"
+    echo "✓ Alias added to ~/.bashrc"
 fi
 
-# Add new alias
-echo "" >> "$HOME/.bashrc"
-echo "# Auto-generated alias for cached script" >> "$HOME/.bashrc"
-echo "$ALIAS_LINE" >> "$HOME/.bashrc"
-echo "✓ New alias added to ~/.bashrc"
-
 echo ""
+#echo "Run: source ~/.bashrc"
+source ~/.bashrc
 echo "=== Setup Complete ==="
-source "$HOME/.bashrc"
-echo "✓ ~/.bashrc reloaded"
-echo "You can now use: f"
+echo "Then you can use: f"
