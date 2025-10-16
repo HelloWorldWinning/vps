@@ -633,6 +633,7 @@ npm i -g typescript-language-server typescript
 
 sudo apt install -y bsdmainutils 
 
+curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
 
 sudo reboot
 
