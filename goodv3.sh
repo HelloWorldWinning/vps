@@ -1148,6 +1148,8 @@ netstat -tulnp | grep -E '166|177'
 		run_inodes) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh )  ;;
 		restic) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh )  ;;
 		f_cache)curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash    ;;
+		install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )   ;;
+
 
 
 
