@@ -1115,7 +1115,7 @@ netstat -tulnp | grep -E '166|177'
 		666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh  )  ;;
 		d443) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh ) ;; 
 		udp54000) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh ) ;; 
-		udpre) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh    ) ;; 
+		udp_re) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh    ) ;; 
 		run3g) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh ) ;; 
 		backup) bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh ) ;; 
 #	dd) yes |docker system prune -a -f --volumes  ;;
@@ -1144,7 +1144,7 @@ netstat -tulnp | grep -E '166|177'
 		gdu) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh  )  ;;
 		p) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh )  ;;
 		netbird_de) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh )  ;;
-		reinfo) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh  )  ;;
+		re_info) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh  )  ;;
 		run_inodes) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh )  ;;
 		restic) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh )  ;;
 		f_cache)curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash    ;;
