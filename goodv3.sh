@@ -1149,9 +1149,7 @@ netstat -tulnp | grep -E '166|177'
 		restic) bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh )  ;;
 		f_cache)curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash    ;;
 		install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )   ;;
-
-
-
+		install_affine) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh  )   ;;
 
 
 #	00)eval "exit";;
