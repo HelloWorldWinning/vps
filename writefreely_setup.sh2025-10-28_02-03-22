@@ -7,20 +7,10 @@
 #   cd /data/writefreely_d && docker compose up -d
 #
 # Environment overrides (examples):
-#   WF_HOST="http://sg.zhulei.eu.org:${web_port}" WF_ADMIN_USER="admin" WF_ADMIN_PASS="adminpasswd" ./writefreely_setup.sh
-#   WF_PORT=${web_port} DB_IMAGE=mariadb:10.11 ./writefreely_setup.sh
+#   WF_HOST="http://sg.zhulei.eu.org:8080" WF_ADMIN_USER="admin" WF_ADMIN_PASS="adminpasswd" ./writefreely_setup.sh
+#   WF_PORT=8080 DB_IMAGE=mariadb:10.11 ./writefreely_setup.sh
 
 set -Eeuo pipefail
-
-# Prompt user for web port with 5 second timeout
-read -t 5 -p "Enter web port (default: 3212): " web_port
-
-# If no input or timeout, use default
-if [ -z "$web_port" ]; then
-    web_port=3212
-fi
-
-echo "Using web port: $web_port"
 
 # ------------------------------------------------------------------------------
 # Defaults (can be overridden via environment)
@@ -35,7 +25,7 @@ CONFIG_FILE="${CONFIG_FILE:-$DATA_DIR/config.ini}"
 WF_IMAGE="${WF_IMAGE:-writeas/writefreely:latest}"
 DB_IMAGE="${DB_IMAGE:-mariadb:10.11}"
 
-WF_PORT="${WF_PORT:-${web_port}}"
+WF_PORT="${WF_PORT:-8080}"
 WF_BIND="${WF_BIND:-0.0.0.0}"
 WF_SITE_NAME="${WF_SITE_NAME:-WriteFreely}"
 #WF_HOST="${WF_HOST:-http://localhost:${WF_PORT}}"
@@ -209,9 +199,9 @@ services:
       - "${KEYS_DIR}:/go/keys"
       - "${CONFIG_FILE}:/go/config.ini"
     ports:
-      - "${WF_PORT}:${web_port}"
+      - "${WF_PORT}:8080"
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:${web_port}/ || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -231,7 +221,7 @@ write_config_if_missing() {
 	mkdir -p "$DATA_DIR"
 	cat >"$CONFIG_FILE" <<INI
 [server]
-port = ${web_port}
+port = 8080
 bind = ${WF_BIND}
 # Match container mount /go/keys
 keys_parent_dir = keys
