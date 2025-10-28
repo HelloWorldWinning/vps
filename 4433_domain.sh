@@ -4,7 +4,7 @@
 # Stack: monolith server (API+Files), MySQL, Redis, LocalStack, optional Web, Nginx TLS
 #
 # What’s new in this build
-# - **Interactive domain prompt (10s timeout):** asks for a domain at install; if blank/timeout, falls back to IP mode.
+# - **Interactive domain prompt (20s timeout):** asks for a domain at install; if blank/timeout, falls back to IP mode.
 # - **COOKIE_DOMAIN when a domain is provided:** fixes the login refresh-cookie loop on modern SN server builds.
 # - **IP-first default** preserved: if you skip domain input, it behaves like the old IP-only installer (may show auth loop in some browsers).
 # - Reuse of existing features: origin reconfigure, cert SANs (IP + optional domain), one-click reissue, etc.
@@ -200,8 +200,8 @@ is_domain_like() {
 
 prompt_domain() {
 	local input=""
-	echo -ne "${YELLOW}➜ Optional domain (e.g., notes.example.com) [10s to respond, blank = use IP]: ${NC}"
-	if read -t 10 -r input; then :; else input=""; fi
+	echo -ne "${YELLOW}➜ Optional domain (e.g., notes.example.com) [20s to respond, blank = use IP]: ${NC}"
+	if read -t 20 -r input; then :; else input=""; fi
 	if [ -n "$input" ]; then
 		if is_domain_like "$input"; then
 			DOMAIN_HOST="$input"
