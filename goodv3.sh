@@ -801,7 +801,7 @@ ${Red_font_prefix}i${Font_color_suffix} do_zip.sh zip to /data
 ${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
 ${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
-${Red_font_prefix}write${Font_color_suffix} install_notepad insatll_flatnote  insatll_wf
+${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_flatnote install_wf install_standard_note
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -1152,8 +1152,9 @@ netstat -tulnp | grep -E '166|177'
 		install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh )   ;;
 		install_affine) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh  )   ;;
 		install_notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh  )   ;;
-		insatll_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh  )   ;;
-		insatll_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh  )   ;;
+		install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh  )   ;;
+		install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh  )   ;;
+		install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/standard-notes4433.sh )   ;;
 
 
 #	00)eval "exit";;
