@@ -1154,7 +1154,7 @@ netstat -tulnp | grep -E '166|177'
 		install_notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh  )   ;;
 		install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh  )   ;;
 		install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh  )   ;;
-		install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/standard-notes4433.sh )   ;;
+		install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh  )   ;;
 
 
 #	00)eval "exit";;
