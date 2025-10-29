@@ -39,8 +39,8 @@ if [[ -z "$DOMAINS_INPUT" ]]; then
 	exit 1
 fi
 
-read -rp "Enter listen port (default 4443): " PORT_INPUT
-PORT="${PORT_INPUT:-4443}"
+read -rp "Enter listen port (default 8443): " PORT_INPUT
+PORT="${PORT_INPUT:-8443}"
 
 # basic port validation
 if ! [[ "$PORT" =~ ^[0-9]{1,5}$ ]] || ((PORT < 1 || PORT > 65535)); then
