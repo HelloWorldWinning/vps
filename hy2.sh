@@ -152,8 +152,11 @@ fi
 # -------- launch --------
 echo
 inf "Starting (or reloading) the Hysteria server container..."
+$COMPOSE down
+$COMPOSE pull
 $COMPOSE up -d
 ok "Compose is up."
+docker image prune -f
 
 # -------- status & logs (echoing running info) --------
 echo
