@@ -1093,6 +1093,7 @@ https://zhile.one/archives/1404.html
 	n) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
 	d1777) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh) ;;
 	savefile) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
+	d7778) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
 	gdu) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh) ;;
 	p) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh) ;;
 	netbird_de) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
