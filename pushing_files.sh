@@ -41,10 +41,10 @@ upload_file() {
 
 	if echo "${response}" | jq -e '.saved_success == true' >/dev/null; then
 		saved_path=$(echo "${response}" | jq -r '.path')
-#	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
-#
+		#	echo -e "${GREEN}SUCCESS: ${file_path} -> ${saved_path}${NC}"
+		#
 		echo -e "${BOLD_RED}SUCCESS: ${file_path} -> ${saved_path}${NC}\n$(printf '%*s' $(($(tput cols) * ${with_len} / 100)) '' | tr ' ' -)"
-               # echo -e "-------------------------------------------------------------------------------------------------------------"
+		# echo -e "-------------------------------------------------------------------------------------------------------------"
 	#       echo "$(printf '%*s' $(($(tput cols) * ${with_len} / 100)) '' | tr ' ' -)"
 
 	else
@@ -84,13 +84,14 @@ if ! nc -z -w 5 "$API_HOST" "$API_PORT"; then
 fi
 #echo -e "${GREEN}Server is online.${NC}"
 echo "---------------------------------"
-echo -e "${BOLD_RED}Server is online.${NC}"
+#echo -e "${BOLD_RED}Server is online.${NC}"
+echo -e "${BOLD_RED}  online  ${NC}"
 echo "---------------------------------"
 
 # === Step 2: Collect All File/Folder Paths ===
 echo -e "${CYAN}Step 2: Files and Folders to Upload${NC}"
 #echo "Enter one file/folder path per line. Press ENTER on an empty line when you are done."
-echo -e  "Enter one file/folder path per line. \nPress ENTER on an empty line when you are done."
+echo -e "Enter one file/folder path per line. \nPress ENTER on an empty line when you are done."
 echo "---------------------------------"
 
 declare -a all_items=()
@@ -136,12 +137,11 @@ if [ "$process_count" -eq 0 ]; then
 	exit 1
 fi
 
-
 # === Step 4: Wait for Completion ===
 #echo "---"
 echo "Waiting for all ${process_count} uploads to complete..."
 #echo -e "-------------------------------------------------------------------------------------------------------------"
-echo "$(printf '%*s' $(($(tput cols) * ${with_len}/ 100)) '' | tr ' ' -)"
+echo "$(printf '%*s' $(($(tput cols) * ${with_len} / 100)) '' | tr ' ' -)"
 wait
 #echo "---"
 echo -e "${GREEN}All tasks finished.${NC}"
