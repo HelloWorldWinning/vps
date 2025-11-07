@@ -990,6 +990,7 @@ https://zhile.one/archives/1404.html
 	88) option_88_function ;;
 	89) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh ;;
 	90) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
+	ohmyposh) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
 	900) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
 	91) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh) ;;
 	92) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
@@ -1004,6 +1005,7 @@ https://zhile.one/archives/1404.html
 		;;
 
 	95) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
+	swap) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
 	96) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_txt.sh) ;;
 	97) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tika.sh) ;;
 	988) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh) ;;
@@ -1108,6 +1110,7 @@ https://zhile.one/archives/1404.html
 	install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
 	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
 	install_standard_note_443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
+	neo4j) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
