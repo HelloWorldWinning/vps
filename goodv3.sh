@@ -724,6 +724,7 @@ ${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
 ${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
 ${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_flatnote install_wf install_standard_note  install_standard_note_443
+${Red_font_prefix}some${Font_color_suffix}  neo4j   journald_conf_set
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -1111,6 +1112,7 @@ https://zhile.one/archives/1404.html
 	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
 	install_standard_note_443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
 	neo4j) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
+	journald_conf_set) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
