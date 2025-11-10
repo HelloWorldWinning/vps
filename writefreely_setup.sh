@@ -17,7 +17,7 @@ read -t 5 -p "Enter web port (default: 3212): " web_port
 
 # If no input or timeout, use default
 if [ -z "$web_port" ]; then
-    web_port=3212
+	web_port=3212
 fi
 
 echo "Using web port: $web_port"
@@ -128,8 +128,8 @@ DB_PASS="${DB_PASS:-writefreely_pass}"
 DB_ROOT_PASS="${DB_ROOT_PASS:-root_pass}"
 
 #WF_ADMIN_USER="${WF_ADMIN_USER:-admin}"       # 'admin' is often reserved; we'll still accept it and fallback if needed
-WF_ADMIN_USER="${WF_ADMIN_USER:-A1}"          # 'admin' is often reserved; we'll still accept it and fallback if needed
-WF_ADMIN_PASS="${WF_ADMIN_PASS:-adminpasswd}" # generated if empty
+WF_ADMIN_USER="${WF_ADMIN_USER:-note1}"        # 'admin' is often reserved; we'll still accept it and fallback if needed
+WF_ADMIN_PASS="${WF_ADMIN_PASS:-admin_passwd}" # generated if empty
 
 # ------------------------------------------------------------------------------
 # Helpers
