@@ -390,6 +390,11 @@ autocmd BufEnter * if &filetype != 'python' | set nowriteany | endif
 
 
 
+lua << EOF
+vim.keymap.set({'n','x','o'}, 's', '<Plug>(leap)')
+vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
+EOF
+
 
 
 " Function to run shfmt formatter
