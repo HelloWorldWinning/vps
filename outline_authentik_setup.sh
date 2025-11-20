@@ -344,6 +344,7 @@ echo "==========================================================================
 echo "STEP 1 COMPLETE"
 echo "==============================================================================="
 echo "Waiting 15 seconds for containers to stabilize..."
+echo " docker compose exec authentik-server ak changepassword akadmin"
 sleep 15
 
 echo ""
