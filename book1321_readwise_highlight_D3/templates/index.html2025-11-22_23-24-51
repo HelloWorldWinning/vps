@@ -26,17 +26,10 @@
             src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
         }
 
-	@font-face {
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-     font-display: swap;
-}
-
-
         /* Global styles */
-/*            font-weight: 400 !important;  */
         html, body, * {
-          font-family:  -apple-system ,"SF Pro",  "WebSFPro",BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+            font-weight: 400 !important;
+            font-family: "Source Code Pro", "FZFangJunHeiS", "PingFang SC", monospace !important;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
