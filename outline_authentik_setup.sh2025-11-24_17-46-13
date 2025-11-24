@@ -80,71 +80,31 @@ if command -v ufw >/dev/null 2>&1 && ufw status | grep -q "Status: active"; then
 	ufw allow 443/tcp || true
 fi
 
-################################################################################
-## Secrets Generation
-################################################################################
-#
-## Only generate if env files don't exist to preserve passwords on re-runs
-## unless forced, but for simplicity, we'll regenerate variables in memory.
-## If you want to keep existing DB data, you should not change these.
-## CAUTION: This script overwrites env files. If you have existing DBs,
-## Docker won't update the DB password just by changing the env file.
-## We assume this is a setup or fix-configuration script.
-#
-#OUTLINE_SECRET_KEY="$(openssl rand -hex 32)"
-#OUTLINE_UTILS_SECRET="$(openssl rand -hex 32)"
-## We try to preserve DB pass if file exists to avoid breaking existing volume
-#if [ -f "${BASE_DIR}/outline/docker.env" ]; then
-#	EXISTING_DB_PASS=$(grep "DATABASE_URL=" "${BASE_DIR}/outline/docker.env" | sed 's/.*:\(.*\)@.*/\1/')
-#	OUTLINE_DB_PASS="${EXISTING_DB_PASS:-$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)}"
-#else
-#	OUTLINE_DB_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
-#fi
-#
-#AUTHENTIK_PG_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
-#AUTHENTIK_SECRET_KEY="$(openssl rand -base64 60 | tr -d '\n')"
-
 ###############################################################################
-# Secrets Generation (ROBUST VERSION)
+# Secrets Generation
 ###############################################################################
 
-# Helper function to generate URL-safe passwords (Alphanumeric only)
-# This prevents the "/" and "+" characters that break Postgres connection strings.
-generate_safe_pass() {
-	openssl rand -base64 60 | tr -dc 'a-zA-Z0-9' | head -c 32
-}
+# Only generate if env files don't exist to preserve passwords on re-runs
+# unless forced, but for simplicity, we'll regenerate variables in memory.
+# If you want to keep existing DB data, you should not change these.
+# CAUTION: This script overwrites env files. If you have existing DBs,
+# Docker won't update the DB password just by changing the env file.
+# We assume this is a setup or fix-configuration script.
 
 OUTLINE_SECRET_KEY="$(openssl rand -hex 32)"
 OUTLINE_UTILS_SECRET="$(openssl rand -hex 32)"
-
-# --- Outline DB Password Handling ---
-# We try to preserve DB pass if file exists to avoid breaking existing volume.
-# However, if the EXISTING pass contains a "/" (which caused your error), we must replace it.
-
+# We try to preserve DB pass if file exists to avoid breaking existing volume
 if [ -f "${BASE_DIR}/outline/docker.env" ]; then
-	# 1. Extract the password currently in the file
 	EXISTING_DB_PASS=$(grep "DATABASE_URL=" "${BASE_DIR}/outline/docker.env" | sed 's/.*:\(.*\)@.*/\1/')
-
-	# 2. Check if the existing password is "tainted" with bad characters
-	if [[ "$EXISTING_DB_PASS" == *"/"* ]] || [[ "$EXISTING_DB_PASS" == *"+"* ]]; then
-		echo "!! Detect unsafe characters in existing Outline config. Regenerating safe password..."
-		OUTLINE_DB_PASS="$(generate_safe_pass)"
-	else
-		# 3. If it's safe (or empty), use it. If empty, generate new.
-		echo "-> Preserving existing Outline DB password."
-		OUTLINE_DB_PASS="${EXISTING_DB_PASS:-$(generate_safe_pass)}"
-	fi
+	OUTLINE_DB_PASS="${EXISTING_DB_PASS:-$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)}"
 else
-	# New install
-	OUTLINE_DB_PASS="$(generate_safe_pass)"
+	OUTLINE_DB_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
 fi
 
-# --- Authentik Secrets ---
-# We use the same safe generator here to prevent future issues
-AUTHENTIK_PG_PASS="$(generate_safe_pass)"
+AUTHENTIK_PG_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
 AUTHENTIK_SECRET_KEY="$(openssl rand -base64 60 | tr -d '\n')"
 
-################################################################################
+###############################################################################
 # Directory Setup
 ###############################################################################
 
