@@ -11,11 +11,12 @@ mkdir -p "$FOLDER_PATH"
 cd "$FOLDER_PATH"
 
 # Create docker-compose.yml file
-cat > "$COMPOSE_FILE" << 'EOF'
+cat >"$COMPOSE_FILE" <<'EOF'
 ---
 services:
   rdesktop:
-    image: lscr.io/linuxserver/rdesktop:latest
+#   image: lscr.io/linuxserver/rdesktop:latest
+    image: linuxserver/rdesktop:ubuntu-kde
 #   container_name: rdesktop
     security_opt:
       - seccomp:unconfined #optional
