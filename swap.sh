@@ -46,6 +46,38 @@ is_swap_active() {
 	swapon --show=NAME --noheadings | grep -q "$1"
 }
 
+# 1. Get Human Readable values (for display)
+read sw_total_h sw_used_h sw_free_h <<<$(free -h | awk '/^Swap:/ {print $2, $3, $4}')
+
+# 2. Calculate Percentages
+# We run 'free' (raw numbers) to do the math, as 'free -h' (2.0Gi) is hard to calculate with.
+read pct_used pct_free <<<$(free | awk '/^Swap:/ { 
+    if ($2 > 0) {
+        print ($3/$2)*100, ($4/$2)*100 
+    } else {
+        print 0, 0 
+    }
+}')
+
+# 3. Get Active Swap Files
+current_swap_files=$(swapon --show=NAME --noheadings | tr '\n' ', ' | sed 's/, $//')
+
+# 4. Display the Dashboard
+echo "=========================================="
+echo "         CURRENT SWAP OVERVIEW            "
+echo "=========================================="
+printf "  %-15s : %s\n" "Total Size" "$sw_total_h"
+printf "  %-15s : %s (%.1f%%)\n" "Taken Up" "$sw_used_h" "$pct_used"
+printf "  %-15s : %s (%.1f%%)\n" "Free Space" "$sw_free_h" "$pct_free"
+echo "------------------------------------------"
+if [ -z "$current_swap_files" ]; then
+	printf "  %-15s : %s\n" "Active File(s)" "None"
+else
+	printf "  %-15s : %s\n" "Active File(s)" "$current_swap_files"
+fi
+echo "=========================================="
+echo ""
+
 # Prompt user for the size of the new swap file
 read -p "Enter the size of the swap file in GB (e.g., '1' for 1GB, '1.5' for 1.5GB, default is 5): " SWAP_SIZE
 SWAP_SIZE=${SWAP_SIZE:-5}
