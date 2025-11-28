@@ -1115,6 +1115,7 @@ https://zhile.one/archives/1404.html
 	install_standard_note_443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
 	neo4j) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
 	journald_conf_set) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
+	nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
