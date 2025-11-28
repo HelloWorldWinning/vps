@@ -65,7 +65,12 @@ AVAILABLE_SPACE=$(df / | awk 'NR==2 {print int($4/1048576)}') # Available space 
 REQUIRED_SPACE=$(echo "$SWAP_SIZE" | sed 's/G//')
 REQUIRED_SPACE_MB=$(echo "$REQUIRED_SPACE * 1024" | bc | cut -d. -f1)
 
-if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE_MB" ]; then
+#if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE_MB" ]; then
+#	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE}GB, Required: ${REQUIRED_SPACE}GB" "$RED"
+#	exit 1
+#fi
+
+if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE" ]; then
 	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE}GB, Required: ${REQUIRED_SPACE}GB" "$RED"
 	exit 1
 fi
