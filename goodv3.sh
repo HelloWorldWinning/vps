@@ -1117,6 +1117,7 @@ https://zhile.one/archives/1404.html
 	journald_conf_set) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
 	ipv6_one) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_one.sh) ;;
 	ipv6_many) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_many.sh) ;;
+	docu) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docusaurus_manager.sh) ;;
 	nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 
 		#	00)eval "exit";;
