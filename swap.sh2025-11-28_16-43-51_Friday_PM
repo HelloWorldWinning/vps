@@ -60,32 +60,18 @@ SWAP_SIZE="${SWAP_SIZE}G"
 
 print_msg "\nStarting swap configuration for size: $SWAP_SIZE" "$GREEN"
 
-## Check available disk space
-#AVAILABLE_SPACE=$(df / | awk 'NR==2 {print int($4/1048576)}') # Available space in GB
-#REQUIRED_SPACE=$(echo "$SWAP_SIZE" | sed 's/G//')
-#REQUIRED_SPACE_MB=$(echo "$REQUIRED_SPACE * 1024" | bc | cut -d. -f1)
-#
-##if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE_MB" ]; then
-##	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE}GB, Required: ${REQUIRED_SPACE}GB" "$RED"
-##	exit 1
-##fi
-#
-#if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE" ]; then
+# Check available disk space
+AVAILABLE_SPACE=$(df / | awk 'NR==2 {print int($4/1048576)}') # Available space in GB
+REQUIRED_SPACE=$(echo "$SWAP_SIZE" | sed 's/G//')
+REQUIRED_SPACE_MB=$(echo "$REQUIRED_SPACE * 1024" | bc | cut -d. -f1)
+
+#if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE_MB" ]; then
 #	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE}GB, Required: ${REQUIRED_SPACE}GB" "$RED"
 #	exit 1
 #fi
 
-# Check available disk space
-# Calculate Available space in MB (df output is usually 1K blocks, so divide by 1024)
-AVAILABLE_SPACE_MB=$(df / | awk 'NR==2 {print int($4/1024)}')
-AVAILABLE_SPACE_GB=$(echo "$AVAILABLE_SPACE_MB / 1024" | bc)
-
-REQUIRED_SPACE=$(echo "$SWAP_SIZE" | sed 's/G//')
-REQUIRED_SPACE_MB=$(echo "$REQUIRED_SPACE * 1024" | bc | cut -d. -f1)
-
-# Compare MB against MB
-if [ "$AVAILABLE_SPACE_MB" -lt "$REQUIRED_SPACE_MB" ]; then
-	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE_GB}GB (${AVAILABLE_SPACE_MB}MB), Required: ${REQUIRED_SPACE}GB" "$RED"
+if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE" ]; then
+	print_msg "Error: Not enough disk space. Available: ${AVAILABLE_SPACE}GB, Required: ${REQUIRED_SPACE}GB" "$RED"
 	exit 1
 fi
 
