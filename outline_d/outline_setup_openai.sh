@@ -1,5 +1,9 @@
 #!/bin/bash
 echo """
+
+
+Basic Information
+
 https://api.slack.com/apps/A080KC8TN57?created=1
 8005753479059.8019416940177
 cef3f14d2c2abaab3903e61078568107
@@ -8,6 +12,7 @@ Verification Token
 zCEKJYQkW2LbotjAfc1eVKqA
 
 
+OAuth & Permissions
 https://api.slack.com/apps/A0A1BPS02AC/oauth?
 https://doc.zhulei.eu.org/auth/slack.callback
 
