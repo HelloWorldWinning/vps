@@ -1,0 +1,452 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+###############################################################################
+#  outline_authentiksetup.sh
+#
+#  One-shot installer for:
+#    - Outline (Knowledge Base)
+#    - Authentik (SSO/OIDC Provider)
+#    - HTTPS Portal (Auto Nginx + Let's Encrypt)
+#
+#  UPDATES:
+#    - Added prompt for Production SSL (Real Trusted Certs).
+#    - Auto-cleans https-portal cache if switching to production.
+###############################################################################
+
+if [[ "${EUID}" -ne 0 ]]; then
+	echo "Please run this script as root (or with sudo)."
+	exit 1
+fi
+
+# --- Configuration Inputs ---
+echo "======================================================="
+echo "  Outline + Authentik + SSL Auto-Setup"
+echo "======================================================="
+
+read -rp "Enter Outline domain (e.g. outline.example.com): " OUTLINE_DOMAIN
+read -rp "Enter Authentik domain (e.g. auth.example.com): " AUTHENTIK_DOMAIN
+
+echo ""
+echo "-------------------------------------------------------"
+echo "  SSL CERTIFICATE CONFIGURATION"
+echo "-------------------------------------------------------"
+echo "Your browser warning (ERR_CERT_AUTHORITY_INVALID) happened"
+echo "because the previous run used 'staging' (fake) certs."
+echo ""
+echo "To fix this, choose 'Production' below."
+echo "**PREREQUISITE**: DNS for both domains must point to this IP."
+echo ""
+read -rp "Enable Production (Real Trusted) SSL? [y/N]: " SSL_CONFIRM
+
+if [[ "$SSL_CONFIRM" =~ ^[Yy]$ ]]; then
+	LE_STAGE="production"
+	echo "-> Setting SSL to PRODUCTION."
+else
+	LE_STAGE="staging"
+	echo "-> Keeping SSL on STAGING (Browser warnings will appear)."
+fi
+
+# Authentik image tag
+AUTHENTIK_TAG="${AUTHENTIK_TAG:-2025.10.1}"
+
+BASE_DIR="/data/outline_d"
+COMPOSE_FILE="${BASE_DIR}/docker-compose.yml"
+
+echo "Using base directory: ${BASE_DIR}"
+mkdir -p "${BASE_DIR}"
+
+###############################################################################
+# Install Docker & Dependencies
+###############################################################################
+
+if ! command -v docker >/dev/null 2>&1; then
+	echo "Docker not found, installing..."
+	apt-get update && apt-get install -y ca-certificates curl gnupg lsb-release
+	install -m 0755 -d /etc/apt/keyrings
+	curl -fsSL "https://download.docker.com/linux/$(. /etc/os-release && echo "$ID")/gpg" | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+	chmod a+r /etc/apt/keyrings/docker.gpg
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$(. /etc/os-release && echo "$ID") $(lsb_release -cs) stable" >/etc/apt/sources.list.d/docker.list
+	apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+fi
+
+if ! command -v openssl >/dev/null 2>&1; then
+	apt-get update && apt-get install -y openssl
+fi
+
+# UFW Check
+if command -v ufw >/dev/null 2>&1 && ufw status | grep -q "Status: active"; then
+	ufw allow 80/tcp || true
+	ufw allow 443/tcp || true
+fi
+
+################################################################################
+## Secrets Generation
+################################################################################
+#
+## Only generate if env files don't exist to preserve passwords on re-runs
+## unless forced, but for simplicity, we'll regenerate variables in memory.
+## If you want to keep existing DB data, you should not change these.
+## CAUTION: This script overwrites env files. If you have existing DBs,
+## Docker won't update the DB password just by changing the env file.
+## We assume this is a setup or fix-configuration script.
+#
+#OUTLINE_SECRET_KEY="$(openssl rand -hex 32)"
+#OUTLINE_UTILS_SECRET="$(openssl rand -hex 32)"
+## We try to preserve DB pass if file exists to avoid breaking existing volume
+#if [ -f "${BASE_DIR}/outline/docker.env" ]; then
+#	EXISTING_DB_PASS=$(grep "DATABASE_URL=" "${BASE_DIR}/outline/docker.env" | sed 's/.*:\(.*\)@.*/\1/')
+#	OUTLINE_DB_PASS="${EXISTING_DB_PASS:-$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)}"
+#else
+#	OUTLINE_DB_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
+#fi
+#
+#AUTHENTIK_PG_PASS="$(openssl rand -base64 36 | tr -d '\n' | cut -c1-32)"
+#AUTHENTIK_SECRET_KEY="$(openssl rand -base64 60 | tr -d '\n')"
+
+###############################################################################
+# Secrets Generation (ROBUST VERSION)
+###############################################################################
+
+# Helper function to generate URL-safe passwords (Alphanumeric only)
+# This prevents the "/" and "+" characters that break Postgres connection strings.
+generate_safe_pass() {
+	openssl rand -base64 60 | tr -dc 'a-zA-Z0-9' | head -c 32
+}
+
+OUTLINE_SECRET_KEY="$(openssl rand -hex 32)"
+OUTLINE_UTILS_SECRET="$(openssl rand -hex 32)"
+
+# --- Outline DB Password Handling ---
+# We try to preserve DB pass if file exists to avoid breaking existing volume.
+# However, if the EXISTING pass contains a "/" (which caused your error), we must replace it.
+
+if [ -f "${BASE_DIR}/outline/docker.env" ]; then
+	# 1. Extract the password currently in the file
+	EXISTING_DB_PASS=$(grep "DATABASE_URL=" "${BASE_DIR}/outline/docker.env" | sed 's/.*:\(.*\)@.*/\1/')
+
+	# 2. Check if the existing password is "tainted" with bad characters
+	if [[ "$EXISTING_DB_PASS" == *"/"* ]] || [[ "$EXISTING_DB_PASS" == *"+"* ]]; then
+		echo "!! Detect unsafe characters in existing Outline config. Regenerating safe password..."
+		OUTLINE_DB_PASS="$(generate_safe_pass)"
+	else
+		# 3. If it's safe (or empty), use it. If empty, generate new.
+		echo "-> Preserving existing Outline DB password."
+		OUTLINE_DB_PASS="${EXISTING_DB_PASS:-$(generate_safe_pass)}"
+	fi
+else
+	# New install
+	OUTLINE_DB_PASS="$(generate_safe_pass)"
+fi
+
+# --- Authentik Secrets ---
+# We use the same safe generator here to prevent future issues
+AUTHENTIK_PG_PASS="$(generate_safe_pass)"
+AUTHENTIK_SECRET_KEY="$(openssl rand -base64 60 | tr -d '\n')"
+
+################################################################################
+# Directory Setup
+###############################################################################
+
+# Outline
+OUTLINE_DIR="${BASE_DIR}/outline"
+mkdir -p "${OUTLINE_DIR}"/{storage-data,postgres-data,redis-data}
+
+cat >"${OUTLINE_DIR}/redis.conf" <<'EOF'
+save 60 1
+loglevel warning
+dir /data
+EOF
+
+# Authentik
+AUTHENTIK_DIR="${BASE_DIR}/authentik"
+mkdir -p "${AUTHENTIK_DIR}"/{postgres-data,redis-data,media,custom-templates,certs}
+
+# HTTPS portal
+HTTPS_PORTAL_DIR="${BASE_DIR}/https-portal"
+mkdir -p "${HTTPS_PORTAL_DIR}/data"
+
+# --- CRITICAL: Clean HTTPS-Portal Cache if moving to Production ---
+if [ "$LE_STAGE" == "production" ]; then
+	echo "Checking for stale Staging certificates..."
+	if [ -d "${HTTPS_PORTAL_DIR}/data/nginx-conf" ]; then
+		echo "!! Clearing HTTPS-Portal data to force new Production Certificate generation..."
+		# We stop containers first to ensure we can delete files
+		docker compose -f "${COMPOSE_FILE}" down 2>/dev/null || true
+		rm -rf "${HTTPS_PORTAL_DIR}/data"
+		mkdir -p "${HTTPS_PORTAL_DIR}/data"
+	fi
+fi
+
+###############################################################################
+# Perms Fix
+###############################################################################
+
+docker run --rm -v "${AUTHENTIK_DIR}/redis-data:/data" redis chown -R redis:redis /data || true
+docker run --rm -v "${OUTLINE_DIR}/redis-data:/data" redis chown -R redis:redis /data || true
+
+###############################################################################
+# Config Files (.env)
+###############################################################################
+
+# Authentik .env
+cat >"${AUTHENTIK_DIR}/.env" <<EOF
+PG_PASS=${AUTHENTIK_PG_PASS}
+PG_USER=authentik
+PG_DB=authentik
+AUTHENTIK_SECRET_KEY=${AUTHENTIK_SECRET_KEY}
+AUTHENTIK_ERROR_REPORTING__ENABLED=true
+AUTHENTIK_HOST=https://${AUTHENTIK_DOMAIN}
+AUTHENTIK_COOKIE_DOMAIN=.${AUTHENTIK_DOMAIN}
+AUTHENTIK_EMAIL__FROM=auth@${AUTHENTIK_DOMAIN}
+EOF
+
+# Outline docker.env (Initial)
+OUTLINE_ENV_FILE="${OUTLINE_DIR}/docker.env"
+cat >"${OUTLINE_ENV_FILE}" <<EOF
+NODE_ENV=production
+SECRET_KEY=${OUTLINE_SECRET_KEY}
+UTILS_SECRET=${OUTLINE_UTILS_SECRET}
+DATABASE_URL=postgres://outline:${OUTLINE_DB_PASS}@postgres:5432/outline
+PGSSLMODE=disable
+REDIS_URL=redis://redis:6379
+URL=https://${OUTLINE_DOMAIN}
+PORT=3000
+TRUST_PROXY=true
+FORCE_HTTPS=true
+FILE_STORAGE=local
+FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
+
+# OIDC Placeholders
+OIDC_CLIENT_ID=
+OIDC_CLIENT_SECRET=
+OIDC_AUTH_URI=https://${AUTHENTIK_DOMAIN}/application/o/authorize/
+OIDC_TOKEN_URI=https://${AUTHENTIK_DOMAIN}/application/o/token/
+OIDC_USERINFO_URI=https://${AUTHENTIK_DOMAIN}/application/o/userinfo/
+OIDC_LOGOUT_URI=https://${AUTHENTIK_DOMAIN}/application/o/YOUR_SLUG/end-session/
+OIDC_USERNAME_CLAIM=preferred_username
+OIDC_DISPLAY_NAME=authentik
+OIDC_SCOPES=openid profile email
+EOF
+
+###############################################################################
+# Docker Compose
+###############################################################################
+
+cat >"${COMPOSE_FILE}" <<EOF
+services:
+  # --- Outline Backend ---
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "outline"
+      POSTGRES_PASSWORD: "${OUTLINE_DB_PASS}"
+      POSTGRES_DB: "outline"
+    volumes:
+      - ./outline/postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d outline -U outline"]
+      interval: 30s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    command: ["redis-server", "/redis.conf"]
+    volumes:
+      - ./outline/redis.conf:/redis.conf
+      - ./outline/redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+
+  outline:
+    image: outlinewiki/outline:latest
+    restart: unless-stopped
+    env_file:
+      - ./outline/docker.env
+    expose:
+      - "3000"
+    volumes:
+      - ./outline/storage-data:/var/lib/outline/data
+    depends_on:
+      - postgres
+      - redis
+
+  # --- Authentik Backend ---
+  auth-postgresql:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - ./authentik/.env
+    environment:
+      POSTGRES_PASSWORD: "${AUTHENTIK_PG_PASS}"
+      POSTGRES_USER: "authentik"
+      POSTGRES_DB: "authentik"
+    volumes:
+      - ./authentik/postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d authentik -U authentik"]
+      start_period: 20s
+      interval: 30s
+      retries: 10
+
+  auth-redis:
+    image: redis:alpine
+    command: --save 60 1 --loglevel warning
+    restart: unless-stopped
+    volumes:
+      - ./authentik/redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 10
+
+  authentik-server:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG}
+    restart: unless-stopped
+    command: server
+    env_file:
+      - ./authentik/.env
+    environment:
+      AUTHENTIK_REDIS__HOST: auth-redis
+      AUTHENTIK_POSTGRESQL__HOST: auth-postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: "${AUTHENTIK_PG_PASS}"
+    volumes:
+      - ./authentik/media:/media
+      - ./authentik/custom-templates:/templates
+    depends_on:
+      auth-postgresql:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
+    expose:
+      - "9000"
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG}
+    restart: unless-stopped
+    command: worker
+    env_file:
+      - ./authentik/.env
+    environment:
+      AUTHENTIK_REDIS__HOST: auth-redis
+      AUTHENTIK_POSTGRESQL__HOST: auth-postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: "${AUTHENTIK_PG_PASS}"
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./authentik/media:/media
+      - ./authentik/certs:/certs
+      - ./authentik/custom-templates:/templates
+    depends_on:
+      auth-postgresql:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
+
+  # --- Reverse Proxy (Handles ACME/SSL) ---
+  https-portal:
+    image: steveltn/https-portal:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - authentik-server
+      - outline
+    volumes:
+      - ./https-portal/data:/var/lib/https-portal
+    environment:
+      DOMAINS: "${AUTHENTIK_DOMAIN} -> http://authentik-server:9000, ${OUTLINE_DOMAIN} -> http://outline:3000"
+      STAGE: "${LE_STAGE}"
+      WEBSOCKET: "true"
+      CLIENT_MAX_BODY_SIZE: "0"
+EOF
+
+###############################################################################
+# Execution Phase 1
+###############################################################################
+
+cd "${BASE_DIR}"
+echo "Starting stack with SSL Stage: ${LE_STAGE}..."
+docker compose up -d
+
+echo ""
+echo "==============================================================================="
+echo "STEP 1 COMPLETE"
+echo "==============================================================================="
+echo "Waiting 15 seconds for containers to stabilize..."
+echo " docker compose exec authentik-server ak changepassword akadmin"
+sleep 15
+
+echo ""
+echo "Go to: https://${AUTHENTIK_DOMAIN}"
+echo ""
+echo "1. Login with email: akadmin / password: akadmin"
+echo "2. Complete the Initial Setup."
+echo "3. Create an Application:"
+echo "   - Admin Interface -> Applications -> Providers -> Create -> OAuth2/OpenID"
+echo "   - Name: Outline"
+echo "   - Client Type: Confidential"
+echo "   - Redirect URI: https://${OUTLINE_DOMAIN}/auth/oidc.callback"
+echo "   - Subject mode: Based on the User's username"
+echo "   - Record the Client ID and Client Secret."
+echo "4. Create the Application linked to this provider."
+echo "   - Slug: outline (Remember this!)"
+echo "==============================================================================="
+
+read -rp "Press Enter after you have created the Authentik App and have IDs..." _
+
+read -rp "Enter OIDC Client ID: " OIDC_CLIENT_ID
+read -rp "Enter OIDC Client Secret: " OIDC_CLIENT_SECRET
+read -rp "Enter Authentik App Slug (e.g. outline): " OIDC_APP_SLUG
+
+# Update Outline Config
+cat >"${OUTLINE_ENV_FILE}" <<EOF
+NODE_ENV=production
+SECRET_KEY=${OUTLINE_SECRET_KEY}
+UTILS_SECRET=${OUTLINE_UTILS_SECRET}
+DATABASE_URL=postgres://outline:${OUTLINE_DB_PASS}@postgres:5432/outline
+PGSSLMODE=disable
+REDIS_URL=redis://redis:6379
+URL=https://${OUTLINE_DOMAIN}
+PORT=3000
+TRUST_PROXY=true
+FORCE_HTTPS=true
+FILE_STORAGE=local
+FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
+
+OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+OIDC_AUTH_URI=https://${AUTHENTIK_DOMAIN}/application/o/authorize/
+OIDC_TOKEN_URI=https://${AUTHENTIK_DOMAIN}/application/o/token/
+OIDC_USERINFO_URI=https://${AUTHENTIK_DOMAIN}/application/o/userinfo/
+OIDC_LOGOUT_URI=https://${AUTHENTIK_DOMAIN}/application/o/${OIDC_APP_SLUG}/end-session/
+OIDC_USERNAME_CLAIM=preferred_username
+OIDC_DISPLAY_NAME=authentik
+OIDC_SCOPES=openid profile email
+EOF
+
+echo "Restarting Outline to apply OIDC settings..."
+docker compose up -d --no-deps --force-recreate outline
+
+echo "Ensuring HTTPS-Portal sees the changes..."
+docker compose restart https-portal
+
+echo ""
+echo "Setup Complete!"
+echo "Outline: https://${OUTLINE_DOMAIN}"
+echo "Authentik: https://${AUTHENTIK_DOMAIN}"
+echo ""
+if [ "$LE_STAGE" == "production" ]; then
+	echo "NOTE: It may take 60-120 seconds for HTTPS-Portal to fetch the real certs."
+	echo "If you still see a warning, wait a minute and refresh."
+fi

@@ -3,13 +3,8 @@ echo """
 https://api.slack.com/apps/A080KC8TN57?created=1
 8005753479059.8019416940177
 cef3f14d2c2abaab3903e61078568107
-
 Verification Token
 zCEKJYQkW2LbotjAfc1eVKqA
-
-
-https://api.slack.com/apps/A0A1BPS02AC/oauth?
-https://doc.zhulei.eu.org/auth/slack.callback
 
 .ProseMirror  {
 	font-size: 240%
@@ -35,7 +30,7 @@ mkdir -p "$full_path/data/database-data"
 sudo chown -R 1000:1000 "$full_path/data/storage-data"
 sudo chown -R 999:999 "$full_path/data/database-data"
 sudo chown -R 1000:1000 "$full_path/data/https-portal-data"
-sudo chmod -R 777 "$full_path"
+sudo chmod -R 777  "$full_path"
 # Change to the working directory
 cd "$full_path" || exit 1
 
@@ -56,29 +51,29 @@ read -p "Enter the number of your choice: " AUTH_CHOICE
 
 # Initialize variables for authentication
 case $AUTH_CHOICE in
-1)
-	AUTH_PROVIDER="Slack"
-	read -p "Enter your Slack Client ID: " SLACK_CLIENT_ID
-	read -p "Enter your Slack Client Secret: " SLACK_CLIENT_SECRET
-	;;
-2)
-	AUTH_PROVIDER="Google"
-	read -p "Enter your Google Client ID: " GOOGLE_CLIENT_ID
-	read -p "Enter your Google Client Secret: " GOOGLE_CLIENT_SECRET
-	;;
-3)
-	AUTH_PROVIDER="Microsoft Azure"
-	read -p "Enter your Azure Client ID: " AZURE_CLIENT_ID
-	read -p "Enter your Azure Client Secret: " AZURE_CLIENT_SECRET
-	;;
-*)
-	echo "Invalid choice. Exiting."
-	exit 1
-	;;
+  1)
+    AUTH_PROVIDER="Slack"
+    read -p "Enter your Slack Client ID: " SLACK_CLIENT_ID
+    read -p "Enter your Slack Client Secret: " SLACK_CLIENT_SECRET
+    ;;
+  2)
+    AUTH_PROVIDER="Google"
+    read -p "Enter your Google Client ID: " GOOGLE_CLIENT_ID
+    read -p "Enter your Google Client Secret: " GOOGLE_CLIENT_SECRET
+    ;;
+  3)
+    AUTH_PROVIDER="Microsoft Azure"
+    read -p "Enter your Azure Client ID: " AZURE_CLIENT_ID
+    read -p "Enter your Azure Client Secret: " AZURE_CLIENT_SECRET
+    ;;
+  *)
+    echo "Invalid choice. Exiting."
+    exit 1
+    ;;
 esac
 
 # Create docker.env file
-cat >"$full_path/docker.env" <<EOF
+cat > "$full_path/docker.env" <<EOF
 NODE_ENV=production
 SECRET_KEY=$SECRET_KEY
 UTILS_SECRET=$UTILS_SECRET
@@ -96,24 +91,24 @@ EOF
 
 # Append authentication provider settings to docker.env
 case $AUTH_CHOICE in
-1)
-	cat >>"$full_path/docker.env" <<EOF
+  1)
+    cat >> "$full_path/docker.env" <<EOF
 SLACK_CLIENT_ID=$SLACK_CLIENT_ID
 SLACK_CLIENT_SECRET=$SLACK_CLIENT_SECRET
 EOF
-	;;
-2)
-	cat >>"$full_path/docker.env" <<EOF
+    ;;
+  2)
+    cat >> "$full_path/docker.env" <<EOF
 GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 EOF
-	;;
-3)
-	cat >>"$full_path/docker.env" <<EOF
+    ;;
+  3)
+    cat >> "$full_path/docker.env" <<EOF
 AZURE_CLIENT_ID=$AZURE_CLIENT_ID
 AZURE_CLIENT_SECRET=$AZURE_CLIENT_SECRET
 EOF
-	;;
+    ;;
 esac
 
 # Optionally configure SMTP settings
@@ -121,14 +116,14 @@ echo "Do you want to configure SMTP settings for email notifications? (y/N)"
 read SMTP_CHOICE
 
 if [ "$SMTP_CHOICE" = "y" ]; then
-	read -p "Enter your SMTP host: " SMTP_HOST
-	read -p "Enter your SMTP port: " SMTP_PORT
-	read -p "Enter your SMTP username: " SMTP_USERNAME
-	read -p "Enter your SMTP password: " SMTP_PASSWORD
-	read -p "Enter your 'From' email address: " SMTP_FROM_EMAIL
-	read -p "Enter your 'Reply-To' email address: " SMTP_REPLY_EMAIL
+  read -p "Enter your SMTP host: " SMTP_HOST
+  read -p "Enter your SMTP port: " SMTP_PORT
+  read -p "Enter your SMTP username: " SMTP_USERNAME
+  read -p "Enter your SMTP password: " SMTP_PASSWORD
+  read -p "Enter your 'From' email address: " SMTP_FROM_EMAIL
+  read -p "Enter your 'Reply-To' email address: " SMTP_REPLY_EMAIL
 
-	cat >>"$full_path/docker.env" <<EOF
+  cat >> "$full_path/docker.env" <<EOF
 SMTP_HOST=$SMTP_HOST
 SMTP_PORT=$SMTP_PORT
 SMTP_USERNAME=$SMTP_USERNAME
@@ -139,7 +134,7 @@ EOF
 fi
 
 # Generate docker-compose.yml file
-cat >"$full_path/docker-compose.yml" <<EOF
+cat > "$full_path/docker-compose.yml" <<EOF
 services:
   outline:
     image: docker.getoutline.com/outlinewiki/outline:latest
@@ -169,14 +164,13 @@ services:
       retries: 3
 
   postgres:
-    image: postgres:18
+    image: postgres
     env_file: ./docker.env
 #   ports:
 #     - "5432:5432"
     restart: always
     volumes:
-   #  - ./data/database-data:/var/lib/postgresql/data
-      - ./data/database-data:/var/lib/postgresql
+      - ./data/database-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "outline", "-U", "user"]
       interval: 30s
@@ -216,14 +210,15 @@ echo "Starting Docker services..."
 
 # Pull and start Docker containers
 docker compose pull
-sudo chmod -R 777 $full_path
+sudo chmod -R 777  $full_path
 docker compose up -d
 # Wait for services to start
 sleep 7
 docker compose down
 sleep 7
-sudo chmod -R 777 "$full_path"
+sudo chmod -R 777  "$full_path"
 docker compose up -d
 # Show running containers
 echo "Running Docker containers:"
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E 'outline|redis|postgres|webpage_outline'
+
