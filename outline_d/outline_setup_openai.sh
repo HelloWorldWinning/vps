@@ -25,7 +25,8 @@ https://doc.zhulei.eu.org/auth/slack.callback
 """
 
 # Set fixed path
-full_path="$HOME/Outline_D"
+#full_path="$HOME/Outline_D"
+full_path="/data/Outline_D"
 
 # Create directory if it doesn't exist
 mkdir -p "$full_path"
