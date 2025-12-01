@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if ! command -v bc &>/dev/null; then
+	echo "bc is not installed. Installing..."
+	sudo apt update && sudo apt install -y bc
+else
+	echo "bc is already installed"
+fi
+
 set -e # Exit on error
 
 # Colors for output
