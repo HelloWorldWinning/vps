@@ -724,7 +724,8 @@ ${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
 ${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
 ${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_flatnote install_wf install_standard_note  install_standard_note_443
-${Red_font_prefix}some${Font_color_suffix}  neo4j   journald_conf_set docu   outline_coll
+${Red_font_prefix}some${Font_color_suffix}  neo4j   journald_conf_set docu   outline_coll 
+${Red_font_prefix}some${Font_color_suffix}  xray_reality
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
