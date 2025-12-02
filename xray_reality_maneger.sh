@@ -259,9 +259,9 @@ function installXrayReality() {
         "network": "tcp",
         "security": "reality",
         "realitySettings": {
-          "dest": "www.cloudflare.com:443",
+          "dest": "www.oracle.com:443",
           "serverNames": [
-            "www.cloudflare.com"
+            "www.oracle.com"
           ],
           "privateKey": "$PRIVATE_KEY",
           "shortIds": [
