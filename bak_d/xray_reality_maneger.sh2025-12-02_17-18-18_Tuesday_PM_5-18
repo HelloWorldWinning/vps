@@ -312,7 +312,7 @@ function generateClientConfig() {
 	local pubkey=$4
 
 	# Generate VLESS link
-	VLESS_LINK="vless://${uuid}@${ip}:${port}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.oracle.com&fp=chrome&pbk=${pubkey}&type=tcp&headerType=none#XrayReality-${ip}"
+	VLESS_LINK="vless://${uuid}@${ip}:${port}?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.cloudflare.com&fp=chrome&pbk=${pubkey}&type=tcp&headerType=none#XrayReality-${ip}"
 
 	# Generate client JSON config
 	CLIENT_JSON="$DATA_DIR/client_config.json"
@@ -363,7 +363,7 @@ function generateClientConfig() {
         "security": "reality",
         "realitySettings": {
           "fingerprint": "chrome",
-          "serverName": "www.oracle.com",
+          "serverName": "www.cloudflare.com",
           "publicKey": "$pubkey",
           "shortId": ""
         }
@@ -384,7 +384,7 @@ UUID: $uuid
 Public Key: $pubkey
 Flow: xtls-rprx-vision
 Security: reality
-SNI: www.oracle.com
+SNI: www.cloudflare.com
 Fingerprint: chrome
 
 ===== VLESS Link (Copy & Paste) =====
