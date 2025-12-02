@@ -1119,6 +1119,8 @@ https://zhile.one/archives/1404.html
 	ipv6_many) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_many.sh) ;;
 	docu) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docusaurus_manager.sh) ;;
 	outline_coll) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
+	xray_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
+
 	nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 
 		#	00)eval "exit";;
