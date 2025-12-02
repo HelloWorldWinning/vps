@@ -1123,6 +1123,7 @@ https://zhile.one/archives/1404.html
 	xray_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
 	xray_tls_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
 	xray_tls_cl) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
+	test_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/test_reality.sh) ;;
 
 	nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 
