@@ -79,69 +79,12 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     return credentials
 
 
-# List of text file extensions to render in the browser (as HTML pre-formatted)
+# List of text file extensions to render in the browser
 TEXT_FILE_EXTENSIONS = [
     ".sh",
     ".service",
     ".socket",
 ]
-
-# Mapping of text file extensions to MIME types (for proper charset handling)
-TEXT_MIME_TYPES = {
-    ".js": "text/javascript",
-    ".mjs": "text/javascript",
-    ".json": "application/json",
-    ".css": "text/css",
-    ".html": "text/html",
-    ".htm": "text/html",
-    ".xml": "text/xml",
-    ".txt": "text/plain",
-    ".md": "text/markdown",
-    ".py": "text/x-python",
-    ".yaml": "text/yaml",
-    ".yml": "text/yaml",
-    ".csv": "text/csv",
-    ".log": "text/plain",
-    ".ini": "text/plain",
-    ".conf": "text/plain",
-    ".cfg": "text/plain",
-    ".toml": "text/plain",
-    ".env": "text/plain",
-    ".sh": "text/x-shellscript",
-    ".bash": "text/x-shellscript",
-    ".zsh": "text/x-shellscript",
-    ".ts": "text/typescript",
-    ".tsx": "text/typescript",
-    ".jsx": "text/javascript",
-    ".vue": "text/plain",
-    ".sql": "text/x-sql",
-    ".java": "text/x-java",
-    ".c": "text/x-c",
-    ".cpp": "text/x-c++",
-    ".h": "text/x-c",
-    ".hpp": "text/x-c++",
-    ".go": "text/x-go",
-    ".rs": "text/x-rust",
-    ".rb": "text/x-ruby",
-    ".php": "text/x-php",
-    ".pl": "text/x-perl",
-    ".r": "text/x-r",
-    ".swift": "text/x-swift",
-    ".kt": "text/x-kotlin",
-    ".scala": "text/x-scala",
-    ".lua": "text/x-lua",
-    ".m": "text/x-objectivec",
-    ".mm": "text/x-objectivec",
-    ".gradle": "text/x-gradle",
-    ".properties": "text/plain",
-    ".gitignore": "text/plain",
-    ".dockerignore": "text/plain",
-    ".editorconfig": "text/plain",
-    ".htaccess": "text/plain",
-    ".nginx": "text/plain",
-    ".service": "text/plain",
-    ".socket": "text/plain",
-}
 
 
 @app.get("/{path:path}")
@@ -158,6 +101,14 @@ async def read_path(
     if path.startswith("/"):
         path = path.lstrip("/")
 
+    # Map the URL path to the internal file system path by using the mounted /Host directory
+    # For example, a URL path of "root/data" becomes internal path "/Host/root/data"
+    #  internal_path = os.path.normpath(os.path.join("/Host", path))
+    # Map the URL path to the internal file system path under the mounted /Host directory
+
+    # Basic security check to prevent directory traversal
+    #  if ".." in internal_path:
+    #      raise HTTPException(status_code=403, detail="Path traversal not allowed")
     # Map the URL path to the internal file system path under the mounted /Host directory
     internal_path = os.path.abspath(os.path.join(BASE_DIR, path))
 
@@ -166,6 +117,7 @@ async def read_path(
         raise HTTPException(status_code=403, detail="Path traversal not allowed")
 
     if os.path.isdir(internal_path):
+
         try:
             items = os.listdir(internal_path)
         except PermissionError:
@@ -422,14 +374,7 @@ async def read_path(
             """
             return HTMLResponse(content=html_content)
         else:
-            # For text files, explicitly set charset=utf-8 to properly display Chinese and other Unicode characters
-            if file_extension in TEXT_MIME_TYPES:
-                mime_type = TEXT_MIME_TYPES[file_extension]
-                return FileResponse(
-                    internal_path, media_type=f"{mime_type}; charset=utf-8"
-                )
-            else:
-                return FileResponse(internal_path)
+            return FileResponse(internal_path)
     else:
         raise HTTPException(status_code=404, detail="Path not found")
 
