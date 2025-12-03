@@ -73,12 +73,17 @@ function DownloadxrayTLSCore() {
 	fi
 
 	unzip -q $temp_f -d $temp_d/
+
+	# FIX: Move binary AND geoip/geosite files
 	mv -f $temp_d/xray $BINARY_PATH
+	mv -f $temp_d/geoip.dat /usr/bin/geoip.dat
+	mv -f $temp_d/geosite.dat /usr/bin/geosite.dat
+
 	chmod 755 $BINARY_PATH
 
 	rm -rf $temp_f $temp_d
 
-	echoColor green "Xray core downloaded successfully!"
+	echoColor green "Xray core and resource files downloaded successfully!"
 	$BINARY_PATH version
 }
 
@@ -179,6 +184,7 @@ ExecStart=$BINARY_PATH run -c $CONFIG_FILE
 Restart=on-failure
 RestartPreventExitStatus=23
 LimitNOFILE=1000000
+Environment="XRAY_LOCATION_ASSET=/usr/bin/"
 
 [Install]
 WantedBy=multi-user.target
@@ -220,12 +226,47 @@ function installXrayTLS() {
 		return 1
 	fi
 
-	# Issue certificate
-	echoColor blue "Issuing TLS certificate..."
-	issueCertificate "$DOMAIN"
-	if [[ $? -ne 0 ]]; then
-		echoColor red "Failed to issue certificate, aborting..."
-		return 1
+	# FIX: Check existing certificate
+	local NEED_ISSUE=true
+	if [[ -f "$CERT_DIR/fullchain.cer" ]] && [[ -f "$CERT_DIR/private.key" ]]; then
+		echo ""
+		echoColor yellow "===== Existing Certificate Found ====="
+
+		# Calculate days remaining
+		local expiry=$(openssl x509 -enddate -noout -in "$CERT_DIR/fullchain.cer" 2>/dev/null | cut -d= -f2)
+		local expiry_epoch=$(date -d "$expiry" +%s 2>/dev/null)
+		local now_epoch=$(date +%s)
+		local days_left=$(((expiry_epoch - now_epoch) / 86400))
+
+		echoColor blue "Certificate File: $CERT_DIR/fullchain.cer"
+		if [[ $days_left -gt 0 ]]; then
+			echoColor green "Validity: $days_left days remaining."
+		else
+			echoColor red "Validity: Expired ($days_left days)"
+		fi
+
+		echo ""
+		echoColor yellow "Do you want to force re-issue the certificate?"
+		echoColor yellow "Default: No (Reuse existing certificate) in 7 seconds."
+		read -t 7 -p "Re-issue? [y/N]: " re_issue_choice
+
+		if [[ "$re_issue_choice" == "y" ]] || [[ "$re_issue_choice" == "Y" ]]; then
+			echoColor blue "User selected to re-issue certificate."
+			NEED_ISSUE=true
+		else
+			echoColor green "Skipping certificate issuance. Using existing files."
+			NEED_ISSUE=false
+		fi
+	fi
+
+	if [[ "$NEED_ISSUE" == "true" ]]; then
+		# Issue certificate
+		echoColor blue "Issuing TLS certificate..."
+		issueCertificate "$DOMAIN"
+		if [[ $? -ne 0 ]]; then
+			echoColor red "Failed to issue certificate, aborting..."
+			return 1
+		fi
 	fi
 
 	read -p "$(echoColor yellow 'Enter port (default 443, will auto-select in 8s): ')" -t 8 Port
@@ -370,6 +411,7 @@ EOF
 		generateClientConfig "$DOMAIN" "$PUBLIC_IP" "$Port" "$UUID"
 	else
 		echoColor red "✗ Failed to start Xray TLS service"
+		echoColor yellow "Check logs with: journalctl -u xray_tls -e"
 		systemctl status xray_tls
 	fi
 }
@@ -759,6 +801,8 @@ function uninstallXray() {
 	systemctl disable xray_tls
 	rm -f $SERVICE_FILE
 	rm -f $BINARY_PATH
+	rm -f /usr/bin/geoip.dat
+	rm -f /usr/bin/geosite.dat
 	rm -rf $CONFIG_DIR
 	systemctl daemon-reload
 
@@ -775,7 +819,7 @@ function uninstallXray() {
 function showMenu() {
 	clear
 	echoColor green "======================================="
-	echoColor green "   Xray TLS Manager v1.0"
+	echoColor green "   Xray TLS Manager v1.1 (Fixed)"
 	echoColor green "   (VLESS-TCP-XTLS-Vision)"
 	echoColor green "======================================="
 	echo ""
