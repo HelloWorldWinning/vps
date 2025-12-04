@@ -725,7 +725,7 @@ ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
 ${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
 ${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_flatnote install_wf install_standard_note  install_standard_note_443
 ${Red_font_prefix}some${Font_color_suffix}  neo4j   journald_conf_set docu   outline_coll 
-${Red_font_prefix}some${Font_color_suffix}  xray_reality xray_tls_gp   xray_tls_cl
+${Red_font_prefix}some${Font_color_suffix}  xray_reality xray_tls_gp   xray_tls_cl  test_reality  up_v6_gcp_gm  up_v6_gcp_gp
 ${Red_font_prefix}q${Font_color_suffix} exit
 sed -i 's/eth0/enp0s3/g'  /etc/sysctl.conf 
 nohup command > /dev/null 2>&1 &
@@ -1124,6 +1124,8 @@ https://zhile.one/archives/1404.html
 	xray_tls_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
 	xray_tls_cl) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
 	test_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/test_reality.sh) ;;
+	up_v6_gcp_gm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gm.sh) ;;
+	up_v6_gcp_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
 
 	nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 
