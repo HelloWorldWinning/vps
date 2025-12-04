@@ -54,6 +54,30 @@ upload_file() {
 
 # --- Main Script Logic ---
 
+# Detect OS
+if [ -f /etc/debian_version ]; then
+	OS=$(lsb_release -si 2>/dev/null || cat /etc/os-release | grep "^ID=" | cut -d= -f2 | tr -d '"')
+fi
+
+# Debian branch
+if [ "$OS" = "Debian" ]; then
+	if ! command -v nc >/dev/null 2>&1; then
+		apt-get install -y netcat-openbsd
+	fi
+	if ! command -v jq >/dev/null 2>&1; then
+		apt-get install -y jq
+	fi
+
+# Ubuntu branch
+elif [ "$OS" = "Ubuntu" ]; then
+	if ! command -v nc >/dev/null 2>&1; then
+		apt-get install -y netcat-openbsd
+	fi
+	if ! command -v jq >/dev/null 2>&1; then
+		apt-get install -y jq
+	fi
+fi
+
 # 1. Check for dependencies
 command -v curl >/dev/null 2>&1 || {
 	echo >&2 -e "${RED}Error: 'curl' is not installed.${NC}"
