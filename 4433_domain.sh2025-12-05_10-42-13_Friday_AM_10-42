@@ -28,51 +28,6 @@ print_info() { echo -e "${YELLOW}➜ $1${NC}"; }
 PROJECT_DIR="/root/standard-notes"
 NETWORK_NAME="standard-notes"
 
-# ============ PROJECT_DIR Configuration ============
-echo -n "Enter PROJECT_DIR (default: /root/standard-notes) [7s]: "
-if read -t 7 PROJECT_DIR && [ -n "$PROJECT_DIR" ]; then
-	echo "Using: $PROJECT_DIR"
-else
-	PROJECT_DIR="/root/standard-notes"
-	echo -e "\nUsing default: $PROJECT_DIR"
-fi
-
-# Check if directory is not empty
-if [ -d "$PROJECT_DIR" ] && [ "$(ls -A "$PROJECT_DIR" 2>/dev/null)" ]; then
-	echo "⚠ Directory exists and is NOT empty!"
-	echo "1) Continue  2) Remove & recreate  3) New path  4) Abort"
-	read -p "Choice [1-4]: " choice
-	case $choice in
-	2) rm -rf "$PROJECT_DIR" ;;
-	3) read -p "New PROJECT_DIR: " PROJECT_DIR ;;
-	4) exit 1 ;;
-	esac
-fi
-
-# ============ NETWORK_NAME Configuration ============
-echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
-if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
-	echo "Using: $NETWORK_NAME"
-else
-	NETWORK_NAME="standard-notes"
-	echo -e "\nUsing default: $NETWORK_NAME"
-fi
-
-# Check if network exists
-if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
-	echo "⚠ Network '$NETWORK_NAME' already exists!"
-	echo "1) Use existing  2) Remove & recreate  3) New name  4) Abort"
-	read -p "Choice [1-4]: " choice
-	case $choice in
-	2) docker network rm "$NETWORK_NAME" 2>/dev/null || {
-		echo "Failed to remove"
-		exit 1
-	} ;;
-	3) read -p "New NETWORK_NAME: " NETWORK_NAME ;;
-	4) exit 1 ;;
-	esac
-fi
-
 API_PORT_IN=3000
 FILES_PORT_IN=3104 # Internal files port (externally usually 3125)
 WEB_PORT_IN=80
@@ -447,7 +402,7 @@ write_compose() {
 services:
   db:
     image: mysql:8.0
-#   container_name: standard-notes-db
+    container_name: standard-notes-db
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
@@ -463,7 +418,7 @@ services:
 
   cache:
     image: redis:7-alpine
-#   container_name: standard-notes-cache
+    container_name: standard-notes-cache
     restart: unless-stopped
     command: redis-server --appendonly yes
 #   ports:
@@ -474,7 +429,7 @@ services:
 
   localstack:
     image: localstack/localstack:3.0
-#   container_name: standard-notes-localstack
+    container_name: standard-notes-localstack
     restart: unless-stopped
     environment:
       - SERVICES=sns,sqs
@@ -488,7 +443,7 @@ services:
 
   server:
     image: standardnotes/server
-#   container_name: standard-notes-server
+    container_name: standard-notes-server
     restart: unless-stopped
     env_file: .env
     environment:
@@ -505,7 +460,7 @@ ${cookie_line}
 
   web:
     image: standardnotes/web
-#   container_name: standard-notes-web
+    container_name: standard-notes-web
     restart: unless-stopped
     environment:
       - PUBLIC_ORIGIN=https://${host}:${HTTPS_PORT_OUT}
@@ -521,7 +476,7 @@ ${cookie_line}
 
   nginx:
     image: nginx:1.25-alpine
-#   container_name: standard-notes-proxy
+    container_name: standard-notes-proxy
     depends_on:
       - web
       - server
