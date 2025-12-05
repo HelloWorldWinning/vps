@@ -1113,6 +1113,7 @@ https://zhile.one/archives/1404.html
 	install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh) ;;
 	install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
 	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
+	4433) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
 	install_standard_note_443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
 	neo4j) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
 	journald_conf_set) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
