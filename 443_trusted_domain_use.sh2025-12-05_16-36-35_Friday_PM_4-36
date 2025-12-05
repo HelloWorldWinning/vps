@@ -25,51 +25,6 @@ print_info() { echo -e "${YELLOW}➜ $1${NC}"; }
 PROJECT_DIR="/root/standard-notes"
 NETWORK_NAME="standard-notes"
 
-# ============ PROJECT_DIR Configuration ============
-echo -n "Enter PROJECT_DIR (default: /root/standard-notes) [7s]: "
-if read -t 7 PROJECT_DIR && [ -n "$PROJECT_DIR" ]; then
-	echo "Using: $PROJECT_DIR"
-else
-	PROJECT_DIR="/root/standard-notes"
-	echo -e "\nUsing default: $PROJECT_DIR"
-fi
-
-# Check if directory is not empty
-if [ -d "$PROJECT_DIR" ] && [ "$(ls -A "$PROJECT_DIR" 2>/dev/null)" ]; then
-	echo "⚠ Directory exists and is NOT empty!"
-	echo "1) Continue  2) Remove & recreate  3) New path  4) Abort"
-	read -p "Choice [1-4]: " choice
-	case $choice in
-	2) rm -rf "$PROJECT_DIR" ;;
-	3) read -p "New PROJECT_DIR: " PROJECT_DIR ;;
-	4) exit 1 ;;
-	esac
-fi
-
-# ============ NETWORK_NAME Configuration ============
-echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
-if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
-	echo "Using: $NETWORK_NAME"
-else
-	NETWORK_NAME="standard-notes"
-	echo -e "\nUsing default: $NETWORK_NAME"
-fi
-
-# Check if network exists
-if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
-	echo "⚠ Network '$NETWORK_NAME' already exists!"
-	echo "1) Use existing  2) Remove & recreate  3) New name  4) Abort"
-	read -p "Choice [1-4]: " choice
-	case $choice in
-	2) docker network rm "$NETWORK_NAME" 2>/dev/null || {
-		echo "Failed to remove"
-		exit 1
-	} ;;
-	3) read -p "New NETWORK_NAME: " NETWORK_NAME ;;
-	4) exit 1 ;;
-	esac
-fi
-
 HTTPS_PORT_OUT=443
 HTTP_PORT_OUT=80
 DB_PORT_OUT=3306
@@ -83,70 +38,54 @@ ACME_EMAIL=""
 # Helpers
 # -----------------------------
 compose_cmd() {
-	if docker compose version >/dev/null 2>&1; then
-		echo "docker compose"
-	elif command -v docker-compose >/dev/null 2>&1; then
-		echo "docker-compose"
-	else
-		print_error "Docker Compose not found."
-		exit 1
-	fi
+    if docker compose version >/dev/null 2>&1; then echo "docker compose";
+    elif command -v docker-compose >/dev/null 2>&1; then echo "docker-compose";
+    else print_error "Docker Compose not found."; exit 1; fi
 }
 
 require_root() {
-	if [ "${EUID:-0}" -ne 0 ]; then
-		print_error "Run as root (sudo)."
-		exit 1
-	fi
+    if [ "${EUID:-0}" -ne 0 ]; then print_error "Run as root (sudo)."; exit 1; fi
 }
 
 require_tools() {
-	if ! command -v docker >/dev/null 2>&1; then
-		print_error "Docker not found."
-		exit 1
-	fi
-	if ! command -v socat >/dev/null 2>&1; then
-		print_info "Installing socat (needed for standalone certs)..."
-		if [ -x "$(command -v apt-get)" ]; then
-			apt-get update && apt-get install -y socat
-		elif [ -x "$(command -v yum)" ]; then
-			yum install -y socat
-		fi
-	fi
+    if ! command -v docker >/dev/null 2>&1; then print_error "Docker not found."; exit 1; fi
+    if ! command -v socat >/dev/null 2>&1; then
+        print_info "Installing socat (needed for standalone certs)..."
+        if [ -x "$(command -v apt-get)" ]; then apt-get update && apt-get install -y socat
+        elif [ -x "$(command -v yum)" ]; then yum install -y socat
+        fi
+    fi
 }
 
 port_free() {
-	local port="$1"
-	if ss -lnt "( sport = :$port )" | awk 'NR>1{exit 1}'; then return 0; fi
-	return 1
+    local port="$1"
+    if ss -lnt "( sport = :$port )" | awk 'NR>1{exit 1}'; then return 0; fi
+    return 1
 }
 
 prompt_inputs() {
-	local input=""
-	echo -ne "${YELLOW}➜ External HTTPS port [default 443] (5s to respond): ${NC}"
-	if read -t 5 -r input; then :; else input=""; fi
-	if [[ "$input" =~ ^[0-9]+$ ]] && [ "$input" -ge 1 ] && [ "$input" -le 65535 ]; then
-		HTTPS_PORT_OUT="$input"
-	else
-		HTTPS_PORT_OUT=443
-		echo ""
-	fi
-	print_info "Using external HTTPS port: ${HTTPS_PORT_OUT}"
+    local input=""
+    echo -ne "${YELLOW}➜ External HTTPS port [default 443] (5s to respond): ${NC}"
+    if read -t 5 -r input; then :; else input=""; fi
+    if [[ "$input" =~ ^[0-9]+$ ]] && [ "$input" -ge 1 ] && [ "$input" -le 65535 ]; then
+        HTTPS_PORT_OUT="$input"
+    else
+        HTTPS_PORT_OUT=443
+        echo "" 
+    fi
+    print_info "Using external HTTPS port: ${HTTPS_PORT_OUT}"
 
-	echo -ne "${YELLOW}➜ Domain (e.g., notes.example.com) [REQUIRED]: ${NC}"
-	if ! read -r input || [ -z "$input" ]; then
-		print_error "Domain is required."
-		exit 1
-	fi
-	DOMAIN_HOST="$input"
+    echo -ne "${YELLOW}➜ Domain (e.g., notes.example.com) [REQUIRED]: ${NC}"
+    if ! read -r input || [ -z "$input" ]; then print_error "Domain is required."; exit 1; fi
+    DOMAIN_HOST="$input"
 
-	local clean_dom=$(echo "$DOMAIN_HOST" | tr -d '.-')
-	ACME_EMAIL="${clean_dom}@gmail.com"
-	print_info "Domain: ${DOMAIN_HOST} | Email: ${ACME_EMAIL}"
+    local clean_dom=$(echo "$DOMAIN_HOST" | tr -d '.-')
+    ACME_EMAIL="${clean_dom}@gmail.com"
+    print_info "Domain: ${DOMAIN_HOST} | Email: ${ACME_EMAIL}"
 }
 
 write_env() {
-	cat >.env <<EOF
+    cat >.env <<EOF
 DB_HOST=db
 DB_PORT=3306
 DB_USERNAME=std_notes_user
@@ -165,8 +104,8 @@ EOF
 }
 
 write_nginx_conf() {
-	mkdir -p nginx
-	cat >nginx/nginx.conf <<'EOF'
+    mkdir -p nginx
+    cat >nginx/nginx.conf <<'EOF'
 events {}
 http {
   include       /etc/nginx/mime.types;
@@ -231,8 +170,8 @@ EOF
 }
 
 write_web_entry() {
-	mkdir -p web-entry
-	cat >web-entry/50-set-sync-server.sh <<'EOF'
+    mkdir -p web-entry
+    cat >web-entry/50-set-sync-server.sh <<'EOF'
 #!/usr/bin/env sh
 set -eu
 HTML_DIR="/usr/share/nginx/html"
@@ -251,16 +190,16 @@ for f in "${HTML_DIR}"/*.js; do
   fi
 done
 EOF
-	chmod +x web-entry/50-set-sync-server.sh
+    chmod +x web-entry/50-set-sync-server.sh
 }
 
 write_compose() {
-	mkdir -p data/mysql data/redis uploads logs nginx certs
-	cat >docker-compose.yml <<EOF
+    mkdir -p data/mysql data/redis uploads logs nginx certs
+    cat >docker-compose.yml <<EOF
 services:
   db:
     image: mysql:8.0
-#   container_name: standard-notes-db
+    container_name: standard-notes-db
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
@@ -274,7 +213,7 @@ services:
 
   cache:
     image: redis:7-alpine
-#   container_name: standard-notes-cache
+    container_name: standard-notes-cache
     restart: unless-stopped
     command: redis-server --appendonly yes
     ports: ["${REDIS_PORT_OUT}:6379"]
@@ -283,7 +222,7 @@ services:
 
   localstack:
     image: localstack/localstack:3.0
-#   container_name: standard-notes-localstack
+    container_name: standard-notes-localstack
     restart: unless-stopped
     environment:
       - SERVICES=sns,sqs
@@ -295,7 +234,7 @@ services:
 
   server:
     image: standardnotes/server
-#   container_name: standard-notes-server
+    container_name: standard-notes-server
     restart: unless-stopped
     env_file: .env
     environment:
@@ -317,7 +256,7 @@ services:
 
   web:
     image: standardnotes/web
-#   container_name: standard-notes-web
+    container_name: standard-notes-web
     restart: unless-stopped
     environment:
       - PUBLIC_ORIGIN=https://${DOMAIN_HOST}:${HTTPS_PORT_OUT}
@@ -331,7 +270,7 @@ services:
 
   nginx:
     image: nginx:1.25-alpine
-#   container_name: standard-notes-proxy
+    container_name: standard-notes-proxy
     depends_on: [web, server]
     ports: ["${HTTPS_PORT_OUT}:3001", "${HTTP_PORT_OUT}:80"]
     volumes:
@@ -345,7 +284,7 @@ EOF
 }
 
 write_localstack_bootstrap() {
-	cat >localstack_bootstrap.sh <<'EOF'
+    cat >localstack_bootstrap.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 LOCALSTACK_HOST=localhost
@@ -383,98 +322,89 @@ link $(get_t_arn $T_SYNC) $(get_q_arn $Q_REV); link $(get_t_arn $T_REV) $(get_q_
 c_que "scheduler-local-queue"
 echo "Localstack Init Complete"
 EOF
-	chmod +x localstack_bootstrap.sh
+    chmod +x localstack_bootstrap.sh
 }
 
 ensure_acme() {
-	if [ -x "/root/.acme.sh/acme.sh" ]; then
-		print_success "acme.sh installed."
-		return 0
-	fi
-	print_info "Installing acme.sh..."
-	curl -fsSL https://get.acme.sh | sh -s email="${ACME_EMAIL}" >/dev/null 2>&1 || {
-		print_error "Install failed"
-		exit 1
-	}
-	print_success "acme.sh installed."
+    if [ -x "/root/.acme.sh/acme.sh" ]; then print_success "acme.sh installed."; return 0; fi
+    print_info "Installing acme.sh..."
+    curl -fsSL https://get.acme.sh | sh -s email="${ACME_EMAIL}" >/dev/null 2>&1 || { print_error "Install failed"; exit 1; }
+    print_success "acme.sh installed."
 }
 
 issue_cert_smart() {
-	local acme="/root/.acme.sh/acme.sh"
+    local acme="/root/.acme.sh/acme.sh"
+    
+    # 1. Force clear port 80 if needed
+    if ! port_free 80; then
+        print_info "Port 80 busy. Stopping docker stack..."
+        if [ -d "$PROJECT_DIR" ]; then (cd "$PROJECT_DIR" && $(compose_cmd) down >/dev/null 2>&1 || true); fi
+        sleep 3
+        if ! port_free 80; then
+             print_error "Port 80 is STILL busy. Manual intervention required."
+             exit 1
+        fi
+    fi
 
-	# 1. Force clear port 80 if needed
-	if ! port_free 80; then
-		print_info "Port 80 busy. Stopping docker stack..."
-		if [ -d "$PROJECT_DIR" ]; then (cd "$PROJECT_DIR" && $(compose_cmd) down >/dev/null 2>&1 || true); fi
-		sleep 3
-		if ! port_free 80; then
-			print_error "Port 80 is STILL busy. Manual intervention required."
-			exit 1
-		fi
-	fi
+    # 2. SMART CHECK: Do valid certs already exist?
+    if "$acme" --list | grep -q "${DOMAIN_HOST}"; then
+         print_success "Existing certificate found for ${DOMAIN_HOST}. Skipping issuance to avoid Rate Limit (429)."
+    else
+         print_info "Requesting NEW certificate for ${DOMAIN_HOST}..."
+         # Only issue if we don't have one
+         "$acme" --issue --standalone -d "${DOMAIN_HOST}" --debug --force || {
+            print_error "Certificate issuance FAILED."
+            print_info "If you see '429', you hit the rate limit. Wait 1 hour or use a different domain."
+            exit 1
+         }
+    fi
 
-	# 2. SMART CHECK: Do valid certs already exist?
-	if "$acme" --list | grep -q "${DOMAIN_HOST}"; then
-		print_success "Existing certificate found for ${DOMAIN_HOST}. Skipping issuance to avoid Rate Limit (429)."
-	else
-		print_info "Requesting NEW certificate for ${DOMAIN_HOST}..."
-		# Only issue if we don't have one
-		"$acme" --issue --standalone -d "${DOMAIN_HOST}" --debug --force || {
-			print_error "Certificate issuance FAILED."
-			print_info "If you see '429', you hit the rate limit. Wait 1 hour or use a different domain."
-			exit 1
-		}
-	fi
-
-	# 3. Install Certs (copies files to project dir)
-	mkdir -p "${PROJECT_DIR}/certs"
-	print_info "Installing certificates to ${PROJECT_DIR}/certs..."
-
-	"$acme" --install-cert -d "${DOMAIN_HOST}" \
-		--key-file "${PROJECT_DIR}/certs/server.key" \
-		--fullchain-file "${PROJECT_DIR}/certs/server.crt" \
-		--reloadcmd "cd ${PROJECT_DIR} && $(compose_cmd) exec -T nginx nginx -s reload" \
-		>/dev/null 2>&1 || print_info "Cert files copied (stack is down, reload skipped)."
-
-	print_success "Certificates ready."
+    # 3. Install Certs (copies files to project dir)
+    mkdir -p "${PROJECT_DIR}/certs"
+    print_info "Installing certificates to ${PROJECT_DIR}/certs..."
+    
+    "$acme" --install-cert -d "${DOMAIN_HOST}" \
+        --key-file       "${PROJECT_DIR}/certs/server.key" \
+        --fullchain-file "${PROJECT_DIR}/certs/server.crt" \
+        --reloadcmd      "cd ${PROJECT_DIR} && $(compose_cmd) exec -T nginx nginx -s reload" \
+        >/dev/null 2>&1 || print_info "Cert files copied (stack is down, reload skipped)."
+        
+    print_success "Certificates ready."
 }
 
 install_stack() {
-	require_root
-	require_tools
-	prompt_inputs
-	if ! port_free "${HTTPS_PORT_OUT}"; then
-		print_error "Port ${HTTPS_PORT_OUT} busy."
-		exit 1
-	fi
+    require_root
+    require_tools
+    prompt_inputs
+    if ! port_free "${HTTPS_PORT_OUT}"; then print_error "Port ${HTTPS_PORT_OUT} busy."; exit 1; fi
+    
+    if [ -d "$PROJECT_DIR" ]; then
+        print_info "Removing old stack..."
+        (cd "$PROJECT_DIR" && $(compose_cmd) down -v >/dev/null 2>&1 || true)
+        rm -rf "$PROJECT_DIR"
+    fi
 
-	if [ -d "$PROJECT_DIR" ]; then
-		print_info "Removing old stack..."
-		(cd "$PROJECT_DIR" && $(compose_cmd) down -v >/dev/null 2>&1 || true)
-		rm -rf "$PROJECT_DIR"
-	fi
+    mkdir -p "$PROJECT_DIR"/{data/mysql,data/redis,uploads,logs,nginx,certs,web-entry}
+    cd "$PROJECT_DIR"
 
-	mkdir -p "$PROJECT_DIR"/{data/mysql,data/redis,uploads,logs,nginx,certs,web-entry}
-	cd "$PROJECT_DIR"
+    AUTH_JWT_SECRET=$(openssl rand -hex 32)
+    AUTH_SERVER_ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)
+    VALET_TOKEN_SECRET=$(openssl rand -hex 32)
+    DB_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-25)
 
-	AUTH_JWT_SECRET=$(openssl rand -hex 32)
-	AUTH_SERVER_ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)
-	VALET_TOKEN_SECRET=$(openssl rand -hex 32)
-	DB_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-25)
+    write_env
+    write_nginx_conf
+    write_web_entry
+    write_compose
+    write_localstack_bootstrap
 
-	write_env
-	write_nginx_conf
-	write_web_entry
-	write_compose
-	write_localstack_bootstrap
+    ensure_acme
+    issue_cert_smart
 
-	ensure_acme
-	issue_cert_smart
-
-	print_info "Starting stack..."
-	$(compose_cmd) pull -q
-	$(compose_cmd) up -d
-	print_success "Installed! https://${DOMAIN_HOST}:${HTTPS_PORT_OUT}"
+    print_info "Starting stack..."
+    $(compose_cmd) pull -q
+    $(compose_cmd) up -d
+    print_success "Installed! https://${DOMAIN_HOST}:${HTTPS_PORT_OUT}"
 }
 
 start_stack() { cd "$PROJECT_DIR" && $(compose_cmd) up -d; }
@@ -482,16 +412,12 @@ stop_stack() { cd "$PROJECT_DIR" && $(compose_cmd) down; }
 restart_stack() { cd "$PROJECT_DIR" && $(compose_cmd) restart; }
 logs_stack() { cd "$PROJECT_DIR" && $(compose_cmd) logs -f "${1:-}"; }
 uninstall_stack() {
-	read -p "Type 'delete' to uninstall: " c
-	if [ "$c" == "delete" ]; then
-		cd "$PROJECT_DIR" && $(compose_cmd) down -v
-		rm -rf "$PROJECT_DIR"
-		print_success "Deleted"
-	fi
+    read -p "Type 'delete' to uninstall: " c
+    if [ "$c" == "delete" ]; then cd "$PROJECT_DIR" && $(compose_cmd) down -v; rm -rf "$PROJECT_DIR"; print_success "Deleted"; fi
 }
 
 show_menu() {
-	cat <<MENU
+    cat <<MENU
 Standard Notes (Smart Fix)
 1) Install
 2) Start
@@ -501,10 +427,10 @@ Standard Notes (Smart Fix)
 6) Uninstall
 0) Exit
 MENU
-	read -p "Select: " c
-	case "$c" in
-	1) install_stack ;; 2) start_stack ;; 3) stop_stack ;; 4) restart_stack ;; 5) logs_stack ;; 6) uninstall_stack ;; 0) exit 0 ;; *) show_menu ;;
-	esac
+    read -p "Select: " c
+    case "$c" in
+        1) install_stack ;; 2) start_stack ;; 3) stop_stack ;; 4) restart_stack ;; 5) logs_stack ;; 6) uninstall_stack ;; 0) exit 0 ;; *) show_menu ;;
+    esac
 }
 main() { if [ "${1:-}" != "" ]; then "$@"; else show_menu; fi; }
 main "$@"
