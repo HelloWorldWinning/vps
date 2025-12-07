@@ -499,19 +499,3 @@ endfunction
 " Map custom commands for Rust files only
 autocmd FileType rust cnoreabbrev <buffer> w :call WriteRust()<CR>
 autocmd FileType rust cnoreabbrev <buffer> wq :call WriteQuitRust()<CR>
-
-
-
-" Flash keybindings
-nnoremap s <cmd>lua require("flash").jump()<cr>
-xnoremap s <cmd>lua require("flash").jump()<cr>
-onoremap s <cmd>lua require("flash").jump()<cr>
-
-nnoremap S <cmd>lua require("flash").treesitter()<cr>
-xnoremap S <cmd>lua require("flash").treesitter()<cr>
-onoremap S <cmd>lua require("flash").treesitter()<cr>
-
-
-
-
-
