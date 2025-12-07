@@ -1,0 +1,12 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: dshare_fileserver
+    restart: unless-stopped
+    volumes:
+      # Mount your data directory to /data inside container
+      - /data/d.share:/data:ro
+      # Mount custom nginx config
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "7799:80"

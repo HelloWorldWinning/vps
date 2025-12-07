@@ -1,0 +1,14 @@
+services:
+  jupyter1666:
+    image: oklove/jupyter1666
+    hostname : "SG"
+ ## restart: unless-stopped
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "1666:1666"
+    volumes:
+  #   - /data:/data
+  #   - /:/SG
+      - /:/Host

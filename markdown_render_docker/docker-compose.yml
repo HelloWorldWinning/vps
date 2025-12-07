@@ -1,0 +1,13 @@
+services:
+  markdown-app:
+    image: oklove/markdown:latest
+    hostname: SG
+    restart: unless-stopped
+    ports:
+      - "177:177"
+    volumes:
+    # - /data:/data
+      - /:/Host
+    environment:
+      - USERNAME=a
+      - PASSWORD=a

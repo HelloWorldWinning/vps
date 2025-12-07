@@ -1,0 +1,63 @@
+[Sun Dec  7 04:44:32 AM CST 2025] ===Starting cron===
+[Sun Dec  7 04:44:32 AM CST 2025] Installing from online archive.
+[Sun Dec  7 04:44:32 AM CST 2025] Downloading https://github.com/acmesh-official/acme.sh/archive/master.tar.gz
+[Sun Dec  7 04:44:34 AM CST 2025] Extracting master.tar.gz
+[Sun Dec  7 04:44:34 AM CST 2025] Installing to /root/.acme.sh
+[Sun Dec  7 04:44:34 AM CST 2025] Installed to /root/.acme.sh/acme.sh
+[Sun Dec  7 04:44:34 AM CST 2025] bash has been found. Changing the shebang to use bash as preferred.
+[Sun Dec  7 04:44:35 AM CST 2025] OK
+[Sun Dec  7 04:44:35 AM CST 2025] Install success!
+[Sun Dec  7 04:44:35 AM CST 2025] Upgrade successful!
+[Sun Dec  7 04:44:35 AM CST 2025] Automatically upgraded to: 3.1.3
+[Sun Dec  7 04:44:35 AM CST 2025] Renewing: 'sg.zhulei.eu.org'
+[Sun Dec  7 04:44:35 AM CST 2025] Renewing using Le_API=https://acme-v02.api.letsencrypt.org/directory
+[Sun Dec  7 04:44:36 AM CST 2025] Using CA: https://acme-v02.api.letsencrypt.org/directory
+[Sun Dec  7 04:44:36 AM CST 2025] Standalone mode.
+[Sun Dec  7 04:44:36 AM CST 2025] Single domain='sg.zhulei.eu.org'
+[Sun Dec  7 04:44:38 AM CST 2025] Getting webroot for domain='sg.zhulei.eu.org'
+[Sun Dec  7 04:44:38 AM CST 2025] sg.zhulei.eu.org is already verified, skipping http-01.
+[Sun Dec  7 04:44:38 AM CST 2025] Verification finished, beginning signing.
+[Sun Dec  7 04:44:38 AM CST 2025] Let's finalize the order.
+[Sun Dec  7 04:44:38 AM CST 2025] Le_OrderFinalize='https://acme-v02.api.letsencrypt.org/acme/finalize/2844212046/456224601646'
+[Sun Dec  7 04:44:48 AM CST 2025] Downloading cert.
+[Sun Dec  7 04:44:48 AM CST 2025] Le_LinkCert='https://acme-v02.api.letsencrypt.org/acme/cert/06fa1a8fa7c6992677af624752c541e768c6'
+[Sun Dec  7 04:44:52 AM CST 2025] Cert success.
+-----BEGIN CERTIFICATE-----
+MIIDlTCCAxugAwIBAgISBvoaj6fGmSZ3r2JHUsVB52jGMAoGCCqGSM49BAMDMDIx
+CzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF
+NzAeFw0yNTEyMDYxOTQ2MTBaFw0yNjAzMDYxOTQ2MDlaMBsxGTAXBgNVBAMTEHNn
+LnpodWxlaS5ldS5vcmcwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQK8/rH2m02
+uEPucQJb/HCdJeHodHfEdeH1+OPTiimUhICP6QlkLw9B+h0MqE49ls3ILeptbrvU
+7TlGJBye/aFEo4ICJjCCAiIwDgYDVR0PAQH/BAQDAgeAMB0GA1UdJQQWMBQGCCsG
+AQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBTiTTrT0K4o
+FET83M+lK390OgaaFzAfBgNVHSMEGDAWgBSuSJ7chx1EoG/aouVgdAR4wpwAgDAy
+BggrBgEFBQcBAQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly9lNy5pLmxlbmNyLm9y
+Zy8wGwYDVR0RBBQwEoIQc2cuemh1bGVpLmV1Lm9yZzATBgNVHSAEDDAKMAgGBmeB
+DAECATAtBgNVHR8EJjAkMCKgIKAehhxodHRwOi8vZTcuYy5sZW5jci5vcmcvNzEu
+Y3JsMIIBDAYKKwYBBAHWeQIEAgSB/QSB+gD4AHcAFoMtq/CpJQ8P8DqlRf/Iv8gj
+0IdL9gQpJ/jnHzMT9foAAAGa9Wja3AAABAMASDBGAiEA3LsqnV7JT1cQ2QAiFhKc
+BCrb8F6YxExd2u6issv5HDwCIQCo9/dP6jJqmBAqhtL4GvwOkhedtqX7bDaYYZyU
+WtZHUwB9AOMjjfKNoojgquCs8PqQyYXwtr/10qUnsAH8HERYxLboAAABmvVo3LMA
+CAAABQApS7C3BAMARjBEAiA/eUMMXG7FUka7b9KHQaaEoDzbMLRZjrQlwXjugy2S
+IwIgcpG/pX5dHZ6fhR3JgrXFlL/uDU4FI3Hs2wVUvu88ZpIwCgYIKoZIzj0EAwMD
+aAAwZQIxANXqGcpZvvj8i6QOGGgVGikduOX0eAHxXsmTXlCsTthfkVL5iUY3FTLC
+vKbG/141dgIwTaHYh94acJpfr8FisDh5KSwf6z/oB8sEmhbIO8nPH397tElOUejl
+a8BBY6UXM4Cg
+-----END CERTIFICATE-----
+[Sun Dec  7 04:44:52 AM CST 2025] Your cert is in: /root/.acme.sh/sg.zhulei.eu.org_ecc/sg.zhulei.eu.org.cer
+[Sun Dec  7 04:44:52 AM CST 2025] Your cert key is in: /root/.acme.sh/sg.zhulei.eu.org_ecc/sg.zhulei.eu.org.key
+[Sun Dec  7 04:44:52 AM CST 2025] The intermediate CA cert is in: /root/.acme.sh/sg.zhulei.eu.org_ecc/ca.cer
+[Sun Dec  7 04:44:52 AM CST 2025] And the full-chain cert is in: /root/.acme.sh/sg.zhulei.eu.org_ecc/fullchain.cer
+[Sun Dec  7 04:44:52 AM CST 2025] Installing key to: /root/xray_xhttp3_d/data/certs/private.key
+[Sun Dec  7 04:44:52 AM CST 2025] Installing full chain to: /root/xray_xhttp3_d/data/certs/fullchain.cer
+[Sun Dec  7 04:44:52 AM CST 2025] Running reload cmd: docker compose -f /root/xray_xhttp3_d/docker-compose.yml restart nginx 2>/dev/null || true
+[Sun Dec  7 04:44:53 AM CST 2025] Reload successful
+[Sun Dec  7 04:44:53 AM CST 2025] Renewing: 'sg.zhulei.eu.orgsg.zhulei.eu.org'
+[Sun Dec  7 04:44:53 AM CST 2025] Renewing using Le_API=https://acme-v02.api.letsencrypt.org/directory
+[Sun Dec  7 04:44:53 AM CST 2025] Skipping invalid cert for: sg.zhulei.eu.orgsg.zhulei.eu.org
+[Sun Dec  7 04:44:53 AM CST 2025] Skipped sg.zhulei.eu.orgsg.zhulei.eu.org_ecc
+[Sun Dec  7 04:44:53 AM CST 2025] Renewing: 'yessg.zhulei.eu.org'
+[Sun Dec  7 04:44:53 AM CST 2025] Renewing using Le_API=https://acme-v02.api.letsencrypt.org/directory
+[Sun Dec  7 04:44:53 AM CST 2025] Skipping invalid cert for: yessg.zhulei.eu.org
+[Sun Dec  7 04:44:53 AM CST 2025] Skipped yessg.zhulei.eu.org_ecc
+[Sun Dec  7 04:44:53 AM CST 2025] ===End cron===
