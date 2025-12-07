@@ -568,7 +568,6 @@ sudo apt install -y bsdmainutils
 sudo apt install bc
 
 curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 
 sudo reboot
-
-#sudo reboot
