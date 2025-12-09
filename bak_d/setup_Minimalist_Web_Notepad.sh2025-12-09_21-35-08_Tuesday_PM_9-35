@@ -31,8 +31,7 @@ else
 	mkdir -p "$PROJECT_DIR"
 	cd "$PROJECT_DIR"
 	#git clone --branch docker --single-branch https://github.com/pereorga/minimalist-web-notepad.git .
-	#git clone --branch docker --single-branch https://github.com/HelloWorldWinning/minimalist-web-notepad.git .
-	git clone --branch main --single-branch https://github.com/HelloWorldWinning/search_list_minimalist-web-notepad .
+	git clone --branch docker --single-branch https://github.com/HelloWorldWinning/minimalist-web-notepad.git .
 fi
 echo "Files downloaded successfully."
 
