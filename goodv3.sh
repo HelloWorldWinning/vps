@@ -723,7 +723,7 @@ ${Red_font_prefix}i${Font_color_suffix} do_zip.sh zip to /data
 ${Red_font_prefix}g${Font_color_suffix} distri.sh
 ${Red_font_prefix}h${Font_color_suffix} init_github_project.sh
 ${Red_font_prefix}run3g${Font_color_suffix} tmpfs_manager_run.sh
-${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_flatnote install_wf install_standard_note  install_standard_note_443
+${Red_font_prefix}write${Font_color_suffix} install_dc install_affine install_notepad install_notepad_passwd  install_flatnote install_wf install_standard_note  install_standard_note_443
 ${Red_font_prefix}some${Font_color_suffix}  neo4j   journald_conf_set docu   outline_coll 
 ${Red_font_prefix}some${Font_color_suffix}  xray_reality_tcp xray_tls_gp   xray_tls_cl  test_reality  up_v6_gcp_gm  up_v6_gcp_gp  xray_xhttp  xray_grpc  xray_reality_xhttp
 ${Red_font_prefix}q${Font_color_suffix} exit
@@ -1110,6 +1110,7 @@ https://zhile.one/archives/1404.html
 	install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
 	install_affine) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh) ;;
 	install_notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
+	install_notepad_passwd) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
 	install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh) ;;
 	install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
 	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
