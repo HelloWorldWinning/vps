@@ -21,36 +21,19 @@ cd "$PROJECT_DIR"
 
 # Clone or pull the repository
 echo "Downloading Minimalist Web Notepad files..."
-##if [ -d ".git" ]; then
-##	echo "Repository exists, pulling latest changes..."
-##	git pull origin docker
-##else
-##	echo "Cloning repository..."
-##	# Remove directory contents if it exists but isn't a git repo
-##	rm -rf "$PROJECT_DIR"
-##	mkdir -p "$PROJECT_DIR"
-##	cd "$PROJECT_DIR"
-##	#git clone --branch docker --single-branch https://github.com/pereorga/minimalist-web-notepad.git .
-##	#git clone --branch docker --single-branch https://github.com/HelloWorldWinning/minimalist-web-notepad.git .
-##	git clone --branch main --single-branch https://github.com/HelloWorldWinning/search_list_minimalist-web-notepad .
-##fi
-
-# Navigate to project directory first (in case it exists)
-cd "$PROJECT_DIR" 2>/dev/null || true
-
-# Stop and remove containers BEFORE deleting project directory
-echo "Stopping existing containers..."
-docker-compose down 2>/dev/null || true
-
-# Remove the if-else completely and replace with:
-echo "Removing existing installation..."
-rm -rf "$PROJECT_DIR"
-mkdir -p "$PROJECT_DIR"
-cd "$PROJECT_DIR"
-
-echo "Cloning repository..."
-git clone --branch main --single-branch https://github.com/HelloWorldWinning/search_list_minimalist-web-notepad .
-
+if [ -d ".git" ]; then
+	echo "Repository exists, pulling latest changes..."
+	git pull origin docker
+else
+	echo "Cloning repository..."
+	# Remove directory contents if it exists but isn't a git repo
+	rm -rf "$PROJECT_DIR"
+	mkdir -p "$PROJECT_DIR"
+	cd "$PROJECT_DIR"
+	#git clone --branch docker --single-branch https://github.com/pereorga/minimalist-web-notepad.git .
+	#git clone --branch docker --single-branch https://github.com/HelloWorldWinning/minimalist-web-notepad.git .
+	git clone --branch main --single-branch https://github.com/HelloWorldWinning/search_list_minimalist-web-notepad .
+fi
 echo "Files downloaded successfully."
 
 # Create docker-compose.yml
