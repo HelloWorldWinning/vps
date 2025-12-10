@@ -56,14 +56,28 @@ echo "Files downloaded successfully."
 
 # Create docker-compose.yml
 echo "Creating docker-compose.yml..."
-cat >docker-compose.yml <<'EOF'
+#cat >docker-compose.yml <<'EOF'
+#services:
+#  minimalist-web-notepad:
+#    build: .
+#    ports:
+#      - "3099:80"
+#    volumes:
+#      - /data/Minimalist_Web_Notepad:/var/www/html/_tmp
+#    environment:
+#      - MWN_BASE_URL=
+#      - MWN_SAVE_PATH=/var/www/html/_tmp
+#    restart: unless-stopped
+#EOF
+
+cat >docker-compose.yml <<EOF
 services:
   minimalist-web-notepad:
     build: .
     ports:
       - "3099:80"
     volumes:
-      - /data/Minimalist_Web_Notepad:/var/www/html/_tmp
+      - ${DATA_DIR}:/var/www/html/_tmp
     environment:
       - MWN_BASE_URL=
       - MWN_SAVE_PATH=/var/www/html/_tmp
