@@ -563,6 +563,9 @@ export RCLONE_FUSERMOUNT=/usr/bin/fusermount3
 # ============================================================================
 
 function set_poshcontext() {
+
+#  id=gmay3_omp_json_for_new_oh_my_posh
+
   # 1) Directory + file count + flag (replaces dirname/basename/ls/flag logic)
   local pwd_path parent base count flag parent_dir
 
