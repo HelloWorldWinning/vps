@@ -556,3 +556,72 @@ ul() {
 
 
 export RCLONE_FUSERMOUNT=/usr/bin/fusermount3
+
+
+# ============================================================================
+# Add this function to your ~/.bashrc or ~/.zshrc BEFORE the oh-my-posh init line
+# ============================================================================
+
+function set_poshcontext() {
+  # 1) Directory + file count + flag (replaces dirname/basename/ls/flag logic)
+  local pwd_path parent base count flag parent_dir
+
+  pwd_path="$(pwd)"
+  if [ "$pwd_path" = "/" ]; then
+    parent="<i>/</i>"
+    base=""
+  else
+    parent_dir="$(dirname "$pwd_path")"
+    if [ "$parent_dir" = "/" ]; then
+      parent="<i>/</i>"
+    else
+      parent="<i>${parent_dir}/</i>"
+    fi
+    base="<b>$(basename "$pwd_path")</b>"
+  fi
+
+  count="$(ls -1A 2>/dev/null | wc -l | tr -d ' ')"
+
+  # ---- FIXED FLAG SECTION ----
+  if [ -n "$country_code" ]; then
+    # first and second letters as ASCII codes
+    local first_char second_char c1 c2 u1 u2
+
+    first_char="${country_code%${country_code#?}}"  # first char
+    second_char="${country_code#?}"                 # second char
+
+    c1=$(printf '%d' "'$first_char")
+    c2=$(printf '%d' "'$second_char")
+
+    # convert to regional indicator symbols (must be 8-digit hex!)
+    u1=$(printf '%08X' $((c1 + 127462 - 65)))
+    u2=$(printf '%08X' $((c2 + 127462 - 65)))
+
+    # printf interprets \Uhhhhhhhh → actual emoji 🇳🇱 etc.
+    flag="$(printf "\\U$u1\\U$u2") "
+  else
+    flag=" Unknown "
+  fi
+  # ---- END FLAG SECTION ----
+
+  export POSH_DIR_INFO="       ${parent}${base}<b>      ${count}      </b> <#988999>${flag}"
+
+  # 2) Python + conda env (same as before)
+  local python_version conda_env
+  python_version="$(command -v python >/dev/null 2>&1 && python --version 2>&1 | awk '{print $2}' || echo '')"
+  conda_env="${CONDA_DEFAULT_ENV}"
+
+  if [ -z "$conda_env" ] && [ -z "$python_version" ]; then
+    export POSH_PYTHON_INFO=""
+  else
+    export POSH_PYTHON_INFO="${conda_env} ${python_version}"
+  fi
+
+  # 3) Weather (same as before)
+  if [ -f "$HOME/.weather_temperature" ]; then
+    export POSH_WEATHER="$(cat "$HOME/.weather_temperature")"
+  else
+    export POSH_WEATHER=""
+  fi
+}
+

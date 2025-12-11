@@ -1,0 +1,127 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "      ",
+          "foreground": "#cccccc",
+          "powerline_symbol": "",
+          "background": "transparent",
+          "type": "text",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "time_format": "Mon 2-1-2006 "
+          },
+          "template": "<b>{{ printf \"%*s%s%*s\" (div (sub 10 (len .HostName)) 2) \"\" .HostName (sub (sub 10 (len .HostName)) (div (sub 10 (len .HostName)) 2)) \"\" }}</b>",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "background": "#65000B",
+          "type": "path",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "folder_icon": "",
+            "style": "full"
+          },
+          "template": "      {{ .Env.POSH_DIR_INFO }}{{ .UserName }}</>",
+          "foreground": "#c42570",
+          "powerline_symbol": "",
+          "background": "transparent",
+          "type": "path",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "{{ .Env.POSH_PYTHON_INFO }}",
+          "foreground": "#cccccc",
+          "powerline_symbol": "",
+          "background": "#034c99",
+          "type": "text",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true
+          },
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "foreground": "#000000",
+          "powerline_symbol": "",
+          "background": "#f5f26e",
+          "type": "git",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "time_format": "Mon 2-1-2006 "
+          },
+          "template": "{{ .Env.POSH_WEATHER }}",
+          "foreground": "#bbbbbb",
+          "powerline_symbol": "",
+          "background": "#19381a",
+          "type": "time",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "foreground": "#ffffff",
+          "powerline_symbol": "",
+          "background": "#6CA35E",
+          "type": "node",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "trailing_diamond": "",
+          "template": " ✓",
+          "foreground": "#dddddd",
+          "background": "#2e9599",
+          "type": "status",
+          "style": "diamond",
+          "background_templates": [
+            "{{ if gt .Code 0 }}#f1184c{{ end }}"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "<b>Thursday  11 PM 05:52   </b>",
+          "foreground": "#870fd1",
+          "type": "text",
+          "style": "plain"
+        }
+      ],
+      "newline": true
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}

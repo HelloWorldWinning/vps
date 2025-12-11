@@ -1,6 +1,7 @@
 #!/bin/bash
 curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash
-wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+#wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+wget --inet4-only -O /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json_for_new_oh_my_posh
 
 # Define the cron job command
 ##cron_job_wea="0 */1 * * * curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/weather_temperature.sh | bash"
@@ -8,26 +9,26 @@ cron_job_wea="*/30 * * * * curl -sSL https://raw.githubusercontent.com/HelloWorl
 
 # Check if weather_temperature.sh is already in the crontab
 if ! crontab -l | grep -q "weather_temperature.sh"; then
-    # Add the cron job to the crontab
-    (crontab -l ; echo "$cron_job_wea") | crontab -
-    echo "Cron job appended successfully."
+	# Add the cron job to the crontab
+	(
+		crontab -l
+		echo "$cron_job_wea"
+	) | crontab -
+	echo "Cron job appended successfully."
 else
-    echo "Cron job for weather temperature is already present in crontab. No action taken."
+	echo "Cron job for weather temperature is already present in crontab. No action taken."
 fi
 
-
-
-
-apt install  -y unzip jq wget
+apt install -y unzip jq wget
 clear
 curl -4s https://ohmyposh.dev/install.sh | bash -s
-####curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s 
+####curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s
 mkdir -p ~/themes/
-wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json  
+wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
-wget   --inet4-only  -O  ~/themes/hostname_length_adjuster.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hostname_length_adjuster.sh
+wget --inet4-only -O ~/themes/hostname_length_adjuster.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hostname_length_adjuster.sh
 
-wget   --inet4-only  -O  ~/themes/cpu_usage.sh  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cpu_usage.sh
+wget --inet4-only -O ~/themes/cpu_usage.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cpu_usage.sh
 
 ########## bash  ~/themes/hostname_length_adjuster.sh
 
@@ -50,9 +51,7 @@ wget   --inet4-only  -O  ~/themes/cpu_usage.sh  https://raw.githubusercontent.co
 ####
 ####
 
-
-wget   --inet4-only  -O  ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
-
+wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 country_code_weather_alias='
 country_code_file=~/.country_code
@@ -68,14 +67,10 @@ alias wea="source <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinnin
 '
 
 if ! grep -q -F "$country_code_weather_alias" ~/.bashrc; then
-  echo "$country_code_weather_alias" >> ~/.bashrc
-  echo "Country code weather alias appended to ~/.bashrc"
+	echo "$country_code_weather_alias" >>~/.bashrc
+	echo "Country code weather alias appended to ~/.bashrc"
 else
-  echo "Country code weather alias already exists in ~/.bashrc. No changes made."
+	echo "Country code weather alias already exists in ~/.bashrc. No changes made."
 fi
 
-oh-my-posh --version 
-
-
-
-
+oh-my-posh --version
