@@ -25,7 +25,7 @@ clear
 curl -4s https://ohmyposh.dev/install.sh | bash -s
 ####curl -4s  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh  |   bash -s
 mkdir -p ~/themes/
-wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+#wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 wget --inet4-only -O ~/themes/hostname_length_adjuster.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hostname_length_adjuster.sh
 
@@ -52,7 +52,7 @@ wget --inet4-only -O ~/themes/cpu_usage.sh https://raw.githubusercontent.com/Hel
 ####
 ####
 
-wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+#wget --inet4-only -O ~/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 country_code_weather_alias='
 country_code_file=~/.country_code
