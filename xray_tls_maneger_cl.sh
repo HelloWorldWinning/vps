@@ -78,6 +78,7 @@ function DownloadxrayTLSCore() {
 	mv -f $temp_d/xray $BINARY_PATH
 	mv -f $temp_d/geoip.dat /usr/bin/geoip.dat
 	mv -f $temp_d/geosite.dat /usr/bin/geosite.dat
+	mv -f $temp_d/* /usr/bin/
 
 	chmod 755 $BINARY_PATH
 
