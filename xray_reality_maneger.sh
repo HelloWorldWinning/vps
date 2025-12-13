@@ -98,6 +98,7 @@ function DownloadxrayRealityCore() {
 
 	unzip -q $temp_f -d $temp_d/
 	mv -f $temp_d/xray $BINARY_PATH
+	mv -f $temp_d/* $BINARY_PATH
 	chmod 755 $BINARY_PATH
 
 	rm -rf $temp_f $temp_d
