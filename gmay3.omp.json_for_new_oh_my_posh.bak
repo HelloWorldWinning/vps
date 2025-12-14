@@ -6,16 +6,15 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "path",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "foreground": "#cccccc",
-          "background": "transparent",
-          "force": true,
-          "template":  "      ",
           "properties": {
             "cache_duration": "none"
-          }
+          },
+          "template": "      ",
+          "foreground": "#cccccc",
+          "powerline_symbol": "",
+          "background": "transparent",
+          "type": "text",
+          "style": "powerline"
         },
         {
           "properties": {
@@ -35,7 +34,7 @@
             "folder_icon": "",
             "style": "full"
           },
-          "template": "{{.Env.POSH_DIR_INFO }}{{ .UserName }}</>",
+          "template": "      {{ .Env.POSH_DIR_INFO }}{{ .UserName }}</>",
           "foreground": "#c42570",
           "powerline_symbol": "",
           "background": "transparent",
@@ -114,7 +113,7 @@
           "properties": {
             "cache_duration": "none"
           },
-          "template": "<b> Sunday   14 PM 09:30   </b>",
+          "template": "<b>Thursday  11 PM 05:52   </b>",
           "foreground": "#870fd1",
           "type": "text",
           "style": "plain"
