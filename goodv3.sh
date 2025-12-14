@@ -1095,6 +1095,7 @@ https://zhile.one/archives/1404.html
 	wg_newer) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh) ;;
 	netbird) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
 	netbird_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
+	nnn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_manager_gm.sh) ;;
 	nn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh) ;;
 	n) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
 	d1777) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh) ;;
