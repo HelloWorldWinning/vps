@@ -56,19 +56,19 @@ fi
 #fi
 #
 # Check if network exists
-if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
-	echo "⚠ Network '$NETWORK_NAME' already exists!"
-	echo "1) Use existing  2) Remove & recreate  3) New name  4) Abort"
-	read -p "Choice [1-4]: " choice
-	case $choice in
-	2) docker network rm "$NETWORK_NAME" 2>/dev/null || {
-		echo "Failed to remove"
-		exit 1
-	} ;;
-	3) read -p "New NETWORK_NAME: " NETWORK_NAME ;;
-	4) exit 1 ;;
-	esac
-fi
+#if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
+#	echo "⚠ Network '$NETWORK_NAME' already exists!"
+#	echo "1) Use existing  2) Remove & recreate  3) New name  4) Abort"
+#	read -p "Choice [1-4]: " choice
+#	case $choice in
+#	2) docker network rm "$NETWORK_NAME" 2>/dev/null || {
+#		echo "Failed to remove"
+#		exit 1
+#	} ;;
+#	3) read -p "New NETWORK_NAME: " NETWORK_NAME ;;
+#	4) exit 1 ;;
+#	esac
+#fi
 
 HTTPS_PORT_OUT=443
 HTTP_PORT_OUT=80
