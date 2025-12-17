@@ -49,14 +49,14 @@ if [ -d "$PROJECT_DIR" ] && [ "$(ls -A "$PROJECT_DIR" 2>/dev/null)" ]; then
 	esac
 fi
 
-## ============ NETWORK_NAME Configuration ============
-#echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
-#if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
-#	echo "Using: $NETWORK_NAME"
-#else
-#	NETWORK_NAME="standard-notes"
-#	echo -e "\nUsing default: $NETWORK_NAME"
-#fi
+# ============ NETWORK_NAME Configuration ============
+echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
+if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
+	echo "Using: $NETWORK_NAME"
+else
+	NETWORK_NAME="standard-notes"
+	echo -e "\nUsing default: $NETWORK_NAME"
+fi
 
 # Check if network exists
 if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
@@ -534,6 +534,7 @@ ${cookie_line}
 
 networks:
   ${NETWORK_NAME}:
+    name: ${NETWORK_NAME}
     driver: bridge
 EOF
 }
