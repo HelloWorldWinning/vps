@@ -46,15 +46,15 @@ if [ -d "$PROJECT_DIR" ] && [ "$(ls -A "$PROJECT_DIR" 2>/dev/null)" ]; then
 	esac
 fi
 
-## ============ NETWORK_NAME Configuration ============
-#echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
-#if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
-#	echo "Using: $NETWORK_NAME"
-#else
-#	NETWORK_NAME="standard-notes"
-#	echo -e "\nUsing default: $NETWORK_NAME"
-#fi
-#
+# ============ NETWORK_NAME Configuration ============
+echo -n "Enter NETWORK_NAME (default: standard-notes) [7s]: "
+if read -t 7 NETWORK_NAME && [ -n "$NETWORK_NAME" ]; then
+	echo "Using: $NETWORK_NAME"
+else
+	NETWORK_NAME="standard-notes"
+	echo -e "\nUsing default: $NETWORK_NAME"
+fi
+
 # Check if network exists
 if docker network ls --format '{{.Name}}' 2>/dev/null | grep -q "^${NETWORK_NAME}$"; then
 	echo "⚠ Network '$NETWORK_NAME' already exists!"
@@ -268,7 +268,7 @@ services:
       MYSQL_USER: \${DB_USERNAME}
       MYSQL_PASSWORD: \${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: \${DB_PASSWORD}
-#   ports: ["${DB_PORT_OUT}:3306"]
+    ports: ["${DB_PORT_OUT}:3306"]
     volumes: [./data/mysql:/var/lib/mysql]
     networks: [${NETWORK_NAME}]
 
@@ -277,7 +277,7 @@ services:
 #   container_name: standard-notes-cache
     restart: unless-stopped
     command: redis-server --appendonly yes
-#   ports: ["${REDIS_PORT_OUT}:6379"]
+    ports: ["${REDIS_PORT_OUT}:6379"]
     volumes: [./data/redis:/data]
     networks: [${NETWORK_NAME}]
 
@@ -289,7 +289,7 @@ services:
       - SERVICES=sns,sqs
       - HOSTNAME_EXTERNAL=localstack
       - LS_LOG=warn
-#   ports: ["${LOCALSTACK_PORT_OUT}:${LOCALSTACK_PORT_OUT}"]
+    ports: ["${LOCALSTACK_PORT_OUT}:${LOCALSTACK_PORT_OUT}"]
     volumes: [./localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh]
     networks: [${NETWORK_NAME}]
 
@@ -333,15 +333,14 @@ services:
     image: nginx:1.25-alpine
 #   container_name: standard-notes-proxy
     depends_on: [web, server]
- #  ports: ["${HTTPS_PORT_OUT}:3001", "${HTTP_PORT_OUT}:80"]
-    ports: ["${HTTPS_PORT_OUT}:3001"]
+    ports: ["${HTTPS_PORT_OUT}:3001", "${HTTP_PORT_OUT}:80"]
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./certs:/etc/nginx/certs:ro
     networks: [${NETWORK_NAME}]
 
 networks:
-  ${NETWORK_NAME}: { driver: bridge }
+  ${NETWORK_NAME}: { name: ${NETWORK_NAME}, driver: bridge }
 EOF
 }
 
