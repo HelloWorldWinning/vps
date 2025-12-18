@@ -1,0 +1,100 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "12345678-1234-1234-1234-123456789012",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "dest": "www.oracle.com:443",
+          "serverNames": [
+            "www.oracle.com"
+          ],
+          "privateKey": "YAjoKYIZ601zDTrYJKGoibA0bNTKCboCJNGUH7wgdn4",
+          "shortIds": [
+            ""
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ],
+        "routeOnly": true
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "freedom"
+    },
+    {
+      "protocol": "shadowsocks",
+      "tag": "ss-for-gemini",
+      "settings": {
+        "servers": [
+          {
+            "address": "141.98.197.246",
+            "port": 65504,
+            "method": "aes-128-gcm",
+            "password": "passwd",
+            "uot": false
+          }
+        ]
+      }
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "ip": [
+          "geoip:private"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "ss-for-gemini",
+        "domain": [
+          "gemini.google.com",
+          "bard.google.com",
+          "aistudio.google.com",
+          "generativelanguage.googleapis.com",
+          "alkalimakersuite-pa.clients6.google.com",
+          "proactivebackend-pa.googleapis.com",
+          "deepmind.com",
+          "deepmind.google",
+          "geosite:openai",
+	 "app-analytics-services.com",
+         "oauth2.googleapis.com",
+         "oauthaccountmanager.googleapis.com",
+	 "45-courier.push.apple.com",
+         "notifications-pa.googleapis.com"
+        ]
+      }
+    ]
+  }
+}
