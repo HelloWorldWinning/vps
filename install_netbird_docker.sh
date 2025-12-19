@@ -12,16 +12,11 @@ CONTAINER_NAME="netbird"
 IMAGE="netbirdio/netbird:latest"
 VOLUME_NAME="netbird-client"
 
-
-
-
-
-
 # --- Preflight: only if a running 'netbird' exists ---
 
 # Fallback logger only if not already defined
 if ! command -v log >/dev/null 2>&1; then
-  log() { printf '[%s] %s\n' "$(date +'%F %T')" "$*"; }
+	log() { printf '[%s] %s\n' "$(date +'%F %T')" "$*"; }
 fi
 
 # Ensure defaults exist even if this block is moved earlier accidentally
@@ -30,33 +25,30 @@ fi
 
 # Proceed ONLY if the container is present AND running
 if docker ps \
-    --filter "name=^${CONTAINER_NAME}$" \
-    --filter "status=running" \
-    --format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
+	--filter "name=^${CONTAINER_NAME}$" \
+	--filter "status=running" \
+	--format '{{.Names}}' | grep -Fxq "${CONTAINER_NAME}"; then
 
-  log "Found running container '${CONTAINER_NAME}'. Deregistering and cleaning up..."
+	log "Found running container '${CONTAINER_NAME}'. Deregistering and cleaning up..."
 
-  # Best-effort deregistration from inside the running container
-  docker exec "${CONTAINER_NAME}" sh -lc 'netbird deregister || netbird logout || true' || true
+	# Best-effort deregistration from inside the running container
+	docker exec "${CONTAINER_NAME}" sh -lc 'netbird deregister || netbird logout || true' || true
 
-  # Stop & remove the container
-  log "Stopping and removing container '${CONTAINER_NAME}'..."
-  docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+	# Stop & remove the container
+	log "Stopping and removing container '${CONTAINER_NAME}'..."
+	docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
 
-  # Remove the local image so we always pull fresh later
-  if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
-    log "Removing local image ${IMAGE}..."
-    docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
-  fi
+	# Remove the local image so we always pull fresh later
+	if docker image inspect "${IMAGE}" >/dev/null 2>&1; then
+		log "Removing local image ${IMAGE}..."
+		docker image rm -f "${IMAGE}" >/dev/null 2>&1 || true
+	fi
 
-  log "Preflight cleanup complete."
+	log "Preflight cleanup complete."
 else
-  log "No running '${CONTAINER_NAME}' found; skipping preflight."
+	log "No running '${CONTAINER_NAME}' found; skipping preflight."
 fi
 # --- end preflight ---
-
-
-
 
 # You can override NB_SETUP_KEY by exporting it before running the script.
 NB_SETUP_KEY="${NB_SETUP_KEY:-F52A5E7F-2A31-4390-9B15-4AF53172A1EA}"
@@ -98,7 +90,7 @@ log "Starting '${CONTAINER_NAME}' (host networking) with hostname '${HOST_HNAME}
 #--cap-add=NET_ADMIN \
 docker run -d \
 	--name "${CONTAINER_NAME}" \
-        --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
+	--cap-add=NET_ADMIN --cap-add=SYS_ADMIN --cap-add=SYS_RESOURCE \
 	--device /dev/net/tun \
 	--network host \
 	--hostname "${HOST_HNAME}" \
@@ -120,5 +112,3 @@ echo "  ip route | grep 100.        # Routes for NetBird range should be present
 # echo "  ping -c 3 100.105.160.165   # Ping your US peer's NetBird IP from HOST"
 
 ip route | grep 100
-
-
