@@ -1095,6 +1095,7 @@ https://zhile.one/archives/1404.html
 	wg_newer) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh) ;;
 	netbird) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
 	netbird_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
+	nb_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
 	nnn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_manager_gm.sh) ;;
 	nn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh) ;;
 	n) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
@@ -1104,6 +1105,7 @@ https://zhile.one/archives/1404.html
 	gdu) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh) ;;
 	p) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh) ;;
 	netbird_de) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
+	nb_de) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
 	re_info) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh) ;;
 	run_inodes) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh) ;;
 	restic) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh) ;;
