@@ -1,8 +1,4 @@
 #!/bin/bash
-
-wget --inet4-only -O ~/.vimrc https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.use
-wget --inet4-only -O ~/.config/nvim/init.vim https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.use
-
 set -e # Exit immediately if a command exits with a non-zero status
 
 # Define installation directory
@@ -19,17 +15,8 @@ sudo apt install -y ninja-build gettext cmake unzip curl git
 
 echo "=== Cloning Neovim repository ==="
 # Use a temporary directory for building
-#BUILD_DIR=$(mktemp -d)
-#cd "$BUILD_DIR"
-
-BUILD_DIR="$HOME/nvim_build_temp"
-mkdir -p "$BUILD_DIR"
+BUILD_DIR=$(mktemp -d)
 cd "$BUILD_DIR"
-git clone https://github.com/neovim/neovim
-cd neovim
-
-# Clean up any previous failed attempts
-rm -rf neovim
 git clone https://github.com/neovim/neovim
 cd neovim
 
@@ -86,6 +73,9 @@ fi
 python -m pip install pynvim
 python -m pip install neovim
 
+wget --inet4-only -O ~/.vimrc https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.use
+wget --inet4-only -O ~/.config/nvim/init.vim https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.use
+
 bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh)
 
 # Source the updated bashrc file to apply changes immediately
@@ -93,9 +83,3 @@ bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/han
 source "$BASHRC"
 source /root/.bashrc
 echo "Bashrc reloaded."
-
-echo "=== Cleaning up build files ==="
-cd "$HOME"
-rm -rf "$BUILD_DIR"
-
-echo "=== Neovim installation completed ==="
