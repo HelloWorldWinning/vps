@@ -12,7 +12,6 @@ let g:fzf_vim = {}
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'neovim/nvim-lspconfig'
 Plug 'folke/flash.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'echasnovski/mini.animate'  
@@ -513,20 +512,6 @@ xnoremap S <cmd>lua require("flash").treesitter()<cr>
 onoremap S <cmd>lua require("flash").treesitter()<cr>
 
 
-" --- LSP Configuration ---
-lua << EOF
--- 1. Setup Pyright
-require'lspconfig'.pyright.setup{}
 
--- 2. Setup Keybindings (The VS Code 'Click' equivalent)
--- 'n' means Normal Mode
--- 'gd' = Go to Definition
--- 'K'  = Hover (Show documentation)
--- 'gr' = Go to References
-
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
-vim.keymap.set('n', 'K',  vim.lsp.buf.hover,      { desc = "Show Hover Doc" })
-vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Show References" })
-EOF
 
 
