@@ -101,3 +101,7 @@ cd "$HOME"
 rm -rf "$BUILD_DIR"
 
 echo "=== Neovim installation completed ==="
+
+sudo apt update
+sudo apt install -y nodejs npm
+sudo npm install -g pyright

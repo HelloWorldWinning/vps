@@ -512,23 +512,21 @@ nnoremap S <cmd>lua require("flash").treesitter()<cr>
 xnoremap S <cmd>lua require("flash").treesitter()<cr>
 onoremap S <cmd>lua require("flash").treesitter()<cr>
 
+
 " --- LSP Configuration ---
 lua << EOF
--- Enable Pyright (uses the server config shipped by nvim-lspconfig)
-vim.lsp.enable('pyright')
+-- 1. Setup Pyright
+require'lspconfig'.pyright.setup{}
 
--- Optional: buffer-local keymaps only when LSP attaches
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(args)
-    local opts = { buffer = args.buf }
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, vim.tbl_extend('force', opts, { desc = "Go to Definition" }))
-    vim.keymap.set('n', 'K',  vim.lsp.buf.hover,      vim.tbl_extend('force', opts, { desc = "Show Hover Doc" }))
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, vim.tbl_extend('force', opts, { desc = "Show References" }))
-  end,
-})
+-- 2. Setup Keybindings (The VS Code 'Click' equivalent)
+-- 'n' means Normal Mode
+-- 'gd' = Go to Definition
+-- 'K'  = Hover (Show documentation)
+-- 'gr' = Go to References
+
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
+vim.keymap.set('n', 'K',  vim.lsp.buf.hover,      { desc = "Show Hover Doc" })
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Show References" })
 EOF
 
-lua << EOF
-vim.diagnostic.config({ signs = false })
-EOF
 
