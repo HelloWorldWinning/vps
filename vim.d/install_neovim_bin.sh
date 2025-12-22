@@ -3,7 +3,9 @@
 wget --inet4-only -O ~/.vimrc https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.use
 wget --inet4-only -O ~/.config/nvim/init.vim https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.use
 
-set -e # Exit immediately if a command exits with a non-zero status
+sudo rm -rf /tmp/* 2>/dev/null || true
+
+#set -e # Exit immediately if a command exits with a non-zero status
 
 # Define installation directory
 INSTALL_DIR="$HOME/.local/nvim"
