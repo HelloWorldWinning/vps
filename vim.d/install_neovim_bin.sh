@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Exit immediately if a command exits with a non-zero status
+set -e # Exit immediately if a command exits with a non-zero status
 
 # Define installation directory
 INSTALL_DIR="$HOME/.local/nvim"
@@ -31,9 +31,9 @@ ln -sf "$INSTALL_DIR/bin/nvim" "$BIN_DIR/nvim"
 
 # Add to PATH if not already there
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
-    echo "=== Adding $BIN_DIR to PATH ==="
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    echo "Please run 'source ~/.bashrc' or start a new terminal session to update your PATH."
+	echo "=== Adding $BIN_DIR to PATH ==="
+	echo 'export PATH="$HOME/.local/bin:$PATH"' >>"$HOME/.bashrc"
+	echo "Please run 'source ~/.bashrc' or start a new terminal session to update your PATH."
 fi
 
 echo "=== Cleaning up build files ==="
@@ -47,47 +47,39 @@ echo "Current Neovim version:"
 
 # Check if the installation was successful
 if [ -x "$BIN_DIR/nvim" ]; then
-    echo "=== Installation successful! ==="
+	echo "=== Installation successful! ==="
 else
-    echo "=== Installation failed! ==="
-    exit 1
+	echo "=== Installation failed! ==="
+	exit 1
 fi
-
 
 # Define the path to your bashrc file
 BASHRC="$HOME/.bashrc"
 
 # Comment out the old alias if it exists and is not already commented out
 if grep -q "^alias k='/usr/bin/nvim.appimage'" "$BASHRC"; then
-    sed -i "s|^alias k='/usr/bin/nvim.appimage'|# alias k='/usr/bin/nvim.appimage'|" "$BASHRC"
-    echo "Old alias commented out."
+	sed -i "s|^alias k='/usr/bin/nvim.appimage'|# alias k='/usr/bin/nvim.appimage'|" "$BASHRC"
+	echo "Old alias commented out."
 fi
 
 # Append the new alias if it does not already exist
 if ! grep -q "^alias k='/root/.local/bin/nvim'" "$BASHRC"; then
-    echo "alias k='/root/.local/bin/nvim'" >> "$BASHRC"
-    echo "New alias added."
+	echo "alias k='/root/.local/bin/nvim'" >>"$BASHRC"
+	echo "New alias added."
 fi
-
 
 /root/miniconda3/bin/python -m pip install pynvim
 /root/miniconda3/bin/python -m pip install neovim
 python -m pip install pynvim
 python -m pip install neovim
 
+wget --inet4-only -O ~/.vimrc https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/vimrc.use
+wget --inet4-only -O ~/.config/nvim/init.vim https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.use
 
-
-bash  <(curl -L4   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh  )
-
+bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh)
 
 # Source the updated bashrc file to apply changes immediately
-
 
 source "$BASHRC"
 source /root/.bashrc
 echo "Bashrc reloaded."
-
-
-
-
-
