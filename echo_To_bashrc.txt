@@ -492,7 +492,7 @@ alias cf='colordiff -u '
 
 # gemini #
 alias g='gemini'
-export GOOGLE_CLOUD_PROJECT="cli01-464109"
+##export GOOGLE_CLOUD_PROJECT="cli01-464109"
 export GEMINI_API_KEY=''
 
 alias alog='acli rovodev auth login'
