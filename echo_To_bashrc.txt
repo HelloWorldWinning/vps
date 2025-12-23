@@ -490,8 +490,9 @@ ee() {
 alias cf='colordiff -u '
 
 
-# gemini #
+# gemini # gpt codex
 alias g='gemini'
+alias gp='codex'
 ##export GOOGLE_CLOUD_PROJECT="cli01-464109"
 export GEMINI_API_KEY=''
 
