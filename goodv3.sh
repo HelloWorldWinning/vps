@@ -732,6 +732,7 @@ nohup command > /dev/null 2>&1 &
 nc -l 9  | tar xfvz - ;tar cfzv  -   <*/filei_path> | nc -q 1   <IP> 9 
 Receiver: nc -l -p 9 > bar.zip
 Sender: nc -q 1 data.zhulei.eu.org 9 < bar.zip
+ls ~/.codex/
 
 
 
