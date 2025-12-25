@@ -216,6 +216,6 @@ sudo apt update
 sudo apt install -y nodejs npm
 sudo npm install -g pyright
 
-rustup update
-rustup toolchain install stable
-rustup component add rust-analyzer
+source "$HOME/.cargo/env" && rustup update
+source "$HOME/.cargo/env" && rustup toolchain install stable
+source "$HOME/.cargo/env" && rustup component add rust-analyzer
