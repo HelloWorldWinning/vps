@@ -576,5 +576,5 @@ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/s
 #source "$HOME/.cargo/env" && rustup component add rust-analyzer
 
 bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
+source /root/.bashrc && bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
 sudo reboot
