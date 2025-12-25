@@ -10,8 +10,6 @@ SERVICE_FILE="/etc/systemd/system/xray_reality.service"
 BINARY_PATH="/usr/bin/xray"
 DATA_DIR="/data/xray_config_d"
 
-FIRST_RUN=true
-
 function echoColor() {
 	case $1 in
 	"red") echo -e "\033[31m$2\033[0m" ;;
@@ -685,16 +683,8 @@ function showMenu() {
 while true; do
 	showMenu
 	#read -p "$(echoColor yellow 'Select option: ')" choice
-	#read -t 6 -p "$(echoColor yellow 'Select option (default 1 in 6s): ')" choice
-	#choice=${choice:-1}
-
-	if [[ "$FIRST_RUN" == "true" ]]; then
-		read -t 6 -p "$(echoColor yellow 'Select option (default 1 in 6s): ')" choice
-		choice=${choice:-1}
-		FIRST_RUN=false
-	else
-		read -p "$(echoColor yellow 'Select option: ')" choice
-	fi
+	read -t 6 -p "$(echoColor yellow 'Select option (default 1 in 6s): ')" choice
+	choice=${choice:-1}
 
 	case $choice in
 	1)
