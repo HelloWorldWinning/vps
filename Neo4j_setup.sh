@@ -3,7 +3,7 @@
 # Neo4j Docker Setup Script
 # This script sets up Neo4j with Docker Compose
 
-set -e  # Exit on error
+set -e # Exit on error
 
 # Colors for output
 RED='\033[0;31m'
@@ -13,15 +13,15 @@ NC='\033[0m' # No Color
 
 # Function to print colored messages
 print_info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
+	echo -e "${GREEN}[INFO]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+	echo -e "${RED}[ERROR]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+	echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
 # Main setup
@@ -36,7 +36,7 @@ mkdir -p /data/Neo4j_D/data/plugins
 
 # Create docker-compose.yml file
 print_info "Creating docker-compose.yml file..."
-cat > /data/Neo4j_D/docker-compose.yml << 'EOF'
+cat >/data/Neo4j_D/docker-compose.yml <<'EOF'
 services:
   neo4j:
     image: neo4j:5-enterprise
@@ -75,10 +75,10 @@ docker image prune -f || print_warning "No unused images to remove"
 # Start Neo4j container
 print_info "Starting Neo4j container..."
 if docker compose up -d; then
-    print_info "Neo4j container started successfully"
+	print_info "Neo4j container started successfully"
 else
-    print_error "Failed to start Neo4j container"
-    exit 1
+	print_error "Failed to start Neo4j container"
+	exit 1
 fi
 
 # Wait for container to initialize
@@ -93,27 +93,31 @@ docker ps --filter "name=neo4j" --format "table {{.Names}}\t{{.Status}}\t{{.Port
 
 # Check if container is running
 if docker ps | grep -q neo4j; then
-    echo ""
-    print_info "✓ Neo4j is running successfully!"
-    echo ""
-    echo "=== Connection Information ==="
-    echo "Browser URL: http://localhost:7474"
-    echo "Bolt URL: bolt://localhost:7687"
-    echo "Default credentials: neo4j/admin_passwd"
-    echo ""
-    echo "=== Container Logs (last 10 lines) ==="
-    docker logs --tail 10 neo4j 2>&1 | sed 's/^/  /'
-    echo ""
-    print_info "Setup completed successfully!"
+
+	PUBLIC_IP=$(curl -s ifconfig.me || curl -s icanhazip.com || curl -s ipecho.net/plain)
+	echo ""
+	print_info "✓ Neo4j is running successfully!"
+	echo ""
+	echo "=== Connection Information ==="
+	#   echo "Browser URL: http://localhost:7474"
+	#   echo "Bolt URL: bolt://localhost:7687"
+	echo "Browser URL: http://${PUBLIC_IP}:7474"
+	echo "Bolt URL: bolt://${PUBLIC_IP}:7687"
+	echo "Default credentials: neo4j/admin_passwd"
+	echo ""
+	echo "=== Container Logs (last 10 lines) ==="
+	docker logs --tail 10 neo4j 2>&1 | sed 's/^/  /'
+	echo ""
+	print_info "Setup completed successfully!"
 else
-    echo ""
-    print_error "Neo4j container is not running!"
-    echo ""
-    echo "=== Error Logs ==="
-    docker logs neo4j 2>&1 | tail -20 | sed 's/^/  /'
-    echo ""
-    print_error "Please check the logs above for error details"
-    exit 1
+	echo ""
+	print_error "Neo4j container is not running!"
+	echo ""
+	echo "=== Error Logs ==="
+	docker logs neo4j 2>&1 | tail -20 | sed 's/^/  /'
+	echo ""
+	print_error "Please check the logs above for error details"
+	exit 1
 fi
 
 # Additional useful information
