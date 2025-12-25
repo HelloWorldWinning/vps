@@ -106,4 +106,6 @@ sudo apt update
 sudo apt install -y nodejs npm
 sudo npm install -g pyright
 
-sudo rustup component add rust-analyzer
+rustup update
+rustup toolchain install stable
+rustup component add rust-analyzer
