@@ -532,3 +532,8 @@ lua << EOF
 vim.diagnostic.config({ signs = false })
 EOF
 
+
+lua << EOF
+vim.lsp.enable('pyright')
+vim.lsp.enable('rust_analyzer')
+EOF
