@@ -716,7 +716,7 @@ while true; do
 			DownloadxrayRealityCore
 			installXrayReality
 		fi
-		read -p "Press Enter to continue..."
+		#	read -p "Press Enter to continue..."
 		;;
 	2)
 		showStatus
