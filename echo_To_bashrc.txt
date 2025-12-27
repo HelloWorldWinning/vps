@@ -1,4 +1,4 @@
-EXA_COLORS="di=1;31:fi=36"
+export EXA_COLORS="di=1;31:fi=36"
 
 #export EDITOR=/usr/bin/vim!/bin/bash
 ###### echo_To_bashrc.txt   start 
