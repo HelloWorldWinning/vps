@@ -314,7 +314,6 @@ fds() {
 #    sed "s|\(/[^/]*${search_term}[^/]*\)|${RED}\1${RESET}|g"
 #}
 
-export EXA_COLORS="di=35;1:fi=38;5;82"  
 ####export FD_COLORS="hl=1;31"
 
 
