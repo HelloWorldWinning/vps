@@ -574,6 +574,8 @@ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/s
 #source "$HOME/.cargo/env" && rustup update
 #source "$HOME/.cargo/env" && rustup toolchain install stable
 #source "$HOME/.cargo/env" && rustup component add rust-analyzer
+sudo apt update && sudo apt install cargo ripgrep pandoc
+cargo install ripgrep_all
 
 bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
 printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
