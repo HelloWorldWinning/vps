@@ -104,7 +104,8 @@ alias V='vim'
 alias c='clear'
 
 
-alias l='exa -la --sort=changed'
+#alias l='exa -la --sort=changed'
+alias l='exa -laF --sort=changed'
 alias lss='/usr/bin/ls '
 
 alias cc='exa -la --sort=created'
