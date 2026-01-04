@@ -263,10 +263,6 @@ services:
 #   container_name: standard-notes-db
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    deploy:
-      resources:
-        limits:
-          memory: 2G   # MySQL 8.0 needs decent RAM
     environment:
       MYSQL_DATABASE: \${DB_DATABASE}
       MYSQL_USER: \${DB_USERNAME}
@@ -281,20 +277,12 @@ services:
 #   container_name: standard-notes-cache
     restart: unless-stopped
     command: redis-server --appendonly yes
-    deploy:
-      resources:
-        limits:
-          memory: 512M # Redis is efficient
 #   ports: ["${REDIS_PORT_OUT}:6379"]
     volumes: [./data/redis:/data]
     networks: [${NETWORK_NAME}]
 
   localstack:
     image: localstack/localstack:3.0
-    deploy:
-      resources:
-        limits:
-          memory: 1G   # AWS emulator can be heavy
 #   container_name: standard-notes-localstack
     restart: unless-stopped
     environment:
@@ -307,10 +295,6 @@ services:
 
   server:
     image: standardnotes/server
-    deploy:
-      resources:
-        limits:
-          memory: 2G   # The main backend app
 #   container_name: standard-notes-server
     restart: unless-stopped
     env_file: .env
@@ -333,10 +317,6 @@ services:
 
   web:
     image: standardnotes/web
-    deploy:
-      resources:
-        limits:
-          memory: 1G   # Frontend
 #   container_name: standard-notes-web
     restart: unless-stopped
     environment:
@@ -351,10 +331,6 @@ services:
 
   nginx:
     image: nginx:1.25-alpine
-    deploy:
-      resources:
-        limits:
-          memory: 256M
 #   container_name: standard-notes-proxy
     depends_on: [web, server]
  #  ports: ["${HTTPS_PORT_OUT}:3001", "${HTTP_PORT_OUT}:80"]
