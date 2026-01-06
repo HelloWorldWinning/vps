@@ -48,9 +48,13 @@ echo "Copying and modifying client configuration files..."
 #done
 
 hostname=$(hostname)
+CONTAINER_NAME=$(docker ps --filter "ancestor=oklove/openvpn-server_z" --format "{{.Names}}" | head -1)
 for i in {1..1000}; do
-	docker cp openvpn:/root/client_${i}.ovpn /root/openvpn-clients/${hostname}_client_${i}.ovpn 2>/dev/null
+	docker cp "${CONTAINER_NAME}:/root/client_${i}.ovpn" /root/openvpn-clients/${hostname}_client_${i}.ovpn 2>/dev/null
 done
+#For i in {1..1000}; do
+#	docker cp openvpn:/root/client_${i}.ovpn /root/openvpn-clients/${hostname}_client_${i}.ovpn 2>/dev/null
+#Done
 
 sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/openvpn-clients/*.ovpn
 sed -i '$ a block-ipv6' /root/openvpn-clients/*.ovpn
