@@ -1,5 +1,4 @@
-#FROM debian:bookworm-slim
-FROM debian:trixie-slim
+FROM debian:bookworm-slim
 # 8.210.139.66
 
 # Install required packages
@@ -36,8 +35,8 @@ RUN ./easyrsa init-pki && \
     ./easyrsa --batch build-ca nopass && \
     ./easyrsa --batch build-server-full server nopass && \
     ./easyrsa gen-crl && \
-    # Generate keys for clients
-    for i in $(seq 1 1000); do \
+    # Generate keys for 100 clients
+    for i in $(seq 1 100); do \
         ./easyrsa --batch build-client-full "client_${i}" nopass; \
     done
 
@@ -90,7 +89,7 @@ verb 3" > /etc/openvpn/server.conf
 
 # Create client configs
 RUN mkdir -p /root/client-configs && \
-    for i in $(seq 1 1000); do \
+    for i in $(seq 1 100); do \
         echo "client\n\
 proto tcp\n\
 remote 8.210.139.66 81\n\

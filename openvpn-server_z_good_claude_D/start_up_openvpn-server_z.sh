@@ -4,13 +4,13 @@
 mkdir -p /root/openvpn-server_z
 
 # Create docker-compose.yml
-cat << "EOF" > /root/openvpn-server_z/docker-compose.yml
+cat <<"EOF" >/root/openvpn-server_z/docker-compose.yml
 version: '3'
 services:
   openvpn:
     image: oklove/openvpn-server_z
 #   network_mode: host
-    container_name: openvpn
+#   container_name: openvpn
     privileged: true
     ports:
       - "81:81"
@@ -26,20 +26,18 @@ docker-compose up -d
 echo "Waiting for OpenVPN container to initialize..."
 sleep 10
 
-
-
 # Create directory for client configs
 mkdir -p /root/openvpn-clients/
 
 # Get public IP address using multiple services
 for service in ifconfig.me icanhazip.com checkip.amazonaws.com; do
-    if THIS_HOST_IP=$(curl -s --max-time 3 $service); then
-        if [[ $THIS_HOST_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            export THIS_HOST_IP
-            echo "IP found: $THIS_HOST_IP"
-            break  # Use break instead of exit to continue script execution
-        fi
-    fi
+	if THIS_HOST_IP=$(curl -s --max-time 3 $service); then
+		if [[ $THIS_HOST_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+			export THIS_HOST_IP
+			echo "IP found: $THIS_HOST_IP"
+			break # Use break instead of exit to continue script execution
+		fi
+	fi
 done
 
 echo "Detected public IP: ${THIS_HOST_IP}"
@@ -51,20 +49,15 @@ echo "Copying and modifying client configuration files..."
 #done
 
 hostname=$(hostname)
-for i in {1..100}; do
-    docker cp openvpn:/root/client_${i}.ovpn /root/openvpn-clients/${hostname}_client_${i}.ovpn 2>/dev/null
+for i in {1..1000}; do
+	docker cp openvpn:/root/client_${i}.ovpn /root/openvpn-clients/${hostname}_client_${i}.ovpn 2>/dev/null
 done
-
 
 sed -i "s/8.210.139.66/$THIS_HOST_IP/g" /root/openvpn-clients/*.ovpn
 sed -i '$ a block-ipv6' /root/openvpn-clients/*.ovpn
 #zip /root/openvpn-clients/vpn_client_100_configs.zip /root/openvpn-clients/*.ovpn
 cd /root/
-zip  /root/openvpn-clients/${hostname}_vpn_client_100_configs.zip openvpn-clients/*.ovpn  
-
-
-
-
+zip /root/openvpn-clients/${hostname}_vpn_client_100_configs.zip openvpn-clients/*.ovpn
 
 # Print server information
 echo "============================================"
@@ -80,9 +73,9 @@ echo "============================================"
 
 # Check if container is running
 if docker ps | grep -q openvpn; then
-    echo "OpenVPN container is running"
-    docker ps | grep openvpn
+	echo "OpenVPN container is running"
+	docker ps | grep openvpn
 else
-    echo "Warning: OpenVPN container is not running"
-    echo "Check logs with: docker logs openvpn"
+	echo "Warning: OpenVPN container is not running"
+	echo "Check logs with: docker logs openvpn"
 fi
