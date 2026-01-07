@@ -1,10 +1,14 @@
 #FROM debian:bookworm-slim
 FROM debian:trixie-slim
-# 8.210.139.66
 
-# Install required packages
+RUN apt-get update && apt-get install -y wget gnupg ca-certificates && \
+    wget -qO - https://swupdate.openvpn.net/repos/repo-public.gpg | gpg --dearmor > /usr/share/keyrings/openvpn-repo-public.gpg && \
+    echo 'deb [signed-by=/usr/share/keyrings/openvpn-repo-public.gpg] http://build.openvpn.net/debian/openvpn/stable bookworm main' > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
+    apt-get update && \
+    apt-get install -y openvpn
+
 RUN apt-get update && apt-get install -y \
-    openvpn \
+#   openvpn \
     iptables \
     openssl \
     wget \
@@ -15,8 +19,12 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
+
+
 # Install easy-rsa
-RUN wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/v3.1.2/EasyRSA-3.1.2.tgz \
+#RUN wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/v3.1.2/EasyRSA-3.1.2.tgz \
+RUN EASYRSA_LATEST=$(curl -s4 https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -d\" -f4) && \
+    wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST#v}.tgz \
     && mkdir -p /etc/openvpn/easy-rsa \
     && tar xzf /tmp/easy-rsa.tgz --strip-components=1 --no-same-owner --directory /etc/openvpn/easy-rsa \
     && rm -f /tmp/easy-rsa.tgz
@@ -36,9 +44,9 @@ RUN ./easyrsa init-pki && \
     ./easyrsa --batch build-ca nopass && \
     ./easyrsa --batch build-server-full server nopass && \
     ./easyrsa gen-crl && \
-    # Generate keys for clients
+    # Generate keys for 100 clients
     for i in $(seq 1 1000); do \
-        ./easyrsa --batch build-client-full "client_${i}" nopass; \
+        ./easyrsa --batch build-client-full "client_udp_${i}" nopass; \
     done
 
 # Create necessary directories
@@ -55,8 +63,8 @@ RUN cp pki/ca.crt pki/private/ca.key pki/issued/server.crt pki/private/server.ke
 RUN openvpn --genkey secret /etc/openvpn/config/tls-crypt.key
 
 # Create server configuration
-RUN echo "port 81\n\
-proto tcp\n\
+RUN echo "port 82\n\
+proto udp\n\
 dev tun\n\
 user nobody\n\
 group nogroup\n\
@@ -64,7 +72,7 @@ persist-key\n\
 persist-tun\n\
 keepalive 10 120\n\
 topology subnet\n\
-server 10.81.0.0 255.255.0.0\n\
+server 10.1.0.0 255.255.0.0\n\
 ifconfig-pool-persist ipp.txt\n\
 push \"dhcp-option DNS 1.1.1.1\"\n\
 push \"dhcp-option DNS 8.8.8.8\"\n\
@@ -92,8 +100,8 @@ verb 3" > /etc/openvpn/server.conf
 RUN mkdir -p /root/client-configs && \
     for i in $(seq 1 1000); do \
         echo "client\n\
-proto tcp\n\
-remote 8.210.139.66 81\n\
+proto udp\n\
+remote 8.210.139.66 82\n\
 dev tun\n\
 resolv-retry infinite\n\
 nobind\n\
@@ -116,14 +124,14 @@ verb 3\n\
 $(cat /etc/openvpn/config/ca.crt)\n\
 </ca>\n\
 <cert>\n\
-$(awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' /etc/openvpn/easy-rsa/pki/issued/client_${i}.crt)\n\
+$(awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' /etc/openvpn/easy-rsa/pki/issued/client_udp_${i}.crt)\n\
 </cert>\n\
 <key>\n\
-$(cat /etc/openvpn/easy-rsa/pki/private/client_${i}.key)\n\
+$(cat /etc/openvpn/easy-rsa/pki/private/client_udp_${i}.key)\n\
 </key>\n\
 <tls-crypt>\n\
 $(cat /etc/openvpn/config/tls-crypt.key)\n\
-</tls-crypt>" > /root/client_${i}.ovpn; \
+</tls-crypt>" > /root/client_udp_${i}.ovpn; \
     done
 
 # Create start script
@@ -143,27 +151,22 @@ exec openvpn --config /etc/openvpn/server.conf' > /etc/openvpn/start.sh && \
 
 # Add iptables rules script
 RUN echo '#!/bin/sh\n\
-iptables -t nat -A POSTROUTING -s 10.81.0.0/16 -o eth0 -j MASQUERADE\n\
+iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -o eth0 -j MASQUERADE\n\
 iptables -A INPUT -i tun0 -j ACCEPT\n\
 iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT\n\
 iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT\n\
-iptables -A INPUT -i eth0 -p tcp --dport 81 -j ACCEPT\n\
+iptables -A INPUT -i eth0 -p udp --dport 82 -j ACCEPT\n\
 ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE\n\
 ip6tables -A INPUT -i tun0 -j ACCEPT\n\
 ip6tables -A FORWARD -i eth0 -o tun0 -j ACCEPT\n\
 ip6tables -A FORWARD -i tun0 -o eth0 -j ACCEPT\n\
-ip6tables -A INPUT -i eth0 -p tcp --dport 81 -j ACCEPT' > /etc/openvpn/up.sh && \
+ip6tables -A INPUT -i eth0 -p udp --dport 82 -j ACCEPT' > /etc/openvpn/up.sh && \
     chmod +x /etc/openvpn/up.sh
 
-EXPOSE 81/tcp
+EXPOSE 82/udp
 CMD ["/etc/openvpn/start.sh"]
 
 
-
-# mkdir -p /data/ovpn-clients
-#for i in {1..30}; do
-#    docker cp openvpn:/root/client_${i}.ovpn /data/ovpn-clients/
-#done
 
 
 

@@ -72,7 +72,7 @@ persist-key\n\
 persist-tun\n\
 keepalive 10 120\n\
 topology subnet\n\
-server 10.1.0.0 255.255.0.0\n\
+server 10.82.0.0 255.255.0.0\n\
 ifconfig-pool-persist ipp.txt\n\
 push \"dhcp-option DNS 1.1.1.1\"\n\
 push \"dhcp-option DNS 8.8.8.8\"\n\
@@ -151,7 +151,7 @@ exec openvpn --config /etc/openvpn/server.conf' > /etc/openvpn/start.sh && \
 
 # Add iptables rules script
 RUN echo '#!/bin/sh\n\
-iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -o eth0 -j MASQUERADE\n\
+iptables -t nat -A POSTROUTING -s 10.82.0.0/16 -o eth0 -j MASQUERADE\n\
 iptables -A INPUT -i tun0 -j ACCEPT\n\
 iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT\n\
 iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT\n\
