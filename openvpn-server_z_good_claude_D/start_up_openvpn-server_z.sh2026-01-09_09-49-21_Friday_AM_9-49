@@ -19,11 +19,7 @@ EOF
 # Start the container
 cd /root/openvpn-server_z
 docker-compose pull
-docker compose pull
-docker compose down
-docker-compose down
 docker-compose up -d
-dockercompose up -d
 
 # Wait for container to initialize (adjust sleep time if needed)
 echo "Waiting for OpenVPN container to initialize..."
@@ -86,46 +82,3 @@ else
 	echo "Warning: OpenVPN container is not running"
 	echo "Check logs with: docker logs openvpn"
 fi
-
-# Clean up old/dangling images of oklove/openvpn-server_z
-echo ""
-echo "============================================"
-echo "Cleaning up old images..."
-echo "============================================"
-
-# Get the currently used image ID
-CURRENT_IMAGE_ID=$(docker ps --filter "ancestor=oklove/openvpn-server_z" --format "{{.Image}}" | head -1)
-CURRENT_IMAGE_FULL_ID=$(docker images oklove/openvpn-server_z --format "{{.ID}}" | head -1)
-
-echo "Current image in use: ${CURRENT_IMAGE_ID} (ID: ${CURRENT_IMAGE_FULL_ID})"
-
-# Find all oklove/openvpn-server_z images
-ALL_IMAGES=$(docker images oklove/openvpn-server_z --format "{{.ID}}")
-
-# Count images before cleanup
-IMAGE_COUNT=$(echo "$ALL_IMAGES" | grep -v "^$" | wc -l)
-
-if [ "$IMAGE_COUNT" -gt 1 ]; then
-	echo "Found $IMAGE_COUNT images of oklove/openvpn-server_z"
-	echo "Removing old images (keeping current: ${CURRENT_IMAGE_FULL_ID})..."
-
-	for img_id in $ALL_IMAGES; do
-		if [ "$img_id" != "$CURRENT_IMAGE_FULL_ID" ]; then
-			echo "Removing old image: $img_id"
-			docker rmi "$img_id" 2>/dev/null || echo "  (Image $img_id may be in use by stopped containers)"
-		fi
-	done
-
-	# Also remove dangling images
-	DANGLING=$(docker images -f "dangling=true" -q)
-	if [ -n "$DANGLING" ]; then
-		echo "Removing dangling images..."
-		docker rmi $DANGLING 2>/dev/null || echo "  (Some dangling images could not be removed)"
-	fi
-
-	echo "Cleanup complete!"
-else
-	echo "Only one image found, no cleanup needed."
-fi
-
-echo "============================================"
