@@ -23,7 +23,7 @@ docker compose pull
 docker compose down
 docker-compose down
 docker-compose up -d
-dockercompose up -d
+docker compose up -d
 
 # Wait for container to initialize (adjust sleep time if needed)
 echo "Waiting for OpenVPN container to initialize..."
