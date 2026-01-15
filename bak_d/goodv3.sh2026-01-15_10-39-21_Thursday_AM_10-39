@@ -677,7 +677,7 @@ ${Red_font_prefix}866${Font_color_suffix} https://github.com/masonr/yet-another-
 ${Red_font_prefix}87${Font_color_suffix} prefer_ipv4
 ${Red_font_prefix}88${Font_color_suffix} get_fraud_score
 ${Red_font_prefix}89${Font_color_suffix} some notes
-${Red_font_prefix}90${Font_color_suffix} ohmyposh ohmyposhold
+${Red_font_prefix}90${Font_color_suffix} ohmyposh.sh
 ${Red_font_prefix}91${Font_color_suffix} hysteria2.sh
 ${Red_font_prefix}92${Font_color_suffix} install_cloudreve.sh
 ${Red_font_prefix}93${Font_color_suffix} install_resolvconf.sh
@@ -993,9 +993,8 @@ https://zhile.one/archives/1404.html
 	88) option_88_function ;;
 	89) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh ;;
 	90) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
-	ohmyposhold) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
+	ohmyposh) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
 	900) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
-	ohmyposh) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
 	91) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh) ;;
 	92) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
 	93) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh) ;;
