@@ -1,39 +1,38 @@
 #!/bin/bash
-
 # Create temp file and download data
 temp_file=$(mktemp)
-#curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57516" > "$temp_file"
+norm_file=$(mktemp)
 curl -A "Mozilla/5.0" -s "https://weather.cma.cn/web/weather/57687" > "$temp_file"
 
-# Extract Day 1 data
-# Get the weather conditions between "day-item"> and <, looking at lines after "actived"
-day1_day_weather=$(grep -A 5 'pull-left day actived' "$temp_file" | grep 'day-item">' | grep -v "星期" | grep -v "dayicon" | head -1 | sed 's/.*day-item">\([^<]*\)<.*/\1/')
+# Normalize HTML: ensure each div is on its own line
+sed 's/<div/\n<div/g' "$temp_file" > "$norm_file"
 
-# Get high temperature
-day1_high=$(grep -A 20 'pull-left day actived' "$temp_file" | grep 'high' | head -1 | sed 's/.*high">\([0-9]*\)℃.*/\1/')
+# Get Day 1 block (actived)
+day1_items=$(grep -A 50 'pull-left day actived' "$norm_file" | grep -B 50 -m 1 'pull-left day "' | head -n -1)
 
-# Get night weather
-day1_night_weather=$(grep -A 20 'pull-left day actived' "$temp_file" | grep 'day-item">' | grep -v "星期" | grep -v "icon" | grep -v "微风" | tail -1 | sed 's/.*day-item">\([^<]*\)<.*/\1/')
+# Get Day 2 block (first non-actived)  
+day2_items=$(grep -A 50 'pull-left day "' "$norm_file" | head -50)
 
-# Get low temperature
-day1_low=$(grep -A 20 'pull-left day actived' "$temp_file" | grep 'low' | head -1 | sed 's/.*low">\([0-9]*\)℃.*/\1/')
+# Extract function: get text content from day-item divs after icon
+get_weather_after_icon() {
+    echo "$1" | grep -A 2 "$2" | grep 'day-item">' | grep -v 'icon' | head -1 | sed 's/.*day-item">\([^<]*\)<.*/\1/' | tr -d '\n\r '
+}
 
-# Extract Day 2 data
-# Get section for second day and extract data
-day2_section=$(grep -A 20 'pull-left day "' "$temp_file" | head -n 20)
+get_temp() {
+    echo "$1" | grep -o "$2\">[0-9-]*℃" | head -1 | sed 's/.*">\([0-9-]*\)℃/\1/' | tr -d '\n\r '
+}
 
-# Get weather from day2 section
-day2_day_weather=$(echo "$day2_section" | grep 'day-item">' | grep -v "星期" | grep -v "dayicon" | head -1 | sed 's/.*day-item">\([^<]*\)<.*/\1/')
+# Day 1
+day1_day_weather=$(get_weather_after_icon "$day1_items" "dayicon")
+day1_high=$(get_temp "$day1_items" "high")
+day1_night_weather=$(get_weather_after_icon "$day1_items" "nighticon")
+day1_low=$(get_temp "$day1_items" "low")
 
-# Get high temperature from day2 section
-day2_high=$(echo "$day2_section" | grep 'high' | head -1 | sed 's/.*high">\([0-9]*\)℃.*/\1/')
-
-# Get night weather from day2 section
-#day2_night_weather=$(echo "$day2_section" | grep 'day-item">' | grep -v "星期" | grep -v "icon" | grep -v "微风" | tail -1 | sed 's/.*day-item">\([^<]*\)<.*/\1/')
-
-day2_night_weather=$(echo "$day2_section" | grep 'day-item">' | tail -n 3 | head -n 1 | sed -n 's/.*day-item">\([^<]*\)<.*/\1/p')
-# Get low temperature from day2 section
-day2_low=$(echo "$day2_section" | grep 'low' | head -1 | sed 's/.*low">\([0-9]*\)℃.*/\1/')
+# Day 2
+day2_day_weather=$(get_weather_after_icon "$day2_items" "dayicon")
+day2_high=$(get_temp "$day2_items" "high")
+day2_night_weather=$(get_weather_after_icon "$day2_items" "nighticon")
+day2_low=$(get_temp "$day2_items" "low")
 
 # Format and output the result
 result="${day1_day_weather}${day1_high}${day1_night_weather}${day1_low}_${day2_day_weather}${day2_high}${day2_night_weather}${day2_low}"
@@ -46,4 +45,4 @@ echo "$result" > /root/.weather_temperature
 echo "$result"
 
 # Cleanup
-rm -f "$temp_file"
+rm -f "$temp_file" "$norm_file"
