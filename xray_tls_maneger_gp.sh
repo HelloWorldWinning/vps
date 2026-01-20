@@ -51,7 +51,7 @@ function getPublicIP() {
 
 function DownloadxrayTlsCore() {
 	echoColor blue "Fetching latest Xray version..."
-	version=$(wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+	version=$(curl -sSL --retry 1 --connect-timeout 2 -k "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
 
 	if [[ -z "$version" ]]; then
 		echoColor red "Failed to fetch version information"
@@ -67,24 +67,61 @@ function DownloadxrayTlsCore() {
 	echoColor blue "Downloading Xray core..."
 
 	if [ "$get_arch" = "x86_64" ]; then
-		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
+		curl -sSL -k -o "$temp_f" "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
 	elif [ "$get_arch" = "aarch64" ]; then
-		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
+		curl -sSL -k -o "$temp_f" "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
 	else
 		echoColor red "Unsupported architecture: $get_arch"
 		return 1
 	fi
 
-	unzip -q $temp_f -d $temp_d/
-	mv -f $temp_d/xray $BINARY_PATH
-	mv -f $temp_d/* /usr/bin/
-	chmod 755 $BINARY_PATH
+	unzip -q "$temp_f" -d "$temp_d/"
+	mv -f "$temp_d/xray" "$BINARY_PATH"
+	mv -f "$temp_d/"* /usr/bin/
+	chmod 755 "$BINARY_PATH"
 
-	rm -rf $temp_f $temp_d
+	rm -rf "$temp_f" "$temp_d"
 
 	echoColor green "Xray core downloaded successfully!"
 	$BINARY_PATH version
 }
+
+#function DownloadxrayTlsCore() {
+#	echoColor blue "Fetching latest Xray version..."
+#	version=$(wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+#
+#	if [[ -z "$version" ]]; then
+#		echoColor red "Failed to fetch version information"
+#		return 1
+#	fi
+#
+#	echoColor green "Latest version: $version"
+#
+#	get_arch=$(arch)
+#	temp_f=$(mktemp)
+#	temp_d=$(mktemp -d)
+#
+#	echoColor blue "Downloading Xray core..."
+#
+#	if [ "$get_arch" = "x86_64" ]; then
+#		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
+#	elif [ "$get_arch" = "aarch64" ]; then
+#		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
+#	else
+#		echoColor red "Unsupported architecture: $get_arch"
+#		return 1
+#	fi
+#
+#	unzip -q $temp_f -d $temp_d/
+#	mv -f $temp_d/xray $BINARY_PATH
+#	mv -f $temp_d/* /usr/bin/
+#	chmod 755 $BINARY_PATH
+#
+#	rm -rf $temp_f $temp_d
+#
+#	echoColor green "Xray core downloaded successfully!"
+#	$BINARY_PATH version
+#}
 
 function createSystemdService() {
 	cat <<EOF2 >$SERVICE_FILE
