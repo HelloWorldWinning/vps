@@ -72,42 +72,123 @@ function getPublicKeyFromPrivate() {
 	echo "$pub_key"
 }
 
+#function DownloadxrayRealityCore() {
+#	echoColor blue "Fetching latest Xray version..."
+#	version=$(wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+#
+#	if [[ -z "$version" ]]; then
+#		echoColor red "Failed to fetch version information"
+#		return 1
+#	fi
+#
+#	echoColor green "Latest version: $version"
+#
+#	get_arch=$(arch)
+#	temp_f=$(mktemp)
+#	temp_d=$(mktemp -d)
+#
+#	echoColor blue "Downloading Xray core..."
+#
+#	if [ "$get_arch" = "x86_64" ]; then
+#		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
+#	elif [ "$get_arch" = "aarch64" ]; then
+#		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
+#	else
+#		echoColor red "Unsupported architecture: $get_arch"
+#		return 1
+#	fi
+#
+#	unzip -q $temp_f -d $temp_d/
+#	mv -f $temp_d/xray $BINARY_PATH
+#	mv -f $temp_d/* /usr/bin/
+#
+#	chmod 755 $BINARY_PATH
+#
+#	rm -rf $temp_f $temp_d
+#
+#	echoColor green "Xray core downloaded successfully!"
+#	$BINARY_PATH version
+#}
+
 function DownloadxrayRealityCore() {
 	echoColor blue "Fetching latest Xray version..."
-	version=$(wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+
+	# Fetch version tag using curl
+	version=$(curl -s -k "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
 
 	if [[ -z "$version" ]]; then
-		echoColor red "Failed to fetch version information"
+		echoColor red "Failed to fetch version info. Checking internet connection..."
 		return 1
 	fi
 
 	echoColor green "Latest version: $version"
 
 	get_arch=$(arch)
-	temp_f=$(mktemp)
-	temp_d=$(mktemp -d)
-
-	echoColor blue "Downloading Xray core..."
+	# Save to current directory to avoid /tmp space issues
+	local filename="Xray-linux-64.zip"
 
 	if [ "$get_arch" = "x86_64" ]; then
-		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
+		filename="Xray-linux-64.zip"
 	elif [ "$get_arch" = "aarch64" ]; then
-		wget -q -O $temp_f --no-check-certificate "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
+		filename="Xray-linux-arm64-v8a.zip"
 	else
 		echoColor red "Unsupported architecture: $get_arch"
 		return 1
 	fi
 
-	unzip -q $temp_f -d $temp_d/
-	mv -f $temp_d/xray $BINARY_PATH
-	mv -f $temp_d/* /usr/bin/
+	local url="https://github.com/XTLS/xray-core/releases/download/${version}/${filename}"
 
-	chmod 755 $BINARY_PATH
+	echoColor blue "Downloading Xray core..."
+	echoColor blue "URL: $url"
 
-	rm -rf $temp_f $temp_d
+	# Cleanup previous failed attempts
+	rm -f "$filename"
 
-	echoColor green "Xray core downloaded successfully!"
-	$BINARY_PATH version
+	# DOWNLOAD using CURL
+	# -L: Follow redirects (GitHub releases redirect to AWS)
+	# -k: Insecure/No-check-certificate
+	# -o: Output filename
+	# --progress-bar: Show download progress
+	curl -L -k --progress-bar -o "$filename" "$url"
+
+	# Check curl exit code
+	if [ $? -ne 0 ]; then
+		echoColor red "Download failed! (curl exit code $?)"
+		return 1
+	fi
+
+	echoColor blue "Verifying file integrity..."
+	if ! unzip -tq "$filename" >/dev/null 2>&1; then
+		echoColor red "Error: Downloaded file is corrupt or not a valid ZIP."
+		rm -f "$filename"
+		return 1
+	fi
+
+	echoColor blue "Extracting..."
+	# Create a temporary folder in CURRENT dir
+	mkdir -p "temp_xray_extract"
+	unzip -q "$filename" -d "temp_xray_extract/"
+
+	if [[ ! -f "temp_xray_extract/xray" ]]; then
+		echoColor red "Error: 'xray' binary missing from zip."
+		rm -rf "temp_xray_extract" "$filename"
+		return 1
+	fi
+
+	# Stop service
+	systemctl stop xray_reality 2>/dev/null
+
+	echoColor blue "Installing..."
+	mv -f "temp_xray_extract/xray" "$BINARY_PATH"
+	mv -f "temp_xray_extract/"*.dat /usr/bin/ 2>/dev/null
+
+	chmod 755 "$BINARY_PATH"
+
+	# Cleanup
+	rm -rf "temp_xray_extract" "$filename"
+
+	echoColor green "Success! Installed to $BINARY_PATH"
+	"$BINARY_PATH" version | head -n 1
 }
 
 function createSystemdService() {
