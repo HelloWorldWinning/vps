@@ -46,113 +46,6 @@ function getPublicIP() {
 	echo "$IPV4"
 }
 
-function DownloadxrayTLSCore() {
-	echoColor blue "Fetching latest Xray version..."
-	version=$(curl -fsSL -m 10 "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-
-	if [[ -z "$version" ]]; then
-		echoColor red "Failed to fetch version information"
-		return 1
-	fi
-
-	echoColor green "Latest version: $version"
-
-	get_arch=$(arch)
-
-	# FIX: Define temporary paths inside DATA_DIR (on main disk) to avoid full /tmp
-	# ensuring directory exists first
-	mkdir -p "$DATA_DIR"
-	local temp_f="$DATA_DIR/xray-core.zip"
-	local temp_d="$DATA_DIR/xray-install-temp"
-
-	# Clean any previous failed attempts
-	rm -f "$temp_f"
-	rm -rf "$temp_d"
-	mkdir -p "$temp_d"
-
-	echoColor blue "Downloading Xray core to $temp_f ..."
-
-	local download_url=""
-	if [ "$get_arch" = "x86_64" ]; then
-		download_url="https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
-	elif [ "$get_arch" = "aarch64" ]; then
-		download_url="https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
-	else
-		echoColor red "Unsupported architecture: $get_arch"
-		# Cleanup
-		rm -f "$temp_f"
-		rm -rf "$temp_d"
-		return 1
-	fi
-
-	# Download with retry
-	local retry=0
-	local max_retries=3
-	while [[ $retry -lt $max_retries ]]; do
-		echoColor blue "Download attempt $((retry + 1))/$max_retries..."
-
-		# -f fails fast on server errors, -L follows redirects
-		curl -L -f -o "$temp_f" --connect-timeout 15 --retry 2 "$download_url"
-
-		if [[ $? -eq 0 ]] && [[ -s "$temp_f" ]]; then
-			if unzip -t "$temp_f" >/dev/null 2>&1; then
-				echoColor green "Download verified successfully!"
-				break
-			else
-				echoColor yellow "Downloaded file corrupted. Retrying..."
-				rm -f "$temp_f"
-			fi
-		else
-			echoColor yellow "Download failed. Retrying..."
-			rm -f "$temp_f"
-		fi
-
-		retry=$((retry + 1))
-		sleep 2
-	done
-
-	if [[ ! -f "$temp_f" ]]; then
-		echoColor red "Failed to download Xray after $max_retries attempts"
-		return 1
-	fi
-
-	# Extract
-	echoColor blue "Extracting..."
-	unzip -q "$temp_f" -d "$temp_d/"
-
-	if [[ $? -ne 0 ]]; then
-		echoColor red "Failed to extract Xray archive"
-		rm -f "$temp_f"
-		rm -rf "$temp_d"
-		return 1
-	fi
-
-	# Verify extracted binary
-	if [[ ! -f "$temp_d/xray" ]]; then
-		echoColor red "Extracted binary not found!"
-		rm -f "$temp_f"
-		rm -rf "$temp_d"
-		return 1
-	fi
-
-	# Stop service before replacing binary
-	systemctl stop xray_tls 2>/dev/null
-
-	# Move files
-	mv -f "$temp_d/xray" "$BINARY_PATH"
-	mv -f "$temp_d/geoip.dat" /usr/bin/geoip.dat 2>/dev/null
-	mv -f "$temp_d/geosite.dat" /usr/bin/geosite.dat 2>/dev/null
-
-	chmod 755 "$BINARY_PATH"
-
-	# Cleanup temporary files on the main disk
-	rm -f "$temp_f"
-	rm -rf "$temp_d"
-
-	echoColor green "Xray core downloaded and installed successfully!"
-	$BINARY_PATH version
-}
-
 #function DownloadxrayTLSCore() {
 #	echoColor blue "Fetching latest Xray version..."
 #	version=$(wget -qO- -t1 -T2 --no-check-certificate "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
@@ -194,81 +87,65 @@ function DownloadxrayTLSCore() {
 #	echoColor green "Xray core and resource files downloaded successfully!"
 #	$BINARY_PATH version
 #}
-#function DownloadxrayTLSCore() {
-#	echoColor blue "Fetching latest Xray version..."
-#	version=$(curl -fsSL -m 5 "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-#
-#	if [[ -z "$version" ]]; then
-#		echoColor red "Failed to fetch version information"
-#		return 1
-#	fi
-#
-#	echoColor green "Latest version: $version"
-#
-#	get_arch=$(arch)
-#	temp_f=$(mktemp)
-#	temp_d=$(mktemp -d)
-#
-#	echoColor blue "Downloading Xray core..."
-#
-#	if [ "$get_arch" = "x86_64" ]; then
-#		curl -fsSL -o $temp_f "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
-#	elif [ "$get_arch" = "aarch64" ]; then
-#		curl -fsSL -o $temp_f "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
-#	else
-#		echoColor red "Unsupported architecture: $get_arch"
-#		return 1
-#	fi
-#
-#	unzip -q $temp_f -d $temp_d/
-#
-#	# FIX: Move binary AND geoip/geosite files
-#	mv -f $temp_d/xray $BINARY_PATH
-#	mv -f $temp_d/geoip.dat /usr/bin/geoip.dat
-#	mv -f $temp_d/geosite.dat /usr/bin/geosite.dat
-#	mv -f $temp_d/* /usr/bin/
-#
-#	chmod 755 $BINARY_PATH
-#
-#	rm -rf $temp_f $temp_d
-#
-#	echoColor green "Xray core and resource files downloaded successfully!"
-#	$BINARY_PATH version
-#}
+function DownloadxrayTLSCore() {
+	echoColor blue "Fetching latest Xray version..."
+	version=$(curl -fsSL -m 5 "https://api.github.com/repos/XTLS/xray-core/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+
+	if [[ -z "$version" ]]; then
+		echoColor red "Failed to fetch version information"
+		return 1
+	fi
+
+	echoColor green "Latest version: $version"
+
+	get_arch=$(arch)
+	temp_f=$(mktemp)
+	temp_d=$(mktemp -d)
+
+	echoColor blue "Downloading Xray core..."
+
+	if [ "$get_arch" = "x86_64" ]; then
+		curl -fsSL -o $temp_f "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-64.zip"
+	elif [ "$get_arch" = "aarch64" ]; then
+		curl -fsSL -o $temp_f "https://github.com/XTLS/xray-core/releases/download/${version}/Xray-linux-arm64-v8a.zip"
+	else
+		echoColor red "Unsupported architecture: $get_arch"
+		return 1
+	fi
+
+	unzip -q $temp_f -d $temp_d/
+
+	# FIX: Move binary AND geoip/geosite files
+	mv -f $temp_d/xray $BINARY_PATH
+	mv -f $temp_d/geoip.dat /usr/bin/geoip.dat
+	mv -f $temp_d/geosite.dat /usr/bin/geosite.dat
+	mv -f $temp_d/* /usr/bin/
+
+	chmod 755 $BINARY_PATH
+
+	rm -rf $temp_f $temp_d
+
+	echoColor green "Xray core and resource files downloaded successfully!"
+	$BINARY_PATH version
+}
 
 function installAcme() {
 	echoColor blue "Installing acme.sh..."
 
-	local ACME_EMAIL="acme@$(hostname -f 2>/dev/null || echo 'localhost.local')"
-
 	if [[ -f "$ACME_HOME/acme.sh" ]]; then
 		echoColor green "acme.sh is already installed"
-	else
-		curl -s https://get.acme.sh | sh -s email="$ACME_EMAIL"
+		return 0
+	fi
 
-		if [[ ! -f "$ACME_HOME/acme.sh" ]]; then
-			echoColor red "Failed to install acme.sh"
-			return 1
-		fi
+	curl -s https://get.acme.sh | sh -s email=admin@example.com
+
+	if [[ -f "$ACME_HOME/acme.sh" ]]; then
 		echoColor green "acme.sh installed successfully!"
-	fi
-
-	# Configure Let's Encrypt as default CA (ZeroSSL often gets stuck in processing)
-	echoColor blue "Configuring Let's Encrypt as default CA..."
-
-	# Register account with Let's Encrypt
-	"$ACME_HOME/acme.sh" --register-account -m "$ACME_EMAIL" --server letsencrypt >/dev/null 2>&1
-
-	# Set Let's Encrypt as the default CA
-	"$ACME_HOME/acme.sh" --set-default-ca --server letsencrypt >/dev/null 2>&1
-
-	if [[ $? -eq 0 ]]; then
-		echoColor green "Let's Encrypt configured as default CA!"
+		return 0
 	else
-		echoColor yellow "Warning: Could not set default CA"
+		echoColor red "Failed to install acme.sh"
+		return 1
 	fi
-
-	return 0
 }
 
 function issueCertificate() {
