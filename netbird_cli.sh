@@ -152,7 +152,8 @@ deregister_if_running() {
 bring_up() {
 	enable_start_service
 	wait_for_daemon
-	netbird up --setup-key "${SETUP_KEY}" --enable-rosenpass --rosenpass-permissive --allow-server-ssh --enable-ssh-root
+	#netbird up --setup-key "${SETUP_KEY}" --enable-rosenpass --rosenpass-permissive --allow-server-ssh --enable-ssh-root
+	netbird up --setup-key "${SETUP_KEY}" --allow-server-ssh --enable-ssh-root
 }
 
 print_info() {
