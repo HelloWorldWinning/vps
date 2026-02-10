@@ -18,7 +18,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'echasnovski/mini.animate'  
 
 Plug 'tpope/vim-repeat'     " Add this for dot repeat support
-Plug 'ggandor/leap.nvim'    " The main plugin
+"Plug 'ggandor/leap.nvim'    " The main plugin
+Plug 'https://codeberg.org/andyg/leap.nvim'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
