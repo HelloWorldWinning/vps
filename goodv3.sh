@@ -1135,6 +1135,7 @@ https://zhile.one/archives/1404.html
 	xray_reality_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp_reality_maneger.sh) ;;
 	xray_grpc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc_maneger_docker.sh) ;;
 	xray_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp3_maneger_docker_xhttp.sh) ;;
+	docmost) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mostdoc_setup.sh) ;;
 	test_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/test_reality.sh) ;;
 	up_v6_gcp_gm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gm.sh) ;;
 	up_v6_gcp_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
