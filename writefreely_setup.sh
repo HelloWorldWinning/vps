@@ -433,3 +433,21 @@ Migration to another VPS (identical stack & data):
   ${COMPOSE_CMD} up -d
 
 INFO
+
+# ------------------------------------------------------------------------------
+# Save Credentials to File
+# ------------------------------------------------------------------------------
+
+# Define your destination path (currently set to inside the data directory)
+SAVE_PATH="${DATA_DIR}/admin_credentials.txt"
+
+# Write the credentials to the file
+cat >"$SAVE_PATH" <<EOF
+Admin username:      ${WF_ADMIN_USER}
+Admin password:      ${WF_ADMIN_PASS}
+EOF
+
+# Set restrictive permissions (read/write only for owner) for security
+chmod 600 "$SAVE_PATH"
+
+echo "Credentials successfully saved to: $SAVE_PATH"
