@@ -175,6 +175,11 @@ networks:
 
 services:
   writefreely-db:
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'      # Max 1 CPU core
+          memory: 1G       # Max 1GB RAM
     image: "${DB_IMAGE}"
     container_name: "writefreely-db"
     command: ["--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci"]
@@ -196,6 +201,11 @@ services:
     restart: unless-stopped
 
   writefreely-web:
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'      # Max 1 CPU core
+          memory: 1G       # Max 1GB RAM
     image: "${WF_IMAGE}"
     container_name: "writefreely-web"
     user: "2:2"           # 'daemon' in the official image

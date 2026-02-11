@@ -66,6 +66,11 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/docmost:/app/data/storage
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'      # Max 1 CPU core
+          memory: 1G       # Max 1GB RAM
 
   db:
     image: postgres:18
@@ -76,6 +81,11 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/db_data:/var/lib/postgresql
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'      # Max 1 CPU core
+          memory: 2G       # Max 1GB RAM
 
   redis:
     image: redis:8
@@ -83,6 +93,11 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/redis_data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'      # Max 1 CPU core
+          memory: 1G       # Max 1GB RAM
 EOF
 
 echo ""
