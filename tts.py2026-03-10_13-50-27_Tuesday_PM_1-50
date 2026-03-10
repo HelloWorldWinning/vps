@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+# BigTTS2000000652178241314
+"""Convert text file to WAV/MP3 using ByteDance TTS API.
+Usage:
+    python tts.py <text_file>          # → WAV (default, best quality)
+    python tts.py <text_file> --mp3    # → MP3
+
+SSML mode is auto-detected: if the file starts with <speak>, the request
+is sent as SSML, enabling <prosody>, <phoneme>, <say-as>, <word>, <sub>.
+
+<break> handling: the API silently ignores <break> tags, so this script
+splits SSML at every <break>, calls TTS per segment, inserts real PCM
+silence, and concatenates into one WAV.  MP3 output is forced to WAV when
+<break> tags are present.
+"""
+import sys
+import os
+import re
+import io
+import json
+import wave
+import base64
+import struct
+import requests
+from pathlib import Path
+
+API_URL = "https://openspeech.bytedance.com/api/v3/tts/unidirectional"
+API_KEY = os.environ.get("BYTEDANCE_TTS_KEY", "my_key")
+RESOURCE_ID = "seed-tts-2.0"
+SPEAKER = "zh_female_vv_uranus_bigtts"
+PITCH = SPEED = VOLUME = 0
+SAMPLE_RATE = 24000
+
+ADDITIONS = json.dumps(
+    {
+        "disable_markdown_filter": True,
+        "enable_language_detector": True,
+        "enable_latex_tn": True,
+        "disable_default_bit_rate": True,
+        "max_length_to_filter_parenthesis": 0,
+        "cache_config": {"text_type": 1, "use_cache": True},
+    }
+)
+
+# ── SSML helpers ─────────────────────────────────────────────────────────────
+
+
+def is_ssml(text: str) -> bool:
+    return text.strip().startswith("<speak")
+
+
+_BREAK_RE = re.compile(r'<break\s+time="(\d+(?:\.\d+)?)(ms|s)"\s*/?>', re.IGNORECASE)
+
+
+def has_breaks(ssml: str) -> bool:
+    return bool(_BREAK_RE.search(ssml))
+
+
+def break_to_ms(value: str, unit: str) -> int:
+    return int(float(value) * (1000 if unit == "s" else 1))
+
+
+def split_ssml_on_breaks(ssml: str):
+    """
+    Yield ('text', ssml_fragment) or ('break', ms) tuples.
+    Each text fragment is a fully valid <speak>…</speak> document.
+    """
+    open_tag_m = re.match(r"\s*(<speak[^>]*>)", ssml, re.IGNORECASE)
+    open_tag = open_tag_m.group(1) if open_tag_m else "<speak>"
+    inner = re.sub(r"^\s*<speak[^>]*>\s*", "", ssml, flags=re.IGNORECASE)
+    inner = re.sub(r"\s*</speak>\s*$", "", inner, flags=re.IGNORECASE)
+
+    last = 0
+    for m in _BREAK_RE.finditer(inner):
+        chunk = inner[last : m.start()].strip()
+        if chunk:
+            yield ("text", f"{open_tag}{chunk}</speak>")
+        yield ("break", break_to_ms(m.group(1), m.group(2)))
+        last = m.end()
+
+    tail = inner[last:].strip()
+    if tail:
+        yield ("text", f"{open_tag}{tail}</speak>")
+
+
+# ── WAV helpers ───────────────────────────────────────────────────────────────
+
+
+def make_silence_pcm(ms: int, sample_rate: int = SAMPLE_RATE) -> bytes:
+    """Raw signed-16-bit mono PCM silence (no WAV header)."""
+    n_frames = int(sample_rate * ms / 1000)
+    return b"\x00" * n_frames * 2  # 2 bytes per 16-bit sample
+
+
+def wav_to_pcm(wav_bytes: bytes) -> tuple:
+    """Return (channels, sampwidth, framerate, raw_pcm) from a WAV blob."""
+    with wave.open(io.BytesIO(wav_bytes), "rb") as wf:
+        return (
+            wf.getnchannels(),
+            wf.getsampwidth(),
+            wf.getframerate(),
+            wf.readframes(wf.getnframes()),
+        )
+
+
+def build_wav(channels: int, sampwidth: int, framerate: int, pcm_chunks: list) -> bytes:
+    """
+    Build a WAV file from raw PCM chunks.
+    Sets nchannels/sampwidth/framerate individually — does NOT call
+    setparams() — so the wave module computes nframes itself and the
+    32-bit size field never overflows for normal audio lengths.
+    """
+    all_pcm = b"".join(pcm_chunks)
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as wf:
+        wf.setnchannels(channels)
+        wf.setsampwidth(sampwidth)
+        wf.setframerate(framerate)
+        wf.writeframes(all_pcm)
+    return buf.getvalue()
+
+
+# ── Core API call ─────────────────────────────────────────────────────────────
+
+
+def _call_api(text: str, fmt: str) -> bytes:
+    headers = {
+        "x-api-key": API_KEY,
+        "X-Api-Resource-Id": RESOURCE_ID,
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+    }
+    req_params = {
+        "text": text,
+        "speaker": SPEAKER,
+        "additions": ADDITIONS,
+        "audio_params": {
+            "format": fmt,
+            "sample_rate": SAMPLE_RATE,
+            "pitch": PITCH,
+            "speed": SPEED,
+            "volume": VOLUME,
+        },
+    }
+    if is_ssml(text):
+        req_params["text_type"] = "ssml"
+
+    resp = requests.post(
+        API_URL,
+        headers=headers,
+        json={"req_params": req_params},
+        stream=True,
+    )
+    resp.raise_for_status()
+
+    chunks = []
+    for line in resp.iter_lines():
+        if not line:
+            continue
+        msg = json.loads(line)
+        if msg.get("code") not in (0, 20000000):
+            raise RuntimeError(f"API error: {msg}")
+        if msg.get("data"):
+            chunks.append(base64.b64decode(msg["data"]))
+    if not chunks:
+        raise RuntimeError("No audio data received")
+    return b"".join(chunks)
+
+
+# ── Public entry point ────────────────────────────────────────────────────────
+
+
+def tts(text: str, fmt: str = "wav") -> bytes:
+    if not (is_ssml(text) and has_breaks(text)):
+        return _call_api(text, fmt)
+
+    # SSML with <break> tags: stitch segments + real PCM silence
+    channels = sampwidth = framerate = None
+    pcm_parts = []
+
+    for kind, payload in split_ssml_on_breaks(text):
+        if kind == "break":
+            print(f"  [silence] {payload} ms")
+            pcm_parts.append(make_silence_pcm(payload))
+        else:
+            print(f"  [tts]     {repr(payload[:60])}...")
+            wav_bytes = _call_api(payload, "wav")
+            ch, sw, fr, pcm = wav_to_pcm(wav_bytes)
+            if channels is None:
+                channels, sampwidth, framerate = ch, sw, fr
+            pcm_parts.append(pcm)
+
+    return build_wav(channels, sampwidth, framerate, pcm_parts)
+
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
+
+
+def main():
+    args = sys.argv[1:]
+    if not args or "--help" in args or "-h" in args:
+        print(__doc__)
+        sys.exit(0)
+
+    src = Path(args[0])
+    if not src.is_file():
+        print(f"Error: {src} not found", file=sys.stderr)
+        sys.exit(1)
+
+    fmt = "mp3" if "--mp3" in args else "wav"
+    text = src.read_text(encoding="utf-8").strip()
+    if not text:
+        print("Error: file is empty", file=sys.stderr)
+        sys.exit(1)
+
+    if is_ssml(text) and has_breaks(text) and fmt == "mp3":
+        print("Note: <break> tags detected – output forced to WAV")
+        fmt = "wav"
+
+    out = src.with_suffix(f".{fmt}")
+    mode = "SSML" if is_ssml(text) else "plain text"
+    print(f"Generating {fmt.upper()} [{mode}] from {src} ...")
+    audio = tts(text, fmt=fmt)
+    out.write_bytes(audio)
+    print(f"Saved {out}  ({len(audio):,} bytes)")
+
+
+if __name__ == "__main__":
+    main()
