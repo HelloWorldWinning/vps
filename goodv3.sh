@@ -1134,6 +1134,7 @@ https://zhile.one/archives/1404.html
 	ipv6_many) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_many.sh) ;;
 	docu) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docusaurus_manager.sh) ;;
 	outline_coll) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
+	outline_list) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
 	xray_reality_tcp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
 	rt) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
 	xray_tls_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
