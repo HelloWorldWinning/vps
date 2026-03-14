@@ -199,7 +199,7 @@ def tts_chunk(session: requests.Session, text: str, fmt: str) -> bytes:
 # ── Main orchestrator ─────────────────────────────────────────────────────────
 
 
-def tts_long(text: str, fmt: str = "mp3", max_chars: int = DEFAULT_MAX_CHARS) -> bytes:
+def tts_long(text: str, fmt: str = "wav", max_chars: int = DEFAULT_MAX_CHARS) -> bytes:
     """
     Synthesize arbitrarily long text by auto-splitting + concatenation.
 
@@ -257,7 +257,8 @@ def main() -> None:
         sys.exit(1)
 
     # Parse options
-    fmt = "wav" if "--wav" in args else "mp3"
+    #   fmt = "wav" if "--wav" in args else "mp3"
+    fmt = "wav" if "--mp3" in args else "wav"
     max_chars = DEFAULT_MAX_CHARS
     if "--maxchars" in args:
         i = args.index("--maxchars")
