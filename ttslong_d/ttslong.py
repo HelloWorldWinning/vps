@@ -57,7 +57,8 @@ ADDITIONS = json.dumps(
 
 # Max chars per API call.  The server limit is ~4000+ chars for TTS2.0,
 # but shorter chunks give lower latency and safer margin.
-DEFAULT_MAX_CHARS = 500
+# DEFAULT_MAX_CHARS = 500
+DEFAULT_MAX_CHARS = 400
 
 
 # ── Text splitter ─────────────────────────────────────────────────────────────
@@ -258,7 +259,8 @@ def main() -> None:
 
     # Parse options
     #   fmt = "wav" if "--wav" in args else "mp3"
-    fmt = "wav" if "--mp3" in args else "wav"
+    # fmt = "wav" if "--mp3" in args else "wav"
+    fmt = "mp3" if "--mp3" in args else "wav"
     max_chars = DEFAULT_MAX_CHARS
     if "--maxchars" in args:
         i = args.index("--maxchars")
