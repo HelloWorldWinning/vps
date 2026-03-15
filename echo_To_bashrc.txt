@@ -665,3 +665,47 @@ rr() {
 }
 
 
+
+#for wav in *.wav; do
+#  name="${wav%.wav}"
+#  wav2vid "${name}.wav" "${name}.png"
+#done
+
+export VOLC_RESOURCE_ID="seed-tts-2.0"
+export VOLC_APP_ID=""
+export VOLC_ACCESS_TOKEN=""
+alias tts='python /data/vps/ttslong_d/gpt.py '
+
+wav2vid() {
+	if [ $# -ne 2 ]; then
+		echo "Usage: wav2vid <audio_file> <image_file>"
+		return 1
+	fi
+
+	local audio="$1"
+	local image="$2"
+	local output="${audio%.*}_video.mp4"
+
+	/usr/bin/ffmpeg -loop 1 -i "$image" -i "$audio" \
+		-c:v libx264 -crf 18 -preset slow \
+		-c:a aac -b:a 320k -ar 48000 \
+		-shortest \
+		-pix_fmt yuv420p \
+		-vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+		-movflags +faststart \
+		"$output"
+
+	echo "✅ Done: $output"
+}
+
+
+txt2wav_all() {
+  for file in *.txt; do tts "$file"; done
+}
+
+wav2vid_all() {
+  for wav in *.wav; do
+    name="${wav%.wav}"
+    wav2vid "${name}.wav" "${name}.png"
+  done
+}
