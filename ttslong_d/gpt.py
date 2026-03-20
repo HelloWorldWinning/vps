@@ -77,7 +77,7 @@ DEFAULT_SPEAKER = (
     or "zh_female_vv_uranus_bigtts"
 )
 DEFAULT_SAMPLE_RATE = 24000
-DEFAULT_MAX_CHARS = 400
+DEFAULT_MAX_CHARS = 480
 DEFAULT_UID = "work100100"
 
 # Event codes documented in the WS V3 doc.
