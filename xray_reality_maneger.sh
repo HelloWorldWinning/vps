@@ -12,6 +12,8 @@ DATA_DIR="/data/xray_config_d"
 
 FIRST_RUN=true
 
+apt install -y wget curl unzip dnsutils net-tools
+
 function echoColor() {
 	case $1 in
 	"red") echo -e "\033[31m$2\033[0m" ;;
