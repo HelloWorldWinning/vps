@@ -765,6 +765,16 @@ $(
 		/sbin/sysctl -p
 		;;
 	d6) bash <(curl -4LSs "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_d/wireguard_docker_startup_65506.sh") ;;
+	wg)
+		wg-quick down wg0
+		wg-quick down wg1
+		wg-quick down wg2
+		fix_wg_ipv6_RTNETLINK
+		eval $wg
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh)
+		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+		/sbin/sysctl -p
+		;;
 	6)
 		wg-quick down wg0
 		wg-quick down wg1
@@ -779,6 +789,8 @@ $(
 	7z) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 	7.0) eval $openvpn ;;
 	7.1) eval $openvpn2 ;;
+	openvpn) eval $openvpn ;;
+	openvpn2) eval $openvpn2 ;;
 	50) eval $v2ray ;;
 	8.1) eval $modify_id_of_v2ray ;;
 	999) eval $kcptun ;;
