@@ -789,7 +789,6 @@ $(
 	7z) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 	7.0) eval $openvpn ;;
 	7.1) eval $openvpn2 ;;
-	openvpn) eval $openvpn ;;
 	openvpn2) eval $openvpn2 ;;
 	50) eval $v2ray ;;
 	8.1) eval $modify_id_of_v2ray ;;
@@ -923,6 +922,8 @@ EOF
 	d81) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 	d82) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
 	openvpn) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
+	openvpn82) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
+	openvpn81) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 
 	65504) bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh') ;;
 	411) eval "$pre_InstallNET_modified_chu" ;;
