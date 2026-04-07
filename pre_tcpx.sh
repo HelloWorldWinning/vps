@@ -582,6 +582,11 @@ printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWo
 
 curl -sL https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xz
 sudo mv lf /usr/local/bin/
+mkdir -p ~/.config/lf
+cat >~/.config/lf/lfrc <<'EOF'
+map <enter> open
+cmd open $nvim "$f"
+EOF
 #sudo apt install ranger
 bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
