@@ -582,7 +582,7 @@ printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWo
 
 curl -sL https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xz
 sudo mv lf /usr/local/bin/
-
-sudo apt install ranger
+#sudo apt install ranger
+bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
 sudo reboot
