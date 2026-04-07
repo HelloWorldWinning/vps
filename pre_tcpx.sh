@@ -579,4 +579,10 @@ cargo install ripgrep_all
 
 bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
 printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
+
+curl -sL https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xz
+sudo mv lf /usr/local/bin/
+
+sudo apt install ranger
+
 sudo reboot
