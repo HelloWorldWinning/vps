@@ -204,6 +204,8 @@ EOF
 # Outline docker.env (Initial)
 OUTLINE_ENV_FILE="${OUTLINE_DIR}/docker.env"
 cat >"${OUTLINE_ENV_FILE}" <<EOF
+FILE_STORAGE_UPLOAD_MAX_SIZE=26214400
+
 NODE_ENV=production
 SECRET_KEY=${OUTLINE_SECRET_KEY}
 UTILS_SECRET=${OUTLINE_UTILS_SECRET}
@@ -369,6 +371,10 @@ services:
       STAGE: "${LE_STAGE}"
       WEBSOCKET: "true"
       CLIENT_MAX_BODY_SIZE: "0"
+      PROXY_BUFFERING: 'off'
+      PROXY_REQUEST_BUFFERING: 'off'
+      PROXY_READ_TIMEOUT: '600s'
+      PROXY_SEND_TIMEOUT: '600s'
 EOF
 
 ###############################################################################
