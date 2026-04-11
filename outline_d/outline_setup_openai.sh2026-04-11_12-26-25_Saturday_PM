@@ -5,8 +5,8 @@ echo """
 Basic Information
 
 https://api.slack.com/apps/A080KC8TN57?created=1
-Client ID  8005753479059.8019416940177
-Client Secret  cef3f14d2c2abaab3903e61078568107
+8005753479059.8019416940177
+cef3f14d2c2abaab3903e61078568107
 
 Verification Token
 zCEKJYQkW2LbotjAfc1eVKqA
@@ -85,8 +85,6 @@ esac
 
 # Create docker.env file
 cat >"$full_path/docker.env" <<EOF
-FILE_STORAGE_UPLOAD_MAX_SIZE=26214400
-
 NODE_ENV=production
 SECRET_KEY=$SECRET_KEY
 UTILS_SECRET=$UTILS_SECRET
@@ -217,10 +215,6 @@ services:
       STAGE: 'production'
       WEBSOCKET: 'true'
       CLIENT_MAX_BODY_SIZE: '0'
-      PROXY_BUFFERING: 'off'
-      PROXY_REQUEST_BUFFERING: 'off'
-      PROXY_READ_TIMEOUT: '600s'
-      PROXY_SEND_TIMEOUT: '600s'
 EOF
 
 echo "Configuration files generated successfully at $full_path"
