@@ -590,4 +590,10 @@ EOF
 #sudo apt install ranger
 bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
+# 1. Download to /usr/local/bin (in $PATH by default on Debian)
+sudo wget -O /usr/local/bin/tagcat https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat
+
+# 2. Make it executable
+sudo chmod +x /usr/local/bin/tagcat
+
 sudo reboot
