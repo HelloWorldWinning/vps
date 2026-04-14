@@ -9,58 +9,59 @@ set -u
 
 output="bundle.txt"
 if [ "${1:-}" = "-o" ]; then
-    if [ -z "${2:-}" ]; then
-        echo "tagcat: -o needs a filename" >&2
-        exit 2
-    fi
-    output="$2"
-    shift 2
+	if [ -z "${2:-}" ]; then
+		echo "tagcat: -o needs a filename" >&2
+		exit 2
+	fi
+	output="$2"
+	shift 2
 fi
 
 # Collect files
 files=()
 if [ "$#" -eq 0 ]; then
-    shopt -s nullglob 2>/dev/null || true
-    for f in *; do
-        [ -f "$f" ] || continue
-        [ "$f" = "$output" ] && continue
-        files+=("$f")
-    done
+	shopt -s nullglob 2>/dev/null || true
+	for f in *; do
+		[ -f "$f" ] || continue
+		[ "$f" = "$output" ] && continue
+		files+=("$f")
+	done
 else
-    for f in "$@"; do
-        files+=("$f")
-    done
+	for f in "$@"; do
+		files+=("$f")
+	done
 fi
 
 echo "tagcat: output = $output"
 echo "tagcat: found ${#files[@]} file(s) in $(pwd)"
 
 if [ "${#files[@]}" -eq 0 ]; then
-    echo "tagcat: no files to bundle" >&2
-    exit 1
+	echo "tagcat: no files to bundle" >&2
+	exit 1
 fi
 
 # Truncate output file
-: > "$output"
+: >"$output"
 
 count=0
 for file in "${files[@]}"; do
-    if [ ! -f "$file" ]; then
-        echo "tagcat: skipping '$file' (not a regular file)" >&2
-        continue
-    fi
+	if [ ! -f "$file" ]; then
+		echo "tagcat: skipping '$file' (not a regular file)" >&2
+		continue
+	fi
 
-    # Build tag: basename, replace . - space with _, lowercase
-    tag=$(basename "$file" | tr '.- ' '___' | tr '[:upper:]' '[:lower:]')
+	# Build tag: basename, replace . - space with _, lowercase
+	#   tag=$(basename "$file" | tr '.- ' '___' | tr '[:upper:]' '[:lower:]') # for macos
+	tag=$(basename "$file" | tr '. -' '___' | tr '[:upper:]' '[:lower:]') # for debian
 
-    {
-        printf '<%s>\n```\n' "$tag"
-        cat -- "$file"
-        printf '\n```\n</%s>\n\n' "$tag"
-    } >> "$output"
+	{
+		printf '<%s>\n```\n' "$tag"
+		cat -- "$file"
+		printf '\n```\n</%s>\n\n' "$tag"
+	} >>"$output"
 
-    echo "  + $file  ->  <$tag>"
-    count=$((count + 1))
+	echo "  + $file  ->  <$tag>"
+	count=$((count + 1))
 done
 
 echo "tagcat: wrote $count file(s) to $output"
