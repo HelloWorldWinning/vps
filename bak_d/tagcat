@@ -55,9 +55,9 @@ for file in "${files[@]}"; do
 	tag=$(basename "$file" | tr '. -' '___' | tr '[:upper:]' '[:lower:]') # for debian
 
 	{
-		printf '<%s>\n' "$tag"
+		printf '<%s>\n```\n' "$tag"
 		cat -- "$file"
-		printf '\n</%s>\n\n' "$tag"
+		printf '\n```\n</%s>\n\n' "$tag"
 	} >>"$output"
 
 	echo "  + $file  ->  <$tag>"
