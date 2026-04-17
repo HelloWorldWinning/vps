@@ -64,4 +64,14 @@ for file in "${files[@]}"; do
 	count=$((count + 1))
 done
 
+head_info='''<all_docs>
+'''
+tail_info="</all_docs>"
+
+# Prepend
+printf '%s\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile "$output"
+
+# Append
+printf '%s\n' "$tail_info" >>"$output"
+
 echo "tagcat: wrote $count file(s) to $output"
