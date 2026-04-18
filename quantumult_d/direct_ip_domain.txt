@@ -1,6 +1,7 @@
 HOST-SUFFIX,jd.com,Direct_IP
 
 
+#  https://github.com/HotKids/Rules/blob/master/Quantumult/X/Filter/Bilibili.list
 
 # > Direct_IP
 USER-AGENT,*bili*,Direct_IP
