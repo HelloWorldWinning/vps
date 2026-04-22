@@ -1161,6 +1161,7 @@ https://zhile.one/archives/1404.html
 	up_v6_gcp_gm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gm.sh) ;;
 	up_v6_gcp_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
 	copier) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/copier.sh) ;;
+	t) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokentool) ;;
 
 		#nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 	nq) bash <(curl -sL https://run.NodeQuality.com) 2>&1 | tee /root/nodequality_$(date +%Y%m%d_%H%M%S).log ;;
