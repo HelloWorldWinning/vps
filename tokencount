@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+API_BASE="http://141.98.197.246:6969"
+API_ANTHROPIC="${API_BASE}/tokenize_anthropic"
+API_GEMINI="${API_BASE}/tokenize_gemini"
+API_GPT4O="${API_BASE}/tokenize_o"
+
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $(basename "$0") <file>" >&2
+    exit 1
+fi
+
+INPUT_FILE="$1"
+if [[ ! -f "$INPUT_FILE" ]]; then
+    echo "Error: file not found: $INPUT_FILE" >&2
+    exit 1
+fi
+
+temp_json=$(mktemp)
+tmp_a=$(mktemp)
+tmp_g=$(mktemp)
+tmp_o=$(mktemp)
+trap "rm -f '$temp_json' '$tmp_a' '$tmp_g' '$tmp_o'" EXIT
+
+# --- build JSON payload ---
+if command -v python3 &>/dev/null; then
+    python3 -c "
+import json, sys
+with open(sys.argv[1], 'r', errors='replace') as f:
+    print(json.dumps({'input_string': f.read()}))
+" "$INPUT_FILE" > "$temp_json" 2>/dev/null
+elif command -v jq &>/dev/null; then
+    jq -Rs '{input_string: .}' < "$INPUT_FILE" > "$temp_json" 2>/dev/null
+else
+    echo "Error: need python3 or jq" >&2
+    exit 1
+fi
+
+if [[ ! -s "$temp_json" ]]; then
+    echo "Error: failed to build JSON payload" >&2
+    exit 1
+fi
+
+# --- fire all three requests in parallel ---
+curl -s --max-time 120 -X POST "$API_ANTHROPIC" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_a" &
+curl -s --max-time 120 -X POST "$API_GEMINI" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_g" &
+curl -s --max-time 120 -X POST "$API_GPT4O" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_o" &
+wait
+
+# --- extract number: strip whitespace and commas from response ---
+extract_count() {
+    local raw
+    raw=$(<"$1")
+    # remove whitespace and commas (API returns e.g. "2,732")
+    raw="${raw//,/}"
+    raw=$(echo "$raw" | tr -d '[:space:]')
+    if [[ "$raw" =~ ^[0-9]+$ ]]; then
+        echo "$raw"
+    else
+        echo ""
+    fi
+}
+
+count_anthropic=$(extract_count "$tmp_a")
+count_gemini=$(extract_count "$tmp_g")
+count_gpt4o=$(extract_count "$tmp_o")
+
+# --- format number with commas ---
+fmt() {
+    local n="$1"
+    if [[ -n "$n" && "$n" =~ ^[0-9]+$ ]]; then
+        printf "%'d" "$n" 2>/dev/null || printf "%d" "$n"
+    else
+        echo "ERROR"
+    fi
+}
+
+count_anthropic=$(fmt "$count_anthropic")
+count_gemini=$(fmt "$count_gemini")
+count_gpt4o=$(fmt "$count_gpt4o")
+
+SEP="+-------------+----------------+"
+printf '\n%s\n' "$SEP"
+printf '| %-11s | %14s |\n' "Model" "Tokens"
+printf '%s\n' "$SEP"
+printf '| %-11s | %14s |\n' "Anthropic"  "$count_anthropic"
+printf '| %-11s | %14s |\n' "Gemini"     "$count_gemini"
+printf '| %-11s | %14s |\n' "GPT-4o"     "$count_gpt4o"
+printf '%s\n\n' "$SEP"
