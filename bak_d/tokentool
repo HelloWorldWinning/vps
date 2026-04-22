@@ -135,60 +135,30 @@ mode_scan_all() {
 # ── mode 2: user inputs file paths ──────────────────────────
 mode_file_input() {
     echo ""
-    printf "  ${DIM}Paste file paths (one per line, or space-separated).${RESET}\n"
-    printf "  ${DIM}Press Enter on an empty line when done.${RESET}\n\n"
-    printf "  ${CYAN}files ↓${RESET}\n"
-
-    # ── phase 1: collect all paths silently ──
-    local -a files=()
-    while IFS= read -r line; do
-        [[ -z "$line" ]] && break         # empty line = done
-
-        # split line on whitespace to support multiple files per line
-        for token in $line; do
-            # expand ~ if present
-            token="${token/#\~/$HOME}"
-            files+=("$token")
-        done
-    done
-
-    if [[ ${#files[@]} -eq 0 ]]; then
-        printf "\n  ${YELLOW}No files entered.${RESET}\n\n"
-        return
-    fi
-
-    # ── phase 2: validate and list ──
-    local -a valid=()
-    echo ""
-    printf "  ${DIM}Validating %d path(s) ...${RESET}\n" "${#files[@]}"
-    for f in "${files[@]}"; do
-        if [[ -f "$f" ]]; then
-            valid+=("$f")
-            printf "  ${GREEN}✓${RESET} %s\n" "$f"
-        else
-            printf "  ${RED}✗ Not found: %s${RESET}\n" "$f"
-        fi
-    done
-
-    if [[ ${#valid[@]} -eq 0 ]]; then
-        printf "\n  ${YELLOW}No valid files to process.${RESET}\n\n"
-        return
-    fi
-
-    # ── phase 3: count each file ──
-    echo ""
-    printf "  ${DIM}Counting tokens for %d file(s) ...${RESET}\n\n" "${#valid[@]}"
+    printf "  ${DIM}Enter file paths one per line. Empty line or Ctrl-D to finish.${RESET}\n\n"
 
     local temp_json
     temp_json=$(mktemp)
     trap "rm -f '$temp_json'" RETURN
 
-    for f in "${valid[@]}"; do
-        printf "  ${DIM}Counting: %s ...${RESET}\n" "$(basename "$f")"
-        if json_from_file "$f" "$temp_json" && [[ -s "$temp_json" ]]; then
-            count_and_print "$temp_json" "$(basename "$f")"
+    while true; do
+        printf "  ${CYAN}file>${RESET} "
+        read -r filepath || break        # Ctrl-D
+        [[ -z "$filepath" ]] && break     # empty line
+
+        # expand ~ if present
+        filepath="${filepath/#\~/$HOME}"
+
+        if [[ ! -f "$filepath" ]]; then
+            printf "  ${RED}⚠ Not found: %s${RESET}\n\n" "$filepath"
+            continue
+        fi
+
+        printf "  ${DIM}Counting ...${RESET}\n"
+        if json_from_file "$filepath" "$temp_json" && [[ -s "$temp_json" ]]; then
+            count_and_print "$temp_json" "$(basename "$filepath")"
         else
-            printf "  ${RED}⚠ Skipped (could not read): %s${RESET}\n\n" "$f"
+            printf "  ${RED}⚠ Could not read: %s${RESET}\n\n" "$filepath"
         fi
     done
 }
@@ -236,7 +206,7 @@ show_banner() {
     printf "  ${BOLD}${CYAN}╰──────────────────────────────────╯${RESET}\n"
     echo ""
     printf "  ${GREEN}1${RESET}  Scan all files in current dir\n"
-    printf "  ${GREEN}2${RESET}  Enter file paths (paste multiple ok)\n"
+    printf "  ${GREEN}2${RESET}  Enter file paths manually\n"
     printf "  ${GREEN}3${RESET}  Count tokens from text input\n"
     echo ""
 }
