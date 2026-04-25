@@ -135,7 +135,7 @@ mode_scan_all() {
 # ── mode 2: user inputs file paths ──────────────────────────
 mode_file_input() {
     echo ""
-    printf "  ${DIM}Paste file paths (one per line).${RESET}\n"
+    printf "  ${DIM}Paste file paths (one per line, or space-separated).${RESET}\n"
     printf "  ${DIM}Press Enter on an empty line when done.${RESET}\n\n"
     printf "  ${CYAN}files ↓${RESET}\n"
 
@@ -144,18 +144,12 @@ mode_file_input() {
     while IFS= read -r line; do
         [[ -z "$line" ]] && break         # empty line = done
 
-        # strip leading/trailing whitespace
-        line="${line#"${line%%[![:space:]]*}"}"
-        line="${line%"${line##*[![:space:]]}"}"
-
-        # strip surrounding quotes if present
-        if [[ "$line" =~ ^\"(.*)\"$ ]] || [[ "$line" =~ ^\'(.*)\'$ ]]; then
-            line="${BASH_REMATCH[1]}"
-        fi
-
-        # expand ~ if present
-        line="${line/#\~/$HOME}"
-        [[ -n "$line" ]] && files+=("$line")
+        # split line on whitespace to support multiple files per line
+        for token in $line; do
+            # expand ~ if present
+            token="${token/#\~/$HOME}"
+            files+=("$token")
+        done
     done
 
     if [[ ${#files[@]} -eq 0 ]]; then
@@ -242,7 +236,7 @@ show_banner() {
     printf "  ${BOLD}${CYAN}╰──────────────────────────────────╯${RESET}\n"
     echo ""
     printf "  ${GREEN}1${RESET}  Scan all files in current dir\n"
-    printf "  ${GREEN}2${RESET}  Enter file paths (one per line)\n"
+    printf "  ${GREEN}2${RESET}  Enter file paths (paste multiple ok)\n"
     printf "  ${GREEN}3${RESET}  Count tokens from text input\n"
     echo ""
 }
@@ -266,4 +260,3 @@ main() {
 }
 
 main
-
