@@ -4,13 +4,19 @@
 
 set -euo pipefail
 
-[[ $# -ne 1 ]] && { echo "Usage: $0 <file>"; exit 1; }
+[[ $# -ne 1 ]] && {
+	echo "Usage: $0 <file>"
+	exit 1
+}
 INPUT="$1"
-[[ ! -f "$INPUT" ]] && { echo "Not found: $INPUT"; exit 1; }
+[[ ! -f "$INPUT" ]] && {
+	echo "Not found: $INPUT"
+	exit 1
+}
 
 OUTFILE="$(dirname "$INPUT")/$(basename "$INPUT" | sed 's/\.[^.]*$//')_parsed.txt"
 
-python3 - "$INPUT" "$OUTFILE" << 'PY'
+python3 - "$INPUT" "$OUTFILE" <<'PY'
 import re, sys
 
 src, dst = sys.argv[1], sys.argv[2]
@@ -59,3 +65,4 @@ for entry in entries:
 
 open(dst, "w", encoding="utf-8").write("\n\n".join(out_lines) + "\n")
 print(f"Done: {count} entries -> {dst}")
+PY
