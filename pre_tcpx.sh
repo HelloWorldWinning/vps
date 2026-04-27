@@ -253,6 +253,7 @@ mkdir -p "$OMP_CACHE_DIR"
 cat <<EOF >>$HOME/.bashrc
 export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh
 export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache
+export UV_CACHE_DIR="$HOME/.cache/uv"
 EOF
 source $HOME/.bashrc
 
