@@ -12,25 +12,28 @@ if ! command -v markmap &>/dev/null; then
 fi
 
 # ── extract title from markdown content ──
+# Priority: first "# heading" > YAML frontmatter "title:" > fallback
 extract_title() {
 	local file="$1"
 	local title=""
+
+	# 1) first top-level # heading (highest priority in markmap)
 	title=$(grep -m1 '^# ' "$file" | sed 's/^# //' | xargs)
+
+	# 2) fallback: YAML frontmatter title
 	if [[ -z "$title" ]]; then
 		title=$(sed -n '/^---$/,/^---$/{ s/^title:[[:space:]]*//p }' "$file" | head -1 | xargs)
 	fi
+
+	# 3) fallback: timestamp
 	if [[ -z "$title" ]]; then
 		title="markmap_$(date +%Y%m%d_%H%M%S)"
 	fi
-	title=$(echo "$title" | sed 's/[\/\\:*?"<>|]/_/g' | sed 's/[[:space:]]*$//')
-	echo "$title"
-}
 
-# ── check if content already has markmap frontmatter ──
-has_pre_header() {
-	local file="$1"
-	# Match YAML frontmatter containing "markmap:" key
-	sed -n '/^---$/,/^---$/p' "$file" | grep -q '^markmap:' 2>/dev/null
+	# sanitize: replace / \ : * ? " < > | with _
+	title=$(echo "$title" | sed 's/[\/\\:*?"<>|]/_/g' | sed 's/[[:space:]]*$//')
+
+	echo "$title"
 }
 
 # ── mode selection ──
@@ -49,31 +52,9 @@ if [[ "$mode" == "1" ]]; then
 	cat >"$tmpfile"
 	echo ""
 
-	if has_pre_header "$tmpfile"; then
-		# Content already has markmap frontmatter — render as-is
-		:
-	else
-		# No pre_header detected — ask for colorFreezeLevel
-		echo -n "colorFreezeLevel [3] (4s timeout): "
-		if read -rt 4 cfl; then
-			cfl="${cfl:-3}"
-		else
-			cfl=3
-			echo ""
-		fi
-		# Prepend the markmap frontmatter
-		{
-			printf '%s\n' "---"
-			printf '%s\n' "markmap:"
-			printf '%s\n' "  colorFreezeLevel: ${cfl}"
-			printf '%s\n' "---"
-			cat "$tmpfile"
-		} >"${tmpfile}.tmp"
-		mv "${tmpfile}.tmp" "$tmpfile"
-	fi
-
 	title=$(extract_title "$tmpfile")
 	outfile="$(pwd)/${title}.html"
+
 	markmap "$tmpfile" -o "$outfile" --no-open
 	rm -f "$tmpfile"
 	echo -e "[✓] Rendered → ${BR}${outfile}${RS}"
@@ -103,6 +84,7 @@ elif [[ "$mode" == "2" ]]; then
 		markmap "$f" -o "$outfile" --no-open
 		echo -e "[✓] ${f} → ${BR}${outfile}${RS}"
 	done
+
 else
 	echo "Invalid mode. Exiting."
 	exit 1
