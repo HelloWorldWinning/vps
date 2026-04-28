@@ -76,4 +76,5 @@ printf '%s\n' "$tail_info" >>"$output"
 
 #echo "tagcat: wrote $count file(s) to $output"
 echo "tagcat: wrote $count file(s) to"
-echo "$(pwd)/$output"
+#echo "$(pwd)/$output"
+echo -e "\033[1;31m$(pwd)/$output\033[0m"
