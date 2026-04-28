@@ -74,4 +74,6 @@ printf '%s\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile "$
 # Append
 printf '%s\n' "$tail_info" >>"$output"
 
-echo "tagcat: wrote $count file(s) to $output"
+#echo "tagcat: wrote $count file(s) to $output"
+echo "tagcat: wrote $count file(s) to"
+echo "$(pwd)/$output"
