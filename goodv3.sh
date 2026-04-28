@@ -1162,6 +1162,7 @@ https://zhile.one/archives/1404.html
 	up_v6_gcp_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
 	copier) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/copier.sh) ;;
 	t) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokentool) ;;
+	mm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.sh) ;;
 	wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
 
 		#nq) bash <(curl -sL https://run.NodeQuality.com) ;;
