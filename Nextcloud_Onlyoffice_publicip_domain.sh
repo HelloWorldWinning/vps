@@ -45,6 +45,15 @@ NGINX_DIR="${PROXY_DIR}/conf.d"
 HTTPS_PORT="${HTTPS_PORT:-7443}"
 TZ_DEFAULT="Asia/Tokyo"
 
+# Prompt for HTTPS_PORT with 7s timeout, default 7443
+read -t 7 -p "Enter HTTPS_PORT [default: 7443]: " INPUT_PORT
+HTTPS_PORT="${INPUT_PORT:-7443}"
+
+# Auto-detect current system timezone (skip unreliable /etc/timezone)
+TZ_DEFAULT="$(timedatectl show --property=Timezone --value 2>/dev/null ||
+	readlink -f /etc/localtime | sed 's|.*/zoneinfo/||' ||
+	echo 'UTC')"
+
 PROJECT_NAME="nextcloud_onlyoffice"
 NC_CONTAINER="nextcloud-onlyoffice-nextcloud"
 DB_CONTAINER="nextcloud-onlyoffice-mariadb"
