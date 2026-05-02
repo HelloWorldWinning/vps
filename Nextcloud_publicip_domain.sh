@@ -49,11 +49,11 @@ REDIS_CONTAINER="nextcloud-publicip-redis"
 PROXY_CONTAINER="nextcloud-publicip-proxy"
 
 SCRIPT_VERSION="2026-05-03.2-nextcloud-publicip-domain-port-prompt"
-MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-2}"
-MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-3}"
+#MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-2}"
+#MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-3}"
 
-#MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-3}"
-#MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-5}"
+MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-3}"
+MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-5}"
 #--- Colors --------------------------------------------------------------------
 if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
 	RED='\033[0;31m'

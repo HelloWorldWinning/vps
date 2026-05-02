@@ -62,11 +62,11 @@ OO_CONTAINER="nextcloud-onlyoffice-onlyoffice"
 PROXY_CONTAINER="nextcloud-onlyoffice-proxy"
 
 SCRIPT_VERSION="2026-05-03.3-publicip-domain"
-MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-8}"
-MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-5}"
-
-#MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-10}"
+#MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-8}"
 #MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-5}"
+
+MIN_DOCKER_FREE_GIB="${MIN_DOCKER_FREE_GIB:-10}"
+MIN_BASE_FREE_GIB="${MIN_BASE_FREE_GIB:-5}"
 #--- Colors --------------------------------------------------------------------
 if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
 	RED='\033[0;31m'
