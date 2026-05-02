@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# install_cloudreve_v5_fixed.sh
+# install_cloudreve_v6_fixed.sh
 #
 # Cloudreve v4 + Aria2-Pro installer/fixer.
+# Revision: v6.2 = v5 rollback base + optional Cloudreve workflow cleanup.
+#
+# This deliberately keeps the v5 compose/startup/Aria2 behavior because v6.1 regressed magnet downloading.
 #
 # Fixes handled:
 #   1. Cloudreve users/settings disappearing after docker compose down/up:
@@ -40,6 +43,12 @@ TZ_VALUE="${TZ_VALUE:-Asia/Tokyo}"
 CLEAN_ORPHANED_METADATA="${CLEAN_ORPHANED_METADATA:-true}"
 CLEAN_ALL_ARIA2_TASKS="${CLEAN_ALL_ARIA2_TASKS:-false}"
 RESET_ARIA2_SESSION="${RESET_ARIA2_SESSION:-false}"
+
+# Optional Cloudreve workflow DB cleanup. Disabled by default to preserve active queues.
+# Use CLEAN_CLOUDREVE_FAILED_TASKS=true to hide/delete failed/canceled remote_download rows that UI cannot delete.
+# Use CLEAN_CLOUDREVE_STUCK_TASKS=true only to recover from a bad suspend loop; it soft-deletes live queued/processing/suspending remote_download rows.
+CLEAN_CLOUDREVE_FAILED_TASKS="${CLEAN_CLOUDREVE_FAILED_TASKS:-false}"
+CLEAN_CLOUDREVE_STUCK_TASKS="${CLEAN_CLOUDREVE_STUCK_TASKS:-false}"
 
 COMPOSE_FILE="$DEST/docker-compose.yml"
 REPORT_FILE="$DEST/cloudreve_admin_password.txt"
@@ -274,6 +283,8 @@ preserve_existing_data() {
 	[ -f "$DEST/install_cloudreve.sh" ] && cp -a "$DEST/install_cloudreve.sh" "$BACKUP_DIR/install_cloudreve.sh.bak"
 	[ -f "$DEST/install_cloudreve_v4_fixed.sh" ] && cp -a "$DEST/install_cloudreve_v4_fixed.sh" "$BACKUP_DIR/install_cloudreve_v4_fixed.sh.bak"
 	[ -f "$DEST/install_cloudreve_v4_fixed_v2_resume.sh" ] && cp -a "$DEST/install_cloudreve_v4_fixed_v2_resume.sh" "$BACKUP_DIR/install_cloudreve_v4_fixed_v2_resume.sh.bak"
+	[ -f "$DEST/install_cloudreve_v5_fixed.sh" ] && cp -a "$DEST/install_cloudreve_v5_fixed.sh" "$BACKUP_DIR/install_cloudreve_v5_fixed.sh.bak"
+	[ -f "$DEST/install_cloudreve_v6_fixed.sh" ] && cp -a "$DEST/install_cloudreve_v6_fixed.sh" "$BACKUP_DIR/install_cloudreve_v6_fixed.sh.bak"
 	[ -d "$DEST/aria2/config" ] && cp -a "$DEST/aria2/config" "$BACKUP_DIR/aria2-config.bak" || true
 	[ -d "$DEST/cloudreve/data" ] && cp -a "$DEST/cloudreve/data" "$BACKUP_DIR/cloudreve-data.bak" || true
 
@@ -425,6 +436,124 @@ PY
 	log "Cleaned Aria2 metadata/orphan tasks and saved session."
 }
 
+cleanup_cloudreve_workflow_rows() {
+	if [ "$CLEAN_CLOUDREVE_FAILED_TASKS" != "true" ] && [ "$CLEAN_CLOUDREVE_STUCK_TASKS" != "true" ]; then
+		info "Cloudreve workflow DB cleanup disabled."
+		return 0
+	fi
+
+	warn "Cloudreve workflow cleanup enabled; stopping Cloudreve before editing SQLite DB..."
+	docker compose stop cloudreve >/dev/null 2>&1 || true
+
+	python3 - "$DEST" "$BACKUP_DIR" "$CLEAN_CLOUDREVE_FAILED_TASKS" "$CLEAN_CLOUDREVE_STUCK_TASKS" <<'PYCLEAN'
+import shutil
+import sqlite3
+import sys
+import time
+from pathlib import Path
+
+DEST = Path(sys.argv[1])
+BACKUP_DIR = Path(sys.argv[2])
+CLEAN_FAILED = sys.argv[3].lower() == "true"
+CLEAN_STUCK = sys.argv[4].lower() == "true"
+
+base = DEST / "cloudreve" / "data"
+BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+
+failed_statuses = {"error", "failed", "canceled", "cancelled"}
+stuck_statuses = {"queued", "processing", "suspending"}
+target_statuses = set()
+if CLEAN_FAILED:
+    target_statuses |= failed_statuses
+if CLEAN_STUCK:
+    target_statuses |= stuck_statuses
+
+def find_db_files():
+    out = []
+    if not base.exists():
+        return out
+    for name in ("cloudreve.db", "database.db", "data.db"):
+        p = base / name
+        if p.exists() and p.is_file():
+            out.append(p)
+    for pattern in ("*.db", "*.sqlite", "*.sqlite3"):
+        for p in base.rglob(pattern):
+            if p.is_file() and p not in out:
+                out.append(p)
+    return out
+
+def table_cols(con):
+    cur = con.cursor()
+    cur.execute("PRAGMA table_info(tasks)")
+    return {row[1]: (row[2] or "") for row in cur.fetchall()}
+
+def is_task_db(path):
+    try:
+        con = sqlite3.connect(str(path))
+        cols = table_cols(con)
+        con.close()
+        return {"id", "type", "status", "deleted_at"}.issubset(cols)
+    except Exception:
+        return False
+
+def value_for_col(coltype):
+    t = (coltype or "").lower()
+    if "int" in t or "real" in t or "numeric" in t:
+        return int(time.time())
+    return time.strftime("%Y-%m-%d %H:%M:%S")
+
+dbs = [p for p in find_db_files() if is_task_db(p)]
+if not dbs:
+    print(f"[WARN] No Cloudreve SQLite DB with tasks table found under {base}")
+    sys.exit(0)
+
+for db in dbs:
+    backup = BACKUP_DIR / (db.name + ".before-v62-workflow-cleanup.bak")
+    shutil.copy2(db, backup)
+    print(f"[INFO] Backed up DB: {db} -> {backup}")
+
+    con = sqlite3.connect(str(db))
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cols = table_cols(con)
+    deleted_value = value_for_col(cols.get("deleted_at", ""))
+    updated_value = value_for_col(cols.get("updated_at", "")) if "updated_at" in cols else None
+
+    placeholders = ",".join("?" for _ in target_statuses)
+    params = ["remote_download", *sorted(target_statuses)]
+    sql = f"""
+        SELECT id, status FROM tasks
+        WHERE type=?
+          AND status IN ({placeholders})
+          AND (deleted_at IS NULL OR deleted_at=0 OR deleted_at='')
+    """
+    rows = cur.execute(sql, params).fetchall()
+
+    if not rows:
+        print(f"[INFO] No matching Cloudreve remote_download rows to clean in {db.name}")
+        con.close()
+        continue
+
+    ids = [row["id"] for row in rows]
+    id_placeholders = ",".join("?" for _ in ids)
+    if "updated_at" in cols:
+        cur.execute(
+            f"UPDATE tasks SET deleted_at=?, updated_at=? WHERE id IN ({id_placeholders})",
+            [deleted_value, updated_value, *ids],
+        )
+    else:
+        cur.execute(
+            f"UPDATE tasks SET deleted_at=? WHERE id IN ({id_placeholders})",
+            [deleted_value, *ids],
+        )
+    con.commit()
+    con.close()
+    print(f"[OK] Soft-deleted {len(ids)} Cloudreve remote_download workflow row(s): " + ", ".join(map(str, ids)))
+
+print("[INFO] Cloudreve workflow cleanup done. Backups are in", BACKUP_DIR)
+PYCLEAN
+}
+
 write_report() {
 	local shared_uid="$1"
 	local shared_gid="$2"
@@ -444,7 +573,7 @@ Generated: $(date -Is)
 Cloudreve URL:
   http://${server_ip}:${CLOUDREVE_PORT}
 
-What v5 fixed:
+What v6.2 fixed (v5-compatible):
   1. Cloudreve users/settings persistence:
      host:      ${DEST}/cloudreve/data
      container: /cloudreve/data
@@ -465,9 +594,12 @@ What v5 fixed:
      RESET_ARIA2_SESSION=${RESET_ARIA2_SESSION}
 
 Important:
-  If Cloudreve already has failed workflow rows like "GID is not found",
-  delete those failed tasks in Cloudreve UI once.
-  v5 cleans the Aria2 side so the same magnet can be submitted again.
+  This is intentionally v5-compatible. It does not use the v6.1 Cloudreve DB/GID repair logic.
+  If Cloudreve has failed workflow rows the UI cannot delete, use:
+    CLEAN_CLOUDREVE_FAILED_TASKS=true bash install_cloudreve_v6_fixed.sh
+  If Cloudreve is stuck in a repeating suspending/processing loop, use once:
+    CLEAN_CLOUDREVE_STUCK_TASKS=true bash install_cloudreve_v6_fixed.sh
+  v6.2 also cleans the Aria2 side so the same magnet can be submitted again.
 
 Cloudreve admin node settings:
   Downloader: aria2
@@ -513,11 +645,15 @@ Avoid:
 
 Emergency duplicate-infohash cleanup only:
   cd ${DEST}
-  CLEAN_ORPHANED_METADATA=true bash install_cloudreve_v5_fixed.sh
+  CLEAN_ORPHANED_METADATA=true bash install_cloudreve_v6_fixed.sh
 
 Dangerous full Aria2 task cleanup:
   cd ${DEST}
-  CLEAN_ALL_ARIA2_TASKS=true bash install_cloudreve_v5_fixed.sh
+  CLEAN_ALL_ARIA2_TASKS=true bash install_cloudreve_v6_fixed.sh
+
+Cloudreve workflow cleanup when UI cannot delete failed/stuck rows:
+  cd ${DEST}
+  CLEAN_CLOUDREVE_FAILED_TASKS=true CLEAN_CLOUDREVE_STUCK_TASKS=true bash install_cloudreve_v6_fixed.sh
 
 Aria2 RPC test:
   ${rpc_result}
@@ -540,7 +676,7 @@ EOF
 
 	echo ""
 	echo "========================================"
-	echo " Cloudreve + Aria2 v5 Fixed"
+	echo " Cloudreve + Aria2 v6.2 Fixed"
 	echo "========================================"
 	echo ""
 	echo "Cloudreve URL:"
@@ -634,11 +770,25 @@ main() {
 		sleep 3
 	fi
 
+	cloudreve_was_stopped_for_cleanup=false
+	if [ "$CLEAN_CLOUDREVE_FAILED_TASKS" = "true" ] || [ "$CLEAN_CLOUDREVE_STUCK_TASKS" = "true" ]; then
+		cleanup_cloudreve_workflow_rows
+		cloudreve_was_stopped_for_cleanup=true
+	else
+		cleanup_cloudreve_workflow_rows
+	fi
+
 	# Clean stale metadata/orphan tasks AFTER Aria2 is running with fixed config.
+	# This keeps the same behavior as v5; it can clear a stuck 0B [METADATA] magnet task.
 	cleanup_aria2_orphans
 
 	# Persist the cleaned/current session.
 	aria2_rpc "aria2.saveSession" >/dev/null || true
+
+	if [ "$cloudreve_was_stopped_for_cleanup" = "true" ]; then
+		info "Restarting Cloudreve after workflow cleanup..."
+		docker compose up -d cloudreve
+	fi
 
 	write_report "$shared_uid" "$shared_gid"
 }
