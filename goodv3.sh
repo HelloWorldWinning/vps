@@ -681,7 +681,7 @@ ${Red_font_prefix}88${Font_color_suffix} get_fraud_score
 ${Red_font_prefix}89${Font_color_suffix} some notes
 ${Red_font_prefix}90${Font_color_suffix} ohmyposh ohmyposhold
 ${Red_font_prefix}91${Font_color_suffix} hysteria2.sh
-${Red_font_prefix}92${Font_color_suffix} install_cloudreve.sh
+${Red_font_prefix}cloudreve${Font_color_suffix} install_cloudreve.sh
 ${Red_font_prefix}93${Font_color_suffix} install_resolvconf.sh
 ${Red_font_prefix}94${Font_color_suffix} ${Red_font_prefix}freqtrade ${Font_color_suffix} install folder 
 ${Red_font_prefix}944${Font_color_suffix} docker_path.sh
