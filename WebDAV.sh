@@ -206,34 +206,39 @@ ensure_acme_sh() {
 # ═════════════════════════════════════════════════════════════
 #  INSTALL
 # ═════════════════════════════════════════════════════════════
+
 do_install() {
 	print_banner
 
 	# ── Cleanup from any previous install ────────────────────
 	if [ -f "$STATE_FILE" ] || [ -f "$CONFIG_FILE" ]; then
 		echo -e "${YELLOW}── Previous install detected — cleaning up ─────${NC}"
-		# load old port so we can remove its Listen line
+
 		local OLD_PORT=""
 		if [ -f "$STATE_FILE" ]; then
 			OLD_PORT=$(grep '^APACHE_PORT=' "$STATE_FILE" 2>/dev/null |
 				cut -d'"' -f2 || true)
 		fi
-		# disable old site (ignore errors)
+
 		a2dissite webdav.conf 2>/dev/null || true
-		# stop apache so port is released
-		systemctl stop apache2 2>/dev/null || true
-		# back up & remove old configs (data dir is untouched)
+
+		systemctl stop apache2 2>/dev/null ||
+			service apache2 stop 2>/dev/null || true
+
 		for F in "$CONFIG_FILE" "$STATE_FILE" "$AUTH_FILE"; do
-			[ -f "$F" ] && mv -f "$F" "${F}.bak" &&
+			if [ -f "$F" ]; then
+				mv -f "$F" "${F}.bak"
 				echo -e "  → ${F} → .bak"
+			fi
 		done
-		# remove old port from ports.conf if known
+
 		if [ -n "$OLD_PORT" ]; then
 			sed -i "/^[[:space:]]*Listen[[:space:]]\+${OLD_PORT}\b/d" \
 				/etc/apache2/ports.conf 2>/dev/null || true
 		fi
-		# strip blank / carriage-return / malformed lines
+
 		sed -i '/^[[:space:]]*$/d; s/\r$//' /etc/apache2/ports.conf 2>/dev/null || true
+
 		echo -e "  → ${GREEN}Cleanup done. Data in ${WEBDAV_PATH} preserved.${NC}"
 		echo ""
 	fi
@@ -253,6 +258,7 @@ do_install() {
 	echo -e "${CYAN}── Step 3/7 : Server Name / IP ─────────────────${NC}"
 	echo -ne "${YELLOW}Detecting public IP...${NC} "
 	PUBLIC_IP=$(get_public_ip)
+
 	if [ -n "$PUBLIC_IP" ]; then
 		echo -e "${GREEN}${PUBLIC_IP}${NC}"
 		DEFAULT_SERVER="$PUBLIC_IP"
@@ -260,6 +266,7 @@ do_install() {
 		echo -e "${RED}Could not detect.${NC}"
 		DEFAULT_SERVER="127.0.0.1"
 	fi
+
 	ask "Server name or IP" "$DEFAULT_SERVER" 10
 	SERVER_NAME="$REPLY_VAL"
 	echo -e "  → Server: ${GREEN}${SERVER_NAME}${NC}"
@@ -277,6 +284,7 @@ do_install() {
 	echo -e "  ${CYAN}[2]${NC}  acme.sh / Let's Encrypt          (HTTPS, needs domain + port 80)"
 	echo -e "  ${CYAN}[3]${NC}  No TLS                           (plain HTTP)"
 	echo ""
+
 	ask "Choose [1/2/3]" "1" 15
 	local TLS_CHOICE="$REPLY_VAL"
 
@@ -306,27 +314,70 @@ do_install() {
 
 	echo ""
 	echo -e "${CYAN}── Step 6/7 : Installing packages ──────────────${NC}"
+
 	apt-get update -qq
 	apt-get install -y apache2 apache2-utils openssl curl
-	# socat is needed by acme.sh standalone mode
-	[ "$TLS_MODE" = "acme" ] && apt-get install -y socat
+
+	if [ "$TLS_MODE" = "acme" ]; then
+		apt-get install -y socat
+	fi
 
 	echo ""
 	echo -e "${CYAN}── Step 7/7 : Configuring Apache2 + mod_dav ───${NC}"
 
 	a2enmod dav dav_fs auth_digest alias
-	[ "$USE_TLS" = true ] && a2enmod ssl
 
+	if [ "$USE_TLS" = true ]; then
+		a2enmod ssl
+	fi
+
+	# ── Create Linux user/group used by WebDAV ────────────────
+	# This fixes:
+	#   chown: invalid user: 'webdav:webdav'
+	echo -e "  → Ensuring system user/group 'webdav' exists..."
+
+	if ! getent group webdav >/dev/null 2>&1; then
+		groupadd --system webdav
+	fi
+
+	if ! id -u webdav >/dev/null 2>&1; then
+		useradd \
+			--system \
+			--gid webdav \
+			--home-dir /nonexistent \
+			--shell /usr/sbin/nologin \
+			webdav
+	fi
+
+	# ── Make Apache workers run as webdav ─────────────────────
+	# This keeps Apache's runtime user consistent with file ownership.
+	if [ -f /etc/apache2/envvars ]; then
+		sed -i 's/^export APACHE_RUN_USER=.*/export APACHE_RUN_USER=webdav/' /etc/apache2/envvars
+		sed -i 's/^export APACHE_RUN_GROUP=.*/export APACHE_RUN_GROUP=webdav/' /etc/apache2/envvars
+
+		grep -q '^export APACHE_RUN_USER=' /etc/apache2/envvars ||
+			echo 'export APACHE_RUN_USER=webdav' >>/etc/apache2/envvars
+
+		grep -q '^export APACHE_RUN_GROUP=' /etc/apache2/envvars ||
+			echo 'export APACHE_RUN_GROUP=webdav' >>/etc/apache2/envvars
+	fi
+
+	# ── Directories and permissions ───────────────────────────
 	mkdir -p "$WEBDAV_PATH"
 	chown -R webdav:webdav "$WEBDAV_PATH"
 	chmod 755 "$WEBDAV_PATH"
 
 	mkdir -p /var/lock/apache2
 	chown webdav:webdav /var/lock/apache2
+	chmod 755 /var/lock/apache2
+
+	mkdir -p /var/run/apache2
+	chown webdav:webdav /var/run/apache2
+	chmod 755 /var/run/apache2
 
 	echo -e "  → Writing credentials..."
 	write_htdigest "$WEBDAV_USER" "webdav" "$WEBDAV_PASS" "$AUTH_FILE"
-	echo -e "  → ${GREEN}Done.${NC}"
+	echo -e "  → ${GREEN}Credentials written.${NC}"
 
 	mkdir -p "$SSL_DIR"
 
@@ -336,7 +387,9 @@ do_install() {
 			-out "$SSL_DIR/webdav.crt" \
 			-subj "/CN=${SERVER_NAME}" \
 			2>/dev/null
+
 		chmod 600 "$SSL_DIR/webdav.key"
+		chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
 		echo -e "  → ${GREEN}Self-signed cert generated (36500 days)${NC}"
 	fi
 
@@ -345,15 +398,9 @@ do_install() {
 
 		ensure_acme_sh || exit 1
 
-		# Issue certificate using standalone mode (port 80)
 		if "$ACME_HOME/acme.sh" --issue -d "$ACME_DOMAIN" \
 			--standalone --keylength ec-256 --force; then
 
-			# Install cert + key into Apache SSL dir
-
-			# Install cert + key into Apache SSL dir
-			# Skip reloadcmd during install — vhost not written yet.
-			# acme.sh stores reloadcmd for future renewals.
 			"$ACME_HOME/acme.sh" --install-cert -d "$ACME_DOMAIN" --ecc \
 				--fullchain-file "$SSL_DIR/webdav.crt" \
 				--key-file "$SSL_DIR/webdav.key" \
@@ -361,6 +408,8 @@ do_install() {
 				2>/dev/null || true
 
 			chmod 600 "$SSL_DIR/webdav.key"
+			chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
+
 			echo -e "  → ${GREEN}Let's Encrypt cert issued & installed for ${ACME_DOMAIN}${NC}"
 			echo -e "  → ${GREEN}Auto-renewal handled by acme.sh cron job${NC}"
 		else
@@ -371,21 +420,25 @@ do_install() {
 			echo -e "  • Rate limit hit"
 			echo ""
 			echo -e "${YELLOW}Falling back to self-signed certificate...${NC}"
+
 			TLS_MODE="selfsigned"
 			ACME_DOMAIN=""
+
 			openssl req -x509 -newkey rsa:4096 -days 36500 -nodes \
 				-keyout "$SSL_DIR/webdav.key" \
 				-out "$SSL_DIR/webdav.crt" \
 				-subj "/CN=${SERVER_NAME}" \
 				2>/dev/null
+
 			chmod 600 "$SSL_DIR/webdav.key"
+			chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
+
 			echo -e "  → ${YELLOW}Self-signed cert generated as fallback (36500 days)${NC}"
 		fi
 	fi
 
 	write_vhost "$USE_TLS"
 
-	# ── ports.conf: clean + add ──
 	rebuild_ports_conf "$APACHE_PORT"
 
 	a2ensite webdav.conf
@@ -397,27 +450,39 @@ do_install() {
 		exit 1
 	fi
 
-	systemctl restart apache2
-	systemctl enable apache2
+	systemctl restart apache2 2>/dev/null ||
+		service apache2 restart 2>/dev/null ||
+		apache2ctl restart
+
+	systemctl enable apache2 2>/dev/null || true
 
 	save_state
 
 	echo ""
 	local PROTO="http"
 	[ "$USE_TLS" = true ] && PROTO="https"
+
 	echo -e "${GREEN}${BOLD}═══════════════════════════════════════════${NC}"
 	echo -e "${GREEN}${BOLD}  WebDAV Ready!${NC}"
 	echo -e "${GREEN}${BOLD}═══════════════════════════════════════════${NC}"
 	echo -e "  URL      : ${CYAN}${PROTO}://${SERVER_NAME}:${APACHE_PORT}/webdav${NC}"
 	echo -e "  User     : ${CYAN}${WEBDAV_USER}${NC}"
 	echo -e "  Data     : ${CYAN}${WEBDAV_PATH}${NC}"
+	echo -e "  System   : ${CYAN}webdav:webdav${NC}"
 	echo -e "  TLS      : ${CYAN}${USE_TLS} (${TLS_MODE})${NC}"
-	[ "$USE_TLS" = true ] &&
+
+	if [ "$USE_TLS" = true ]; then
 		echo -e "  Cert     : ${CYAN}${SSL_DIR}/webdav.crt${NC}"
-	[ "$TLS_MODE" = "selfsigned" ] &&
+	fi
+
+	if [ "$TLS_MODE" = "selfsigned" ]; then
 		echo -e "  Cert type: ${CYAN}self-signed, 36500 days${NC}"
-	[ "$TLS_MODE" = "acme" ] &&
+	fi
+
+	if [ "$TLS_MODE" = "acme" ]; then
 		echo -e "  Cert type: ${CYAN}Let's Encrypt via acme.sh (auto-renew)${NC}"
+	fi
+
 	echo -e "${GREEN}${BOLD}═══════════════════════════════════════════${NC}"
 	echo ""
 	echo -e "  ${BOLD}Migration (run on vps1):${NC}"
