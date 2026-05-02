@@ -1166,6 +1166,7 @@ https://zhile.one/archives/1404.html
 	wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
 	tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
 	webdav) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
+	nextcloud) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;
 
 		#nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 	nq) bash <(curl -sL https://run.NodeQuality.com) 2>&1 | tee /root/nodequality_$(date +%Y%m%d_%H%M%S).log ;;
