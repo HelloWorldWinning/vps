@@ -70,7 +70,7 @@ write_htdigest() {
 	local HASH
 	HASH=$(printf '%s' "${USER}:${REALM}:${PASS}" | md5sum | awk '{print $1}')
 	echo "${USER}:${REALM}:${HASH}" >"$FILE"
-	chown root:webdav "$FILE"
+	chown root:www-data "$FILE"
 	chmod 640 "$FILE"
 }
 
@@ -318,11 +318,11 @@ do_install() {
 	[ "$USE_TLS" = true ] && a2enmod ssl
 
 	mkdir -p "$WEBDAV_PATH"
-	chown -R webdav:webdav "$WEBDAV_PATH"
+	chown -R www-data:www-data "$WEBDAV_PATH"
 	chmod 755 "$WEBDAV_PATH"
 
 	mkdir -p /var/lock/apache2
-	chown webdav:webdav /var/lock/apache2
+	chown www-data:www-data /var/lock/apache2
 
 	echo -e "  → Writing credentials..."
 	write_htdigest "$WEBDAV_USER" "webdav" "$WEBDAV_PASS" "$AUTH_FILE"
@@ -703,7 +703,7 @@ do_migration_cmd() {
 	echo -e "${CYAN}  rsync -avz --progress ${WEBDAV_PATH}/ root@<vps2-ip>:${WEBDAV_PATH}/${NC}"
 	echo ""
 	echo -e "${BOLD}── After rsync on vps2 ─────────────────────${NC}"
-	echo -e "${CYAN}  chown -R webdav:webdav ${WEBDAV_PATH}${NC}"
+	echo -e "${CYAN}  chown -R www-data:www-data ${WEBDAV_PATH}${NC}"
 	echo ""
 	echo -e "${YELLOW}  Apache config & TLS handled by 'bash webdav.sh install' on vps2.${NC}"
 	echo -e "${YELLOW}  Only ${WEBDAV_PATH}/ needs rsyncing.${NC}"
