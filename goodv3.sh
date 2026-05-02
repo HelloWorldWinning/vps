@@ -1016,7 +1016,7 @@ https://zhile.one/archives/1404.html
 	900) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
 	ohmyposh) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
 	91) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh) ;;
-	92) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
+	cloudreve) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
 	93) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh) ;;
 	94) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh) ;;
 	2) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path_quick.sh) ;;
