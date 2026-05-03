@@ -81,9 +81,9 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
 
 # List of text file extensions to render in the browser (as HTML pre-formatted)
 TEXT_FILE_EXTENSIONS = [
-    #   ".sh",
-    #   ".service",
-    #   ".socket",
+    ".sh",
+    ".service",
+    ".socket",
 ]
 
 # Mapping of text file extensions to MIME types (for proper charset handling)
