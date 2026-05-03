@@ -463,8 +463,6 @@ do_install() {
 		echo "═══════════════════════════════════════════"
 		echo "  WebDAV Server Info"
 		echo "═══════════════════════════════════════════"
-		local PROTO="http"
-		[ "${USE_TLS:-false}" = true ] && PROTO="https"
 		echo "  URL      : ${PROTO}://${SERVER_NAME}:${APACHE_PORT}/webdav"
 		echo "  User     : ${WEBDAV_USER}"
 		echo "  Data     : ${WEBDAV_PATH}"
