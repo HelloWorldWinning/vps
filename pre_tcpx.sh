@@ -87,12 +87,6 @@ apt-get update
 echo "nameserver 8.8.4.4" | tee -a /etc/resolv.conf
 echo "nameserver 8.8.8.8" | tee -a /etc/resolv.conf
 
-###apt install  -y sudo openssh-server
-#########sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
-
-sudo dpkg --configure -a
-
 sudo apt update
 sudo apt-get update
 
@@ -597,4 +591,150 @@ sudo chmod +x /usr/local/bin/tagcat
 
 sudo wget -O /usr/local/bin/tokencount https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokencount
 sudo chmod +x /usr/local/bin/tokencount
+###apt install  -y sudo openssh-server
+#########sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
+#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
+
+#sudo dpkg --configure -a
+
+#!/usr/bin/env bash
+#set -Eeuo pipefail
+install_openssh_server_forcefully() {
+	local apt_timeout="${1:-180s}" # hard limit for apt-get install
+	local dpkg_timeout="${2:-90s}" # hard limit for dpkg --configure -a
+	local kill_after="${3:-5s}"    # after TERM, wait this long, then KILL
+
+	if [ "$(id -u)" -eq 0 ]; then
+		SUDO=()
+	else
+		SUDO=(sudo)
+	fi
+
+	hard_kill_apt_dpkg() {
+		echo "[WARN] Force killing apt/dpkg/debconf processes..." >&2
+
+		"${SUDO[@]}" bash -c '
+      set +e
+
+      pkill -TERM -x apt-get 2>/dev/null
+      pkill -TERM -x apt 2>/dev/null
+      pkill -TERM -x dpkg 2>/dev/null
+      pkill -TERM -x dpkg-preconfigure 2>/dev/null
+      pkill -TERM -x debconf 2>/dev/null
+      pkill -TERM -f "whiptail|dialog|needrestart|ucf" 2>/dev/null
+
+      sleep 2
+
+      pkill -KILL -x apt-get 2>/dev/null
+      pkill -KILL -x apt 2>/dev/null
+      pkill -KILL -x dpkg 2>/dev/null
+      pkill -KILL -x dpkg-preconfigure 2>/dev/null
+      pkill -KILL -x debconf 2>/dev/null
+      pkill -KILL -f "whiptail|dialog|needrestart|ucf" 2>/dev/null
+    '
+	}
+
+	cleanup_apt_dpkg_locks() {
+		echo "[WARN] Cleaning apt/dpkg lock files after forced kill..." >&2
+
+		"${SUDO[@]}" bash -c '
+      set +e
+
+      rm -f /var/lib/dpkg/lock-frontend
+      rm -f /var/lib/dpkg/lock
+      rm -f /var/cache/apt/archives/lock
+      rm -f /var/lib/apt/lists/lock
+    '
+	}
+
+	run_with_hard_timeout() {
+		local label="$1"
+		local limit="$2"
+		local kill_after_local="$3"
+		shift 3
+
+		echo "[INFO] Running: ${label}"
+		echo "[INFO] Hard timeout: ${limit}, kill-after: ${kill_after_local}"
+
+		set +e
+		"${SUDO[@]}" env \
+			DEBIAN_FRONTEND=noninteractive \
+			DEBIAN_PRIORITY=critical \
+			NEEDRESTART_MODE=a \
+			UCF_FORCE_CONFFOLD=1 \
+			APT_LISTCHANGES_FRONTEND=none \
+			timeout --signal=TERM --kill-after="${kill_after_local}" "${limit}" "$@"
+		local rc=$?
+		set -e
+
+		if [ "$rc" -eq 0 ]; then
+			echo "[INFO] Success: ${label}"
+			return 0
+		fi
+
+		if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
+			echo "[ERROR] Timeout/killed: ${label}, rc=${rc}" >&2
+			hard_kill_apt_dpkg
+			cleanup_apt_dpkg_locks
+			return 124
+		fi
+
+		echo "[ERROR] Failed: ${label}, rc=${rc}" >&2
+		return "$rc"
+	}
+
+	local final_rc=0
+	local rc=0
+
+	echo "[INFO] Installing openssh-server with hard anti-stuck protection..."
+
+	run_with_hard_timeout \
+		"apt-get install openssh-server" \
+		"${apt_timeout}" \
+		"${kill_after}" \
+		apt-get \
+		-y \
+		-q \
+		-o Dpkg::Use-Pty=0 \
+		-o DPkg::Lock::Timeout=5 \
+		-o Dpkg::Options::=--force-confdef \
+		-o Dpkg::Options::=--force-confold \
+		install openssh-server
+
+	rc=$?
+	if [ "$rc" -ne 0 ]; then
+		final_rc="$rc"
+		echo "[WARN] apt-get install did not complete cleanly; continuing to protected dpkg recovery..." >&2
+	fi
+
+	run_with_hard_timeout \
+		"dpkg --configure -a" \
+		"${dpkg_timeout}" \
+		"${kill_after}" \
+		dpkg \
+		--force-confdef \
+		--force-confold \
+		--configure -a
+
+	rc=$?
+	if [ "$rc" -ne 0 ]; then
+		final_rc="$rc"
+		echo "[ERROR] dpkg recovery did not complete cleanly." >&2
+		hard_kill_apt_dpkg
+		cleanup_apt_dpkg_locks
+	fi
+
+	if [ "$final_rc" -eq 0 ]; then
+		echo "[INFO] openssh-server install/configure completed without hanging."
+	else
+		echo "[ERROR] openssh-server install/configure failed or was force-killed, rc=${final_rc}" >&2
+	fi
+
+	return "$final_rc"
+}
+
+# Usage:
+#   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
+install_openssh_server_forcefully 180s 90s 5s
+
 sudo reboot
