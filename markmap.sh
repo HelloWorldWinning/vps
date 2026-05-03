@@ -5,6 +5,12 @@ set -euo pipefail
 BR='\033[1;31m'
 RS='\033[0m'
 
+# ── ensure python3 is available ──
+if ! command -v python3 &>/dev/null; then
+	echo "[!] python3 is required for markdown/html patching."
+	exit 1
+fi
+
 # ── ensure markmap-cli is installed ──
 if ! command -v markmap &>/dev/null; then
 	echo "[*] markmap not found. Installing markmap-cli globally..."
@@ -33,6 +39,249 @@ has_pre_header() {
 	sed -n '/^---$/,/^---$/p' "$file" | grep -q '^markmap:' 2>/dev/null
 }
 
+# ── ensure markdown has markmap.initialExpandLevel: 2 before rendering ──
+ensure_initial_expand_level() {
+	local file="$1"
+	local cfl="${2:-}"
+
+	python3 - "$file" "$cfl" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+path = Path(sys.argv[1])
+cfl = sys.argv[2] if len(sys.argv) > 2 else ""
+
+text = path.read_text(encoding="utf-8")
+lines = text.splitlines(True)
+
+def find_frontmatter(lines):
+    if not lines or lines[0].strip() != "---":
+        return None
+
+    for i in range(1, len(lines)):
+        if lines[i].strip() == "---":
+            return 0, i
+
+    return None
+
+fm = find_frontmatter(lines)
+
+if fm is None:
+    block = [
+        "---\n",
+        "markmap:\n",
+    ]
+
+    if cfl:
+        block.append(f"  colorFreezeLevel: {cfl}\n")
+
+    block.extend([
+        "  initialExpandLevel: 2\n",
+        "---\n",
+    ])
+
+    lines = block + lines
+
+else:
+    start, end = fm
+    fm_lines = lines[start + 1:end]
+
+    markmap_index = None
+    for i, line in enumerate(fm_lines):
+        if re.match(r"^markmap\s*:\s*(?:#.*)?$", line):
+            markmap_index = i
+            break
+
+    if markmap_index is None:
+        insert = [
+            "markmap:\n",
+        ]
+
+        if cfl:
+            insert.append(f"  colorFreezeLevel: {cfl}\n")
+
+        insert.append("  initialExpandLevel: 2\n")
+
+        lines = lines[:end] + insert + lines[end:]
+
+    else:
+        section_start = start + 1 + markmap_index
+        section_end = end
+
+        for j in range(section_start + 1, end):
+            line = lines[j]
+
+            if line.strip() == "":
+                continue
+
+            if re.match(r"^[A-Za-z0-9_-]+\s*:", line):
+                section_end = j
+                break
+
+        updated = False
+
+        for j in range(section_start + 1, section_end):
+            if re.match(r"^\s*initialExpandLevel\s*:", lines[j]):
+                lines[j] = re.sub(
+                    r"^(\s*initialExpandLevel\s*:).*$",
+                    r"\1 2",
+                    lines[j].rstrip("\r\n"),
+                ) + "\n"
+                updated = True
+                break
+
+        if not updated:
+            lines = (
+                lines[:section_start + 1]
+                + ["  initialExpandLevel: 2\n"]
+                + lines[section_start + 1:]
+            )
+
+path.write_text("".join(lines), encoding="utf-8")
+PY
+}
+
+# ── append custom keyboard-control script before exactly </body> ──
+append_new_code_to_html() {
+	local html="$1"
+	local codefile
+	codefile=$(mktemp)
+
+	cat >"$codefile" <<'NEW_CODE'
+<script>
+(() => {
+  function walk(node, fn, depth = 1) {
+    if (!node) return;
+
+    fn(node, depth);
+
+    if (node.children) {
+      node.children.forEach(child => walk(child, fn, depth + 1));
+    }
+  }
+
+  function getMaxDepth(root) {
+    let maxDepth = 1;
+
+    walk(root, (_, depth) => {
+      maxDepth = Math.max(maxDepth, depth);
+    });
+
+    return maxDepth;
+  }
+
+  function getVisibleDepth(node, depth = 1) {
+    if (!node) return 1;
+
+    let maxVisible = depth;
+
+    if (!node.payload?.fold && node.children) {
+      for (const child of node.children) {
+        maxVisible = Math.max(maxVisible, getVisibleDepth(child, depth + 1));
+      }
+    }
+
+    return maxVisible;
+  }
+
+  function setVisibleDepth(mm, visibleDepth) {
+    const data = mm.state.data;
+    const maxDepth = getMaxDepth(data);
+
+    visibleDepth = Math.max(1, Math.min(visibleDepth, maxDepth));
+
+    walk(data, (node, depth) => {
+      if (!node.children || node.children.length === 0) return;
+
+      node.payload = {
+        ...node.payload,
+        fold: depth >= visibleDepth ? 1 : 0
+      };
+    });
+
+    mm.renderData(data);
+  }
+
+  function expandAll(mm) {
+    const data = mm.state.data;
+
+    walk(data, node => {
+      if (!node.children || node.children.length === 0) return;
+
+      node.payload = {
+        ...node.payload,
+        fold: 0
+      };
+    });
+
+    mm.renderData(data);
+  }
+
+  function fit(mm) {
+    mm.fit();
+  }
+
+  document.addEventListener('keydown', e => {
+    const mm = window.mm;
+    if (!mm || !mm.state?.data) return;
+
+    const data = mm.state.data;
+    const visibleDepth = getVisibleDepth(data);
+    const maxDepth = getMaxDepth(data);
+
+    if (e.key === 'f' || e.key === ' ' || e.key === '0') {
+      e.preventDefault();
+      fit(mm);
+    }
+
+    if (e.key === 'g' || e.key === 'Enter') {
+      e.preventDefault();
+      expandAll(mm);
+    }
+
+    if (e.key === 'd') {
+      setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
+    }
+
+    if (e.key === 's') {
+      setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
+    }
+
+    if (e.key === 'a') {
+      setVisibleDepth(mm, 1);
+    }
+
+    if (/^[1-9]$/.test(e.key)) {
+      setVisibleDepth(mm, Number(e.key));
+    }
+  });
+})();
+</script>
+NEW_CODE
+
+	python3 - "$html" "$codefile" <<'PY'
+from pathlib import Path
+import sys
+
+html_path = Path(sys.argv[1])
+code_path = Path(sys.argv[2])
+
+html = html_path.read_text(encoding="utf-8")
+code = code_path.read_text(encoding="utf-8")
+
+marker = "</body>"
+
+if marker not in html:
+    raise SystemExit(f"[!] </body> not found in {html_path}")
+
+html = html.replace(marker, code + "\n" + marker, 1)
+html_path.write_text(html, encoding="utf-8")
+PY
+
+	rm -f "$codefile"
+}
+
 # ── mode selection ──
 echo "=== Markmap Renderer ==="
 echo "  1) Type markdown text  (default — just press Enter)"
@@ -50,8 +299,7 @@ if [[ "$mode" == "1" ]]; then
 	echo ""
 
 	if has_pre_header "$tmpfile"; then
-		# Content already has markmap frontmatter — render as-is
-		:
+		ensure_initial_expand_level "$tmpfile"
 	else
 		# No pre_header detected — ask for colorFreezeLevel
 		echo -n "colorFreezeLevel [3] (4s timeout): "
@@ -61,20 +309,14 @@ if [[ "$mode" == "1" ]]; then
 			cfl=3
 			echo ""
 		fi
-		# Prepend the markmap frontmatter
-		{
-			printf '%s\n' "---"
-			printf '%s\n' "markmap:"
-			printf '%s\n' "  colorFreezeLevel: ${cfl}"
-			printf '%s\n' "---"
-			cat "$tmpfile"
-		} >"${tmpfile}.tmp"
-		mv "${tmpfile}.tmp" "$tmpfile"
+
+		ensure_initial_expand_level "$tmpfile" "$cfl"
 	fi
 
 	title=$(extract_title "$tmpfile")
 	outfile="$(pwd)/${title}.html"
 	markmap "$tmpfile" -o "$outfile" --no-open
+	append_new_code_to_html "$outfile"
 	rm -f "$tmpfile"
 	echo -e "[✓] Rendered → ${BR}${outfile}${RS}"
 
@@ -99,8 +341,10 @@ elif [[ "$mode" == "2" ]]; then
 	fi
 
 	for f in "${files[@]}"; do
+		ensure_initial_expand_level "$f"
 		outfile="${f%.md}.html"
 		markmap "$f" -o "$outfile" --no-open
+		append_new_code_to_html "$outfile"
 		echo -e "[✓] ${f} → ${BR}${outfile}${RS}"
 	done
 else
