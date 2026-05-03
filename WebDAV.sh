@@ -24,6 +24,18 @@ STATE_FILE="/etc/apache2/webdav-install.conf"
 ACME_HOME="/root/.acme.sh"
 
 # ── helpers ──────────────────────────────────────────────────
+#
+
+ensure_global_servername() {
+	local NAME="$1"
+
+	cat >/etc/apache2/conf-available/servername.conf <<EOF
+# Managed by WebDAV.sh
+ServerName ${NAME}
+EOF
+
+	a2enconf servername >/dev/null 2>&1 || true
+}
 
 print_banner() {
 	echo -e "${CYAN}"
@@ -269,6 +281,7 @@ do_install() {
 
 	ask "Server name or IP" "$DEFAULT_SERVER" 10
 	SERVER_NAME="$REPLY_VAL"
+
 	echo -e "  → Server: ${GREEN}${SERVER_NAME}${NC}"
 
 	echo ""
@@ -321,6 +334,7 @@ do_install() {
 	if [ "$TLS_MODE" = "acme" ]; then
 		apt-get install -y socat
 	fi
+	ensure_global_servername "$SERVER_NAME"
 
 	echo ""
 	echo -e "${CYAN}── Step 7/7 : Configuring Apache2 + mod_dav ───${NC}"
