@@ -458,37 +458,6 @@ do_install() {
 
 	save_state
 
-	# ── Save human-readable info file ────────────────────────
-	{
-		echo "═══════════════════════════════════════════"
-		echo "  WebDAV Server Info"
-		echo "═══════════════════════════════════════════"
-		echo "  URL      : ${PROTO}://${SERVER_NAME}:${APACHE_PORT}/webdav"
-		echo "  User     : ${WEBDAV_USER}"
-		echo "  Data     : ${WEBDAV_PATH}"
-		echo "  System   : webdav:webdav"
-		echo "  TLS      : ${USE_TLS} (${TLS_MODE})"
-		if [ "$USE_TLS" = true ]; then
-			echo "  Cert     : ${SSL_DIR}/webdav.crt"
-		fi
-		if [ "$TLS_MODE" = "selfsigned" ]; then
-			echo "  Cert type: self-signed, 36500 days"
-		fi
-		if [ "$TLS_MODE" = "acme" ]; then
-			echo "  Cert type: Let's Encrypt via acme.sh (auto-renew)"
-		fi
-		echo "═══════════════════════════════════════════"
-		echo ""
-		echo "  Migration (run on vps1):"
-		echo "  rsync -avz --progress ${WEBDAV_PATH}/ root@<vps2>:${WEBDAV_PATH}/"
-		echo ""
-		echo "  Manager:"
-		echo "  sudo bash webdav.sh"
-		echo ""
-		echo "  Updated: $(date '+%Y-%m-%d %H:%M:%S')"
-	} >/data/WebDAV.txt
-	echo -e "  → ${GREEN}Info saved to /data/WebDAV.txt${NC}"
-
 	echo ""
 	local PROTO="http"
 	[ "$USE_TLS" = true ] && PROTO="https"
