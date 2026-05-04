@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+
 COMPOSE_FILE="/root/book_docker_d/docker-compose.yml"
 IMAGE="oklove/calibre1"
 BUILD_CONTEXT="/data/vps/calibre_linux_setup_ebook_online_reader__docker_d2"
-DOWNLOAD_SCRIPT="${BUILD_CONTEXT}/download_calibre.sh"
 
 CALIBRE_VERSION="${1:-}"
 
@@ -21,7 +21,7 @@ FINAL_TAG="${IMAGE}:latest"
 normalize_version() {
     local raw="${1:-}"
     local version
-    version="$(printf '%s' "$raw" | grep -oE '[0-9]+(\.[0-9]+)+' | head -n1 || true)"
+    version=$(printf '%s' "$raw" | grep -oE '[0-9]+(\.[0-9]+)+' | head -n1 || true)
 
     if [[ -z "$version" ]]; then
         echo ""
@@ -38,42 +38,16 @@ normalize_version() {
         "${parts[2]:-0}"
 }
 
-cleanup_downloads() {
-    local version="$1"
-    local arch="${2:-x86_64}"
-
-    local file="calibre-${version}-${arch}.txz"
-    local download_dir="${BUILD_CONTEXT}/downloads"
-
-    echo "Cleaning download files for Calibre ${version}..."
-
-    rm -f "${download_dir}/${file}"
-    rm -f "${download_dir}/${file}.sha512"
-    rm -f "${download_dir}/.${file}.lock"
-
-    # Remove downloads directory only if empty.
-    rmdir "${download_dir}" 2>/dev/null || true
-}
-
-
 echo "Old image:"
 OLD_IMAGE_ID="$(docker image inspect "$FINAL_TAG" --format '{{.Id}}' 2>/dev/null || true)"
 echo "${OLD_IMAGE_ID:-none}"
 
-echo "Preparing Calibre ${CALIBRE_VERSION} download on host..."
-
-if [[ ! -x "$DOWNLOAD_SCRIPT" ]]; then
-    chmod +x "$DOWNLOAD_SCRIPT"
-fi
-
-"$DOWNLOAD_SCRIPT" "$CALIBRE_VERSION"
-
 echo "Building candidate image: $CANDIDATE_TAG"
 
+# Hard outer timeout prevents endless Docker build hangs.
 timeout 60m docker build \
     --pull \
     --build-arg CALIBRE_VERSION="$CALIBRE_VERSION" \
-    --build-arg CALIBRE_ARCH="x86_64" \
     -t "$CANDIDATE_TAG" \
     .
 
@@ -99,6 +73,8 @@ echo "Tagging candidate as $FINAL_TAG"
 docker tag "$CANDIDATE_TAG" "$FINAL_TAG"
 
 echo "Recreating Docker Compose service..."
+
+# Safer than down/up because it avoids removing networks and keeps downtime shorter.
 docker compose -f "$COMPOSE_FILE" up -d --force-recreate
 
 echo "Pushing image..."
@@ -111,11 +87,10 @@ if [[ -n "$OLD_IMAGE_ID" && "$OLD_IMAGE_ID" != "$NEW_IMAGE_ID" ]]; then
     docker image rm "$OLD_IMAGE_ID" 2>/dev/null || true
 fi
 
+# Remove candidate tag after it has been retagged.
 docker image rm "$CANDIDATE_TAG" 2>/dev/null || true
 
-cleanup_downloads "$CALIBRE_VERSION" "x86_64"
-
+# Do not use --volumes here. It can delete unrelated unused volumes.
 docker builder prune -f --filter "until=168h" || true
-
 
 echo "Upgrade completed successfully."

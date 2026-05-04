@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
 ARG CALIBRE_VERSION
-ARG CALIBRE_ARCH=x86_64
+ARG TARGETARCH
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -13,6 +13,7 @@ ENV LC_ALL=C.UTF-8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
+    curl \
     python3 \
     wget \
     xz-utils \
@@ -54,19 +55,42 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgbm1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY downloads/calibre-${CALIBRE_VERSION}-${CALIBRE_ARCH}.txz /tmp/calibre.txz
-
 RUN set -eux; \
     if [[ -z "${CALIBRE_VERSION:-}" ]]; then \
         echo "CALIBRE_VERSION build arg is required" >&2; \
         exit 1; \
     fi; \
+    case "${TARGETARCH:-amd64}" in \
+        amd64) CALIBRE_ARCH="x86_64" ;; \
+        arm64) CALIBRE_ARCH="arm64" ;; \
+        *) echo "Unsupported TARGETARCH: ${TARGETARCH:-unknown}" >&2; exit 1 ;; \
+    esac; \
+    CALIBRE_FILE="calibre-${CALIBRE_VERSION}-${CALIBRE_ARCH}.txz"; \
+    CALIBRE_URL="https://download.calibre-ebook.com/${CALIBRE_VERSION}/${CALIBRE_FILE}"; \
+    SHA512_URL="https://calibre-ebook.com/signatures/${CALIBRE_FILE}.sha512"; \
+    curl -fL \
+        --retry 5 \
+        --retry-delay 10 \
+        --retry-all-errors \
+        --connect-timeout 30 \
+        --max-time 1800 \
+        -o /tmp/calibre.txz \
+        "$CALIBRE_URL"; \
+    curl -fL \
+        --retry 5 \
+        --retry-delay 10 \
+        --retry-all-errors \
+        --connect-timeout 30 \
+        --max-time 120 \
+        -o /tmp/calibre.txz.sha512 \
+        "$SHA512_URL"; \
+    awk '{print $1 "  /tmp/calibre.txz"}' /tmp/calibre.txz.sha512 | sha512sum -c -; \
     mkdir -p /opt/calibre; \
     rm -rf /opt/calibre/*; \
     tar -xJf /tmp/calibre.txz -C /opt/calibre; \
     /opt/calibre/calibre_postinstall; \
     calibre --version; \
-    rm -f /tmp/calibre.txz
+    rm -f /tmp/calibre.txz /tmp/calibre.txz.sha512
 
 RUN mkdir -p "$EBOOK_DOWNLOAD_PATH" "$CALIBRE_LIBRARY_PATH"
 

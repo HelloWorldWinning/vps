@@ -157,7 +157,11 @@ run_build_script() {
     fi
 
     log "Executing build script..."
-    if bash "$BUILD_SCRIPT"; then
+#   if bash "$BUILD_SCRIPT"; then
+
+
+
+   if bash "$BUILD_SCRIPT" "$latest_version"; then
         log_success "Build script completed successfully"
         return 0
     else
