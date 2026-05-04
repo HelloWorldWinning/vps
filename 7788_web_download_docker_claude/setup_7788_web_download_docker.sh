@@ -7,10 +7,13 @@ PATH_DIR="/root/7788_web_download_docker_d"
 mkdir -p "$PATH_DIR"
 
 # Create docker-compose.yml
-cat > "$PATH_DIR/docker-compose.yml" << 'EOL'
+cat >"$PATH_DIR/docker-compose.yml" <<'EOL'
 services:
   host_7788_download:
     image: oklove/webpage_port_7788_download
+    environment:
+      USERNAME_WEB: a
+      PASSWORD_WEB: a
     container_name: host_7788_download
     ports:
       - "7788:7788"

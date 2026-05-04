@@ -64,17 +64,12 @@ def create_breadcrumb(url_path: str) -> str:
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = "a"
     correct_password = "a"
-
-    USERNAME_WEB = os.environ.get("USERNAME_WEB") or correct_username
-    PASSWORD_WEB = os.environ.get("PASSWORD_WEB") or correct_password
-
     is_correct_username = secrets.compare_digest(
-        credentials.username.encode("utf8"), USERNAME_WEB.encode("utf8")
+        credentials.username.encode("utf8"), correct_username.encode("utf8")
     )
     is_correct_password = secrets.compare_digest(
-        credentials.password.encode("utf8"), PASSWORD_WEB.encode("utf8")
+        credentials.password.encode("utf8"), correct_password.encode("utf8")
     )
-
     if not (is_correct_username and is_correct_password):
         raise HTTPException(
             status_code=401,
