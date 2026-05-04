@@ -11,85 +11,11 @@ if ! command -v python3 &>/dev/null; then
 	exit 1
 fi
 
-# ── build robust output filename from title ──
-make_outfile_path() {
-	local title="${1:-}"
-	local outdir="${2:-$(pwd)}"
-
-	python3 - "$outdir" "$title" <<'PY'
-from pathlib import Path
-import hashlib
-import re
-import sys
-import unicodedata
-
-outdir = Path(sys.argv[1]).expanduser().resolve()
-raw = sys.argv[2] if len(sys.argv) > 2 else ""
-
-# Normalize full-width chars and other Unicode compatibility forms.
-name = unicodedata.normalize("NFKC", raw)
-
-# Linux only forbids "/" and NUL, but these chars are bad for shell, URLs,
-# Windows compatibility, and general filename robustness.
-bad_chars = '/\\:*?"<>|'
-
-name = "".join(
-    "_" if ch in bad_chars or ord(ch) < 32 or ord(ch) == 127 else ch
-    for ch in name
-)
-
-# Replace all whitespace: spaces, tabs, newlines, NBSP, etc.
-name = re.sub(r"\s+", "_", name, flags=re.UNICODE)
-
-# Keep Unicode letters/numbers plus safe punctuation.
-# Everything else becomes "_".
-name = "".join(
-    ch if ch.isalnum() or ch in "._-" else "_"
-    for ch in name
-)
-
-# Collapse repeated underscores and trim ugly edge chars.
-name = re.sub(r"_+", "_", name).strip("._- ")
-
-# Fallback if title becomes empty after sanitizing.
-if not name or name in {".", ".."}:
-    digest = hashlib.sha256(raw.encode("utf-8", "ignore")).hexdigest()[:8]
-    name = f"markmap_{digest}"
-
-# Keep filename component safely below common 255-byte filesystem limit.
-def truncate_utf8(value, max_bytes):
-    encoded = value.encode("utf-8")
-    if len(encoded) <= max_bytes:
-        return value
-    return encoded[:max_bytes].decode("utf-8", "ignore").rstrip("._- ")
-
-#name = truncate_utf8(name, 180)
-name = truncate_utf8(name, 90)   # roughly 30 chinese charactoers 
-if not name:
-    name = "markmap"
-
-# Avoid overwriting existing files:
-# title.html, title_2.html, title_3.html, ...
-candidate = outdir / f"{name}.html"
-
-if not candidate.exists():
-    print(candidate)
-    raise SystemExit
-
-for i in range(2, 10000):
-    suffix = f"_{i}"
-    base = truncate_utf8(name, 180 - len(suffix))
-    candidate = outdir / f"{base}{suffix}.html"
-
-    if not candidate.exists():
-        print(candidate)
-        raise SystemExit
-
-# Very unlikely fallback.
-digest = hashlib.sha256(raw.encode("utf-8", "ignore")).hexdigest()[:12]
-print(outdir / f"markmap_{digest}.html")
-PY
-}
+# ── ensure markmap-cli is installed ──
+if ! command -v markmap &>/dev/null; then
+	echo "[*] markmap not found. Installing markmap-cli globally..."
+	npm install -g markmap-cli
+fi
 
 # ── extract title from markdown content ──
 extract_title() {
@@ -701,9 +627,7 @@ else
 	fi
 
 	title=$(extract_title "$tmpfile")
-	#outfile="$(pwd)/${title}.html"
-	#outfile=$(build_outfile "$title" html)
-	outfile=$(make_outfile_path "$title")
+	outfile="$(pwd)/${title}.html"
 	markmap "$tmpfile" -o "$outfile" --no-open
 	append_new_code_to_html "$outfile"
 	rm -f "$tmpfile"
