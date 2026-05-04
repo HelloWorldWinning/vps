@@ -689,8 +689,8 @@ else
 		ensure_initial_expand_level "$tmpfile"
 	else
 		# No pre_header detected — ask for colorFreezeLevel
-		echo -n "colorFreezeLevel [3] (4s timeout): "
-		if read -rt 4 cfl; then
+		echo -n "colorFreezeLevel [3] (2s timeout): "
+		if read -rt 2 cfl; then
 			cfl="${cfl:-3}"
 		else
 			cfl=3
