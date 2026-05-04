@@ -556,34 +556,46 @@ PY
 	rm -f "$codefile"
 }
 
-# ── content-driven mode selection ──
-# Always start by asking for markdown content. If the user enters nothing
-# (empty, or just a filler char like n / N / 呢 / 你 / 能), fall back to file mode.
+# ── mode selection ──
 echo "=== Markmap Renderer ==="
-echo "Type/paste your markdown below. Press Ctrl-D when done."
-echo "(Leave empty — or type only n / N / 呢 / 你 / 能 — to switch to file mode)"
-echo "---"
-
-tmpfile=$(mktemp /tmp/markmap_input_XXXXXX.md)
-cat >"$tmpfile"
+echo "  1) Type markdown text  (default — just press Enter)"
+echo "  2) Provide .md file(s)"
 echo ""
+read -rp "Choose mode [1]: " mode
+mode="${mode:-1}"
 
-# Strip all whitespace to detect "empty or filler" content
-trimmed=$(tr -d '[:space:]' <"$tmpfile")
+if [[ "$mode" == "1" ]]; then
+	# ── Mode 1: text input → save in current directory ──
+	tmpfile=$(mktemp /tmp/markmap_input_XXXXXX.md)
+	echo "Type/paste your markdown below. Press Ctrl-D when done."
+	echo "---"
+	cat >"$tmpfile"
+	echo ""
 
-case "$trimmed" in
-"" | n | N | 呢 | 你 | 能)
-	file_mode=1
-	;;
-*)
-	file_mode=0
-	;;
-esac
+	if has_pre_header "$tmpfile"; then
+		ensure_initial_expand_level "$tmpfile"
+	else
+		# No pre_header detected — ask for colorFreezeLevel
+		echo -n "colorFreezeLevel [3] (4s timeout): "
+		if read -rt 4 cfl; then
+			cfl="${cfl:-3}"
+		else
+			cfl=3
+			echo ""
+		fi
 
-if [[ "$file_mode" -eq 1 ]]; then
-	# ── File mode: ask for .md file paths ──
+		ensure_initial_expand_level "$tmpfile" "$cfl"
+	fi
+
+	title=$(extract_title "$tmpfile")
+	outfile="$(pwd)/${title}.html"
+	markmap "$tmpfile" -o "$outfile" --no-open
+	append_new_code_to_html "$outfile"
 	rm -f "$tmpfile"
-	echo "→ No content detected. Switching to file mode."
+	echo -e "[✓] Rendered → ${BR}${outfile}${RS}"
+
+elif [[ "$mode" == "2" ]]; then
+	# ── Mode 2: file input ──
 	echo "Enter .md file paths, one per line."
 	echo "Press Ctrl-D or empty line to finish."
 	echo "  files ↓"
@@ -610,26 +622,6 @@ if [[ "$file_mode" -eq 1 ]]; then
 		echo -e "[✓] ${f} → ${BR}${outfile}${RS}"
 	done
 else
-	# ── Content mode: render the captured markdown ──
-	if has_pre_header "$tmpfile"; then
-		ensure_initial_expand_level "$tmpfile"
-	else
-		# No pre_header detected — ask for colorFreezeLevel
-		echo -n "colorFreezeLevel [3] (4s timeout): "
-		if read -rt 4 cfl; then
-			cfl="${cfl:-3}"
-		else
-			cfl=3
-			echo ""
-		fi
-
-		ensure_initial_expand_level "$tmpfile" "$cfl"
-	fi
-
-	title=$(extract_title "$tmpfile")
-	outfile="$(pwd)/${title}.html"
-	markmap "$tmpfile" -o "$outfile" --no-open
-	append_new_code_to_html "$outfile"
-	rm -f "$tmpfile"
-	echo -e "[✓] Rendered → ${BR}${outfile}${RS}"
+	echo "Invalid mode. Exiting."
+	exit 1
 fi
