@@ -222,308 +222,42 @@ append_new_code_to_html() {
     mm.fit();
   }
 
-  function decodeHtml(value) {
-    const textarea = document.createElement("textarea");
-    textarea.innerHTML = String(value || "");
-    return textarea.value;
-  }
-
-  function stripHtml(value) {
-    const div = document.createElement("div");
-    div.innerHTML = String(value || "");
-    return div.textContent || div.innerText || "";
-  }
-
-  function normalizeText(value) {
-    return stripHtml(decodeHtml(value))
-      .normalize("NFKC")
-      .replace(/[\u200B-\u200D\uFEFF]/g, "")
-      .replace(/\u00A0/g, " ")
-      .replace(/\s+/g, " ")
-      .toLowerCase()
-      .trim();
-  }
-
-  function normalizeTextCompact(value) {
-    return normalizeText(value).replace(/\s+/g, "");
-  }
-
-  function getNodeText(node) {
-    return [
-      node.content,
-      node.payload?.text,
-      node.payload?.label,
-      node.payload?.title
-    ]
-      .filter(Boolean)
-      .map(normalizeText)
-      .join(" ");
-  }
-
-  function textIncludes(text, keyword) {
-    const source = normalizeText(text);
-    const target = normalizeText(keyword);
-
-    if (!target) return false;
-    if (source.includes(target)) return true;
-
-    return normalizeTextCompact(source).includes(normalizeTextCompact(target));
-  }
-
-  function findPaths(root, keyword) {
-    const results = [];
-
-    function dfs(node, path) {
-      if (!node) return;
-
-      const currentPath = [...path, node];
-      const text = getNodeText(node);
-
-      if (textIncludes(text, keyword)) {
-        results.push(currentPath);
-      }
-
-      if (node.children) {
-        node.children.forEach(child => dfs(child, currentPath));
-      }
-    }
-
-    dfs(root, []);
-    return results;
-  }
-
-  function clearFindHighlight() {
-    document
-      .querySelectorAll(".mm-find-box")
-      .forEach(el => el.remove());
-
-    document
-      .querySelectorAll(".mm-find-hit")
-      .forEach(el => el.classList.remove("mm-find-hit"));
-  }
-
-  function drawFindBoxes() {
-    const SVG_NS = "http://www.w3.org/2000/svg";
-
-    document.querySelectorAll(".mm-find-hit").forEach(el => {
-      // Remove old box first so repeated redraws do not stack or overlap.
-      el.querySelectorAll(".mm-find-box").forEach(box => box.remove());
-
-      const target = el.querySelector("foreignObject, text");
-      if (!target || typeof target.getBBox !== "function") return;
-
-      let box;
-      try {
-        box = target.getBBox();
-      } catch {
-        return;
-      }
-
-      const padX = 5;
-      const padY = 4;
-
-      const rect = document.createElementNS(SVG_NS, "rect");
-      rect.setAttribute("class", "mm-find-box");
-      rect.setAttribute("x", box.x - padX);
-      rect.setAttribute("y", box.y - padY);
-      rect.setAttribute("width", box.width + padX * 2);
-      rect.setAttribute("height", box.height + padY * 2);
-      rect.setAttribute("rx", 6);
-      rect.setAttribute("ry", 6);
-
-      el.insertBefore(rect, el.firstChild);
-    });
-  }
-
-  function highlightRenderedNodes(keyword) {
-    clearFindHighlight();
-
-    document.querySelectorAll(".markmap-node").forEach(el => {
-      if (textIncludes(el.textContent, keyword)) {
-        el.classList.add("mm-find-hit");
-      }
-    });
-
-    drawFindBoxes();
-
-    return document.querySelectorAll(".mm-find-hit").length;
-  }
-
-  function highlightRenderedNodesWhenReady(keyword) {
-    let tries = 0;
-    let foundCount = 0;
-    const maxTries = 45;
-
-    function retry() {
-      const hits = highlightRenderedNodes(keyword);
-
-      if (hits > 0) {
-        foundCount += 1;
-      }
-
-      tries += 1;
-
-      // Keep refreshing after first hit so boxes remain correct after expansion/layout animation.
-      if (tries < maxTries && foundCount < 8) {
-        setTimeout(() => requestAnimationFrame(retry), 80);
-      }
-    }
-
-    requestAnimationFrame(retry);
-  }
-
-  function ensureFindStyle() {
-    if (document.getElementById("mm-find-style")) return;
-
-    const style = document.createElement("style");
-    style.id = "mm-find-style";
-
-    style.textContent = `
-      .mm-find-hit text {
-        fill: #000 !important;
-        font-weight: 700;
-      }
-
-      .mm-find-hit circle {
-        fill: #ff3d00 !important;
-        stroke: #ffffff !important;
-        stroke-width: 2px !important;
-      }
-
-      .mm-find-hit foreignObject {
-        outline: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-      }
-
-      .mm-find-box {
-        fill: rgba(255, 193, 7, 0.18);
-        stroke: #ff3d00;
-        stroke-width: 2.5px;
-        vector-effect: non-scaling-stroke;
-        filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.75));
-        pointer-events: none;
-        animation: mmFindBoxPulse 1s ease-in-out infinite alternate;
-      }
-
-      @keyframes mmFindBoxPulse {
-        from {
-          stroke-opacity: 0.75;
-          filter: drop-shadow(0 0 3px rgba(255, 152, 0, 0.55));
-        }
-        to {
-          stroke-opacity: 1;
-          filter: drop-shadow(0 0 8px rgba(255, 61, 0, 0.85));
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-  }
-
-  function openMatchedPaths(matches) {
-    matches.forEach(path => {
-      path.slice(0, -1).forEach(node => {
-        if (node.children && node.children.length > 0) {
-          node.payload = {
-            ...node.payload,
-            fold: 0
-          };
-        }
-      });
-    });
-  }
-
-  function findInMap(mm) {
-    const keyword = prompt("Find in map:");
-
-    if (!keyword || !keyword.trim()) return;
-
-    ensureFindStyle();
-
-    const data = mm.state.data;
-    const matches = findPaths(data, keyword);
-
-    if (matches.length === 0) {
-      clearFindHighlight();
-      alert(`No match: ${keyword}`);
-      return;
-    }
-
-    openMatchedPaths(matches);
-    mm.renderData(data);
-
-    highlightRenderedNodesWhenReady(keyword);
-
-    setTimeout(() => {
-      mm.fit();
-    }, 200);
-  }
-
-  document.addEventListener("keydown", e => {
+  document.addEventListener('keydown', e => {
     const mm = window.mm;
     if (!mm || !mm.state?.data) return;
-
-    const tag = e.target?.tagName?.toLowerCase();
-
-    if (
-      tag === "input" ||
-      tag === "textarea" ||
-      tag === "select" ||
-      e.target?.isContentEditable
-    ) {
-      return;
-    }
 
     const data = mm.state.data;
     const visibleDepth = getVisibleDepth(data);
     const maxDepth = getMaxDepth(data);
 
-    if (e.key === " " || e.key === "0") {
+    if (e.key === 'f' || e.key === ' ' || e.key === '0') {
       e.preventDefault();
       fit(mm);
-      return;
     }
 
-    if (e.key === "f") {
-      e.preventDefault();
-      findInMap(mm);
-      return;
-    }
-
-    if (e.key === "g" || e.key === "Enter") {
+    if (e.key === 'g' || e.key === 'Enter') {
       e.preventDefault();
       expandAll(mm);
-      return;
     }
 
-    if (e.key === "d") {
-      e.preventDefault();
+    if (e.key === 'd') {
       setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
-      return;
     }
 
-    if (e.key === "s") {
-      e.preventDefault();
+    if (e.key === 's') {
       setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
-      return;
     }
 
-    if (e.key === "a") {
-      e.preventDefault();
+    if (e.key === 'a') {
       setVisibleDepth(mm, 1);
-      return;
     }
 
     if (/^[1-9]$/.test(e.key)) {
-      e.preventDefault();
       setVisibleDepth(mm, Number(e.key));
-      return;
     }
   });
 })();
 </script>
-
 NEW_CODE
 
 	python3 - "$html" "$codefile" <<'PY'
