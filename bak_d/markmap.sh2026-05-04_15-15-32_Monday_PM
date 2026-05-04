@@ -494,40 +494,32 @@ append_new_code_to_html() {
     if (e.key === "g" || e.key === "Enter") {
       e.preventDefault();
       expandAll(mm);
-      setTimeout(() => fit(mm), 330);
       return;
     }
 
     if (e.key === "d") {
       e.preventDefault();
       setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
-      setTimeout(() => fit(mm), 330);
       return;
     }
 
     if (e.key === "s") {
       e.preventDefault();
       setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
-      setTimeout(() => fit(mm), 330);
       return;
     }
 
     if (e.key === "a") {
       e.preventDefault();
       setVisibleDepth(mm, 1);
-      setTimeout(() => fit(mm), 330);
       return;
     }
 
     if (/^[1-9]$/.test(e.key)) {
       e.preventDefault();
       setVisibleDepth(mm, Number(e.key));
-      setTimeout(() => fit(mm), 330);
       return;
     }
-
-
-
   });
 })();
 </script>
