@@ -5,6 +5,11 @@ set -euo pipefail
 BR='\033[1;31m'
 RS='\033[0m'
 
+# ── ensure markmap-cli is installed ──
+if ! command -v markmap &>/dev/null; then
+	echo "[*] markmap not found. Installing markmap-cli globally..."
+	npm install -g markmap-cli
+fi
 # ── ensure python3 is available ──
 if ! command -v python3 &>/dev/null; then
 	echo "[!] python3 is required for markdown/html patching."
