@@ -20,8 +20,6 @@ except ImportError:  # Windows fallback
 BR = "\033[1;31m"
 RS = "\033[0m"
 
-
-DEFAULT_MAX_WIDTH = "380"
 DEFAULT_COLOR_FREEZE_LEVEL = "3"
 INITIAL_EXPAND_LEVEL = "2"
 
@@ -702,19 +700,6 @@ def has_markmap_color_freeze_level(path: Path) -> bool:
     )
 
 
-def sanitize_max_width(value: str | None) -> str:
-    value = (value or "").strip()
-
-    if not value:
-        return DEFAULT_MAX_WIDTH
-
-    if not re.fullmatch(r"\d+", value):
-        print(f"[!] Invalid maxWidth {value!r}; using {DEFAULT_MAX_WIDTH}.")
-        return DEFAULT_MAX_WIDTH
-
-    return str(int(value))
-
-
 def sanitize_color_freeze_level(value: str | None) -> str:
     value = (value or "").strip()
 
@@ -735,7 +720,6 @@ def ensure_markmap_options(
     path: Path,
     color_freeze_level: str | None = None,
     initial_expand_level: str = INITIAL_EXPAND_LEVEL,
-    max_width: str | None = DEFAULT_MAX_WIDTH,
 ) -> None:
     text = read_text(path)
     lines = text.splitlines(True)
@@ -752,9 +736,6 @@ def ensure_markmap_options(
             block.append(
                 f"  colorFreezeLevel: {sanitize_color_freeze_level(color_freeze_level)}\n"
             )
-
-        if max_width is not None:
-            block.append(f"  maxWidth: {sanitize_max_width(max_width)}\n")
 
         block.extend(
             [
@@ -776,9 +757,6 @@ def ensure_markmap_options(
             insert.append(
                 f"  colorFreezeLevel: {sanitize_color_freeze_level(color_freeze_level)}\n"
             )
-
-        if max_width is not None:
-            insert.append(f"  maxWidth: {sanitize_max_width(max_width)}\n")
 
         insert.append(f"  initialExpandLevel: {initial_expand_level}\n")
 
@@ -815,14 +793,6 @@ def ensure_markmap_options(
         inline_value,
     )
 
-    has_max_width = yaml_section_has_key(
-        lines,
-        section_start,
-        section_end,
-        "maxWidth",
-        inline_value,
-    )
-
     has_initial_expand_level = False
 
     for i in range(section_start + 1, section_end):
@@ -844,9 +814,6 @@ def ensure_markmap_options(
         insertions.append(
             f"{indent}colorFreezeLevel: {sanitize_color_freeze_level(color_freeze_level)}\n"
         )
-
-    if max_width is not None and not has_max_width:
-        insertions.append(f"{indent}maxWidth: {sanitize_max_width(max_width)}\n")
 
     if not has_initial_expand_level:
         insertions.append(f"{indent}initialExpandLevel: {initial_expand_level}\n")
