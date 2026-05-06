@@ -69,6 +69,8 @@ EOF
     fi
 }
 
+
+
 ensure_acme() {
     if [[ -x "$ACME_BIN" ]]; then
         return 0
@@ -83,8 +85,30 @@ ensure_acme() {
         return 0
     fi
 
-    die "acme.sh not found. Expected: /root/.acme.sh/acme.sh"
+    say "${YELLOW}acme.sh not found. Installing now...${NC}"
+
+    if ! command -v curl >/dev/null 2>&1; then
+        die "curl is required to install acme.sh. Install curl first: apt install -y curl"
+    fi
+
+    curl https://get.acme.sh | sh -s email="${ACME_EMAIL:-admin@example.com}"
+
+    if [[ -x "$ACME_BIN" ]]; then
+        say "${GREEN}acme.sh installed:${NC} $ACME_BIN"
+        return 0
+    fi
+
+    found="$(command -v acme.sh || true)"
+    if [[ -n "$found" && -x "$found" ]]; then
+        ACME_BIN="$found"
+        ACME_HOME="$(dirname "$found")"
+        say "${GREEN}acme.sh installed:${NC} $ACME_BIN"
+        return 0
+    fi
+
+    die "acme.sh install failed. Expected: $ACME_BIN"
 }
+
 
 is_comment_or_empty() {
     local x="${1:-}"
@@ -642,11 +666,12 @@ main_menu() {
         echo "13) Clean failed example.com placeholder folders"
         echo "0) Exit"
         echo ""
-        echo "No input in 10 seconds = safe check/install cron"
+     #  echo "No input in 10 seconds = safe check/install cron"
         echo ""
 
         local choice=""
-        read -r -t 10 -p "Choose: " choice || choice="1"
+     #  read -r -t 10 -p "Choose: " choice || choice="1"
+        read -r  -p "Choose: " choice || choice="1"
         choice="${choice:-1}"
 
         case "$choice" in
