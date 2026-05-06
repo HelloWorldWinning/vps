@@ -1070,6 +1070,7 @@ def render_markdown_content(markdown_text: str) -> None:
         outfile = make_outfile_path(title)
 
         run_markmap(tmp_path, outfile)
+        replace_html_title(outfile, title)
         append_new_code_to_html(outfile)
 
         print(f"[✓] Rendered → {BR}{outfile}{RS}")
