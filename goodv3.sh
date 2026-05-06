@@ -1170,6 +1170,8 @@ https://zhile.one/archives/1404.html
 	nextcloud_aio) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;
 	nextcloud_doc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_Onlyoffice_publicip_domain.sh) ;;
 	nextcloud) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_publicip_domain.sh) ;;
+	ssl_renew) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh) ;;
+	ssl) bash /usr/local/bin/acme-manager ;;
 
 		#nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 	nq) bash <(curl -sL https://run.NodeQuality.com) 2>&1 | tee /root/nodequality_$(date +%Y%m%d_%H%M%S).log ;;
