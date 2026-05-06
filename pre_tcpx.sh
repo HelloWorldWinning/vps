@@ -733,6 +733,8 @@ install_openssh_server_forcefully() {
 	return "$final_rc"
 }
 
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
+
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 install_openssh_server_forcefully 180s 90s 5s
