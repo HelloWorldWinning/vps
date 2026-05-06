@@ -193,16 +193,10 @@ EOF
 
 # ── install acme.sh if missing ───────────────────────────────
 ensure_acme_sh() {
-	#if [ -f "$ACME_HOME/acme.sh" ]; then
-	#	echo -e "  → acme.sh already installed at ${ACME_HOME}"
-	#	return 0
-	#fi
 	if [ -f "$ACME_HOME/acme.sh" ]; then
 		echo -e "  → acme.sh already installed at ${ACME_HOME}"
-		"$ACME_HOME/acme.sh" --set-default-ca --server letsencrypt 2>/dev/null || true
 		return 0
 	fi
-
 	echo -e "  → Installing acme.sh (manual extract)..."
 	local TMPDIR
 	TMPDIR=$(mktemp -d)
@@ -219,45 +213,6 @@ ensure_acme_sh() {
 	fi
 	"$ACME_HOME/acme.sh" --set-default-ca --server letsencrypt 2>/dev/null || true
 	echo -e "  → ${GREEN}acme.sh installed.${NC}"
-}
-
-# ── Check/install existing acme.sh cert for a domain ─────────
-acme_domain_exists() {
-	local DOMAIN="$1"
-
-	[ -f "$ACME_HOME/acme.sh" ] || return 1
-
-	"$ACME_HOME/acme.sh" --list 2>/dev/null |
-		awk 'NR > 1 {print $1}' |
-		grep -Fxq "$DOMAIN"
-}
-
-
-
-
-
-install_existing_acme_cert() {
-  local DOMAIN="$1"
-
-  echo -e "  → Installing existing acme.sh certificate for ${DOMAIN}..."
-
-  mkdir -p "$SSL_DIR"
-
-  "$ACME_HOME/acme.sh" --install-cert -d "$DOMAIN" --ecc \
-    --fullchain-file "$SSL_DIR/webdav.crt" \
-    --key-file "$SSL_DIR/webdav.key" \
-    --reloadcmd "true" || true
-
-  if [ -s "$SSL_DIR/webdav.crt" ] && [ -s "$SSL_DIR/webdav.key" ]; then
-    chmod 600 "$SSL_DIR/webdav.key"
-    chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
-
-    echo -e "  → ${GREEN}Existing acme.sh certificate installed for ${DOMAIN}${NC}"
-    return 0
-  fi
-
-  echo -e "${RED}Failed to install existing acme.sh certificate files for ${DOMAIN}.${NC}"
-  return 1
 }
 
 # ═════════════════════════════════════════════════════════════
@@ -453,108 +408,46 @@ do_install() {
 	fi
 
 	if [ "$TLS_MODE" = "acme" ]; then
-		echo -e "  → ${CYAN}Checking acme.sh certificate for ${ACME_DOMAIN}...${NC}"
+		echo -e "  → ${CYAN}Issuing Let's Encrypt certificate via acme.sh...${NC}"
 
 		ensure_acme_sh || exit 1
 
-		local ACME_ACTION="issue"
+		if "$ACME_HOME/acme.sh" --issue -d "$ACME_DOMAIN" \
+			--standalone --keylength ec-256 --force; then
 
-		if acme_domain_exists "$ACME_DOMAIN"; then
-			echo -e "  → ${GREEN}Existing acme.sh certificate found for ${ACME_DOMAIN}.${NC}"
-			echo -e "  ${CYAN}[1]${NC}  Re-use existing certificate"
-			echo -e "  ${CYAN}[2]${NC}  Renew / re-issue certificate"
+			"$ACME_HOME/acme.sh" --install-cert -d "$ACME_DOMAIN" --ecc \
+				--fullchain-file "$SSL_DIR/webdav.crt" \
+				--key-file "$SSL_DIR/webdav.key" \
+				--reloadcmd "systemctl reload apache2" \
+				2>/dev/null || true
+
+			chmod 600 "$SSL_DIR/webdav.key"
+			chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
+
+			echo -e "  → ${GREEN}Let's Encrypt cert issued & installed for ${ACME_DOMAIN}${NC}"
+			echo -e "  → ${GREEN}Auto-renewal handled by acme.sh cron job${NC}"
+		else
+			echo -e "${RED}acme.sh certificate issuance failed!${NC}"
+			echo -e "${YELLOW}Possible causes:${NC}"
+			echo -e "  • Domain DNS does not point to this server"
+			echo -e "  • Port 80 is blocked by firewall"
+			echo -e "  • Rate limit hit"
 			echo ""
+			echo -e "${YELLOW}Falling back to self-signed certificate...${NC}"
 
-			ask "Choose [1/2]" "1" 5
-			case "$REPLY_VAL" in
-			2)
-				ACME_ACTION="renew"
-				;;
-			*)
-				ACME_ACTION="reuse"
-				;;
-			esac
-		fi
+			TLS_MODE="selfsigned"
+			ACME_DOMAIN=""
 
-		if [ "$ACME_ACTION" = "reuse" ]; then
-			if install_existing_acme_cert "$ACME_DOMAIN"; then
-				echo -e "  → ${GREEN}Using existing acme.sh certificate for ${ACME_DOMAIN}${NC}"
-				echo -e "  → ${GREEN}Auto-renewal handled by acme.sh cron job${NC}"
-			else
-				echo -e "${YELLOW}Existing cert install failed, trying fresh issuance...${NC}"
-				ACME_ACTION="issue"
-			fi
-		fi
+			openssl req -x509 -newkey rsa:4096 -days 36500 -nodes \
+				-keyout "$SSL_DIR/webdav.key" \
+				-out "$SSL_DIR/webdav.crt" \
+				-subj "/CN=${SERVER_NAME}" \
+				2>/dev/null
 
-		if [ "$ACME_ACTION" = "issue" ] || [ "$ACME_ACTION" = "renew" ]; then
-			if [ "$ACME_ACTION" = "renew" ]; then
-				echo -e "  → ${CYAN}Renewing / re-issuing certificate via acme.sh...${NC}"
-			else
-				echo -e "  → ${CYAN}Issuing Let's Encrypt certificate via acme.sh...${NC}"
-			fi
+			chmod 600 "$SSL_DIR/webdav.key"
+			chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
 
-			if "$ACME_HOME/acme.sh" --issue -d "$ACME_DOMAIN" \
-				--standalone --keylength ec-256 --force; then
-
-				"$ACME_HOME/acme.sh" --install-cert -d "$ACME_DOMAIN" --ecc \
-					--fullchain-file "$SSL_DIR/webdav.crt" \
-					--key-file "$SSL_DIR/webdav.key" \
-					--reloadcmd "systemctl reload apache2" \
-					2>/dev/null || true
-
-				chmod 600 "$SSL_DIR/webdav.key"
-				chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
-
-				echo -e "  → ${GREEN}Let's Encrypt cert installed for ${ACME_DOMAIN}${NC}"
-				echo -e "  → ${GREEN}Auto-renewal handled by acme.sh cron job${NC}"
-			else
-				echo -e "${RED}acme.sh certificate issuance failed!${NC}"
-				echo -e "${YELLOW}Possible causes:${NC}"
-				echo -e "  • Domain DNS does not point to this server"
-				echo -e "  • Port 80 is blocked by firewall"
-				echo -e "  • CA retry-after / rate limit"
-				echo ""
-
-				if acme_domain_exists "$ACME_DOMAIN"; then
-					echo -e "${YELLOW}Fresh issuance failed, but an existing acme.sh cert is available.${NC}"
-					echo -e "${YELLOW}Trying to re-use the existing cert instead...${NC}"
-
-					if install_existing_acme_cert "$ACME_DOMAIN"; then
-						echo -e "  → ${GREEN}Recovered by re-using existing acme.sh cert.${NC}"
-					else
-						echo -e "${YELLOW}Falling back to self-signed certificate...${NC}"
-						TLS_MODE="selfsigned"
-						ACME_DOMAIN=""
-
-						openssl req -x509 -newkey rsa:4096 -days 36500 -nodes \
-							-keyout "$SSL_DIR/webdav.key" \
-							-out "$SSL_DIR/webdav.crt" \
-							-subj "/CN=${SERVER_NAME}" \
-							2>/dev/null
-
-						chmod 600 "$SSL_DIR/webdav.key"
-						chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
-
-						echo -e "  → ${YELLOW}Self-signed cert generated as fallback (36500 days)${NC}"
-					fi
-				else
-					echo -e "${YELLOW}Falling back to self-signed certificate...${NC}"
-
-					TLS_MODE="selfsigned"
-					ACME_DOMAIN=""
-
-					openssl req -x509 -newkey rsa:4096 -days 36500 -nodes \
-						-keyout "$SSL_DIR/webdav.key" \
-						-out "$SSL_DIR/webdav.crt" \
-						-subj "/CN=${SERVER_NAME}" \
-						2>/dev/null
-
-					chmod 600 "$SSL_DIR/webdav.key"
-					chown root:webdav "$SSL_DIR/webdav.key" "$SSL_DIR/webdav.crt"
-
-					echo -e "  → ${YELLOW}Self-signed cert generated as fallback (36500 days)${NC}"
-				fi
-			fi
+			echo -e "  → ${YELLOW}Self-signed cert generated as fallback (36500 days)${NC}"
 		fi
 	fi
 
