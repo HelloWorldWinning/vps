@@ -10,7 +10,6 @@ import sys
 import tempfile
 import unicodedata
 from pathlib import Path
-import html as html_lib
 
 try:
     import select
@@ -415,25 +414,6 @@ NEW_CODE = r"""<script>
 </script>
 
 """
-
-
-def replace_html_title(html_path: Path, title: str) -> None:
-    safe_title = html_lib.escape((title or "markmap").strip() or "markmap", quote=False)
-
-    html_text = read_text(html_path)
-
-    html_text, count = re.subn(
-        r"<title>.*?</title>",
-        lambda _: f"<title>{safe_title}</title>",
-        html_text,
-        count=1,
-        flags=re.IGNORECASE | re.DOTALL,
-    )
-
-    if count == 0:
-        raise SystemExit(f"[!] <title>...</title> not found in {html_path}")
-
-    write_text(html_path, html_text)
 
 
 # ─────────────────────────────────────────────────────────────
@@ -1026,12 +1006,7 @@ def render_markdown_file(markdown_path: Path) -> None:
     else:
         outfile = Path(str(markdown_path) + ".html")
 
-    #   run_markmap(markdown_path, outfile)
-    #   append_new_code_to_html(outfile)
-    title = extract_title(markdown_path)
-
     run_markmap(markdown_path, outfile)
-    replace_html_title(outfile, title)
     append_new_code_to_html(outfile)
 
     print(f"[✓] {markdown_path} → {BR}{outfile}{RS}")
