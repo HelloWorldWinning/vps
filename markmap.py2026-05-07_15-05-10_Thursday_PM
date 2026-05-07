@@ -21,7 +21,6 @@ except ImportError:  # Windows fallback
 BR = "\033[1;31m"
 RS = "\033[0m"
 
-MARKMAP_FAVICON_URL = "https://markmap.js.org/favicon.png"
 
 DEFAULT_MAX_WIDTH = "380"
 DEFAULT_COLOR_FREEZE_LEVEL = "3"
@@ -464,62 +463,6 @@ def ensure_markmap_cli() -> None:
 # ─────────────────────────────────────────────────────────────
 # Filename handling
 # ─────────────────────────────────────────────────────────────
-MARKMAP_FAVICON_URL = "https://markmap.js.org/favicon.png"
-
-
-def ensure_html_favicon(
-    html_path: Path,
-    favicon_url: str = MARKMAP_FAVICON_URL,
-) -> None:
-    html = read_text(html_path)
-
-    safe_url = html_lib.escape(favicon_url, quote=True)
-    favicon_link = f'<link rel="icon" href="{safe_url}">'
-
-    link_tag_pattern = re.compile(
-        r"<link\b[^>]*>",
-        flags=re.IGNORECASE | re.DOTALL,
-    )
-
-    def is_icon_link(tag: str) -> bool:
-        return (
-            re.search(
-                r'\brel\s*=\s*["\'][^"\']*(?:shortcut\s+icon|icon)[^"\']*["\']',
-                tag,
-                flags=re.IGNORECASE,
-            )
-            is not None
-        )
-
-    link_tags = list(link_tag_pattern.finditer(html))
-    icon_tags = [match for match in link_tags if is_icon_link(match.group(0))]
-
-    if icon_tags:
-        first = icon_tags[0]
-        html = html[: first.start()] + favicon_link + html[first.end() :]
-
-        # Remove duplicate favicon links after replacing the first one.
-        html = link_tag_pattern.sub(
-            lambda match: "" if is_icon_link(match.group(0)) else match.group(0),
-            html,
-            count=len(icon_tags) - 1,
-        )
-
-        write_text(html_path, html)
-        return
-
-    if re.search(r"<head\b[^>]*>", html, flags=re.IGNORECASE):
-        html = re.sub(
-            r"(<head\b[^>]*>)",
-            rf"\1\n{favicon_link}",
-            html,
-            count=1,
-            flags=re.IGNORECASE,
-        )
-        write_text(html_path, html)
-        return
-
-    raise SystemExit(f"[!] <head> not found in {html_path}")
 
 
 def truncate_utf8(value: str, max_bytes: int) -> str:
@@ -1088,10 +1031,7 @@ def render_markdown_file(markdown_path: Path) -> None:
     title = extract_title(markdown_path)
 
     run_markmap(markdown_path, outfile)
-
-    ensure_html_favicon(outfile)
     replace_html_title(outfile, title)
-
     append_new_code_to_html(outfile)
 
     print(f"[✓] {markdown_path} → {BR}{outfile}{RS}")
@@ -1130,7 +1070,6 @@ def render_markdown_content(markdown_text: str) -> None:
         outfile = make_outfile_path(title)
 
         run_markmap(tmp_path, outfile)
-        ensure_html_favicon(outfile)
         replace_html_title(outfile, title)
         append_new_code_to_html(outfile)
 
