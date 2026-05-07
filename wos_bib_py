@@ -1,0 +1,240 @@
+#!/usr/bin/env python3
+"""
+Usage:
+    wos_bib_py <input.bib>
+
+Output:
+    <input>_parsed.txt
+
+Description:
+    Compact, LLM-friendly BibTeX parser.
+
+    TC extraction order:
+    1. Keep existing method: extract "Times-Cited" field directly.
+    2. New fallback pattern: extract from note = {Cited by: 130}
+    3. If neither exists, TC is omitted in output and treated as 0 for sorting.
+
+Default:
+    Sort entries by TC descending.
+"""
+
+import re
+import sys
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+
+FIELDS: List[Tuple[str, str]] = [
+    ("Author", "AU"),
+    ("Title", "TI"),
+    ("Year", "YR"),
+    ("Journal", "JO"),
+    ("DOI", "DO"),
+    ("Keywords", "KW"),
+    ("Times-Cited", "TC"),
+    ("Abstract", "AB"),
+]
+
+
+def usage() -> None:
+    print("Usage: wos_bib_py <file>")
+    sys.exit(1)
+
+
+def read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8", errors="replace")
+
+
+def write_text(path: Path, text: str) -> None:
+    path.write_text(text, encoding="utf-8")
+
+
+def split_entries(text: str) -> List[str]:
+    """
+    Split BibTeX records.
+
+    Keeps the same basic behavior as the original script:
+    entries begin at lines starting with @.
+    """
+    return [
+        entry.strip()
+        for entry in re.split(r"\n(?=@)", text.strip())
+        if entry.strip().startswith("@")
+    ]
+
+
+def clean_value(value: str) -> str:
+    value = re.sub(r"\},?\s*$", "", value)
+    value = re.sub(r"\s+", " ", value).strip()
+    value = value.replace(r"\&", "&")
+    return value
+
+
+def grab(block: str, key: str) -> str:
+    """
+    Original-style field extractor.
+
+    This intentionally preserves the current extraction approach,
+    especially for Times-Cited.
+    """
+    pattern = re.compile(
+        r"^\s*"
+        + re.escape(key)
+        + r"\s*=\s*\{(.*?)(?=\n\s*[\w][\w-]*\s*=|\n\}|\Z)",
+        re.I | re.M | re.S,
+    )
+
+    match = pattern.search(block)
+    if not match:
+        return ""
+
+    return clean_value(match.group(1))
+
+
+def grab_first(block: str, keys: List[str]) -> str:
+    for key in keys:
+        value = grab(block, key)
+        if value:
+            return value
+    return ""
+
+
+def extract_times_cited(block: str) -> str:
+    """
+    Keep the current TC method first:
+        Times-Cited = {...}
+
+    Add new fallback:
+        note = {Cited by: 130}
+        note = {Cited by: 0; All Open Access; Gold Open Access}
+    """
+    # Existing working method — keep this first.
+    tc = grab(block, "Times-Cited")
+    if tc:
+        return tc
+
+    # New Scopus pattern fallback.
+    note = grab(block, "note")
+    if note:
+        match = re.search(r"\bCited\s+by\s*:\s*(\d+)\b", note, re.I)
+        if match:
+            return match.group(1)
+
+    return ""
+
+
+def tc_as_int(value: str) -> int:
+    """
+    Convert TC value to integer for sorting.
+
+    Handles:
+        "130"
+        "Cited by: 130"
+        "130; something"
+    """
+    if not value:
+        return 0
+
+    match = re.search(r"\d+", value)
+    if not match:
+        return 0
+
+    return int(match.group(0))
+
+
+def extract_fields(entry: str) -> Dict[str, str]:
+    """
+    Extract normalized output fields.
+    """
+    data: Dict[str, str] = {}
+
+    data["AU"] = grab_first(entry, ["Author", "author"])
+    data["TI"] = grab_first(entry, ["Title", "title"])
+    data["YR"] = grab_first(entry, ["Year", "year"])
+    data["JO"] = grab_first(entry, ["Journal", "journal"])
+    data["DO"] = grab_first(entry, ["DOI", "doi"])
+
+    # Keep original Keywords support, but also support Scopus author_keywords.
+    data["KW"] = grab_first(
+        entry,
+        [
+            "Keywords",
+            "keywords",
+            "Author_Keywords",
+            "author_keywords",
+        ],
+    )
+
+    data["TC"] = extract_times_cited(entry)
+
+    data["AB"] = grab_first(entry, ["Abstract", "abstract"])
+
+    return data
+
+
+def format_entry(index: int, data: Dict[str, str]) -> str:
+    lines = [f"[{index}]"]
+
+    for _, label in FIELDS:
+        value = data.get(label, "")
+        if value:
+            lines.append(f"{label}: {value}")
+
+    return "\n".join(lines)
+
+
+def output_path_for(input_path: Path) -> Path:
+    return input_path.with_name(f"{input_path.stem}_parsed.txt")
+
+
+def parse_bib(input_path: Path) -> Tuple[str, int]:
+    text = read_text(input_path)
+    entries = split_entries(text)
+
+    parsed = []
+    for original_index, entry in enumerate(entries, start=1):
+        data = extract_fields(entry)
+        parsed.append(
+            {
+                "original_index": original_index,
+                "tc_sort": tc_as_int(data.get("TC", "")),
+                "data": data,
+            }
+        )
+
+    # Default sorting: TC descending.
+    # Tie-breaker keeps original order stable.
+    parsed.sort(key=lambda item: (-item["tc_sort"], item["original_index"]))
+
+    output_blocks = [
+        format_entry(index, item["data"])
+        for index, item in enumerate(parsed, start=1)
+    ]
+
+    output_text = "\n\n".join(output_blocks)
+    if output_text:
+        output_text += "\n"
+
+    return output_text, len(entries)
+
+
+def main() -> None:
+    if len(sys.argv) != 2:
+        usage()
+
+    input_path = Path(sys.argv[1])
+
+    if not input_path.is_file():
+        print(f"Not found: {input_path}")
+        sys.exit(1)
+
+    output_path = output_path_for(input_path)
+    output_text, count = parse_bib(input_path)
+
+    write_text(output_path, output_text)
+
+    print(f"Done: {count} entries -> {output_path}")
+
+
+if __name__ == "__main__":
+    main()

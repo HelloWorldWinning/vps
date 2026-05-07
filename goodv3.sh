@@ -1176,6 +1176,8 @@ https://zhile.one/archives/1404.html
 		#nq) bash <(curl -sL https://run.NodeQuality.com) ;;
 	nq) bash <(curl -sL https://run.NodeQuality.com) 2>&1 | tee /root/nodequality_$(date +%Y%m%d_%H%M%S).log ;;
 
+	wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
+	sco) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py) ;;
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
