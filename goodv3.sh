@@ -1179,7 +1179,8 @@ https://zhile.one/archives/1404.html
 	wos) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
 
 	sco) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
-		#
+	get_tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
+
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
