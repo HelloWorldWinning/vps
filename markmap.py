@@ -23,7 +23,7 @@ RS = "\033[0m"
 
 # MARKMAP_FAVICON_URL = "https://markmap.js.org/favicon.png"
 MARKMAP_FAVICON_URL = (
-    "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/icon/markmap_z2.png"
+    "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/icon/markmap_z7a.png"
 )
 
 
@@ -468,7 +468,6 @@ def ensure_markmap_cli() -> None:
 # ─────────────────────────────────────────────────────────────
 # Filename handling
 # ─────────────────────────────────────────────────────────────
-MARKMAP_FAVICON_URL = "https://markmap.js.org/favicon.png"
 
 
 def ensure_html_favicon(
