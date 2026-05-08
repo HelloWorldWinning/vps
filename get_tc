@@ -10,14 +10,17 @@ Usage:  get_tc a_file
 
 import sys, re, time, urllib.request, json
 
+
 def parse_entries(text):
     """Split file into numbered entries."""
-    parts = re.split(r'(?=^\[\d+\])', text.strip(), flags=re.MULTILINE)
+    parts = re.split(r"(?=^\[\d+\])", text.strip(), flags=re.MULTILINE)
     return [p.strip() for p in parts if p.strip()]
 
+
 def extract_doi(entry):
-    m = re.search(r'^DO:\s*(.+)', entry, re.MULTILINE)
+    m = re.search(r"^DO:\s*(.+)", entry, re.MULTILINE)
     return m.group(1).strip() if m else None
+
 
 def fetch_tc(doi, retries=3):
     """Get cited_by_count from OpenAlex (free, no key needed)."""
@@ -36,17 +39,22 @@ def fetch_tc(doi, retries=3):
                 print(f"  ⚠  Failed for {doi}: {e}", file=sys.stderr)
                 return 0
 
+
 def inject_tc(entry, tc):
     """Insert or update TC: line right after DO: line."""
     # Remove existing TC line if present
-    entry = re.sub(r'\nTC:\s*\d+', '', entry)
+    entry = re.sub(r"\nTC:\s*\d+", "", entry)
     # Insert TC after DO line
-    entry = re.sub(r'(^DO:\s*.+)$', rf'\1\nTC: {tc}', entry, count=1, flags=re.MULTILINE)
+    entry = re.sub(
+        r"(^DO:\s*.+)$", rf"\1\nTC: {tc}", entry, count=1, flags=re.MULTILINE
+    )
     return entry
+
 
 def strip_header(entry):
     """Remove the [N] header line, return body only."""
-    return re.sub(r'^\[\d+\]\s*\n?', '', entry, count=1)
+    return re.sub(r"^\[\d+\]\s*\n?", "", entry, count=1)
+
 
 def main():
     if len(sys.argv) != 2:
@@ -54,7 +62,7 @@ def main():
         sys.exit(1)
 
     filepath = sys.argv[1]
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding="utf-8") as f:
         text = f.read()
 
     entries = parse_entries(text)
@@ -87,10 +95,11 @@ def main():
     for idx, (tc, body) in enumerate(results, 1):
         lines.append(f"[{idx}]\n{body}")
 
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write("\n".join(lines) + "\n")
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write("\n\n".join(lines) + "\n")
 
     print(f"\n✓ {len(results)} entries sorted by TC (descending) → {filepath}")
+
 
 if __name__ == "__main__":
     main()
