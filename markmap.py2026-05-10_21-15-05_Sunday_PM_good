@@ -1077,8 +1077,7 @@ NEW_CODE = (
     const centerX = zoomWindow.x + zoomWindow.width / 2;
     const centerY = zoomWindow.y + zoomWindow.height / 2;
 
-    const FOCUS_OFFSET_X = -80;
-    const translateX = viewport.width / 2 - centerX * scale + FOCUS_OFFSET_X;
+    const translateX = viewport.width / 2 - centerX * scale;
     const translateY = viewport.height / 2 - centerY * scale;
 
     const transform = createZoomTransform(translateX, translateY, scale);
