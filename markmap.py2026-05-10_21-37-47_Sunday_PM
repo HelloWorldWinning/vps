@@ -372,34 +372,34 @@ NEW_CODE = r"""<script>
       return;
     }
 
-    if (e.key === "f" ||  e.key === "F")  {
+    if (e.key === "f") {
       e.preventDefault();
       findInMap(mm);
       return;
     }
 
-    if (e.key === "g" || e.key === "G" || e.key === "Enter") {
+    if (e.key === "g" || e.key === "Enter") {
       e.preventDefault();
       expandAll(mm);
       setTimeout(() => fit(mm), 330);
       return;
     }
 
-    if (e.key === "d" ||  e.key === "D") {
+    if (e.key === "d") {
       e.preventDefault();
       setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
       setTimeout(() => fit(mm), 330);
       return;
     }
 
-    if (e.key === "s" ||  e.key === "S"   ) {
+    if (e.key === "s") {
       e.preventDefault();
       setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
       setTimeout(() => fit(mm), 330);
       return;
     }
 
-    if (e.key === "a" || e.key === "A"  ) {
+    if (e.key === "a") {
       e.preventDefault();
       setVisibleDepth(mm, 1);
       setTimeout(() => fit(mm), 330);
@@ -412,6 +412,8 @@ NEW_CODE = r"""<script>
       setTimeout(() => fit(mm), 330);
       return;
     }
+
+
 
   });
 })();
