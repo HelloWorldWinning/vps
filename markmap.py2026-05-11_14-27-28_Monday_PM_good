@@ -34,32 +34,6 @@ INITIAL_EXPAND_LEVEL = "2"
 FILLER_INPUTS = {"", "n", "N", "呢", "你", "能"}
 
 
-CSS_CODE = r"""
-
-<style id="mm-custom-css">
-
-/* Target the foreignObject directly */
-
-#mindmap g[data-depth="1"] foreignObject {
-
-  width: 130px !important;
-
-}
-
-/* Target the inner div */
-
-#mindmap g[data-depth="1"] foreignObject div {
-
-  width: 130px !important;
-
-  max-width: 130px !important;
-
-}
-
-</style>
-
-"""
-
 # Paste your generated/custom <script>...</script> here.
 # Intentionally empty per request.
 NEW_CODE = r"""<script>
@@ -1874,27 +1848,6 @@ def read_file_paths_interactive() -> list[Path]:
 # ─────────────────────────────────────────────────────────────
 
 
-def append_css_code_to_html(html_path: Path) -> None:
-    css = CSS_CODE
-
-    if not css.strip():
-        return
-
-    html = read_text(html_path)
-
-    # Avoid duplicate insertion if the file is patched more than once.
-    if 'id="mm-custom-css"' in html:
-        return
-
-    marker = "</head>"
-
-    if marker not in html:
-        raise SystemExit(f"[!] </head> not found in {html_path}")
-
-    html = html.replace(marker, css + "\n" + marker, 1)
-    write_text(html_path, html)
-
-
 def append_new_code_to_html(html_path: Path) -> None:
     code = NEW_CODE
 
@@ -1960,7 +1913,6 @@ def render_markdown_file(markdown_path: Path) -> None:
     ensure_html_favicon(outfile)
     replace_html_title(outfile, title)
 
-    append_css_code_to_html(outfile)
     append_new_code_to_html(outfile)
 
     print(f"[✓] {markdown_path} → {BR}{outfile}{RS}")
@@ -2001,7 +1953,6 @@ def render_markdown_content(markdown_text: str) -> None:
         run_markmap(tmp_path, outfile)
         ensure_html_favicon(outfile)
         replace_html_title(outfile, title)
-        append_css_code_to_html(outfile)
         append_new_code_to_html(outfile)
 
         print(f"[✓] Rendered → {BR}{outfile}{RS}")
