@@ -1,0 +1,1272 @@
+<!doctype html>
+<html>
+<head>
+<link rel="icon" href="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/icon/markmap_z7a.png">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>Raw → Features Pipeline</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+#mindmap {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+.markmap-dark {
+  background: #27272a;
+  color: white;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+<style id="mm-custom-css">
+
+/* Target the foreignObject directly */
+
+#mindmap g[data-depth="1"] foreignObject {
+
+  width: 130px !important;
+
+}
+
+/* Target the inner div */
+
+#mindmap g[data-depth="1"] foreignObject div {
+
+  width: 130px !important;
+
+  max-width: 130px !important;
+
+}
+
+</style>
+
+
+</head>
+<body>
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>((r) => {
+          setTimeout(r);
+        })(() => {
+  const { markmap, mm } = window;
+  const toolbar = new markmap.Toolbar();
+  toolbar.attach(mm);
+  const el = toolbar.render();
+  el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+  document.body.append(el);
+})</script><script>((getMarkmap, getOptions, root2, jsonOptions) => {
+              const markmap = getMarkmap();
+              window.mm = markmap.Markmap.create(
+                "svg#mindmap",
+                (getOptions || markmap.deriveOptions)(jsonOptions),
+                root2
+              );
+              if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("markmap-dark");
+              }
+            })(() => window.markmap,null,{"content":"Raw &#x2192; Features Pipeline","children":[{"content":"(Algo ML/RL Trading &#xb7; Literature Synthesis)","children":[],"payload":{"tag":"h2","lines":"8,9"}},{"content":"0 &#xb7; Raw Data Taxonomy","children":[{"content":"Price/Market Data","children":[{"content":"OHLCV (Open, High, Low, Close, Volume)","children":[{"content":"Daily / hourly / minute / tick","children":[],"payload":{"tag":"li","lines":"13,14"}},{"content":"Index, stock, futures, crypto, forex","children":[],"payload":{"tag":"li","lines":"14,15"}}],"payload":{"tag":"li","lines":"12,15"}},{"content":"Mid-price time series","children":[],"payload":{"tag":"li","lines":"15,16"}},{"content":"Bid-Ask spread series","children":[],"payload":{"tag":"li","lines":"16,17"}}],"payload":{"tag":"h3","lines":"11,12"}},{"content":"Limit Order Book (LOB)","children":[{"content":"Multi-level bid/ask price &amp; volume","children":[],"payload":{"tag":"li","lines":"18,19"}},{"content":"Full order-book depth (e.g., Nordic TotalView-ITCH)","children":[],"payload":{"tag":"li","lines":"19,20"}},{"content":"Order flow: arrivals, cancellations, executions","children":[],"payload":{"tag":"li","lines":"20,21"}},{"content":"Queue position data","children":[],"payload":{"tag":"li","lines":"21,22"}}],"payload":{"tag":"h3","lines":"17,18"}},{"content":"Alternative Data","children":[{"content":"Financial news text","children":[],"payload":{"tag":"li","lines":"23,24"}},{"content":"Social media (Twitter sentiment)","children":[],"payload":{"tag":"li","lines":"24,25"}},{"content":"Satellite imagery / GPS data","children":[],"payload":{"tag":"li","lines":"25,26"}},{"content":"Blockchain / on-chain transaction records","children":[],"payload":{"tag":"li","lines":"26,27"}},{"content":"Macro-economic indicators (interest rate, VIX, commodity prices)","children":[],"payload":{"tag":"li","lines":"27,28"}},{"content":"Patent data, earnings reports","children":[],"payload":{"tag":"li","lines":"28,29"}}],"payload":{"tag":"h3","lines":"22,23"}},{"content":"Derived / Cross-Asset","children":[{"content":"Implied volatility (VIX)","children":[],"payload":{"tag":"li","lines":"30,31"}},{"content":"Cross-asset returns (Gold, Oil, S&amp;P500, crypto)","children":[],"payload":{"tag":"li","lines":"31,32"}},{"content":"Carbon market prices","children":[],"payload":{"tag":"li","lines":"32,33"}},{"content":"Futures basis / roll","children":[],"payload":{"tag":"li","lines":"33,35"}}],"payload":{"tag":"h3","lines":"29,30"}}],"payload":{"tag":"h2","lines":"10,11"}},{"content":"1 &#xb7; Data Cleaning &amp; Quality Control","children":[{"content":"Missing Value Handling","children":[{"content":"Forward-fill / backward-fill (common baseline)","children":[],"payload":{"tag":"li","lines":"39,40"}},{"content":"Interpolation for intraday gaps","children":[],"payload":{"tag":"li","lines":"40,41"}},{"content":"Drop low-liquidity periods","children":[],"payload":{"tag":"li","lines":"41,42"}}],"payload":{"tag":"h3","lines":"38,39"}},{"content":"Outlier Detection &amp; Treatment","children":[{"content":"Z-score threshold rejection (z-score anomaly, Faraz et al.)","children":[],"payload":{"tag":"li","lines":"43,44"}},{"content":"IQR-based clipping","children":[],"payload":{"tag":"li","lines":"44,45"}},{"content":"Robust training via Talwar M-estimator (Bas et al. 2024)","children":[],"payload":{"tag":"li","lines":"45,46"}},{"content":"Median statistics in input preprocessing","children":[],"payload":{"tag":"li","lines":"46,47"}}],"payload":{"tag":"h3","lines":"42,43"}},{"content":"Look-Ahead Bias Prevention","children":[{"content":"Strict rolling-window feature computation","children":[],"payload":{"tag":"li","lines":"48,49"}},{"content":"Avoid using future statistics for normalization","children":[{"content":"Wu et al. (2020): proposed bias-free standardization method","children":[],"payload":{"tag":"li","lines":"50,51"}}],"payload":{"tag":"li","lines":"49,51"}},{"content":"Walk-forward / expanding window splits","children":[],"payload":{"tag":"li","lines":"51,52"}}],"payload":{"tag":"h3","lines":"47,48"}},{"content":"Structural Break Detection","children":[{"content":"Bai-Perron test (Lin &amp; Zhang 2022)","children":[],"payload":{"tag":"li","lines":"53,54"}},{"content":"ICSS algorithm","children":[],"payload":{"tag":"li","lines":"54,55"}},{"content":"Wavelet-based breakpoint identification","children":[],"payload":{"tag":"li","lines":"55,56"}},{"content":"Change-point detection for segmental normalization (Kim et al. 2022)","children":[],"payload":{"tag":"li","lines":"56,58"}}],"payload":{"tag":"h3","lines":"52,53"}}],"payload":{"tag":"h2","lines":"37,38"}},{"content":"2 &#xb7; Signal Decomposition &amp; Denoising","children":[{"content":"Wavelet-Based Methods","children":[{"content":"Discrete Wavelet Transform (DWT)","children":[{"content":"Decompose into approximation + detail coefficients","children":[],"payload":{"tag":"li","lines":"63,64"}},{"content":"High-frequency detail &#x2192; noise; low-frequency approx &#x2192; trend","children":[],"payload":{"tag":"li","lines":"64,65"}},{"content":"Reconstruct after thresholding detail coefficients","children":[],"payload":{"tag":"li","lines":"65,66"}},{"content":"Wu et al. (2021, 2022): DWT-ELM, DWT-AE-ELM","children":[],"payload":{"tag":"li","lines":"66,67"}},{"content":"Zhang et al. (2024): DWT-ARIMA-LSTM; MODWT variant","children":[],"payload":{"tag":"li","lines":"67,68"}}],"payload":{"tag":"h4","lines":"62,63"}},{"content":"Stationary / Max-Overlap Wavelet (SWT, MODWT)","children":[{"content":"Shift-invariant; better for irregular series","children":[],"payload":{"tag":"li","lines":"69,70"}},{"content":"Stifanic et al. (2020): SWT + BiLSTM for COVID-period stocks","children":[],"payload":{"tag":"li","lines":"70,71"}},{"content":"Ghimire et al. (2024): MoDWT-CRVFL for electricity price","children":[],"payload":{"tag":"li","lines":"71,72"}}],"payload":{"tag":"h4","lines":"68,69"}},{"content":"Empirical Wavelet Transform (EWT)","children":[{"content":"Adaptive decomposition; no predefined mother wavelet","children":[],"payload":{"tag":"li","lines":"73,74"}},{"content":"Liu &amp; Shen (2020): EWT-GRU for carbon price","children":[],"payload":{"tag":"li","lines":"74,75"}},{"content":"He et al. (2020): EWT-ARIMA-ELM hybrid","children":[],"payload":{"tag":"li","lines":"75,76"}},{"content":"Wang &amp; Wang (2020): random EWT extraction for crude oil","children":[],"payload":{"tag":"li","lines":"76,77"}}],"payload":{"tag":"h4","lines":"72,73"}},{"content":"Adaptive Wavelet Transform (AWT)","children":[{"content":"Zolfaghari &amp; Gholami (2021): AWT-LSTM-GARCH for stock index","children":[],"payload":{"tag":"li","lines":"78,79"}}],"payload":{"tag":"h4","lines":"77,78"}},{"content":"Continuous Wavelet (CWT)","children":[{"content":"Time-frequency features for structural break detection","children":[],"payload":{"tag":"li","lines":"80,81"}},{"content":"Lu et al. (2022): CWT-CNN for pairs trading","children":[],"payload":{"tag":"li","lines":"81,82"}}],"payload":{"tag":"h4","lines":"79,80"}}],"payload":{"tag":"h3","lines":"61,62"}},{"content":"Empirical Mode Decomposition (EMD) Family","children":[{"content":"Standard EMD","children":[{"content":"Decomposes into Intrinsic Mode Functions (IMFs)","children":[],"payload":{"tag":"li","lines":"84,85"}},{"content":"Issue: mode mixing","children":[],"payload":{"tag":"li","lines":"85,86"}}],"payload":{"tag":"h4","lines":"83,84"}},{"content":"EEMD / CEEMD","children":[{"content":"Ensemble EMD adds white noise to reduce mode mixing","children":[],"payload":{"tag":"li","lines":"87,88"}}],"payload":{"tag":"h4","lines":"86,87"}},{"content":"CEEMDAN","children":[{"content":"Complete EEMD with Adaptive Noise","children":[],"payload":{"tag":"li","lines":"89,90"}},{"content":"Most robust EMD variant; widely used in literature","children":[{"content":"Wang et al. (2021): CEEMDAN + LSTM + RF for carbon price","children":[],"payload":{"tag":"li","lines":"91,92"}},{"content":"Zhou et al. (2025): CEEMDAN + Autoencoder + TCN (TFR model)","children":[],"payload":{"tag":"li","lines":"92,93"}},{"content":"Dai et al. (2024): CEEMDAN + PCA + LSTM for portfolio","children":[],"payload":{"tag":"li","lines":"93,94"}},{"content":"Zhang et al. (2024): VMD-SGMD-LSTM for agricultural futures","children":[],"payload":{"tag":"li","lines":"94,95"}}],"payload":{"tag":"li","lines":"90,95"}},{"content":"Workflow: decompose &#x2192; group IMFs by complexity (via Sample Entropy) &#x2192; predict per group &#x2192; sum","children":[],"payload":{"tag":"li","lines":"95,96"}}],"payload":{"tag":"h4","lines":"88,89"}}],"payload":{"tag":"h3","lines":"82,83"}},{"content":"Variational Mode Decomposition (VMD)","children":[{"content":"Non-recursive; minimizes total variation; parameter K (modes)","children":[],"payload":{"tag":"li","lines":"97,98"}},{"content":"Zhang et al. (2022): VMD-A-LSTM-SVR for coal price","children":[],"payload":{"tag":"li","lines":"98,99"}},{"content":"Lin et al. (2022): VMD + IBiLSTM for energy price","children":[],"payload":{"tag":"li","lines":"99,100"}},{"content":"Xu et al. (2024): VMD-GWO-ATT-LSTM for electricity price","children":[],"payload":{"tag":"li","lines":"100,101"}},{"content":"Wang et al. (2023): VMD-CBAM-BiLSTM (McVCsB) for stock index","children":[],"payload":{"tag":"li","lines":"101,102"}}],"payload":{"tag":"h3","lines":"96,97"}},{"content":"Fourier Transform","children":[{"content":"FFT Denoising (P-FTD)","children":[{"content":"Song et al. (2021): padding-based FFT denoising for stock index","children":[],"payload":{"tag":"li","lines":"104,105"}},{"content":"Eliminate high-frequency noise components in frequency domain","children":[],"payload":{"tag":"li","lines":"105,106"}}],"payload":{"tag":"h4","lines":"103,104"}},{"content":"Frequency-Domain Embedding Module (FDEM)","children":[{"content":"Ou et al. (2023): FDEM extracts frequency features &#x2192; embedding","children":[],"payload":{"tag":"li","lines":"107,108"}}],"payload":{"tag":"h4","lines":"106,107"}}],"payload":{"tag":"h3","lines":"102,103"}},{"content":"Singular Spectrum Analysis (SSA)","children":[{"content":"Tang et al. (2021): WT + SSA denoising &#x2192; LSTM","children":[],"payload":{"tag":"li","lines":"109,110"}},{"content":"Decomposes series into trend, oscillations, noise","children":[],"payload":{"tag":"li","lines":"110,111"}}],"payload":{"tag":"h3","lines":"108,109"}},{"content":"Savitzky-Golay (SG) Filter","children":[{"content":"Polynomial smoothing filter; preserves peak heights","children":[],"payload":{"tag":"li","lines":"112,113"}},{"content":"Zhang et al. (2024): CEEMDAN + SG filter for CSI 300","children":[],"payload":{"tag":"li","lines":"113,114"}}],"payload":{"tag":"h3","lines":"111,112"}},{"content":"Hilbert-Huang Transform (HHT)","children":[{"content":"HHT = EMD + Hilbert Spectral Analysis","children":[],"payload":{"tag":"li","lines":"115,116"}},{"content":"Dezhkam &amp; Manzuri (2023): HHT-XGB for stock trend prediction","children":[{"content":"Performance 99.8% better than raw data baseline","children":[],"payload":{"tag":"li","lines":"117,119"}}],"payload":{"tag":"li","lines":"116,119"}}],"payload":{"tag":"h3","lines":"114,115"}}],"payload":{"tag":"h2","lines":"60,61"}},{"content":"3 &#xb7; Stationarity Transformations","children":[{"content":"Why: Traditional ML requires stationarity; DL benefits from it","children":[],"payload":{"tag":"h3","lines":"122,123"}},{"content":"Log Returns","children":[{"content":"r_t = ln(P_t / P_{t-1})","children":[],"payload":{"tag":"li","lines":"124,125"}},{"content":"Removes exponential drift; approximately stationary","children":[],"payload":{"tag":"li","lines":"125,126"}},{"content":"Standard baseline across all papers","children":[],"payload":{"tag":"li","lines":"126,127"}}],"payload":{"tag":"h3","lines":"123,124"}},{"content":"Differencing","children":[{"content":"First difference: &#x394;P_t = P_t - P_{t-1}","children":[],"payload":{"tag":"li","lines":"128,129"}},{"content":"Removes unit root / linear trend","children":[],"payload":{"tag":"li","lines":"129,130"}},{"content":"Used in ARIMA preprocessing; Livieris et al. (2021)","children":[],"payload":{"tag":"li","lines":"130,131"}}],"payload":{"tag":"h3","lines":"127,128"}},{"content":"Percentage Change (ROC)","children":[{"content":"ROC = (P_t - P_{t-k}) / P_{t-k}","children":[],"payload":{"tag":"li","lines":"132,133"}},{"content":"Dai et al. (2024): ROC as reversal indicator supplement","children":[],"payload":{"tag":"li","lines":"133,134"}}],"payload":{"tag":"h3","lines":"131,132"}},{"content":"Trend-Based Labeling","children":[{"content":"Wu et al. (2020): continuous trend labeling algorithm","children":[{"content":"Labels based on local trend direction, not point-to-point change","children":[],"payload":{"tag":"li","lines":"136,137"}},{"content":"Avoids noise-driven label flipping","children":[],"payload":{"tag":"li","lines":"137,138"}}],"payload":{"tag":"li","lines":"135,138"}},{"content":"Goluza et al. (2024): trend labeling as expert for RL reward","children":[],"payload":{"tag":"li","lines":"138,139"}}],"payload":{"tag":"h3","lines":"134,135"}},{"content":"Box-Cox / Power Transformation","children":[{"content":"Stabilizes variance; reduces skewness","children":[],"payload":{"tag":"li","lines":"140,141"}},{"content":"Used in energy and commodity price forecasting","children":[],"payload":{"tag":"li","lines":"141,142"}}],"payload":{"tag":"h3","lines":"139,140"}},{"content":"Moving Average Smoothing","children":[{"content":"Simple/Exponential MA as preprocessing step","children":[],"payload":{"tag":"li","lines":"143,144"}},{"content":"DST2V-TRANSFORMER (Preeti et al. 2022): MA smoothing in Stage 1","children":[],"payload":{"tag":"li","lines":"144,146"}}],"payload":{"tag":"h3","lines":"142,143"}}],"payload":{"tag":"h2","lines":"121,122"}},{"content":"4 &#xb7; Normalization / Scaling","children":[{"content":"(&#x4f60;&#x5df2;&#x77e5;&#x7684;&#x57fa;&#x7840;) Baseline Methods","children":[{"content":"Min-Max: x&apos; = (x - min) / (max - min)","children":[],"payload":{"tag":"li","lines":"150,151"}},{"content":"Z-score: x&apos; = (x - &#x3bc;) / &#x3c3;","children":[],"payload":{"tag":"li","lines":"151,152"}},{"content":"Robust scaler: uses IQR","children":[],"payload":{"tag":"li","lines":"152,153"}}],"payload":{"tag":"h3","lines":"149,150"}},{"content":"Rolling/Window-Based Normalization","children":[{"content":"Normalize within sliding window; avoids look-ahead","children":[],"payload":{"tag":"li","lines":"154,155"}},{"content":"Critical for non-stationary financial data","children":[],"payload":{"tag":"li","lines":"155,156"}}],"payload":{"tag":"h3","lines":"153,154"}},{"content":"Change-Point Segmental Normalization","children":[{"content":"Kim et al. (2022): detect regime breaks &#x2192; normalize per segment","children":[],"payload":{"tag":"li","lines":"157,158"}},{"content":"More stable in unseen price ranges","children":[],"payload":{"tag":"li","lines":"158,159"}}],"payload":{"tag":"h3","lines":"156,157"}},{"content":"Adaptive / Learned Normalization","children":[{"content":"Deep Adaptive Input Normalization (Passalis et al. 2020) &#x2605;","children":[{"content":"Neural layer trained end-to-end via backprop","children":[],"payload":{"tag":"li","lines":"161,162"}},{"content":"Learns how to normalize for the specific task (LOB mid-price)","children":[],"payload":{"tag":"li","lines":"162,163"}},{"content":"Accounts for data distribution; outperforms fixed schemes","children":[],"payload":{"tag":"li","lines":"163,164"}},{"content":"Applied to large-scale LOB data","children":[],"payload":{"tag":"li","lines":"164,165"}}],"payload":{"tag":"li","lines":"160,165"}},{"content":"LSTM-BN (Fang et al. 2023): batch normalization after LSTM layers","children":[],"payload":{"tag":"li","lines":"165,166"}}],"payload":{"tag":"h3","lines":"159,160"}},{"content":"Price-Volume 2D Representation","children":[{"content":"Lu et al. (2024): sliding windows + price-volume 2D structure","children":[],"payload":{"tag":"li","lines":"167,168"}},{"content":"Choi et al. (2022): bi-dimensional histogram (return &#xd7; volume) &#x2192; AE","children":[],"payload":{"tag":"li","lines":"168,170"}}],"payload":{"tag":"h3","lines":"166,167"}}],"payload":{"tag":"h2","lines":"148,149"}},{"content":"5 &#xb7; Hand-Crafted Feature Engineering","children":[{"content":"5A &#xb7; Classic Technical Indicators (from OHLCV)","children":[{"content":"Trend","children":[{"content":"Simple Moving Average (SMA), EMA","children":[],"payload":{"tag":"li","lines":"175,176"}},{"content":"MACD (Moving Average Convergence/Divergence)","children":[{"content":"Ozdogan et al. (2026): trend segmentation via MACD for CNN-Fuzzy","children":[],"payload":{"tag":"li","lines":"177,178"}}],"payload":{"tag":"li","lines":"176,178"}},{"content":"Bollinger Bands","children":[],"payload":{"tag":"li","lines":"178,179"}},{"content":"ADX (Average Directional Index)","children":[],"payload":{"tag":"li","lines":"179,180"}}],"payload":{"tag":"h4","lines":"174,175"}},{"content":"Momentum / Oscillators","children":[{"content":"RSI (Relative Strength Index)","children":[],"payload":{"tag":"li","lines":"181,182"}},{"content":"Stochastic Oscillator (%K, %D)","children":[],"payload":{"tag":"li","lines":"182,183"}},{"content":"Rate of Change (ROC / Momentum)","children":[],"payload":{"tag":"li","lines":"183,184"}},{"content":"Williams %R, CCI","children":[],"payload":{"tag":"li","lines":"184,185"}}],"payload":{"tag":"h4","lines":"180,181"}},{"content":"Volatility","children":[{"content":"ATR (Average True Range)","children":[],"payload":{"tag":"li","lines":"186,187"}},{"content":"Historical realized volatility","children":[],"payload":{"tag":"li","lines":"187,188"}},{"content":"GARCH-based conditional volatility","children":[],"payload":{"tag":"li","lines":"188,189"}}],"payload":{"tag":"h4","lines":"185,186"}},{"content":"Volume","children":[{"content":"OBV (On-Balance Volume)","children":[],"payload":{"tag":"li","lines":"190,191"}},{"content":"VWAP (Volume-Weighted Average Price)","children":[],"payload":{"tag":"li","lines":"191,192"}},{"content":"Price-Volume interaction (2D upgrade in Lu et al. 2024)","children":[],"payload":{"tag":"li","lines":"192,193"}}],"payload":{"tag":"h4","lines":"189,190"}},{"content":"Pattern Recognition","children":[{"content":"Candlestick patterns (doji, hammer, engulfing)","children":[{"content":"Lin et al. (2021): eight-trigram encoding of inter-day candlestick","children":[],"payload":{"tag":"li","lines":"195,196"}},{"content":"Alghamdi &amp; Alqithami (2025): candlestick + Bollinger + RSI &#x2192; DL","children":[],"payload":{"tag":"li","lines":"196,197"}}],"payload":{"tag":"li","lines":"194,197"}},{"content":"Elliott Wave patterns","children":[{"content":"Ben Miloud &amp; Kim (2024): encode wave patterns &#x2192; LSTM","children":[],"payload":{"tag":"li","lines":"198,199"}}],"payload":{"tag":"li","lines":"197,199"}}],"payload":{"tag":"h4","lines":"193,194"}}],"payload":{"tag":"h3","lines":"173,174"}},{"content":"5B &#xb7; Statistical &amp; Nonlinear Features","children":[{"content":"Entropy Measures","children":[{"content":"Sample Entropy (SampEn): complexity/regularity","children":[],"payload":{"tag":"li","lines":"201,202"}},{"content":"Distribution Entropy (DistEn)","children":[],"payload":{"tag":"li","lines":"202,203"}},{"content":"Shang &amp; Shang (2020): entropy plane (SampEn &#xd7; DistEn) for market complexity","children":[],"payload":{"tag":"li","lines":"203,204"}},{"content":"Multi-scale entropy (MSE): entropy across time scales","children":[{"content":"Used in Wang et al. (2022) for futures signal decomposition","children":[],"payload":{"tag":"li","lines":"205,206"}}],"payload":{"tag":"li","lines":"204,206"}}],"payload":{"tag":"h4","lines":"200,201"}},{"content":"Hurst Exponent (Long Memory)","children":[{"content":"H &lt; 0.5: anti-persistent (mean-reverting)","children":[],"payload":{"tag":"li","lines":"207,208"}},{"content":"H &gt; 0.5: persistent (trending)","children":[],"payload":{"tag":"li","lines":"208,209"}},{"content":"Karaca &amp; Baleanu (2020): R/S analysis + Wavelet Entropy &#x2192; ANN features","children":[],"payload":{"tag":"li","lines":"209,210"}}],"payload":{"tag":"h4","lines":"206,207"}},{"content":"Lyapunov Exponent (Chaos)","children":[{"content":"Positive &#x2192; chaotic; limits long-term predictability","children":[],"payload":{"tag":"li","lines":"211,212"}},{"content":"Used for chaotic time series detection (Ahmadi et al. 2022)","children":[],"payload":{"tag":"li","lines":"212,213"}},{"content":"Tang et al. (2022): max Lyapunov exponent for financial time series","children":[],"payload":{"tag":"li","lines":"213,214"}}],"payload":{"tag":"h4","lines":"210,211"}},{"content":"Correlation Dimension &amp; Embedding","children":[{"content":"Phase space reconstruction: X(t) = [x(t), x(t+&#x3c4;), ..., x(t+(m-1)&#x3c4;)]","children":[],"payload":{"tag":"li","lines":"215,216"}},{"content":"Time delay &#x3c4;: via Mutual Information / AMI","children":[],"payload":{"tag":"li","lines":"216,217"}},{"content":"Embedding dimension m: via Cao method / False Nearest Neighbors","children":[],"payload":{"tag":"li","lines":"217,218"}},{"content":"Zhu &amp; Huang (2022): Manhattan distance + RQA for embedding dimension","children":[],"payload":{"tag":"li","lines":"218,219"}},{"content":"Su et al. (2025): BLS-QLSTM uses phase space reconstruction as input","children":[],"payload":{"tag":"li","lines":"219,220"}}],"payload":{"tag":"h4","lines":"214,215"}},{"content":"Fractal Analysis","children":[{"content":"Fractal dimension of price series","children":[],"payload":{"tag":"li","lines":"221,222"}},{"content":"Blackledge &amp; Lamphiere (2022): Levy index from FMH for Bitcoin","children":[],"payload":{"tag":"li","lines":"222,223"}}],"payload":{"tag":"h4","lines":"220,221"}},{"content":"Price Structure Features","children":[{"content":"Market Profile (bell-shaped distribution of price activity)","children":[{"content":"Ju &amp; Chen (2022): CNN on time-variant market profile images","children":[],"payload":{"tag":"li","lines":"225,226"}}],"payload":{"tag":"li","lines":"224,226"}},{"content":"Price level / support-resistance zones","children":[{"content":"Sokolovsky &amp; Arnaboldi (2023): price levels as ML features","children":[],"payload":{"tag":"li","lines":"227,228"}}],"payload":{"tag":"li","lines":"226,228"}}],"payload":{"tag":"h4","lines":"223,224"}}],"payload":{"tag":"h3","lines":"199,200"}},{"content":"5C &#xb7; Order Book / LOB Features (&#x2605; Microstructure)","children":[{"content":"Direct LOB Features","children":[{"content":"Best bid/ask price and volume","children":[],"payload":{"tag":"li","lines":"230,231"}},{"content":"Mid-price = (best_bid + best_ask) / 2","children":[],"payload":{"tag":"li","lines":"231,232"}},{"content":"Bid-ask spread","children":[],"payload":{"tag":"li","lines":"232,233"}},{"content":"Multi-level LOB depth (bid/ask at k=1,2,...,10 levels)","children":[],"payload":{"tag":"li","lines":"233,234"}},{"content":"Total volume at each level","children":[],"payload":{"tag":"li","lines":"234,235"}}],"payload":{"tag":"h4","lines":"229,230"}},{"content":"Derived Microstructure Features","children":[{"content":"Price imbalance (volume imbalance between bid and ask)","children":[{"content":"I = (V_bid - V_ask) / (V_bid + V_ask)","children":[],"payload":{"tag":"li","lines":"237,238"}}],"payload":{"tag":"li","lines":"236,238"}},{"content":"Weighted mid-price","children":[],"payload":{"tag":"li","lines":"238,239"}},{"content":"Order flow imbalance (OFI)","children":[],"payload":{"tag":"li","lines":"239,240"}},{"content":"Price impact estimates","children":[],"payload":{"tag":"li","lines":"240,241"}},{"content":"Queue depth ratio","children":[],"payload":{"tag":"li","lines":"241,242"}}],"payload":{"tag":"h4","lines":"235,236"}},{"content":"Time-Sensitive Features (most important per Guo &amp; Chen 2023)","children":[{"content":"Derivatives of price (dP/dt)","children":[],"payload":{"tag":"li","lines":"243,244"}},{"content":"Derivatives of volume (dV/dt)","children":[],"payload":{"tag":"li","lines":"244,245"}},{"content":"Price-volume interaction features","children":[],"payload":{"tag":"li","lines":"245,246"}},{"content":"Guo &amp; Chen (2023): dual-stage temporal attention finds time-sensitive &gt; other features","children":[],"payload":{"tag":"li","lines":"246,247"}}],"payload":{"tag":"h4","lines":"242,243"}},{"content":"270+ Hand-Crafted LOB Features (Ntakaris et al. 2020)","children":[{"content":"Technical indicators adapted to LOB (intraday)","children":[],"payload":{"tag":"li","lines":"248,249"}},{"content":"Quantitative indicators","children":[],"payload":{"tag":"li","lines":"249,250"}},{"content":"Novel adaptive logistic regression feature","children":[{"content":"Consistently selected first in wrapper feature selection","children":[],"payload":{"tag":"li","lines":"251,252"}}],"payload":{"tag":"li","lines":"250,252"}},{"content":"Feature selection: entropy, LMS, LDA-based wrapper","children":[],"payload":{"tag":"li","lines":"252,253"}}],"payload":{"tag":"h4","lines":"247,248"}},{"content":"LOB Embedding (see &#xa7;7)","children":[{"content":"Passalis et al. (2020): Temporal Bag-of-Features on LOB","children":[],"payload":{"tag":"li","lines":"254,255"}},{"content":"Hong et al. (2024): in-network ML (programmable switches) for LOB features","children":[],"payload":{"tag":"li","lines":"255,257"}}],"payload":{"tag":"h4","lines":"253,254"}}],"payload":{"tag":"h3","lines":"228,229"}}],"payload":{"tag":"h2","lines":"172,173"}},{"content":"6 &#xb7; Feature Selection Methods","children":[{"content":"Filter Methods (model-free)","children":[{"content":"Pearson / Spearman correlation","children":[],"payload":{"tag":"li","lines":"261,262"}},{"content":"Mutual Information / entropy ranking (Memarzadeh 2021)","children":[],"payload":{"tag":"li","lines":"262,263"}},{"content":"Symbolic Transfer Entropy (Hao et al. 2024)","children":[],"payload":{"tag":"li","lines":"263,264"}},{"content":"Variance threshold","children":[],"payload":{"tag":"li","lines":"264,265"}}],"payload":{"tag":"h3","lines":"260,261"}},{"content":"Wrapper Methods","children":[{"content":"Entropy-based selection (Ntakaris et al. 2020)","children":[],"payload":{"tag":"li","lines":"266,267"}},{"content":"Least-Mean Squares (LMS) selection","children":[],"payload":{"tag":"li","lines":"267,268"}},{"content":"Linear Discriminant Analysis (LDA) selection","children":[],"payload":{"tag":"li","lines":"268,269"}},{"content":"Recursive Feature Elimination (RFE)","children":[{"content":"Gunduz (2021): VAE + RFE &#x2192; LSTM; 16.67% fewer features, similar accuracy","children":[],"payload":{"tag":"li","lines":"270,271"}}],"payload":{"tag":"li","lines":"269,271"}}],"payload":{"tag":"h3","lines":"265,266"}},{"content":"Embedded Methods","children":[{"content":"LASSO: L1 regularization &#x2192; sparse feature selection","children":[{"content":"Lv et al. (2020): LASSO + DNN; significantly improves RNN, LSTM, GRU","children":[],"payload":{"tag":"li","lines":"273,274"}}],"payload":{"tag":"li","lines":"272,274"}},{"content":"Ridge / Elastic Net","children":[],"payload":{"tag":"li","lines":"274,275"}},{"content":"Tree-based importance: Random Forest, GBDT, XGBoost","children":[{"content":"Wang et al. (2021): PCA + RF + GBDT as comprehensive feature screening","children":[],"payload":{"tag":"li","lines":"276,277"}},{"content":"Tissaoui et al. (2023): XGBoost + SHAP for feature importance ranking","children":[],"payload":{"tag":"li","lines":"277,278"}}],"payload":{"tag":"li","lines":"275,278"}}],"payload":{"tag":"h3","lines":"271,272"}},{"content":"Optimization-Based Selection","children":[{"content":"Genetic Algorithm for optimal technical indicator parameters","children":[{"content":"Zhang et al. (2023): GA + CNN-BiLSTM for optimal MA parameters","children":[],"payload":{"tag":"li","lines":"280,281"}}],"payload":{"tag":"li","lines":"279,281"}},{"content":"Evolutionary / metaheuristic selection","children":[{"content":"Exchange Market + Emperor Pigeon Optimization (EMEPO) (Dixit &amp; Soni 2023)","children":[],"payload":{"tag":"li","lines":"282,283"}}],"payload":{"tag":"li","lines":"281,283"}}],"payload":{"tag":"h3","lines":"278,279"}},{"content":"Dimensionality Reduction","children":[{"content":"PCA (Principal Component Analysis)","children":[{"content":"Linear; commonly used for macro/alternative features","children":[],"payload":{"tag":"li","lines":"285,286"}},{"content":"Dai et al. (2024): CEEMDAN + PCA + LSTM pipeline","children":[],"payload":{"tag":"li","lines":"286,287"}}],"payload":{"tag":"li","lines":"284,287"}},{"content":"CART (Classification and Regression Trees)","children":[],"payload":{"tag":"li","lines":"287,288"}},{"content":"Stacked Autoencoder (SAE) for nonlinear DR","children":[{"content":"Lv et al. (2020): PCA, LASSO, CART, AE compared across 6 DNN algorithms","children":[],"payload":{"tag":"li","lines":"289,290"}},{"content":"Gunduz (2020): stacked AE for high-dimensional all-stock features","children":[],"payload":{"tag":"li","lines":"290,291"}}],"payload":{"tag":"li","lines":"288,291"}},{"content":"t-SNE (visualization / manifold; not for trading input directly)","children":[],"payload":{"tag":"li","lines":"291,292"}},{"content":"Manifold Learning (LLE, ISOMAP)","children":[{"content":"Li et al. (2023): manifold learning + LSTM for mid-term load forecasting","children":[],"payload":{"tag":"li","lines":"293,295"}}],"payload":{"tag":"li","lines":"292,295"}}],"payload":{"tag":"h3","lines":"283,284"}}],"payload":{"tag":"h2","lines":"259,260"}},{"content":"7 &#xb7; Representation Learning &amp; Deep Feature Extraction","children":[{"content":"7A &#xb7; Autoencoder Family (&#x2605; most used in papers)","children":[{"content":"Standard Autoencoder (AE)","children":[{"content":"Encoder compresses input &#x2192; latent representation","children":[],"payload":{"tag":"li","lines":"300,301"}},{"content":"Decoder reconstructs input (unsupervised)","children":[],"payload":{"tag":"li","lines":"301,302"}},{"content":"Wu et al. (2022): DWT-AE-ELM; AE with feature penalty","children":[],"payload":{"tag":"li","lines":"302,303"}},{"content":"Dami &amp; Esterabi (2021): AE-based feature selection for Tehran stocks","children":[],"payload":{"tag":"li","lines":"303,304"}}],"payload":{"tag":"h4","lines":"299,300"}},{"content":"Stacked Autoencoder (SAE)","children":[{"content":"Multiple encoding layers for hierarchical features","children":[],"payload":{"tag":"li","lines":"305,306"}},{"content":"Da Costa &amp; Gebbie (2020): stacked AE for unsupervised feature learning","children":[],"payload":{"tag":"li","lines":"306,307"}},{"content":"Yue et al. (2022, 2022): SAE + A2C for RL portfolio; SSDAE + LSTM-AE","children":[],"payload":{"tag":"li","lines":"307,308"}}],"payload":{"tag":"h4","lines":"304,305"}},{"content":"Denoising Autoencoder (DAE)","children":[{"content":"Learns robust features by reconstructing from corrupted input","children":[],"payload":{"tag":"li","lines":"309,310"}},{"content":"Ma et al. (2022): DAE generates cleaner labels for financial time series","children":[{"content":"Self-supervised; denoised labels improve downstream classification","children":[],"payload":{"tag":"li","lines":"311,312"}}],"payload":{"tag":"li","lines":"310,312"}},{"content":"Ai et al. (2025): MT-DNN-DAE with robust feature selection (RFS) &#x2192; M6 competition 4th place","children":[],"payload":{"tag":"li","lines":"312,313"}},{"content":"Zhang et al. (2025): conditional AE (CAE) for investor attention + momentum","children":[],"payload":{"tag":"li","lines":"313,314"}}],"payload":{"tag":"h4","lines":"308,309"}},{"content":"Variational Autoencoder (VAE)","children":[{"content":"Encodes to probabilistic latent space (&#x3bc;, &#x3c3;)","children":[],"payload":{"tag":"li","lines":"315,316"}},{"content":"Handles noise; enables uncertainty estimation","children":[],"payload":{"tag":"li","lines":"316,317"}},{"content":"Gunduz (2021): VAE + RFE &#x2192; LSTM for Borsa Istanbul","children":[],"payload":{"tag":"li","lines":"317,318"}},{"content":"Koa et al. (2023): Diffusion-VAE (D-Va) for multi-step stock prediction","children":[],"payload":{"tag":"li","lines":"318,319"}},{"content":"Leushuis (2025): VAR-VAE (VAR in latent space); 3-10% MSE reduction","children":[],"payload":{"tag":"li","lines":"319,320"}},{"content":"Choudhury et al. (2020): VAE for noise removal; LSTM-AE for prediction","children":[],"payload":{"tag":"li","lines":"320,321"}}],"payload":{"tag":"h4","lines":"314,315"}},{"content":"Convolutional Autoencoder (CAE)","children":[{"content":"Extracts spatial features from price images","children":[],"payload":{"tag":"li","lines":"322,323"}},{"content":"Hung &amp; Chen (2020, 2021): DCP/DPP &#x2013; candlestick &#x2192; CAE sub-charts &#x2192; RNN","children":[],"payload":{"tag":"li","lines":"323,324"}},{"content":"Xie &amp; Yu (2021): unsupervised CAE for stock prediction (2D transform)","children":[],"payload":{"tag":"li","lines":"324,325"}},{"content":"Liu et al. (2022): CAE-LSTM for stock price image + technical data","children":[],"payload":{"tag":"li","lines":"325,326"}},{"content":"Choi et al. (2022): AE on bi-dimensional histogram (return &#xd7; volume)","children":[],"payload":{"tag":"li","lines":"326,327"}},{"content":"Guan et al. (2024): KMeans-CAE-LSTM for Chinese stock market","children":[],"payload":{"tag":"li","lines":"327,328"}}],"payload":{"tag":"h4","lines":"321,322"}},{"content":"LSTM Autoencoder (LSTM-AE)","children":[{"content":"Temporal sequence compression","children":[],"payload":{"tag":"li","lines":"329,330"}},{"content":"Bisht et al. (2020): LSTM-AE for DRL feature extraction","children":[],"payload":{"tag":"li","lines":"330,331"}},{"content":"Faraz et al. (2020): AE-LSTM for stock prediction-by-prediction","children":[],"payload":{"tag":"li","lines":"331,332"}},{"content":"Yue et al. (2022): LSTM-AE in SwanTrader portfolio RL","children":[],"payload":{"tag":"li","lines":"332,333"}}],"payload":{"tag":"h4","lines":"328,329"}}],"payload":{"tag":"h3","lines":"298,299"}},{"content":"7B &#xb7; Factor Models (Learned Factors)","children":[{"content":"FactorVAE (Duan et al. 2022)","children":[{"content":"Integrates Dynamic Factor Model + VAE","children":[],"payload":{"tag":"li","lines":"335,336"}},{"content":"Prior-posterior learning: uses future info to guide training","children":[],"payload":{"tag":"li","lines":"336,337"}},{"content":"Estimates variance (risk) + predicts returns","children":[],"payload":{"tag":"li","lines":"337,338"}},{"content":"Outperforms LSTM, GRU, Transformer baselines","children":[],"payload":{"tag":"li","lines":"338,339"}}],"payload":{"tag":"h4","lines":"334,335"}},{"content":"FactorGCL (Duan et al. 2025)","children":[{"content":"Hypergraph structure for high-order factor relationships","children":[],"payload":{"tag":"li","lines":"340,341"}},{"content":"Cascading residual architecture: extract hidden factors from residuals after prior factors","children":[],"payload":{"tag":"li","lines":"341,342"}},{"content":"Temporal residual contrastive learning guides factor extraction","children":[],"payload":{"tag":"li","lines":"342,343"}}],"payload":{"tag":"h4","lines":"339,340"}}],"payload":{"tag":"h3","lines":"333,334"}},{"content":"7C &#xb7; Graph-Based Representation","children":[{"content":"Stock Correlation Graphs","children":[{"content":"Pearson correlation &#x2192; adjacency matrix","children":[],"payload":{"tag":"li","lines":"345,346"}},{"content":"Dynamic Time Warping (DTW) for temporal correlation","children":[],"payload":{"tag":"li","lines":"346,347"}},{"content":"Manhattan distance for pairwise similarity","children":[],"payload":{"tag":"li","lines":"347,348"}}],"payload":{"tag":"h4","lines":"344,345"}},{"content":"GNN-Based Stock Embeddings","children":[{"content":"GCN, GraphSAGE, GAT for stock node embedding","children":[],"payload":{"tag":"li","lines":"349,350"}},{"content":"You et al. (2024): multi-relational diffusion GNN with information entropy edge weights","children":[],"payload":{"tag":"li","lines":"350,351"}},{"content":"Tian et al. (2025): multilayer spatial-temporal GNN (MST-GNN)","children":[],"payload":{"tag":"li","lines":"351,352"}},{"content":"Zhu et al. (2025): DIP-GNN with Pearson + Manhattan + DTW dynamic graphs","children":[],"payload":{"tag":"li","lines":"352,353"}},{"content":"Wang et al. (2026): GCN-KAN with autocorrelation function graph construction","children":[],"payload":{"tag":"li","lines":"353,354"}}],"payload":{"tag":"h4","lines":"348,349"}},{"content":"Hypergraph Models","children":[{"content":"FactorGCL: hyperedges capture group relationships beyond pairwise","children":[],"payload":{"tag":"li","lines":"355,356"}}],"payload":{"tag":"h4","lines":"354,355"}},{"content":"Network Embedding for Transactions","children":[{"content":"trans2vec (Wu et al. 2022): transaction network embedding (Ethereum)","children":[],"payload":{"tag":"li","lines":"357,358"}},{"content":"Node2vec, GraphSAGE for patent and blockchain graphs","children":[],"payload":{"tag":"li","lines":"358,359"}}],"payload":{"tag":"h4","lines":"356,357"}}],"payload":{"tag":"h3","lines":"343,344"}},{"content":"7D &#xb7; Self-Supervised &amp; Contrastive Learning","children":[{"content":"Denoised Label Generation (Ma et al. 2022)","children":[{"content":"DAE as pretext task &#x2192; cleaner labels for supervised downstream","children":[],"payload":{"tag":"li","lines":"361,362"}}],"payload":{"tag":"h4","lines":"360,361"}},{"content":"Multi-Granularity Denoising Contrastive (MDC) (Wang et al. 2024)","children":[{"content":"Fuses daily + high-frequency data via contrastive learning","children":[],"payload":{"tag":"li","lines":"363,364"}},{"content":"Dynamic memory dictionary filters noise","children":[],"payload":{"tag":"li","lines":"364,365"}},{"content":"Granularity domain adaptation (GDA) handles temporal inconsistency","children":[],"payload":{"tag":"li","lines":"365,366"}}],"payload":{"tag":"h4","lines":"362,363"}},{"content":"Knowledge Distillation from Technical Indicators (Fang et al. 2020)","children":[{"content":"Neural network represents each technical indicator","children":[],"payload":{"tag":"li","lines":"367,368"}},{"content":"Prior knowledge (indicator logic) encoded as network weights","children":[],"payload":{"tag":"li","lines":"368,369"}},{"content":"Co-distillation compresses large network &#x2192; smaller robust model","children":[],"payload":{"tag":"li","lines":"369,370"}}],"payload":{"tag":"h4","lines":"366,367"}},{"content":"Pre-Training on Large Financial Datasets","children":[{"content":"LENS (Xu et al. 2025): large pre-trained transformer on 100B financial observations","children":[{"content":"Invertible embedding module mitigates noise during pre-training","children":[],"payload":{"tag":"li","lines":"372,373"}}],"payload":{"tag":"li","lines":"371,373"}}],"payload":{"tag":"h4","lines":"370,371"}}],"payload":{"tag":"h3","lines":"359,360"}},{"content":"7E &#xb7; Temporal &amp; Positional Embeddings","children":[{"content":"Learnable positional embedding (TLACP model, Li 2024)","children":[],"payload":{"tag":"li","lines":"374,375"}},{"content":"Time2Vec / vector representation for time","children":[{"content":"DST2V-TRANSFORMER (Preeti et al. 2022): time embedding for periodic patterns","children":[],"payload":{"tag":"li","lines":"376,377"}}],"payload":{"tag":"li","lines":"375,377"}},{"content":"Frequency-domain embedding (FDEM): FFT &#x2192; embedding vector (Ou et al. 2023)","children":[],"payload":{"tag":"li","lines":"377,378"}},{"content":"Multi-granularity embedding (Wang et al. 2024): daily + HF data in shared space","children":[],"payload":{"tag":"li","lines":"378,379"}}],"payload":{"tag":"h3","lines":"373,374"}},{"content":"7F &#xb7; State Representation Learning for RL","children":[{"content":"Offline Dimensionality Reduction + Clustering","children":[{"content":"Park &amp; Lee (2021): SIRL-Trader","children":[{"content":"Offline: DR + clustering &#x2192; extract robust state features","children":[],"payload":{"tag":"li","lines":"382,383"}},{"content":"Online: co-train regression + RL model for accurate state","children":[],"payload":{"tag":"li","lines":"383,384"}}],"payload":{"tag":"li","lines":"381,384"}}],"payload":{"tag":"h4","lines":"380,381"}},{"content":"Predictive Representation for Market Making","children":[{"content":"Niu et al. (2024): IMM model &#x2013; representation captures short + long-term trends","children":[],"payload":{"tag":"li","lines":"385,386"}},{"content":"Captures adverse selection risk","children":[],"payload":{"tag":"li","lines":"386,387"}}],"payload":{"tag":"h4","lines":"384,385"}},{"content":"Imitation Learning as Feature Signal","children":[{"content":"Goluza et al. (2024): trend labeling expert &#x2192; imitation reward for RL agent","children":[],"payload":{"tag":"li","lines":"388,389"}},{"content":"Integrates expert signal into RL reward function","children":[],"payload":{"tag":"li","lines":"389,391"}}],"payload":{"tag":"h4","lines":"387,388"}}],"payload":{"tag":"h3","lines":"379,380"}}],"payload":{"tag":"h2","lines":"297,298"}},{"content":"8 &#xb7; Text / NLP Feature Engineering","children":[{"content":"Raw Text Sources","children":[{"content":"Financial news articles (Reuters, CNBC, Motley Fool)","children":[],"payload":{"tag":"li","lines":"395,396"}},{"content":"Social media (Twitter, Weibo)","children":[],"payload":{"tag":"li","lines":"396,397"}},{"content":"Earnings reports, current reports","children":[],"payload":{"tag":"li","lines":"397,398"}},{"content":"Research reports (soybean meal example: Zhu et al. 2025)","children":[],"payload":{"tag":"li","lines":"398,399"}}],"payload":{"tag":"h3","lines":"394,395"}},{"content":"Classical NLP Features","children":[{"content":"Bag of Words (BoW)","children":[],"payload":{"tag":"li","lines":"400,401"}},{"content":"TF-IDF (Term Frequency-Inverse Document Frequency)","children":[],"payload":{"tag":"li","lines":"401,402"}},{"content":"N-gram features","children":[],"payload":{"tag":"li","lines":"402,403"}},{"content":"POS (Part of Speech) tags","children":[],"payload":{"tag":"li","lines":"403,404"}}],"payload":{"tag":"h3","lines":"399,400"}},{"content":"Word Embedding Approaches","children":[{"content":"Word2Vec (context-free)","children":[],"payload":{"tag":"li","lines":"405,406"}},{"content":"ELMo (contextual)","children":[],"payload":{"tag":"li","lines":"406,407"}},{"content":"GloVe","children":[],"payload":{"tag":"li","lines":"407,408"}}],"payload":{"tag":"h3","lines":"404,405"}},{"content":"Transformer-Based Features (&#x2605; state-of-art)","children":[{"content":"BERT / FinBERT","children":[],"payload":{"tag":"li","lines":"409,410"}},{"content":"RoBERTa, TinyBERT","children":[{"content":"Zhu et al. (2025): 128-dim TinyBERT features for futures price + backtesting","children":[],"payload":{"tag":"li","lines":"411,412"}}],"payload":{"tag":"li","lines":"410,412"}},{"content":"Lin et al. (2022): CNN+Word2Vec and CNN+BERT best performing pair","children":[],"payload":{"tag":"li","lines":"412,413"}}],"payload":{"tag":"h3","lines":"408,409"}},{"content":"Sentiment-Derived Features","children":[{"content":"Pre-trained sentiment classifier output &#x2192; embedding","children":[{"content":"Ma et al. (2023): MAC &#x2013; fit news to real stock movements for sentiment embedding","children":[],"payload":{"tag":"li","lines":"415,416"}}],"payload":{"tag":"li","lines":"414,416"}},{"content":"SentiStrength scores","children":[],"payload":{"tag":"li","lines":"416,417"}},{"content":"Lexicon-based features","children":[],"payload":{"tag":"li","lines":"417,418"}}],"payload":{"tag":"h3","lines":"413,414"}},{"content":"Alternative Text Preprocessing","children":[{"content":"Lowercase, punctuation removal, stop word removal, tokenization","children":[],"payload":{"tag":"li","lines":"419,420"}},{"content":"Domain-specific financial vocabulary","children":[],"payload":{"tag":"li","lines":"420,421"}}],"payload":{"tag":"h3","lines":"418,419"}},{"content":"Sentiment Feature Fusion with Numerical Features","children":[{"content":"Concatenate/fuse text embeddings with OHLCV-derived features","children":[{"content":"Kamal et al. (2026): historical price + technical indicators + macro + sentiment &#x2192; hybrid DL","children":[],"payload":{"tag":"li","lines":"423,425"}}],"payload":{"tag":"li","lines":"422,425"}}],"payload":{"tag":"h3","lines":"421,422"}}],"payload":{"tag":"h2","lines":"393,394"}},{"content":"9 &#xb7; Image / Chart Feature Engineering","children":[{"content":"Candlestick Chart Image","children":[{"content":"Convert OHLCV sequence to 2D image","children":[],"payload":{"tag":"li","lines":"429,430"}},{"content":"DCP (Hung &amp; Chen 2020): chart decomposer &#x2192; CNN-AE &#x2192; 1D-CNN","children":[],"payload":{"tag":"li","lines":"430,431"}},{"content":"DPP (Hung &amp; Chen 2021): chart decomposer &#x2192; CNN-AE &#x2192; RNN","children":[],"payload":{"tag":"li","lines":"431,432"}}],"payload":{"tag":"h3","lines":"428,429"}},{"content":"Market Profile Structures","children":[{"content":"Ju &amp; Chen (2022): price activities &#x2192; bell-shaped distribution image","children":[{"content":"CNN identifies greed/fear; time causality preserved in image design","children":[],"payload":{"tag":"li","lines":"434,435"}}],"payload":{"tag":"li","lines":"433,435"}}],"payload":{"tag":"h3","lines":"432,433"}},{"content":"Computer Vision on Chart Patterns","children":[{"content":"Mohammadiha et al. (2025): ORB/SIFT/AKAZE + LightGBM for 9-class chart pattern classification","children":[{"content":"90.6% accuracy; eliminates need for manual feature extraction","children":[],"payload":{"tag":"li","lines":"437,438"}}],"payload":{"tag":"li","lines":"436,438"}}],"payload":{"tag":"h3","lines":"435,436"}},{"content":"Stock Price Image Features (Time Series &#x2192; 2D)","children":[{"content":"Xie &amp; Yu (2021): 1D price &#x2192; 2D matrix &#x2192; CAE for feature extraction","children":[],"payload":{"tag":"li","lines":"439,440"}},{"content":"Liu et al. (2022): price image morphological features + technical data &#x2192; CAE-LSTM","children":[],"payload":{"tag":"li","lines":"440,441"}},{"content":"Guan et al. (2024): Kmeans-CAE-LSTM; image features concatenated with technical features","children":[],"payload":{"tag":"li","lines":"441,443"}}],"payload":{"tag":"h3","lines":"438,439"}}],"payload":{"tag":"h2","lines":"427,428"}},{"content":"10 &#xb7; Hybrid Pipeline Architectures (RAW &#x2192; FEATURES &#x2192; MODEL)","children":[{"content":"Decompose-Predict-Reconstruct (DPR) Pipeline &#x2605;","children":[{"content":"Step 1: Decompose original series (VMD, CEEMDAN, DWT, EWT)","children":[],"payload":{"tag":"li","lines":"447,448"}},{"content":"Step 2: Predict each sub-component independently","children":[],"payload":{"tag":"li","lines":"448,449"}},{"content":"Step 3: Sum predictions for final output","children":[],"payload":{"tag":"li","lines":"449,450"}},{"content":"Key advantage: simpler, more stationary sub-problems","children":[],"payload":{"tag":"li","lines":"450,451"}},{"content":"Risk: cumulative error; Wang et al. (2023) McVCsB uses multi-channel input to address this","children":[],"payload":{"tag":"li","lines":"451,452"}}],"payload":{"tag":"h3","lines":"446,447"}},{"content":"Two-Stage Feature Dimension Reduction","children":[{"content":"Xu et al. (2022): CEEMDAN &#x2192; Stacked AE &#x2192; PCA+RF+GBDT &#x2192; BiLSTM","children":[{"content":"Stage 1: decomposition features via SAE","children":[],"payload":{"tag":"li","lines":"454,455"}},{"content":"Stage 2: exogenous variable selection via filter+wrapper combo","children":[],"payload":{"tag":"li","lines":"455,456"}}],"payload":{"tag":"li","lines":"453,456"}}],"payload":{"tag":"h3","lines":"452,453"}},{"content":"Multi-Source Feature Fusion","children":[{"content":"Wang et al. (2023): depth feature extraction = VMD + SG filter (denoise) + Spearman + SAE (DR)","children":[],"payload":{"tag":"li","lines":"457,458"}},{"content":"Structured time series + unstructured text &#x2192; joint model","children":[{"content":"Zhu et al. (2025): XGBoost/LightGBM (structured) + TinyBERT (unstructured) &#x2192; compressed hybrid","children":[],"payload":{"tag":"li","lines":"459,460"}}],"payload":{"tag":"li","lines":"458,460"}}],"payload":{"tag":"h3","lines":"456,457"}},{"content":"Error Correction Module","children":[{"content":"Niu et al. (2022): base model predicts &#x2192; error sequence also predicted &#x2192; correction applied","children":[],"payload":{"tag":"li","lines":"461,462"}},{"content":"Ghimire et al. (2024): VMD-CLSTM &#x2192; error &#x2192; VMD-RF correction","children":[],"payload":{"tag":"li","lines":"462,463"}}],"payload":{"tag":"h3","lines":"460,461"}},{"content":"Ensemble of Feature Spaces","children":[{"content":"Lei et al. (2020): TFJ-DRL &#x2013; adaptive reweighting of multiple financial signal features","children":[{"content":"Temporal attention selects &amp; reweights features dynamically per state","children":[],"payload":{"tag":"li","lines":"465,466"}}],"payload":{"tag":"li","lines":"464,466"}},{"content":"Multi-scale temporal memory (Wang et al. 2025): MTMD fuses local + global temporal scales","children":[],"payload":{"tag":"li","lines":"466,468"}}],"payload":{"tag":"h3","lines":"463,464"}}],"payload":{"tag":"h2","lines":"445,446"}},{"content":"11 &#xb7; RL-Specific Feature / State Design","children":[{"content":"State Representation Components","children":[{"content":"Technical indicator vector (common baseline)","children":[],"payload":{"tag":"li","lines":"472,473"}},{"content":"Portfolio position / holdings vector","children":[],"payload":{"tag":"li","lines":"473,474"}},{"content":"Account state (cash, equity, drawdown)","children":[],"payload":{"tag":"li","lines":"474,475"}},{"content":"Volatility regime features","children":[],"payload":{"tag":"li","lines":"475,476"}}],"payload":{"tag":"h3","lines":"471,472"}},{"content":"State Normalization for RL","children":[{"content":"Critical: non-normalized states destabilize policy gradient","children":[],"payload":{"tag":"li","lines":"477,478"}},{"content":"Rolling Z-score or min-max per episode segment","children":[],"payload":{"tag":"li","lines":"478,479"}}],"payload":{"tag":"h3","lines":"476,477"}},{"content":"Reward Shaping via Feature-Based Signals","children":[{"content":"Price trailing reward (Tsantekidis et al. 2021): price-trailing-based reward &#x2192; stable gradients","children":[],"payload":{"tag":"li","lines":"480,481"}},{"content":"Imitation reward (Goluza et al. 2024): trend labeling expert guides agent","children":[],"payload":{"tag":"li","lines":"481,482"}},{"content":"Multi-objective reward: profit + risk (Sharpe, Omega, Calmar)","children":[],"payload":{"tag":"li","lines":"482,483"}}],"payload":{"tag":"h3","lines":"479,480"}},{"content":"Online vs Offline State Learning","children":[{"content":"Park &amp; Lee (2021): offline clustering &#x2192; compressed state; online co-train regression + RL","children":[],"payload":{"tag":"li","lines":"484,485"}},{"content":"Niu et al. (2024): representation unit captures short + long-term trends online","children":[],"payload":{"tag":"li","lines":"485,487"}}],"payload":{"tag":"h3","lines":"483,484"}}],"payload":{"tag":"h2","lines":"470,471"}},{"content":"12 &#xb7; Key Findings &amp; Practical Conclusions","children":[{"content":"On Denoising","children":[{"content":"Denoising almost universally improves downstream ML performance","children":[],"payload":{"tag":"li","lines":"491,492"}},{"content":"Wavelet denoising &gt; no denoising in 90%+ of reviewed studies","children":[],"payload":{"tag":"li","lines":"492,493"}},{"content":"CEEMDAN is the most popular decomposition in 2022-2025 literature","children":[],"payload":{"tag":"li","lines":"493,494"}},{"content":"Combining two decomposition methods (secondary decomposition) further improves (Li &amp; Liu 2023)","children":[],"payload":{"tag":"li","lines":"494,495"}}],"payload":{"tag":"h3","lines":"490,491"}},{"content":"On Normalization (extending your prior knowledge)","children":[{"content":"Adaptive / task-learned normalization outperforms fixed schemes (Passalis et al. 2020)","children":[],"payload":{"tag":"li","lines":"496,497"}},{"content":"Change-point segmental normalization essential for unseen price ranges (Kim et al. 2022)","children":[],"payload":{"tag":"li","lines":"497,498"}},{"content":"For RL: rolling normalization per episode/window is standard","children":[],"payload":{"tag":"li","lines":"498,499"}},{"content":"Look-ahead bias in normalization is a common but serious mistake (Wu et al. 2020)","children":[],"payload":{"tag":"li","lines":"499,500"}}],"payload":{"tag":"h3","lines":"495,496"}},{"content":"On Feature Engineering vs End-to-End","children":[{"content":"Hand-crafted features still competitive, especially for LOB data (Ntakaris et al. 2020)","children":[],"payload":{"tag":"li","lines":"501,502"}},{"content":"Deep features (AE, VAE) often add 5-20% accuracy over raw technical indicators","children":[],"payload":{"tag":"li","lines":"502,503"}},{"content":"Hybrid = hand-crafted + learned features usually best (BiLSTM + enhanced dataset: -68% MSE)","children":[],"payload":{"tag":"li","lines":"503,504"}}],"payload":{"tag":"h3","lines":"500,501"}},{"content":"On Dimensionality Reduction","children":[{"content":"LASSO significantly helps RNN/LSTM/GRU but not MLP/DBN/SAE (Lv et al. 2020)","children":[],"payload":{"tag":"li","lines":"505,506"}},{"content":"VAE-based DR achieves similar accuracy with 16.67% fewer features (Gunduz 2021)","children":[],"payload":{"tag":"li","lines":"506,507"}},{"content":"PCA+RF+GBDT combo for feature screening is comprehensive and widely adopted","children":[],"payload":{"tag":"li","lines":"507,508"}}],"payload":{"tag":"h3","lines":"504,505"}},{"content":"On LOB Features","children":[{"content":"Time-sensitive features (dP/dt, dV/dt) most important in LOB (Guo &amp; Chen 2023)","children":[],"payload":{"tag":"li","lines":"509,510"}},{"content":"More than 270 features possible from LOB; wrapper selection is key (Ntakaris et al. 2020)","children":[],"payload":{"tag":"li","lines":"510,511"}},{"content":"Temporal Bag-of-Features captures both short-term + long-term LOB dynamics","children":[],"payload":{"tag":"li","lines":"511,512"}}],"payload":{"tag":"h3","lines":"508,509"}},{"content":"On Representation Learning","children":[{"content":"VAE-based factor models (FactorVAE) handle low signal-to-noise better than point estimates","children":[],"payload":{"tag":"li","lines":"513,514"}},{"content":"Self-supervised denoising labels improve downstream performance on both small and large datasets","children":[],"payload":{"tag":"li","lines":"514,515"}},{"content":"Graph-based embeddings capture inter-stock relationships lost in univariate features","children":[],"payload":{"tag":"li","lines":"515,516"}}],"payload":{"tag":"h3","lines":"512,513"}},{"content":"On Alternative Data","children":[{"content":"Sentiment from pre-trained language models &gt; TF-IDF &gt; BoW for stock movement","children":[],"payload":{"tag":"li","lines":"517,518"}},{"content":"CNN+Word2Vec and CNN+BERT are strongest text+model combos (Lin et al. 2022)","children":[],"payload":{"tag":"li","lines":"518,519"}},{"content":"Alternative data requires prospecting + standardization effort before use (Hansen &amp; Borch 2022)","children":[],"payload":{"tag":"li","lines":"519,520"}}],"payload":{"tag":"h3","lines":"516,517"}},{"content":"On Stationarity (extending your prior knowledge)","children":[{"content":"Continuous trend labeling &gt; point-to-point labels for non-stationary series (Wu et al. 2020)","children":[],"payload":{"tag":"li","lines":"521,522"}},{"content":"Smoothing &#x2192; differencing two-stage pipeline reliably improves DL forecasting (Livieris et al. 2021)","children":[],"payload":{"tag":"li","lines":"522,523"}},{"content":"Phase space reconstruction adds chaos-theory-based stationarity for chaotic seriese","children":[],"payload":{"tag":"li","lines":"523,524"}}],"payload":{"tag":"h3","lines":"520,521"}}],"payload":{"tag":"h2","lines":"489,490"}}],"payload":{"tag":"h1","lines":"7,8"}},{"initialExpandLevel":2,"colorFreezeLevel":2,"maxWidth":400})</script>
+<script>
+(() => {
+  function walk(node, fn, depth = 1) {
+    if (!node) return;
+
+    fn(node, depth);
+
+    if (node.children) {
+      node.children.forEach(child => walk(child, fn, depth + 1));
+    }
+  }
+
+  function getMaxDepth(root) {
+    let maxDepth = 1;
+
+    walk(root, (_, depth) => {
+      maxDepth = Math.max(maxDepth, depth);
+    });
+
+    return maxDepth;
+  }
+
+  function getVisibleDepth(node, depth = 1) {
+    if (!node) return 1;
+
+    let maxVisible = depth;
+
+    if (!node.payload?.fold && node.children) {
+      for (const child of node.children) {
+        maxVisible = Math.max(maxVisible, getVisibleDepth(child, depth + 1));
+      }
+    }
+
+    return maxVisible;
+  }
+
+  function setVisibleDepth(mm, visibleDepth) {
+    const data = mm.state.data;
+    const maxDepth = getMaxDepth(data);
+
+    visibleDepth = Math.max(1, Math.min(visibleDepth, maxDepth));
+
+    walk(data, (node, depth) => {
+      if (!node.children || node.children.length === 0) return;
+
+      node.payload = {
+        ...node.payload,
+        fold: depth >= visibleDepth ? 1 : 0
+      };
+    });
+
+    mm.renderData(data);
+  }
+
+  function expandAll(mm) {
+    const data = mm.state.data;
+
+    walk(data, node => {
+      if (!node.children || node.children.length === 0) return;
+
+      node.payload = {
+        ...node.payload,
+        fold: 0
+      };
+    });
+
+    mm.renderData(data);
+  }
+
+  function fit(mm) {
+    mm.fit();
+  }
+
+  function decodeHtml(value) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = String(value || "");
+    return textarea.value;
+  }
+
+  function stripHtml(value) {
+    const div = document.createElement("div");
+    div.innerHTML = String(value || "");
+    return div.textContent || div.innerText || "";
+  }
+
+  function normalizeText(value) {
+    return stripHtml(decodeHtml(value))
+      .normalize("NFKC")
+      .replace(/[\u200B-\u200D\uFEFF]/g, "")
+      .replace(/\u00A0/g, " ")
+      .replace(/\s+/g, " ")
+      .toLowerCase()
+      .trim();
+  }
+
+  function normalizeTextCompact(value) {
+    return normalizeText(value).replace(/\s+/g, "");
+  }
+
+  function getNodeText(node) {
+    return [
+      node.content,
+      node.payload?.text,
+      node.payload?.label,
+      node.payload?.title
+    ]
+      .filter(Boolean)
+      .map(normalizeText)
+      .join(" ");
+  }
+
+  function textIncludes(text, keyword) {
+    const source = normalizeText(text);
+    const target = normalizeText(keyword);
+
+    if (!target) return false;
+    if (source.includes(target)) return true;
+
+    return normalizeTextCompact(source).includes(normalizeTextCompact(target));
+  }
+
+  function findPaths(root, keyword) {
+    const results = [];
+
+    function dfs(node, path) {
+      if (!node) return;
+
+      const currentPath = [...path, node];
+      const text = getNodeText(node);
+
+      if (textIncludes(text, keyword)) {
+        results.push(currentPath);
+      }
+
+      if (node.children) {
+        node.children.forEach(child => dfs(child, currentPath));
+      }
+    }
+
+    dfs(root, []);
+    return results;
+  }
+
+  function clearFindHighlight() {
+    document
+      .querySelectorAll(".mm-find-box")
+      .forEach(el => el.remove());
+
+    document
+      .querySelectorAll(".mm-find-hit")
+      .forEach(el => el.classList.remove("mm-find-hit"));
+  }
+
+  function drawFindBoxes() {
+    const SVG_NS = "http://www.w3.org/2000/svg";
+
+    document.querySelectorAll(".mm-find-hit").forEach(el => {
+      // Remove old box first so repeated redraws do not stack or overlap.
+      el.querySelectorAll(".mm-find-box").forEach(box => box.remove());
+
+      const target = el.querySelector("foreignObject, text");
+      if (!target || typeof target.getBBox !== "function") return;
+
+      let box;
+      try {
+        box = target.getBBox();
+      } catch {
+        return;
+      }
+
+      const padX = 5;
+      const padY = 4;
+
+      const rect = document.createElementNS(SVG_NS, "rect");
+      rect.setAttribute("class", "mm-find-box");
+      rect.setAttribute("x", box.x - padX);
+      rect.setAttribute("y", box.y - padY);
+      rect.setAttribute("width", box.width + padX * 2);
+      rect.setAttribute("height", box.height + padY * 2);
+      rect.setAttribute("rx", 6);
+      rect.setAttribute("ry", 6);
+
+      el.insertBefore(rect, el.firstChild);
+    });
+  }
+
+  function highlightRenderedNodes(keyword) {
+    clearFindHighlight();
+
+    document.querySelectorAll(".markmap-node").forEach(el => {
+      if (textIncludes(el.textContent, keyword)) {
+        el.classList.add("mm-find-hit");
+      }
+    });
+
+    drawFindBoxes();
+
+    return document.querySelectorAll(".mm-find-hit").length;
+  }
+
+  function highlightRenderedNodesWhenReady(keyword) {
+    let tries = 0;
+    let foundCount = 0;
+    const maxTries = 45;
+
+    function retry() {
+      const hits = highlightRenderedNodes(keyword);
+
+      if (hits > 0) {
+        foundCount += 1;
+      }
+
+      tries += 1;
+
+      // Keep refreshing after first hit so boxes remain correct after expansion/layout animation.
+      if (tries < maxTries && foundCount < 8) {
+        setTimeout(() => requestAnimationFrame(retry), 80);
+      }
+    }
+
+    requestAnimationFrame(retry);
+  }
+
+  function ensureFindStyle() {
+    if (document.getElementById("mm-find-style")) return;
+
+    const style = document.createElement("style");
+    style.id = "mm-find-style";
+
+    style.textContent = `
+      .mm-find-hit text {
+        fill: #000 !important;
+        font-weight: 700;
+      }
+
+      .mm-find-hit circle {
+        fill: #ff3d00 !important;
+        stroke: #ffffff !important;
+        stroke-width: 2px !important;
+      }
+
+      .mm-find-hit foreignObject {
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+      }
+
+      .mm-find-box {
+        fill: rgba(255, 193, 7, 0.18);
+        stroke: #ff3d00;
+        stroke-width: 2.5px;
+        vector-effect: non-scaling-stroke;
+        filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.75));
+        pointer-events: none;
+        animation: mmFindBoxPulse 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes mmFindBoxPulse {
+        from {
+          stroke-opacity: 0.75;
+          filter: drop-shadow(0 0 3px rgba(255, 152, 0, 0.55));
+        }
+        to {
+          stroke-opacity: 1;
+          filter: drop-shadow(0 0 8px rgba(255, 61, 0, 0.85));
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function openMatchedPaths(matches) {
+    matches.forEach(path => {
+      path.slice(0, -1).forEach(node => {
+        if (node.children && node.children.length > 0) {
+          node.payload = {
+            ...node.payload,
+            fold: 0
+          };
+        }
+      });
+    });
+  }
+
+  function findInMap(mm) {
+    const keyword = prompt("Find in map:");
+
+    if (!keyword || !keyword.trim()) return;
+
+    ensureFindStyle();
+
+    const data = mm.state.data;
+    const matches = findPaths(data, keyword);
+
+    if (matches.length === 0) {
+      clearFindHighlight();
+      alert(`No match: ${keyword}`);
+      return;
+    }
+
+    openMatchedPaths(matches);
+    mm.renderData(data);
+
+    highlightRenderedNodesWhenReady(keyword);
+
+    setTimeout(() => {
+      mm.fit();
+    }, 200);
+  }
+
+  document.addEventListener("keydown", e => {
+    const mm = window.mm;
+    if (!mm || !mm.state?.data) return;
+
+    const tag = e.target?.tagName?.toLowerCase();
+
+    if (
+      tag === "input" ||
+      tag === "textarea" ||
+      tag === "select" ||
+      e.target?.isContentEditable
+    ) {
+      return;
+    }
+
+    const data = mm.state.data;
+    const visibleDepth = getVisibleDepth(data);
+    const maxDepth = getMaxDepth(data);
+
+    if (e.key === " " || e.key === "0") {
+      e.preventDefault();
+      fit(mm);
+      return;
+    }
+
+    if (e.key === "f" ||  e.key === "F")  {
+      e.preventDefault();
+      findInMap(mm);
+      return;
+    }
+
+    if (e.key === "g" || e.key === "G" || e.key === "Enter") {
+      e.preventDefault();
+      expandAll(mm);
+      setTimeout(() => fit(mm), 330);
+      return;
+    }
+
+    if (e.key === "d" ||  e.key === "D") {
+      e.preventDefault();
+      setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
+      setTimeout(() => fit(mm), 330);
+      return;
+    }
+
+    if (e.key === "s" ||  e.key === "S"   ) {
+      e.preventDefault();
+      setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
+      setTimeout(() => fit(mm), 330);
+      return;
+    }
+
+    if (e.key === "a" || e.key === "A"  ) {
+      e.preventDefault();
+      setVisibleDepth(mm, 1);
+      setTimeout(() => fit(mm), 330);
+      return;
+    }
+
+    if (/^[1-9]$/.test(e.key)) {
+      e.preventDefault();
+      setVisibleDepth(mm, Number(e.key));
+      setTimeout(() => fit(mm), 330);
+      return;
+    }
+
+  });
+})();
+</script>
+
+<script>
+(() => {
+  const MAX_SEQUENCE_LENGTH = 32;
+  const RENDER_SETTLE_MS = 360;
+
+  // Zoom tuning.
+  // Zoom window = selected node + rendered descendants within requested expanded levels.
+  const FOCUS_ZOOM_DURATION_MS = 320;
+  const FOCUS_MIN_SCALE = 0.12;
+  const FOCUS_MAX_SCALE = 2.25;
+  const FOCUS_PADDING_X = 180;
+  const FOCUS_PADDING_Y = 120;
+
+  let shiftNavActive = false;
+  let shiftNavBuffer = "";
+  let hudTimer = null;
+
+  function isEditableTarget(target) {
+    const tag = target?.tagName?.toLowerCase();
+
+    return (
+      tag === "input" ||
+      tag === "textarea" ||
+      tag === "select" ||
+      target?.isContentEditable
+    );
+  }
+
+  function getDigitFromEvent(e) {
+    const code = e.code || "";
+    const match = code.match(/^(Digit|Numpad)(\d)$/);
+
+    if (match) return match[2];
+    if (/^\d$/.test(e.key || "")) return e.key;
+
+    return "";
+  }
+
+  function getSeparatorFromEvent(e) {
+    if (e.key === "~") return "~";
+    if (e.shiftKey && e.code === "Backquote") return "~";
+    return "";
+  }
+
+  function getNavCharFromEvent(e) {
+    return getDigitFromEvent(e) || getSeparatorFromEvent(e);
+  }
+
+  function walk(node, fn, depth = 1, path = []) {
+    if (!node) return;
+
+    const currentPath = [...path, node];
+    fn(node, depth, currentPath);
+
+    if (Array.isArray(node.children)) {
+      node.children.forEach(child => walk(child, fn, depth + 1, currentPath));
+    }
+  }
+
+  function hasChildren(node) {
+    return Array.isArray(node?.children) && node.children.length > 0;
+  }
+
+  function setFold(node, fold) {
+    if (!hasChildren(node)) return;
+
+    node.payload = {
+      ...node.payload,
+      fold
+    };
+  }
+
+  function collapseAll(root) {
+    walk(root, node => {
+      if (hasChildren(node)) setFold(node, 1);
+    });
+  }
+
+  function collectNodesAtDepth(root, targetDepth) {
+    const results = [];
+
+    walk(root, (node, depth, path) => {
+      if (depth === targetDepth) {
+        results.push({ node, path });
+      }
+    });
+
+    return results;
+  }
+
+  function openPathToTarget(path) {
+    path.slice(0, -1).forEach(node => {
+      if (hasChildren(node)) setFold(node, 0);
+    });
+  }
+
+  function expandTargetByLevels(target, extraLevels) {
+    extraLevels = Math.max(0, Number(extraLevels) || 0);
+
+    if (!hasChildren(target)) return;
+
+    if (extraLevels === 0) {
+      setFold(target, 1);
+      return;
+    }
+
+    function expand(node, relativeDepth) {
+      if (!hasChildren(node)) return;
+
+      if (relativeDepth < extraLevels) {
+        setFold(node, 0);
+
+        node.children.forEach(child => {
+          expand(child, relativeDepth + 1);
+        });
+      } else {
+        setFold(node, 1);
+      }
+    }
+
+    expand(target, 0);
+  }
+
+  function collectExpandedWindowNodes(targetNode, extraLevels) {
+    const nodes = [];
+    const maxRelativeDepth = Math.max(0, Number(extraLevels) || 0);
+
+    function collect(node, relativeDepth) {
+      if (!node) return;
+
+      nodes.push(node);
+
+      if (relativeDepth >= maxRelativeDepth) return;
+
+      if (Array.isArray(node.children)) {
+        node.children.forEach(child => {
+          collect(child, relativeDepth + 1);
+        });
+      }
+    }
+
+    collect(targetNode, 0);
+    return nodes;
+  }
+
+  function getNodeText(node) {
+    return String(
+      node?.content ||
+      node?.payload?.text ||
+      node?.payload?.label ||
+      node?.payload?.title ||
+      ""
+    ).replace(/<[^>]*>/g, "").trim();
+  }
+
+  function isPositiveInteger(value) {
+    return Number.isInteger(value) && value >= 1;
+  }
+
+  function isNonNegativeInteger(value) {
+    return Number.isInteger(value) && value >= 0;
+  }
+
+  /*
+    Compact mode:
+      AB      = level A, item B
+      ABZ     = level A, item B, expand Z levels
+
+    Example:
+      234     = level 2, item 3, expand next 4 levels
+
+    Separator mode:
+      X~Y     = level X, item Y
+      X~Y~Z   = level X, item Y, expand Z levels
+  */
+  function parseCompactSequence(sequence) {
+    if (!/^\d{2,3}$/.test(sequence)) return null;
+
+    const targetDepth = Number(sequence[0]);
+    const itemIndex = Number(sequence[1]);
+    const extraLevels = sequence.length === 3 ? Number(sequence[2]) : 0;
+
+    if (!isPositiveInteger(targetDepth)) return null;
+    if (!isPositiveInteger(itemIndex)) return null;
+    if (!isNonNegativeInteger(extraLevels)) return null;
+
+    return {
+      mode: "Compact",
+      targetDepth,
+      itemIndex,
+      extraLevels
+    };
+  }
+
+  function parseSeparatorSequence(sequence) {
+    if (!/^\d+~\d+(?:~\d+)?$/.test(sequence)) return null;
+
+    const parts = sequence.split("~");
+
+    const targetDepth = Number(parts[0]);
+    const itemIndex = Number(parts[1]);
+    const extraLevels = parts.length === 3 ? Number(parts[2]) : 0;
+
+    if (!isPositiveInteger(targetDepth)) return null;
+    if (!isPositiveInteger(itemIndex)) return null;
+    if (!isNonNegativeInteger(extraLevels)) return null;
+
+    return {
+      mode: "Separator",
+      targetDepth,
+      itemIndex,
+      extraLevels
+    };
+  }
+
+  function parseShiftSequence(sequence) {
+    if (sequence.includes("~")) {
+      return parseSeparatorSequence(sequence);
+    }
+
+    return parseCompactSequence(sequence);
+  }
+
+  function ensureNavStyle() {
+    if (document.getElementById("mm-shift-nav-style")) return;
+
+    const style = document.createElement("style");
+    style.id = "mm-shift-nav-style";
+
+    style.textContent = `
+      .mm-shift-nav-hit text {
+        fill: #000 !important;
+        font-weight: 800 !important;
+      }
+
+      .mm-shift-nav-hit circle {
+        fill: #2962ff !important;
+        stroke: #ffffff !important;
+        stroke-width: 2.5px !important;
+      }
+
+      .mm-shift-nav-box {
+        fill: rgba(41, 98, 255, 0.13);
+        stroke: #2962ff;
+        stroke-width: 2.5px;
+        vector-effect: non-scaling-stroke;
+        pointer-events: none;
+        filter: drop-shadow(0 0 6px rgba(41, 98, 255, 0.6));
+      }
+
+      #mm-shift-nav-hud {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 999999;
+        padding: 8px 11px;
+        border-radius: 10px;
+        background: rgba(20, 20, 20, 0.82);
+        color: #fff;
+        font: 600 13px/1.35 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0.02em;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
+        user-select: none;
+        pointer-events: none;
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function showHud(message, timeout = 900) {
+    ensureNavStyle();
+
+    let hud = document.getElementById("mm-shift-nav-hud");
+
+    if (!hud) {
+      hud = document.createElement("div");
+      hud.id = "mm-shift-nav-hud";
+      document.body.appendChild(hud);
+    }
+
+    hud.textContent = message;
+
+    clearTimeout(hudTimer);
+
+    if (timeout > 0) {
+      hudTimer = setTimeout(() => {
+        hud.remove();
+      }, timeout);
+    }
+  }
+
+  function showSequenceHud(sequence) {
+    if (sequence.includes("~")) {
+      const parts = sequence.split("~");
+      const level = parts[0] || "?";
+      const item = parts[1] || "…";
+      const expand = parts[2];
+
+      if (parts.length >= 3) {
+        showHud(`Separator: level ${level}, item ${item}, expand +${expand || "…"}`, 0);
+      } else if (sequence.endsWith("~")) {
+        showHud(`Separator: level ${level}, item …`, 0);
+      } else {
+        showHud(`Separator: level ${level}, item ${item}`, 0);
+      }
+
+      return;
+    }
+
+    if (sequence.length === 1) {
+      showHud(`Compact: level ${sequence}`, 0);
+    } else if (sequence.length === 2) {
+      showHud(`Compact: level ${sequence[0]}, item ${sequence[1]}`, 0);
+    } else if (sequence.length === 3) {
+      showHud(`Compact: level ${sequence[0]}, item ${sequence[1]}, expand +${sequence[2]}`, 0);
+    } else {
+      showHud("Compact supports AB or ABZ. Use X~Y or X~Y~Z for larger numbers.", 0);
+    }
+  }
+
+  function clearNavHighlight() {
+    // Also remove old dashed scope boxes if they exist from a previous version.
+    document
+      .querySelectorAll(".mm-shift-nav-box, .mm-shift-nav-scope-box")
+      .forEach(el => el.remove());
+
+    document
+      .querySelectorAll(".mm-shift-nav-hit")
+      .forEach(el => el.classList.remove("mm-shift-nav-hit"));
+  }
+
+  function getBoundMarkmapNode(el) {
+    const bound = el?.__data__;
+
+    if (!bound) return null;
+    if (bound.data) return bound.data;
+
+    return bound;
+  }
+
+  function sameNode(a, b) {
+    if (!a || !b) return false;
+    if (a === b) return true;
+
+    if (a.state?.id && b.state?.id && a.state.id === b.state.id) return true;
+    if (a.id && b.id && a.id === b.id) return true;
+
+    return false;
+  }
+
+  function isNodeInList(node, list) {
+    return list.some(item => sameNode(node, item));
+  }
+
+  function findRenderedNodeElement(targetNode) {
+    const renderedNodes = document.querySelectorAll(".markmap-node");
+
+    for (const el of renderedNodes) {
+      const boundNode = getBoundMarkmapNode(el);
+
+      if (sameNode(boundNode, targetNode)) {
+        return el;
+      }
+    }
+
+    return null;
+  }
+
+  function findRenderedWindowElements(windowNodes) {
+    const results = [];
+    const renderedNodes = document.querySelectorAll(".markmap-node");
+
+    for (const el of renderedNodes) {
+      const boundNode = getBoundMarkmapNode(el);
+
+      if (isNodeInList(boundNode, windowNodes)) {
+        results.push(el);
+      }
+    }
+
+    return results;
+  }
+
+  function drawTargetBox(el) {
+    const SVG_NS = "http://www.w3.org/2000/svg";
+
+    if (!el) return;
+
+    el.querySelectorAll(".mm-shift-nav-box").forEach(box => box.remove());
+
+    const target = el.querySelector("foreignObject, text");
+    if (!target || typeof target.getBBox !== "function") return;
+
+    let box;
+
+    try {
+      box = target.getBBox();
+    } catch {
+      return;
+    }
+
+    const padX = 7;
+    const padY = 5;
+
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("class", "mm-shift-nav-box");
+    rect.setAttribute("x", box.x - padX);
+    rect.setAttribute("y", box.y - padY);
+    rect.setAttribute("width", box.width + padX * 2);
+    rect.setAttribute("height", box.height + padY * 2);
+    rect.setAttribute("rx", 7);
+    rect.setAttribute("ry", 7);
+
+    el.insertBefore(rect, el.firstChild);
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function getD3Node(value) {
+    if (!value) return null;
+    if (typeof value.node === "function") return value.node();
+    return value;
+  }
+
+  function getSvgNode(mm, fallbackEl) {
+    return (
+      getD3Node(mm?.svg) ||
+      fallbackEl?.ownerSVGElement ||
+      document.querySelector("svg.markmap, svg")
+    );
+  }
+
+  function getZoomLayerNode(mm, svgNode, fallbackEl) {
+    const direct = getD3Node(mm?.g);
+    if (direct) return direct;
+
+    let node = fallbackEl;
+    let topmostGroup = null;
+
+    while (node && node !== svgNode) {
+      if (node.tagName?.toLowerCase() === "g") {
+        topmostGroup = node;
+      }
+
+      node = node.parentNode;
+    }
+
+    return topmostGroup || svgNode?.querySelector("g");
+  }
+
+  function getSvgViewportSize(svgNode) {
+    const rect = svgNode.getBoundingClientRect?.();
+    const viewBox = svgNode.viewBox?.baseVal;
+
+    const width =
+      rect?.width ||
+      viewBox?.width ||
+      Number(svgNode.getAttribute("width")) ||
+      window.innerWidth ||
+      800;
+
+    const height =
+      rect?.height ||
+      viewBox?.height ||
+      Number(svgNode.getAttribute("height")) ||
+      window.innerHeight ||
+      600;
+
+    return { width, height };
+  }
+
+  function getElementBoxInZoomLayerCoords(targetEl, zoomLayerNode) {
+    const svgNode = targetEl.ownerSVGElement;
+    const rect = targetEl.getBoundingClientRect?.();
+
+    if (!svgNode || !rect || rect.width <= 0 || rect.height <= 0) {
+      if (typeof targetEl.getBBox === "function") {
+        const box = targetEl.getBBox();
+
+        return {
+          x: box.x,
+          y: box.y,
+          width: box.width,
+          height: box.height
+        };
+      }
+
+      return null;
+    }
+
+    const ctm = zoomLayerNode.getScreenCTM?.();
+    if (!ctm) return null;
+
+    const inverse = ctm.inverse();
+    const point = svgNode.createSVGPoint();
+
+    function convert(x, y) {
+      point.x = x;
+      point.y = y;
+
+      const converted = point.matrixTransform(inverse);
+
+      return {
+        x: converted.x,
+        y: converted.y
+      };
+    }
+
+    const p1 = convert(rect.left, rect.top);
+    const p2 = convert(rect.right, rect.top);
+    const p3 = convert(rect.right, rect.bottom);
+    const p4 = convert(rect.left, rect.bottom);
+
+    const xs = [p1.x, p2.x, p3.x, p4.x];
+    const ys = [p1.y, p2.y, p3.y, p4.y];
+
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+
+    return {
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+  }
+
+  function unionBoxes(boxes) {
+    const validBoxes = boxes.filter(box => {
+      return (
+        box &&
+        Number.isFinite(box.x) &&
+        Number.isFinite(box.y) &&
+        Number.isFinite(box.width) &&
+        Number.isFinite(box.height) &&
+        box.width > 0 &&
+        box.height > 0
+      );
+    });
+
+    if (!validBoxes.length) return null;
+
+    const minX = Math.min(...validBoxes.map(box => box.x));
+    const minY = Math.min(...validBoxes.map(box => box.y));
+    const maxX = Math.max(...validBoxes.map(box => box.x + box.width));
+    const maxY = Math.max(...validBoxes.map(box => box.y + box.height));
+
+    return {
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+  }
+
+  function createZoomTransform(x, y, k) {
+    const d3ZoomIdentity =
+      window.d3?.zoomIdentity ||
+      window.markmap?.d3?.zoomIdentity;
+
+    if (d3ZoomIdentity) {
+      return d3ZoomIdentity.translate(x, y).scale(k);
+    }
+
+    return {
+      x,
+      y,
+      k,
+      toString() {
+        return `translate(${this.x},${this.y}) scale(${this.k})`;
+      }
+    };
+  }
+
+  function applyZoomTransform(mm, svgNode, zoomLayerNode, transform) {
+    if (mm?.svg && mm?.zoom && typeof mm.svg.call === "function" && transform?.k) {
+      try {
+        if (typeof mm.svg.transition === "function") {
+          mm.svg
+            .transition()
+            .duration(FOCUS_ZOOM_DURATION_MS)
+            .call(mm.zoom.transform, transform);
+        } else {
+          mm.svg.call(mm.zoom.transform, transform);
+        }
+
+        return true;
+      } catch {
+        // Fallback below.
+      }
+    }
+
+    if (zoomLayerNode && transform?.toString) {
+      zoomLayerNode.setAttribute("transform", transform.toString());
+      svgNode.__zoom = transform;
+      return true;
+    }
+
+    return false;
+  }
+
+  function getRenderedContentBox(el, zoomLayerNode) {
+    const contentEl = el.querySelector("foreignObject, text") || el;
+    return getElementBoxInZoomLayerCoords(contentEl, zoomLayerNode);
+  }
+
+  function zoomToExpandedMapWindow(mm, windowElements, targetElement) {
+    if (!windowElements.length && targetElement) {
+      windowElements = [targetElement];
+    }
+
+    if (!windowElements.length) return false;
+
+    const firstEl = windowElements[0];
+    const svgNode = getSvgNode(mm, firstEl);
+    if (!svgNode) return false;
+
+    const zoomLayerNode = getZoomLayerNode(mm, svgNode, firstEl);
+    if (!zoomLayerNode) return false;
+
+    // Important:
+    // No dashed visual box is drawn here.
+    // The union is only used internally as the zoom window.
+    const boxes = windowElements.map(el => {
+      return getRenderedContentBox(el, zoomLayerNode);
+    });
+
+    const zoomWindow = unionBoxes(boxes);
+    if (!zoomWindow) return false;
+
+    const viewport = getSvgViewportSize(svgNode);
+
+    const padX = Math.min(FOCUS_PADDING_X, viewport.width * 0.28);
+    const padY = Math.min(FOCUS_PADDING_Y, viewport.height * 0.28);
+
+    const availableWidth = Math.max(80, viewport.width - padX * 2);
+    const availableHeight = Math.max(80, viewport.height - padY * 2);
+
+    const rawScale = Math.min(
+      availableWidth / zoomWindow.width,
+      availableHeight / zoomWindow.height
+    );
+
+    const scale = clamp(rawScale, FOCUS_MIN_SCALE, FOCUS_MAX_SCALE);
+
+    const centerX = zoomWindow.x + zoomWindow.width / 2;
+    const centerY = zoomWindow.y + zoomWindow.height / 2;
+
+    const FOCUS_OFFSET_X = -80;
+    const translateX = viewport.width / 2 - centerX * scale + FOCUS_OFFSET_X;
+    const translateY = viewport.height / 2 - centerY * scale;
+
+    const transform = createZoomTransform(translateX, translateY, scale);
+
+    return applyZoomTransform(mm, svgNode, zoomLayerNode, transform);
+  }
+
+  function focusExpandedMapWhenReady(mm, targetNode, extraLevels) {
+    let tries = 0;
+    const maxTries = 30;
+
+    function retry() {
+      clearNavHighlight();
+
+      const targetEl = findRenderedNodeElement(targetNode);
+
+      if (targetEl) {
+        const windowNodes = collectExpandedWindowNodes(targetNode, extraLevels);
+        const windowElements = findRenderedWindowElements(windowNodes);
+
+        targetEl.classList.add("mm-shift-nav-hit");
+        drawTargetBox(targetEl);
+
+        requestAnimationFrame(() => {
+          zoomToExpandedMapWindow(mm, windowElements, targetEl);
+        });
+
+        return;
+      }
+
+      tries += 1;
+
+      if (tries < maxTries) {
+        setTimeout(() => requestAnimationFrame(retry), 70);
+      } else {
+        showHud("Target not rendered");
+      }
+    }
+
+    requestAnimationFrame(retry);
+  }
+
+  function executeShiftNavigation(sequence) {
+    const mm = window.mm;
+
+    if (!mm || !mm.state?.data) {
+      showHud("No markmap instance found");
+      return;
+    }
+
+    const parsed = parseShiftSequence(sequence);
+
+    if (!parsed) {
+      showHud(`Invalid nav: ${sequence}`);
+      return;
+    }
+
+    const { mode, targetDepth, itemIndex, extraLevels } = parsed;
+    const data = mm.state.data;
+    const nodesAtDepth = collectNodesAtDepth(data, targetDepth);
+    const selected = nodesAtDepth[itemIndex - 1];
+
+    if (!selected) {
+      showHud(`No item: level ${targetDepth}, #${itemIndex}`);
+      return;
+    }
+
+    collapseAll(data);
+    openPathToTarget(selected.path);
+    expandTargetByLevels(selected.node, extraLevels);
+
+    const label = getNodeText(selected.node) || `level ${targetDepth} #${itemIndex}`;
+
+    function afterRender() {
+      setTimeout(() => {
+        focusExpandedMapWhenReady(mm, selected.node, extraLevels);
+
+        if (extraLevels > 0) {
+          showHud(`${mode}: L${targetDepth} #${itemIndex} +${extraLevels}: ${label}`, 1300);
+        } else {
+          showHud(`${mode}: L${targetDepth} #${itemIndex}: ${label}`, 1300);
+        }
+      }, RENDER_SETTLE_MS);
+    }
+
+    try {
+      const result = mm.renderData(data);
+
+      if (result && typeof result.then === "function") {
+        result.then(afterRender).catch(afterRender);
+      } else {
+        afterRender();
+      }
+    } catch {
+      showHud("Render failed");
+    }
+  }
+
+  document.addEventListener(
+    "keydown",
+    e => {
+      if (isEditableTarget(e.target)) return;
+
+      if (e.key === "Shift" && !e.repeat) {
+        shiftNavActive = true;
+        shiftNavBuffer = "";
+        showHud("Shift nav: AB / ABZ or X~Y / X~Y~Z", 0);
+        return;
+      }
+
+      if (!e.shiftKey) return;
+
+      const navChar = getNavCharFromEvent(e);
+      if (!navChar) return;
+
+      shiftNavActive = true;
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      if (e.repeat) return;
+
+      if (shiftNavBuffer.length < MAX_SEQUENCE_LENGTH) {
+        shiftNavBuffer += navChar;
+      }
+
+      showSequenceHud(shiftNavBuffer);
+    },
+    true
+  );
+
+  document.addEventListener(
+    "keyup",
+    e => {
+      if (e.key !== "Shift") return;
+      if (!shiftNavActive) return;
+
+      const sequence = shiftNavBuffer;
+
+      shiftNavActive = false;
+      shiftNavBuffer = "";
+
+      if (sequence.length >= 2) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        executeShiftNavigation(sequence);
+      } else {
+        showHud("Shift nav cancelled");
+      }
+    },
+    true
+  );
+
+  window.addEventListener("blur", () => {
+    shiftNavActive = false;
+    shiftNavBuffer = "";
+  });
+})();
+</script>
+
+</body>
+</html>
