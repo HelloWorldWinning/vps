@@ -56,6 +56,12 @@ CSS_CODE = r"""
 
 }
 
+
+.mm-toolbar-brand {
+  display: none !important;
+}
+
+
 </style>
 
 """
