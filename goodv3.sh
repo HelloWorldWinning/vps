@@ -1164,7 +1164,7 @@ https://zhile.one/archives/1404.html
 	t) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokentool) ;;
 		#mm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.sh) ;;
 		#mm) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py) ;;
-	mm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py -o /usr/local/bin/mm && chmod +x /usr/local/bin/mm ;;
+	mm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py -o /usr/local/bin/mm && chmod +x /usr/local/bin/mm && echo "✅ Done! 'mm' command installed successfully." || echo "❌ Installation failed." ;;
 	wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
 	tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
 	webdav) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
