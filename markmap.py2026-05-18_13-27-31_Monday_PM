@@ -614,12 +614,6 @@ NEW_CODE = (
   let shiftNavBuffer = "";
   let hudTimer = null;
 
-  // Current active node shared by:
-  // 1. shift-number navigation
-  // 2. manual mouse click
-  // 3. s / d expand-shrink hotkeys
-  let activeSelection = null;
-
   function isEditableTarget(target) {
     const tag = target?.tagName?.toLowerCase();
 
@@ -925,6 +919,7 @@ NEW_CODE = (
   }
 
   function clearNavHighlight() {
+    // Also remove old dashed scope boxes if they exist from a previous version.
     document
       .querySelectorAll(".mm-shift-nav-box, .mm-shift-nav-scope-box")
       .forEach(el => el.remove());
@@ -985,307 +980,6 @@ NEW_CODE = (
 
     return results;
   }
-
-
-
-function getVisibleExtraLevels(node) {
-  let maxVisibleExtraLevels = 0;
-
-  function visit(current, relativeDepth) {
-    if (!current || !hasChildren(current)) return;
-
-    // If current node is folded, descendants are not visible.
-    if (current.payload?.fold) return;
-
-    current.children.forEach(child => {
-      const childRelativeDepth = relativeDepth + 1;
-
-      maxVisibleExtraLevels = Math.max(
-        maxVisibleExtraLevels,
-        childRelativeDepth
-      );
-
-      visit(child, childRelativeDepth);
-    });
-  }
-
-  visit(node, 0);
-
-  return maxVisibleExtraLevels;
-}
-
-
-function snapshotSubtreeFolds(root) {
-  const snapshot = [];
-
-  walk(root, node => {
-    if (!hasChildren(node)) return;
-
-    snapshot.push({
-      node,
-      fold: node.payload?.fold ? 1 : 0
-    });
-  });
-
-  return snapshot;
-}
-
-function restoreSubtreeFolds(snapshot) {
-  if (!Array.isArray(snapshot)) return;
-
-  snapshot.forEach(item => {
-    if (!item?.node || !hasChildren(item.node)) return;
-
-    item.node.payload = {
-      ...item.node.payload,
-      fold: item.fold ? 1 : 0
-    };
-  });
-}
-
-function forEachVisibleNode(root, fn, relativeDepth = 0) {
-  if (!root) return;
-
-  fn(root, relativeDepth);
-
-  if (!hasChildren(root)) return;
-  if (root.payload?.fold) return;
-
-  root.children.forEach(child => {
-    forEachVisibleNode(child, fn, relativeDepth + 1);
-  });
-}
-
-function collapseOneVisibleLevel(root) {
-  const maxVisibleExtraLevels = getVisibleExtraLevels(root);
-
-  if (maxVisibleExtraLevels <= 0) {
-    return 0;
-  }
-
-  if (maxVisibleExtraLevels === 1) {
-    setFold(root, 1);
-    return getVisibleExtraLevels(root);
-  }
-
-  const parentDepthToCollapse = maxVisibleExtraLevels - 1;
-
-  forEachVisibleNode(root, (node, relativeDepth) => {
-    if (relativeDepth !== parentDepthToCollapse) return;
-    if (!hasChildren(node)) return;
-
-    setFold(node, 1);
-  });
-
-  return getVisibleExtraLevels(root);
-}
-
-function expandOneVisibleLevel(root) {
-  const maxVisibleExtraLevels = getVisibleExtraLevels(root);
-  const candidates = [];
-
-  forEachVisibleNode(root, (node, relativeDepth) => {
-    if (relativeDepth !== maxVisibleExtraLevels) return;
-    if (!hasChildren(node)) return;
-    if (!node.payload?.fold) return;
-
-    candidates.push(node);
-  });
-
-  candidates.forEach(node => {
-    setFold(node, 0);
-  });
-
-  return getVisibleExtraLevels(root);
-}
-
-
-
-function setActiveSelection(
-  node,
-  path,
-  extraLevels = 0,
-  mode = "uniform",
-  foldSnapshot = null
-) {
-  if (!node || !Array.isArray(path) || !path.length) return false;
-
-  activeSelection = {
-    node,
-    path,
-    extraLevels: Math.max(0, Number(extraLevels) || 0),
-    mode,
-    foldSnapshot
-  };
-
-  return true;
-}
-
-
-
-
-  function findNodePath(root, targetNode) {
-    let foundPath = null;
-
-    walk(root, (node, _depth, path) => {
-      if (foundPath) return;
-
-      if (sameNode(node, targetNode)) {
-        foundPath = path;
-      }
-    });
-
-    return foundPath;
-  }
-
-  function getClickedMarkmapNodeElement(target) {
-    return target?.closest?.(".markmap-node") || null;
-  }
-
-
-
-
-
-
-
-
-
-
-
-function setActiveSelectionFromRenderedElement(
-  el,
-  previousVisibleExtraLevels = null,
-  previousFoldSnapshot = null
-) {
-  const mm = window.mm;
-  if (!mm || !mm.state?.data || !el) return false;
-
-  const clickedNode = getBoundMarkmapNode(el);
-  if (!clickedNode) return false;
-
-  const path = findNodePath(mm.state.data, clickedNode);
-  if (!path) return false;
-
-  const node = path[path.length - 1];
-
-  const currentVisibleExtraLevels = getVisibleExtraLevels(node);
-  const currentFoldSnapshot = snapshotSubtreeFolds(node);
-
-  const beforeExtraLevels = Number(previousVisibleExtraLevels) || 0;
-
-  const usePreviousShape = beforeExtraLevels > currentVisibleExtraLevels;
-
-  const extraLevels = usePreviousShape
-    ? beforeExtraLevels
-    : currentVisibleExtraLevels;
-
-  const foldSnapshot = usePreviousShape
-    ? previousFoldSnapshot
-    : currentFoldSnapshot;
-
-  setActiveSelection(
-    node,
-    path,
-    extraLevels,
-    "preserve",
-    foldSnapshot
-  );
-
-  clearNavHighlight();
-
-  const currentEl = findRenderedNodeElement(node) || el;
-
-  if (currentEl) {
-    currentEl.classList.add("mm-shift-nav-hit");
-    drawTargetBox(currentEl);
-  }
-
-  const label = getNodeText(node) || "clicked node";
-  showHud(`Active +${extraLevels}: ${label}`, 900);
-
-  return true;
-}
-
-
-
-function renderActiveSelection(mm) {
-  if (!mm || !mm.state?.data || !activeSelection?.node || !activeSelection?.path) {
-    showHud("No active node. Shift-select or click a node first.");
-    return;
-  }
-
-  function afterRender() {
-    setTimeout(() => {
-      const visibleExtraLevels = getVisibleExtraLevels(activeSelection.node);
-
-      activeSelection.extraLevels = visibleExtraLevels;
-      activeSelection.foldSnapshot = snapshotSubtreeFolds(activeSelection.node);
-
-      focusExpandedMapWhenReady(
-        mm,
-        activeSelection.node,
-        visibleExtraLevels
-      );
-
-      const label = getNodeText(activeSelection.node) || "active node";
-      showHud(`Active +${visibleExtraLevels}: ${label}`, 900);
-    }, RENDER_SETTLE_MS);
-  }
-
-  try {
-    const result = mm.renderData(mm.state.data);
-
-    if (result && typeof result.then === "function") {
-      result.then(afterRender).catch(afterRender);
-    } else {
-      afterRender();
-    }
-  } catch {
-    showHud("Render failed");
-  }
-}
-
-
-
-
-function adjustActiveSelectionLevels(delta) {
-  const mm = window.mm;
-
-  if (!mm || !mm.state?.data) return;
-
-  if (!activeSelection?.node || !activeSelection?.path) {
-    showHud("No active node. Shift-select or click a node first.");
-    return;
-  }
-
-  if (activeSelection.mode === "preserve") {
-    restoreSubtreeFolds(activeSelection.foldSnapshot);
-
-    if (delta > 0) {
-      activeSelection.extraLevels = expandOneVisibleLevel(activeSelection.node);
-    } else {
-      activeSelection.extraLevels = collapseOneVisibleLevel(activeSelection.node);
-    }
-
-    activeSelection.foldSnapshot = snapshotSubtreeFolds(activeSelection.node);
-
-    renderActiveSelection(mm);
-    return;
-  }
-
-  activeSelection.extraLevels = Math.max(
-    0,
-    activeSelection.extraLevels + delta
-  );
-
-  collapseAll(mm.state.data);
-  openPathToTarget(activeSelection.path);
-  expandTargetByLevels(activeSelection.node, activeSelection.extraLevels);
-
-  renderActiveSelection(mm);
-}
-
-
 
   function drawTargetBox(el) {
     const SVG_NS = "http://www.w3.org/2000/svg";
@@ -1528,6 +1222,9 @@ function adjustActiveSelectionLevels(delta) {
     const zoomLayerNode = getZoomLayerNode(mm, svgNode, firstEl);
     if (!zoomLayerNode) return false;
 
+    // Important:
+    // No dashed visual box is drawn here.
+    // The union is only used internally as the zoom window.
     const boxes = windowElements.map(el => {
       return getRenderedContentBox(el, zoomLayerNode);
     });
@@ -1617,22 +1314,22 @@ function adjustActiveSelectionLevels(delta) {
     const nodesAtDepth = collectNodesAtDepth(data, targetDepth);
     const selected = nodesAtDepth[itemIndex - 1];
 
+
+
     if (!selected) {
       showHud(`No item: level ${targetDepth}, #${itemIndex}`);
       return;
     }
 
-    // Important:
-    // Shift navigation now also updates the shared current active node.
-    setActiveSelection(
-  selected.node,
-  selected.path,
-  extraLevels,
-  "uniform",
-  null
-);
+    // Store current active node for lowercase d / s shortcuts.
+    window.mmActiveNode = selected.node;
+    window.mmActivePath = selected.path;
 
     collapseAll(data);
+
+
+
+
     openPathToTarget(selected.path);
     expandTargetByLevels(selected.node, extraLevels);
 
@@ -1663,72 +1360,10 @@ function adjustActiveSelectionLevels(delta) {
     }
   }
 
-  // Manual mouse click now becomes the current active node.
-
-
-document.addEventListener(
-  "click",
-  e => {
-    if (isEditableTarget(e.target)) return;
-
-    const el = getClickedMarkmapNodeElement(e.target);
-    if (!el) return;
-
-    const mm = window.mm;
-    if (!mm || !mm.state?.data) return;
-
-    const clickedNode = getBoundMarkmapNode(el);
-    if (!clickedNode) return;
-
-    const path = findNodePath(mm.state.data, clickedNode);
-    if (!path) return;
-
-    const node = path[path.length - 1];
-
-    // Capture the exact visible shape before Markmap's own click behavior
-    // possibly toggles the node.
-    const beforeClickVisibleExtraLevels = getVisibleExtraLevels(node);
-    const beforeClickFoldSnapshot = snapshotSubtreeFolds(node);
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setActiveSelectionFromRenderedElement(
-          el,
-          beforeClickVisibleExtraLevels,
-          beforeClickFoldSnapshot
-        );
-      });
-    });
-  },
-  true
-);
-
-
-
-
   document.addEventListener(
     "keydown",
     e => {
       if (isEditableTarget(e.target)) return;
-
-      // Important:
-      // Capture plain s / d here and stop the older global-depth handler
-      // from the first script from running.
-      if (
-        !e.shiftKey &&
-        (e.key === "d" || e.key === "D" || e.key === "s" || e.key === "S")
-      ) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        if (e.key === "d" || e.key === "D") {
-          adjustActiveSelectionLevels(1);
-        } else {
-          adjustActiveSelectionLevels(-1);
-        }
-
-        return;
-      }
 
       if (e.key === "Shift" && !e.repeat) {
         shiftNavActive = true;
