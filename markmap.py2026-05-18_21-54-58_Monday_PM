@@ -540,31 +540,15 @@ NEW_CODE = r"""<script>
     }
 
     // Lowercase d: expand 1 level only under current active node.
-        if (e.key === "d") {
-          e.preventDefault();
-    
-          if (expandActiveNodeOneLevel(mm)) {
-            setTimeout(() => {
-              fit(mm);
-              // Shift the view left by applying an X offset after fit settles.
-              setTimeout(() => {
-                if (mm.svg && mm.zoom) {
-                  try {
-                    const t = d3.zoomTransform(mm.svg.node());
-                    const OFFSET_X = -160; // negative = shift content left; increase magnitude for more
-                    const newTransform = d3.zoomIdentity.translate(t.x + OFFSET_X, t.y).scale(t.k);
-                    mm.svg.transition().duration(200).call(mm.zoom.transform, newTransform);
-                  } catch(e) { /* ignore */ }
-                }
-              }, 350);
-            }, 330);
-          }
-    
-          return;
-        }
+    if (e.key === "d") {
+      e.preventDefault();
 
+      if (expandActiveNodeOneLevel(mm)) {
+        setTimeout(() => fit(mm), 330);
+      }
 
-
+      return;
+    }
 
     // Uppercase S: collapse 1 level for all nodes. Existing behavior.
     if (e.key === "S") {
