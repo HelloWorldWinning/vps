@@ -430,7 +430,7 @@ NEW_CODE = r"""<script>
       }
 
       .mm-find-box {
-        fill: rgba(255, 193, 7, 0.08);
+        fill: rgba(255, 193, 7, 0.18);
         stroke: #ff3d00;
         stroke-width: 2.5px;
         vector-effect: non-scaling-stroke;
@@ -878,7 +878,7 @@ function getNodeText(node) {
       }
 
       .mm-shift-nav-box {
-        fill: rgba(41, 98, 255, 0.05);
+        fill: rgba(41, 98, 255, 0.13);
         stroke: #2962ff;
         stroke-width: 2.5px;
         vector-effect: non-scaling-stroke;
