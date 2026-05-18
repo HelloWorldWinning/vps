@@ -540,15 +540,31 @@ NEW_CODE = r"""<script>
     }
 
     // Lowercase d: expand 1 level only under current active node.
-    if (e.key === "d") {
-      e.preventDefault();
+        if (e.key === "d") {
+          e.preventDefault();
+    
+          if (expandActiveNodeOneLevel(mm)) {
+            setTimeout(() => {
+              fit(mm);
+              // Shift the view left by applying an X offset after fit settles.
+              setTimeout(() => {
+                if (mm.svg && mm.zoom) {
+                  try {
+                    const t = d3.zoomTransform(mm.svg.node());
+                    const OFFSET_X = -160; // negative = shift content left; increase magnitude for more
+                    const newTransform = d3.zoomIdentity.translate(t.x + OFFSET_X, t.y).scale(t.k);
+                    mm.svg.transition().duration(200).call(mm.zoom.transform, newTransform);
+                  } catch(e) { /* ignore */ }
+                }
+              }, 350);
+            }, 330);
+          }
+    
+          return;
+        }
 
-      if (expandActiveNodeOneLevel(mm)) {
-        setTimeout(() => fit(mm), 330);
-      }
 
-      return;
-    }
+
 
     // Uppercase S: collapse 1 level for all nodes. Existing behavior.
     if (e.key === "S") {
@@ -613,14 +629,6 @@ const HUD_TIMEOUT_RATIO = 0.5;
   const FOCUS_MAX_SCALE = 2.25;
   const FOCUS_PADDING_X = 180;
   const FOCUS_PADDING_Y = 120;
-
-// d = expand: move view left.
-// s = collapse: move view slightly right.
-const FOCUS_OFFSET_X_EXPAND = -250;
-const FOCUS_OFFSET_X_COLLAPSE = 60;
-
-// Current offset used by zoomToExpandedMapWindow().
-let focusOffsetX = FOCUS_OFFSET_X_EXPAND;
 
   let shiftNavActive = false;
   let shiftNavBuffer = "";
@@ -1295,17 +1303,10 @@ function renderActiveSelection(mm) {
 
 
 
-
 function adjustActiveSelectionLevels(delta) {
   const mm = window.mm;
 
   if (!mm || !mm.state?.data) return;
-
-  // d passes delta > 0, s passes delta < 0.
-  focusOffsetX = delta > 0
-    ? FOCUS_OFFSET_X_EXPAND
-    : FOCUS_OFFSET_X_COLLAPSE;
-
 
   if (!activeSelection?.node || !activeSelection?.path) {
     showHud("No active node. Shift-select or click a node first.");
@@ -1607,7 +1608,8 @@ function adjustActiveSelectionLevels(delta) {
     const centerX = zoomWindow.x + zoomWindow.width / 2;
     const centerY = zoomWindow.y + zoomWindow.height / 2;
 
-    const translateX = viewport.width / 2 - centerX * scale + focusOffsetX;
+    const FOCUS_OFFSET_X = -80;
+    const translateX = viewport.width / 2 - centerX * scale + FOCUS_OFFSET_X;
     const translateY = viewport.height / 2 - centerY * scale;
 
     const transform = createZoomTransform(translateX, translateY, scale);
