@@ -141,120 +141,6 @@ NEW_CODE = r"""<script>
     mm.fit();
   }
 
-
-  function hasChildren(node) {
-    return Array.isArray(node?.children) && node.children.length > 0;
-  }
-
-  function setFold(node, fold) {
-    if (!hasChildren(node)) return;
-
-    node.payload = {
-      ...node.payload,
-      fold
-    };
-  }
-
-  function getBoundMarkmapNode(el) {
-    const bound = el?.__data__;
-
-    if (!bound) return null;
-    if (bound.data) return bound.data;
-
-    return bound;
-  }
-
-  function getActiveNode() {
-    // Primary source: node selected by Shift navigation.
-    if (window.mmActiveNode) return window.mmActiveNode;
-
-    // Fallback: currently highlighted Shift-navigation node, if still rendered.
-    const activeEl = document.querySelector(".mm-shift-nav-hit");
-    return getBoundMarkmapNode(activeEl);
-  }
-
-  function getMaxRelativeDepth(node, depth = 0) {
-    if (!node) return 0;
-
-    let maxDepth = depth;
-
-    if (hasChildren(node)) {
-      node.children.forEach(child => {
-        maxDepth = Math.max(maxDepth, getMaxRelativeDepth(child, depth + 1));
-      });
-    }
-
-    return maxDepth;
-  }
-
-  function getVisibleRelativeDepth(node, depth = 0) {
-    if (!node) return 0;
-
-    let maxVisible = depth;
-
-    if (!node.payload?.fold && hasChildren(node)) {
-      node.children.forEach(child => {
-        maxVisible = Math.max(maxVisible, getVisibleRelativeDepth(child, depth + 1));
-      });
-    }
-
-    return maxVisible;
-  }
-
-  function setActiveVisibleRelativeDepth(mm, activeNode, visibleDepth) {
-    const maxDepth = getMaxRelativeDepth(activeNode);
-
-    visibleDepth = Math.max(0, Math.min(visibleDepth, maxDepth));
-
-    walk(activeNode, (node, depth) => {
-      if (!hasChildren(node)) return;
-
-      setFold(node, depth >= visibleDepth ? 1 : 0);
-    }, 0);
-
-    mm.renderData(mm.state.data);
-  }
-
-  function expandActiveNodeOneLevel(mm) {
-    const activeNode = getActiveNode();
-
-    if (!activeNode) {
-      console.warn("No active node. Select one with Shift navigation first.");
-      return false;
-    }
-
-    const currentDepth = getVisibleRelativeDepth(activeNode);
-    const maxDepth = getMaxRelativeDepth(activeNode);
-
-    setActiveVisibleRelativeDepth(
-      mm,
-      activeNode,
-      Math.min(currentDepth + 1, maxDepth)
-    );
-
-    return true;
-  }
-
-  function collapseActiveNodeOneLevel(mm) {
-    const activeNode = getActiveNode();
-
-    if (!activeNode) {
-      console.warn("No active node. Select one with Shift navigation first.");
-      return false;
-    }
-
-    const currentDepth = getVisibleRelativeDepth(activeNode);
-
-    setActiveVisibleRelativeDepth(
-      mm,
-      activeNode,
-      Math.max(currentDepth - 1, 0)
-    );
-
-    return true;
-  }
-
-
   function decodeHtml(value) {
     const textarea = document.createElement("textarea");
     textarea.innerHTML = String(value || "");
@@ -531,48 +417,19 @@ NEW_CODE = r"""<script>
       return;
     }
 
-    // Uppercase D: expand 1 level for all nodes. Existing behavior.
-    if (e.key === "D") {
+    if (e.key === "d" ||  e.key === "D") {
       e.preventDefault();
       setVisibleDepth(mm, Math.min(visibleDepth + 1, maxDepth));
       setTimeout(() => fit(mm), 330);
       return;
     }
 
-    // Lowercase d: expand 1 level only under current active node.
-    if (e.key === "d") {
-      e.preventDefault();
-
-      if (expandActiveNodeOneLevel(mm)) {
-        setTimeout(() => fit(mm), 330);
-      }
-
-      return;
-    }
-
-    // Uppercase S: collapse 1 level for all nodes. Existing behavior.
-    if (e.key === "S") {
+    if (e.key === "s" ||  e.key === "S"   ) {
       e.preventDefault();
       setVisibleDepth(mm, Math.max(visibleDepth - 1, 1));
       setTimeout(() => fit(mm), 330);
       return;
     }
-
-    // Lowercase s: collapse 1 level only under current active node.
-    if (e.key === "s") {
-      e.preventDefault();
-
-      if (collapseActiveNodeOneLevel(mm)) {
-        setTimeout(() => fit(mm), 330);
-      }
-
-      return;
-    }
-
-
-
-
-
 
     if (e.key === "a" || e.key === "A"  ) {
       e.preventDefault();
@@ -1314,22 +1171,12 @@ NEW_CODE = (
     const nodesAtDepth = collectNodesAtDepth(data, targetDepth);
     const selected = nodesAtDepth[itemIndex - 1];
 
-
-
     if (!selected) {
       showHud(`No item: level ${targetDepth}, #${itemIndex}`);
       return;
     }
 
-    // Store current active node for lowercase d / s shortcuts.
-    window.mmActiveNode = selected.node;
-    window.mmActivePath = selected.path;
-
     collapseAll(data);
-
-
-
-
     openPathToTarget(selected.path);
     expandTargetByLevels(selected.node, extraLevels);
 
