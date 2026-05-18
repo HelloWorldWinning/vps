@@ -602,10 +602,6 @@ NEW_CODE = (
   const MAX_SEQUENCE_LENGTH = 32;
   const RENDER_SETTLE_MS = 360;
 
-// 1 = original HUD time.
-// 0.5 = show for half time.
-const HUD_TIMEOUT_RATIO = 0.5;
-
   // Zoom tuning.
   // Zoom window = selected node + rendered descendants within requested expanded levels.
   const FOCUS_ZOOM_DURATION_MS = 320;
@@ -752,44 +748,15 @@ const HUD_TIMEOUT_RATIO = 0.5;
     return nodes;
   }
 
-function decodeHtmlEntities(value) {
-  const textarea = document.createElement("textarea");
-  textarea.innerHTML = String(value ?? "");
-  return textarea.value;
-}
-
-function htmlToPlainText(value) {
-  const div = document.createElement("div");
-
-  // First decode entities like &#x7B80;, then strip real HTML tags.
-  div.innerHTML = decodeHtmlEntities(value);
-
-  return div.textContent || div.innerText || "";
-}
-
-function cleanHudText(value) {
-  return htmlToPlainText(value)
-    .normalize("NFKC")
-    .replace(/[\u200B-\u200D\uFEFF]/g, "")
-    .replace(/\u00A0/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getNodeText(node) {
-  return [
-    node?.content,
-    node?.payload?.text,
-    node?.payload?.label,
-    node?.payload?.title
-  ]
-    .filter(value => value !== undefined && value !== null && String(value) !== "")
-    .map(cleanHudText)
-    .filter(Boolean)
-    .join(" ");
-}
-
-
+  function getNodeText(node) {
+    return String(
+      node?.content ||
+      node?.payload?.text ||
+      node?.payload?.label ||
+      node?.payload?.title ||
+      ""
+    ).replace(/<[^>]*>/g, "").trim();
+  }
 
   function isPositiveInteger(value) {
     return Number.isInteger(value) && value >= 1;
@@ -906,33 +873,27 @@ function getNodeText(node) {
     document.head.appendChild(style);
   }
 
+  function showHud(message, timeout = 900) {
+    ensureNavStyle();
 
-function showHud(message, timeout = 900) {
-  ensureNavStyle();
+    let hud = document.getElementById("mm-shift-nav-hud");
 
-  let hud = document.getElementById("mm-shift-nav-hud");
+    if (!hud) {
+      hud = document.createElement("div");
+      hud.id = "mm-shift-nav-hud";
+      document.body.appendChild(hud);
+    }
 
-  if (!hud) {
-    hud = document.createElement("div");
-    hud.id = "mm-shift-nav-hud";
-    document.body.appendChild(hud);
+    hud.textContent = message;
+
+    clearTimeout(hudTimer);
+
+    if (timeout > 0) {
+      hudTimer = setTimeout(() => {
+        hud.remove();
+      }, timeout);
+    }
   }
-
-  // Safety layer: decode even if caller passed an encoded string directly.
-  hud.textContent = cleanHudText(message);
-
-  clearTimeout(hudTimer);
-
-  if (timeout > 0) {
-    const adjustedTimeout = Math.max(1, Math.round(timeout * HUD_TIMEOUT_RATIO));
-
-    hudTimer = setTimeout(() => {
-      hud.remove();
-    }, adjustedTimeout);
-  }
-}
-
-
 
   function showSequenceHud(sequence) {
     if (sequence.includes("~")) {
