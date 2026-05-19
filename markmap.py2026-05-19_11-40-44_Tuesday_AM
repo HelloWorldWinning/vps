@@ -886,7 +886,7 @@ function getNodeText(node) {
       }
 
       .mm-shift-nav-box {
-        fill: rgba(41, 98, 255, 0.03);
+        fill: rgba(41, 98, 255, 0.05);
         stroke: #2962ff;
         stroke-width: 2.5px;
         vector-effect: non-scaling-stroke;
