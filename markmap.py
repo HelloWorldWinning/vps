@@ -2582,7 +2582,8 @@ def render_markdown_content(markdown_text: str) -> None:
         append_new_code_to_html(outfile)
 
         # print(f"[✓] Rendered → {BR}{outfile}{RS}")
-        print(f"[✓] Rendered → \n{BR}{outfile}{RS}")
+        # print(f"[✓] Rendered → \n{BR}{outfile}{RS}")
+        print(f"[✓] Rendered → \n\n\n{BR}{outfile}{RS}\n\n")
 
     finally:
         if tmp_path is not None:
