@@ -616,7 +616,8 @@ const HUD_TIMEOUT_RATIO = 0.5;
 
 // d = expand: move view left.
 // s = collapse: move view slightly right.
-const FOCUS_OFFSET_X_EXPAND = -250;
+// const FOCUS_OFFSET_X_EXPAND = -250;
+const FOCUS_OFFSET_X_EXPAND = -550;
 const FOCUS_OFFSET_X_COLLAPSE = 60;
 
 // Current offset used by zoomToExpandedMapWindow().
