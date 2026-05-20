@@ -616,8 +616,8 @@ const HUD_TIMEOUT_RATIO = 0.5;
 
 // d = expand: move view left.
 // s = collapse: move view slightly right.
-//const FOCUS_OFFSET_X_EXPAND = -530;
-const FOCUS_OFFSET_X_EXPAND = -490;
+// const FOCUS_OFFSET_X_EXPAND = -250;
+const FOCUS_OFFSET_X_EXPAND = -550;
 const FOCUS_OFFSET_X_COLLAPSE = 60;
 
 // Current offset used by zoomToExpandedMapWindow().
@@ -886,26 +886,14 @@ function getNodeText(node) {
         stroke-width: 2.5px !important;
       }
 
-
-.mm-shift-nav-box {
-  fill: rgba(153, 60, 29, 0.07);
-  stroke: none;
-  vector-effect: non-scaling-stroke;
-  pointer-events: none;
-  filter: drop-shadow(4px 0 10px rgba(153, 60, 29, 0.16));
-}
-
-.mm-shift-nav-left-bar {
-  fill: #993c1d;
-  stroke: none;
-  pointer-events: none;
-  filter:
-    drop-shadow(0 0 3px rgba(153, 60, 29, 0.55))
-    drop-shadow(3px 0 7px rgba(153, 60, 29, 0.28));
-}
-
-
-
+      .mm-shift-nav-box {
+        fill: rgba(41, 98, 255, 0.03);
+        stroke: #2962ff;
+        stroke-width: 2.5px;
+        vector-effect: non-scaling-stroke;
+        pointer-events: none;
+        filter: drop-shadow(0 0 6px rgba(41, 98, 255, 0.6));
+      }
 
       #mm-shift-nav-hud {
         position: fixed;
@@ -984,18 +972,15 @@ function showHud(message, timeout = 900) {
     }
   }
 
-function clearNavHighlight() {
-  document
-    .querySelectorAll(
-      ".mm-shift-nav-box, .mm-shift-nav-left-bar, .mm-shift-nav-scope-box"
-    )
-    .forEach(el => el.remove());
+  function clearNavHighlight() {
+    document
+      .querySelectorAll(".mm-shift-nav-box, .mm-shift-nav-scope-box")
+      .forEach(el => el.remove());
 
-  document
-    .querySelectorAll(".mm-shift-nav-hit")
-    .forEach(el => el.classList.remove("mm-shift-nav-hit"));
-}
-
+    document
+      .querySelectorAll(".mm-shift-nav-hit")
+      .forEach(el => el.classList.remove("mm-shift-nav-hit"));
+  }
 
   function getBoundMarkmapNode(el) {
     const bound = el?.__data__;
@@ -1143,22 +1128,16 @@ function collapseOneVisibleLevel(root) {
   return getVisibleExtraLevels(root);
 }
 
-
-
 function expandOneVisibleLevel(root) {
+  const maxVisibleExtraLevels = getVisibleExtraLevels(root);
   const candidates = [];
 
-  // Collect first. Do NOT mutate while walking,
-  // otherwise opening root can make traversal continue into children
-  // in the same d press.
-  forEachVisibleNode(root, node => {
+  forEachVisibleNode(root, (node, relativeDepth) => {
+    if (relativeDepth !== maxVisibleExtraLevels) return;
     if (!hasChildren(node)) return;
+    if (!node.payload?.fold) return;
 
-    // A visible folded node is the next expandable frontier
-    // for that visible branch.
-    if (node.payload?.fold) {
-      candidates.push(node);
-    }
+    candidates.push(node);
   });
 
   candidates.forEach(node => {
@@ -1363,54 +1342,38 @@ function adjustActiveSelectionLevels(delta) {
 
 
 
-function drawTargetBox(el) {
-  const SVG_NS = "http://www.w3.org/2000/svg";
+  function drawTargetBox(el) {
+    const SVG_NS = "http://www.w3.org/2000/svg";
 
-  if (!el) return;
+    if (!el) return;
 
-  el
-    .querySelectorAll(".mm-shift-nav-box, .mm-shift-nav-left-bar")
-    .forEach(box => box.remove());
+    el.querySelectorAll(".mm-shift-nav-box").forEach(box => box.remove());
 
-  const target = el.querySelector("foreignObject, text");
-  if (!target || typeof target.getBBox !== "function") return;
+    const target = el.querySelector("foreignObject, text");
+    if (!target || typeof target.getBBox !== "function") return;
 
-  let box;
+    let box;
 
-  try {
-    box = target.getBBox();
-  } catch {
-    return;
+    try {
+      box = target.getBBox();
+    } catch {
+      return;
+    }
+
+    const padX = 7;
+    const padY = 5;
+
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("class", "mm-shift-nav-box");
+    rect.setAttribute("x", box.x - padX);
+    rect.setAttribute("y", box.y - padY);
+    rect.setAttribute("width", box.width + padX * 2);
+    rect.setAttribute("height", box.height + padY * 2);
+    rect.setAttribute("rx", 7);
+    rect.setAttribute("ry", 7);
+
+    el.insertBefore(rect, el.firstChild);
   }
-
-  const padX = 9;
-  const padY = 6;
-
-  const barWidth = 4;
-  const barGap = 4;
-
-  const bg = document.createElementNS(SVG_NS, "rect");
-  bg.setAttribute("class", "mm-shift-nav-box");
-  bg.setAttribute("x", box.x - padX);
-  bg.setAttribute("y", box.y - padY);
-  bg.setAttribute("width", box.width + padX * 2);
-  bg.setAttribute("height", box.height + padY * 2);
-  bg.setAttribute("rx", 7);
-  bg.setAttribute("ry", 7);
-
-  const bar = document.createElementNS(SVG_NS, "rect");
-  bar.setAttribute("class", "mm-shift-nav-left-bar");
-  bar.setAttribute("x", box.x - padX - barGap - barWidth);
-  bar.setAttribute("y", box.y - padY + 1);
-  bar.setAttribute("width", barWidth);
-  bar.setAttribute("height", box.height + padY * 2 - 2);
-  bar.setAttribute("rx", 3);
-  bar.setAttribute("ry", 3);
-
-  el.insertBefore(bg, el.firstChild);
-  el.insertBefore(bar, bg.nextSibling);
-}
-
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -2619,6 +2582,8 @@ def render_markdown_content(markdown_text: str) -> None:
         append_css_code_to_html(outfile)
         append_new_code_to_html(outfile)
 
+        # print(f"[✓] Rendered → {BR}{outfile}{RS}")
+        # print(f"[✓] Rendered → \n{BR}{outfile}{RS}")
         print(f"[✓] Rendered → \n\n\n{BR}{outfile}{RS}\n\n")
 
     finally:
