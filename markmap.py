@@ -1387,7 +1387,7 @@ function drawTargetBox(el) {
   const padY = 6;
 
   const barWidth = 4;
-  const barGap = 4;
+  const barGap = 0;
 
   const bg = document.createElementNS(SVG_NS, "rect");
   bg.setAttribute("class", "mm-shift-nav-box");
