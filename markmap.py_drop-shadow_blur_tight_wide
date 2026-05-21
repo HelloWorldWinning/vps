@@ -901,6 +901,9 @@ function getNodeText(node) {
   fill: #993c1d;
   stroke: none;
   pointer-events: none;
+  filter:
+    drop-shadow(0 0 3px rgba(153, 60, 29, 0.55))
+    drop-shadow(3px 0 7px rgba(153, 60, 29, 0.28));
 }
 
 

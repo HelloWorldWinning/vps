@@ -880,17 +880,15 @@ function getNodeText(node) {
         font-weight: 800 !important;
       }
 
-/*
       .mm-shift-nav-hit circle {
         fill: #2962ff !important;
         stroke: #ffffff !important;
         stroke-width: 2.5px !important;
       }
 
-*/
 
 .mm-shift-nav-box {
-  fill: rgba(153, 60, 29, 0);
+  fill: rgba(153, 60, 29, 0.07);
   stroke: none;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
@@ -901,6 +899,9 @@ function getNodeText(node) {
   fill: #993c1d;
   stroke: none;
   pointer-events: none;
+  filter:
+    drop-shadow(0 0 3px rgba(153, 60, 29, 0.55))
+    drop-shadow(3px 0 7px rgba(153, 60, 29, 0.28));
 }
 
 
@@ -1268,6 +1269,8 @@ function setActiveSelectionFromRenderedElement(
     drawTargetBox(currentEl);
   }
 
+  const label = getNodeText(node) || "clicked node";
+  showHud(`Active +${extraLevels}: ${label}`, 900);
 
   return true;
 }
@@ -1361,7 +1364,6 @@ function adjustActiveSelectionLevels(delta) {
 
 
 function drawTargetBox(el) {
-  ensureNavStyle();
   const SVG_NS = "http://www.w3.org/2000/svg";
 
   if (!el) return;
