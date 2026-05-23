@@ -286,7 +286,7 @@ html {{
     zoom: 200%;
 }}
 
-body * {{
+html * {{
     font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
 }}
 
