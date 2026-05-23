@@ -1384,7 +1384,7 @@ function drawTargetBox(el) {
   const padX = 9;
   const padY = 6;
 
-  const barWidth = 4.5;
+  const barWidth = 4;
   const barGap = 1;
 
   const bg = document.createElementNS(SVG_NS, "rect");
@@ -1399,17 +1399,9 @@ function drawTargetBox(el) {
   const bar = document.createElementNS(SVG_NS, "rect");
   bar.setAttribute("class", "mm-shift-nav-left-bar");
   bar.setAttribute("x", box.x - padX - barGap - barWidth);
-
-
-const barPadTop = 0.85;
-const barPadBottom = 5.8;  
-
-bar.setAttribute("y", box.y - padY + barPadTop);
-bar.setAttribute("height", box.height + padY * 2 - barPadTop - barPadBottom);
-
-
-
+  bar.setAttribute("y", box.y - padY + 1);
   bar.setAttribute("width", barWidth);
+  bar.setAttribute("height", box.height + padY * 2 - 2);
   bar.setAttribute("rx", 3);
   bar.setAttribute("ry", 3);
 
