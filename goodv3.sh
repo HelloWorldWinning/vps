@@ -1166,7 +1166,7 @@ https://zhile.one/archives/1404.html
 		#mm) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py) ;;
 	mm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py -o /usr/local/bin/mm && chmod +x /usr/local/bin/mm && echo "✅ Done! 'mm' command installed successfully." || echo "❌ Installation failed." ;;
 	rmm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap_html_to_outline.py -o /usr/local/bin/rmm && chmod +x /usr/local/bin/rmm && echo "✅ Done! 'rmm' cormmand installed successfully." || echo "❌ Installation failed." ;;
-	wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
+		#wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
 	tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
 	webdav) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
 	nextcloud_aio) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;

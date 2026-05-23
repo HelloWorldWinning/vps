@@ -1,0 +1,411 @@
+#!/usr/bin/env bash
+# wos_bib
+# Parse BibTeX/BibLaTeX exports from Web of Science, Zotero, and Better BibTeX/Better BibLaTeX.
+# Usage: wos_bib <input.bib> [output.txt]
+# Default output: <input>_parsed.txt
+#
+# Output format is compact and LLM-friendly:
+# [1]
+# AU: ...
+# TI: ...
+# YR: ...
+# JO: ...
+# DO: ...
+# KW: ...
+# TC: ...
+# AB: ...
+
+set -euo pipefail
+
+[[ $# -lt 1 || $# -gt 2 ]] && { echo "Usage: $0 <file.bib> [output.txt]" >&2; exit 1; }
+
+INPUT="$1"
+[[ ! -f "$INPUT" ]] && { echo "Not found: $INPUT" >&2; exit 1; }
+
+if [[ $# -eq 2 ]]; then
+  OUTFILE="$2"
+else
+  base="$(basename "$INPUT")"
+  base="${base%.*}"
+  OUTFILE="$(dirname "$INPUT")/${base}_parsed.txt"
+fi
+
+python3 - "$INPUT" "$OUTFILE" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+src, dst = sys.argv[1], sys.argv[2]
+text = Path(src).read_text(encoding="utf-8", errors="replace")
+
+# Canonical output fields and accepted BibTeX/BibLaTeX aliases.
+# Web of Science exports vary between title-case custom fields and standard lowercase BibTeX fields.
+# Zotero BibLaTeX commonly uses date + journaltitle/booktitle; Zotero BibTeX commonly uses year + journal.
+FIELD_ALIASES = [
+    ("AU", ["author", "authors", "Author", "Authors", "AU"]),
+    ("TI", ["title", "Title", "TI"]),
+    ("YR", ["year", "Year", "PY", "date", "Date", "issued"]),
+    ("JO", [
+        "journal", "Journal", "journaltitle", "journal-title", "journal_title",
+        "booktitle", "Booktitle", "bookTitle", "publication", "publicationTitle",
+        "source", "Source", "SO", "eventtitle", "event-title"
+    ]),
+    ("DO", ["doi", "DOI", "DO"]),
+    ("KW", [
+        "keywords", "keyword", "Keywords", "Keyword", "author_keywords",
+        "author-keywords", "Author-Keywords", "DE", "ID"
+    ]),
+    ("TC", [
+        "times-cited", "Times-Cited", "Times Cited", "Times_Cited",
+        "times_cited", "citedby", "cited-by", "citations", "citation_count", "TC", "Z9"
+    ]),
+    ("AB", ["abstract", "Abstract", "AB"]),
+]
+
+SKIP_ENTRY_TYPES = {"comment", "preamble", "string"}
+
+def find_entries(s):
+    """Yield complete BibTeX/BibLaTeX entries by balanced-brace/paren scanning."""
+    n = len(s)
+    i = 0
+    while True:
+        at = s.find("@", i)
+        if at < 0:
+            return
+
+        # Skip escaped/literal @ in text by requiring a BibTeX-ish entry type after @.
+        m = re.match(r"@([A-Za-z][A-Za-z0-9_-]*)\s*([\{\(])", s[at:])
+        if not m:
+            i = at + 1
+            continue
+
+        entry_type = m.group(1)
+        opener = m.group(2)
+        closer = "}" if opener == "{" else ")"
+        start = at
+        pos = at + m.end()
+        depth = 1
+        in_quote = False
+        escaped = False
+
+        while pos < n:
+            ch = s[pos]
+
+            if escaped:
+                escaped = False
+                pos += 1
+                continue
+
+            if ch == "\\":
+                escaped = True
+                pos += 1
+                continue
+
+            if ch == '"':
+                in_quote = not in_quote
+                pos += 1
+                continue
+
+            if not in_quote:
+                if ch == opener:
+                    depth += 1
+                elif ch == closer:
+                    depth -= 1
+                    if depth == 0:
+                        yield entry_type, s[start:pos + 1]
+                        i = pos + 1
+                        break
+
+            pos += 1
+        else:
+            # Malformed final entry: keep what remains so fields before the error can still be parsed.
+            yield entry_type, s[start:]
+            return
+
+def entry_body(entry):
+    """Return content inside @type{...} or @type(...), excluding wrapper."""
+    m = re.match(r"@\s*([A-Za-z][A-Za-z0-9_-]*)\s*([\{\(])", entry)
+    if not m:
+        return ""
+    return entry[m.end():-1].strip()
+
+def split_key_and_fields(body):
+    """Split citation key from field list at the first top-level comma."""
+    depth = 0
+    in_quote = False
+    escaped = False
+
+    for idx, ch in enumerate(body):
+        if escaped:
+            escaped = False
+            continue
+        if ch == "\\":
+            escaped = True
+            continue
+        if ch == '"':
+            in_quote = not in_quote
+            continue
+        if not in_quote:
+            if ch in "{(":
+                depth += 1
+            elif ch in "})" and depth:
+                depth -= 1
+            elif ch == "," and depth == 0:
+                return body[:idx].strip(), body[idx + 1:]
+
+    return body.strip(), ""
+
+def read_braced_value(s, i):
+    depth = 1
+    i += 1
+    start = i
+    escaped = False
+
+    while i < len(s):
+        ch = s[i]
+        if escaped:
+            escaped = False
+            i += 1
+            continue
+        if ch == "\\":
+            escaped = True
+            i += 1
+            continue
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return s[start:i], i + 1
+        i += 1
+
+    return s[start:], len(s)
+
+def read_quoted_value(s, i):
+    i += 1
+    start = i
+    escaped = False
+
+    while i < len(s):
+        ch = s[i]
+        if escaped:
+            escaped = False
+            i += 1
+            continue
+        if ch == "\\":
+            escaped = True
+            i += 1
+            continue
+        if ch == '"':
+            return s[start:i], i + 1
+        i += 1
+
+    return s[start:], len(s)
+
+def read_bare_value(s, i):
+    start = i
+    depth = 0
+    in_quote = False
+    escaped = False
+
+    while i < len(s):
+        ch = s[i]
+        if escaped:
+            escaped = False
+            i += 1
+            continue
+        if ch == "\\":
+            escaped = True
+            i += 1
+            continue
+        if ch == '"':
+            in_quote = not in_quote
+            i += 1
+            continue
+        if not in_quote:
+            if ch in "{(":
+                depth += 1
+            elif ch in "})" and depth:
+                depth -= 1
+            elif ch == "," and depth == 0:
+                break
+        i += 1
+
+    return s[start:i], i
+
+def parse_fields(field_text):
+    """Parse fields into a case-insensitive dictionary while preserving original names."""
+    fields = {}
+    n = len(field_text)
+    i = 0
+
+    while i < n:
+        # Skip whitespace and separators.
+        while i < n and (field_text[i].isspace() or field_text[i] == ","):
+            i += 1
+        if i >= n:
+            break
+
+        name_start = i
+        while i < n and re.match(r"[A-Za-z0-9_\-:]", field_text[i]):
+            i += 1
+        name = field_text[name_start:i].strip()
+        if not name:
+            i += 1
+            continue
+
+        while i < n and field_text[i].isspace():
+            i += 1
+
+        if i >= n or field_text[i] != "=":
+            # Not a field assignment; skip to next comma.
+            nxt = field_text.find(",", i)
+            if nxt < 0:
+                break
+            i = nxt + 1
+            continue
+
+        i += 1
+        while i < n and field_text[i].isspace():
+            i += 1
+
+        if i >= n:
+            value = ""
+        elif field_text[i] == "{":
+            value, i = read_braced_value(field_text, i)
+        elif field_text[i] == '"':
+            value, i = read_quoted_value(field_text, i)
+        else:
+            value, i = read_bare_value(field_text, i)
+
+        # BibTeX field names are case-insensitive. Keep last duplicate value.
+        fields[name.lower()] = value.strip()
+
+        # Skip trailing characters until after comma.
+        while i < n and field_text[i] != ",":
+            if not field_text[i].isspace():
+                # Handle values that were followed directly by a next field without comma poorly but safely.
+                break
+            i += 1
+        if i < n and field_text[i] == ",":
+            i += 1
+
+    return fields
+
+LATEX_REPLACEMENTS = {
+    r"\&": "&",
+    r"\%": "%",
+    r"\$": "$",
+    r"\#": "#",
+    r"\_": "_",
+    r"\{": "{",
+    r"\}": "}",
+    r"\textendash": "–",
+    r"\textemdash": "—",
+    r"\textquotesingle": "'",
+    r"\textquotedbl": '"',
+    r"\ldots": "…",
+    r"~": " ",
+}
+
+ACCENT_REPLACEMENTS = {
+    r"\'a": "á", r"\'e": "é", r"\'i": "í", r"\'o": "ó", r"\'u": "ú", r"\'y": "ý",
+    r"\'A": "Á", r"\'E": "É", r"\'I": "Í", r"\'O": "Ó", r"\'U": "Ú", r"\'Y": "Ý",
+    r"\`a": "à", r"\`e": "è", r"\`i": "ì", r"\`o": "ò", r"\`u": "ù",
+    r"\"a": "ä", r"\"e": "ë", r"\"i": "ï", r"\"o": "ö", r"\"u": "ü", r"\"y": "ÿ",
+    r"\"A": "Ä", r"\"E": "Ë", r"\"I": "Ï", r"\"O": "Ö", r"\"U": "Ü",
+    r"\~n": "ñ", r"\~N": "Ñ",
+    r"\c c": "ç", r"\c C": "Ç",
+}
+
+def clean_value(value):
+    if not value:
+        return ""
+
+    v = value.strip().rstrip(",")
+
+    # Handle simple BibTeX concatenation: "foo" # "bar" or foo # bar.
+    v = re.sub(r"\s*#\s*", " ", v)
+
+    # Decode common escaped characters before removing protective braces.
+    for old, new in LATEX_REPLACEMENTS.items():
+        v = v.replace(old, new)
+
+    # Decode simple accent macros with and without braces: {\'e}, \'e.
+    for old, new in ACCENT_REPLACEMENTS.items():
+        v = v.replace("{" + old + "}", new)
+        v = v.replace(old, new)
+
+    # Drop protective BibTeX braces used for capitalization, but keep their content.
+    v = v.replace("{", "").replace("}", "")
+
+    # Strip a few remaining one-argument formatting commands while preserving text.
+    v = re.sub(r"\\(?:emph|textit|textbf|textsc|mathrm|mathbf)\s*([^\\]+)", r"\1", v)
+
+    # Remove remaining backslashes from simple LaTeX commands, preserving readable text.
+    v = re.sub(r"\\([A-Za-z]+)", r"\1", v)
+
+    # Normalize whitespace.
+    v = re.sub(r"\s+", " ", v).strip()
+
+    return v
+
+def get_field(fields, aliases):
+    for alias in aliases:
+        val = fields.get(alias.lower())
+        if val is not None:
+            val = clean_value(val)
+            if val:
+                return val
+    return ""
+
+def year_from_value(value):
+    if not value:
+        return ""
+    m = re.search(r"(?:18|19|20|21)\d{2}", value)
+    return m.group(0) if m else value
+
+def format_authors(value):
+    if not value:
+        return ""
+    # BibTeX/BibLaTeX separates names with " and ". WoS may already use semicolons.
+    if re.search(r"\s+and\s+", value, flags=re.I):
+        names = re.split(r"\s+and\s+", value, flags=re.I)
+        return "; ".join(name.strip() for name in names if name.strip())
+    return value
+
+def postprocess(label, value):
+    if label == "YR":
+        return year_from_value(value)
+    if label == "AU":
+        return format_authors(value)
+    return value
+
+out_lines = []
+count = 0
+
+for entry_type, entry in find_entries(text):
+    if entry_type.lower() in SKIP_ENTRY_TYPES:
+        continue
+
+    body = entry_body(entry)
+    _, field_text = split_key_and_fields(body)
+    fields = parse_fields(field_text)
+    if not fields:
+        continue
+
+    count += 1
+    parts = [f"[{count}]"]
+
+    for label, aliases in FIELD_ALIASES:
+        value = get_field(fields, aliases)
+        value = postprocess(label, value)
+        if value:
+            parts.append(f"{label}: {value}")
+
+    out_lines.append("\n".join(parts))
+
+Path(dst).write_text("\n\n".join(out_lines) + ("\n" if out_lines else ""), encoding="utf-8")
+print(f"Done: {count} entries -> {dst}")
+PY
+
