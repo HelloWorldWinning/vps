@@ -1,0 +1,423 @@
+from datetime import datetime
+import html
+import mimetypes
+import os
+import secrets
+from pathlib import Path
+from typing import Iterable, List
+from urllib.parse import quote, unquote
+
+from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse, Response
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+
+app = FastAPI()
+security = HTTPBasic()
+
+BASE_DIR = os.path.abspath(os.getenv("HOST_BASE_DIR", "/Host"))
+APP_DIR = Path(__file__).resolve().parent
+CSS_FILE = APP_DIR / "css.txt"
+JS_FILE = APP_DIR / "js.txt"
+
+DEFAULT_USERNAME = "a"
+DEFAULT_PASSWORD = "a"
+USERNAME = os.getenv("USERNAME_WEB", DEFAULT_USERNAME)
+PASSWORD = os.getenv("PASSWORD_WEB", DEFAULT_PASSWORD)
+
+FAVICON_URL = "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/favicon.ico"
+
+# Files in this set are shown inside an HTML <pre> viewer so the project CSS can
+# control fonts. This fixes raw .txt pages where browser default CSS wins.
+TEXT_PREVIEW_EXTENSIONS = {
+    ".txt",
+    ".md",
+    ".log",
+    ".ini",
+    ".conf",
+    ".cfg",
+    ".toml",
+    ".env",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".service",
+    ".socket",
+    ".py",
+    ".js",
+    ".mjs",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".css",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".csv",
+    ".sql",
+    ".java",
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".go",
+    ".rs",
+    ".rb",
+    ".php",
+    ".pl",
+    ".r",
+    ".swift",
+    ".kt",
+    ".scala",
+    ".lua",
+    ".gradle",
+    ".properties",
+    ".gitignore",
+    ".dockerignore",
+    ".editorconfig",
+    ".htaccess",
+    ".nginx",
+}
+
+TEXT_MIME_TYPES = {
+    ".js": "text/javascript",
+    ".mjs": "text/javascript",
+    ".json": "application/json",
+    ".css": "text/css",
+    ".html": "text/html",
+    ".htm": "text/html",
+    ".xml": "text/xml",
+    ".txt": "text/plain",
+    ".md": "text/markdown",
+    ".py": "text/x-python",
+    ".yaml": "text/yaml",
+    ".yml": "text/yaml",
+    ".csv": "text/csv",
+    ".log": "text/plain",
+    ".ini": "text/plain",
+    ".conf": "text/plain",
+    ".cfg": "text/plain",
+    ".toml": "text/plain",
+    ".env": "text/plain",
+    ".sh": "text/x-shellscript",
+    ".bash": "text/x-shellscript",
+    ".zsh": "text/x-shellscript",
+    ".ts": "text/typescript",
+    ".tsx": "text/typescript",
+    ".jsx": "text/javascript",
+    ".vue": "text/plain",
+    ".sql": "text/x-sql",
+    ".java": "text/x-java",
+    ".c": "text/x-c",
+    ".cpp": "text/x-c++",
+    ".h": "text/x-c",
+    ".hpp": "text/x-c++",
+    ".go": "text/x-go",
+    ".rs": "text/x-rust",
+    ".rb": "text/x-ruby",
+    ".php": "text/x-php",
+    ".pl": "text/x-perl",
+    ".r": "text/x-r",
+    ".swift": "text/x-swift",
+    ".kt": "text/x-kotlin",
+    ".scala": "text/x-scala",
+    ".lua": "text/x-lua",
+    ".m": "text/x-objectivec",
+    ".mm": "text/x-objectivec",
+    ".gradle": "text/x-gradle",
+    ".properties": "text/plain",
+    ".gitignore": "text/plain",
+    ".dockerignore": "text/plain",
+    ".editorconfig": "text/plain",
+    ".htaccess": "text/plain",
+    ".nginx": "text/plain",
+    ".service": "text/plain",
+    ".socket": "text/plain",
+}
+
+
+def read_asset(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return ""
+
+
+@app.get("/__assets__/css.txt")
+async def get_css() -> Response:
+    return Response(
+        content=read_asset(CSS_FILE),
+        media_type="text/css; charset=utf-8",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/__assets__/js.txt")
+async def get_js() -> Response:
+    return Response(
+        content=read_asset(JS_FILE),
+        media_type="text/javascript; charset=utf-8",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+def format_size(size_in_bytes: int) -> str:
+    """Convert size in bytes to human-readable format."""
+    size = float(size_in_bytes)
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
+        if size < 1024.0:
+            return f"{size:.1f} {unit}"
+        size /= 1024.0
+    return f"{size:.1f} PB"
+
+
+def get_file_info(path: str) -> dict:
+    """Get file/directory information safely."""
+    try:
+        st = os.lstat(path)
+        modified = datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+        return {"size": st.st_size, "modified": modified}
+    except (FileNotFoundError, PermissionError, OSError):
+        return {"size": 0, "modified": "-"}
+
+
+def normalize_url_path(path: str) -> str:
+    """Decode and normalize a URL path while keeping it relative to BASE_DIR."""
+    decoded = unquote(path or "")
+    while "//" in decoded:
+        decoded = decoded.replace("//", "/")
+    return decoded.lstrip("/")
+
+
+def resolve_internal_path(path: str) -> tuple[str, str]:
+    normalized_path = normalize_url_path(path)
+    internal_path = os.path.abspath(os.path.join(BASE_DIR, normalized_path))
+
+    if not (internal_path == BASE_DIR or internal_path.startswith(BASE_DIR + os.sep)):
+        raise HTTPException(status_code=403, detail="Path traversal not allowed")
+
+    return normalized_path, internal_path
+
+
+def safe_quote_url(url_path: str) -> str:
+    return quote(url_path, safe="/%:@")
+
+
+def create_breadcrumb(url_path: str) -> str:
+    """Create HTML breadcrumb navigation from the URL path."""
+    if not url_path.startswith("/"):
+        url_path = "/" + url_path
+    if url_path == "/":
+        return '<a href="/" class="breadcrumb-item">/</a>'
+
+    parts = [part for part in url_path.strip("/").split("/") if part]
+    breadcrumb_parts = ['<a href="/" class="breadcrumb-item">/</a>']
+    cumulative = ""
+
+    for part in parts:
+        cumulative += "/" + part
+        encoded_path = safe_quote_url(cumulative)
+        label = html.escape(part)
+        breadcrumb_parts.append(
+            f'<a href="{encoded_path}" class="breadcrumb-item">{label}</a>/'
+        )
+
+    return "".join(breadcrumb_parts)
+
+
+def authenticate(credentials: HTTPBasicCredentials = Depends(security)) -> HTTPBasicCredentials:
+    is_correct_username = secrets.compare_digest(
+        credentials.username.encode("utf8"), USERNAME.encode("utf8")
+    )
+    is_correct_password = secrets.compare_digest(
+        credentials.password.encode("utf8"), PASSWORD.encode("utf8")
+    )
+
+    if not (is_correct_username and is_correct_password):
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials
+
+
+def render_base_html(title: str, body: str) -> HTMLResponse:
+    safe_title = html.escape(title)
+    html_content = f"""
+    <!doctype html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="{FAVICON_URL}">
+        <link rel="stylesheet" href="/__assets__/css.txt">
+        <script src="/__assets__/js.txt" defer></script>
+        <title>{safe_title}</title>
+    </head>
+    <body>
+        {body}
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
+
+def build_directory_rows(path: str, internal_path: str, items: Iterable[str]) -> List[str]:
+    table_rows: List[str] = []
+
+    if path != "":
+        parent_path = os.path.dirname(path)
+        parent_url = safe_quote_url("/" + parent_path) if parent_path else "/"
+        parent_internal_path = os.path.dirname(internal_path)
+        parent_info = get_file_info(parent_internal_path)
+        table_rows.append(
+            f"""
+            <tr>
+                <td>
+                    <div class="item-container">
+                        <span class="index-number">-</span>
+                        <a href="{parent_url}" class="folder">../</a>
+                    </div>
+                </td>
+                <td class="size-col">-</td>
+                <td>{html.escape(parent_info['modified'])}</td>
+            </tr>
+            """
+        )
+
+    for idx, item in enumerate(items, 1):
+        item_internal_path = os.path.join(internal_path, item)
+        item_url = f"/{path.rstrip('/')}/{item}" if path else f"/{item}"
+        item_url = safe_quote_url(item_url)
+        item_info = get_file_info(item_internal_path)
+
+        if os.path.isdir(item_internal_path):
+            item_display = f"{html.escape(item)}/"
+            item_size = "-"
+            item_class = "folder"
+        else:
+            item_display = html.escape(item)
+            item_size = format_size(item_info["size"]) if item_info["modified"] != "-" else "-"
+            item_class = "file"
+
+        table_rows.append(
+            f"""
+            <tr>
+                <td>
+                    <div class="item-container">
+                        <span class="index-number">{idx}.</span>
+                        <a href="{item_url}" class="{item_class}">{item_display}</a>
+                    </div>
+                </td>
+                <td class="size-col">{html.escape(item_size)}</td>
+                <td>{html.escape(item_info['modified'])}</td>
+            </tr>
+            """
+        )
+
+    return table_rows
+
+
+def render_directory(path: str, internal_path: str) -> HTMLResponse:
+    try:
+        items = os.listdir(internal_path)
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Permission denied")
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Path not found")
+    except OSError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unable to list directory: {e.strerror or str(e)}",
+        )
+
+    items.sort()
+    breadcrumb = create_breadcrumb("/" + path)
+    table_rows = build_directory_rows(path, internal_path, items)
+
+    body = f"""
+    <div class="breadcrumb">
+        {breadcrumb}
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th style="text-align: right">Size</th>
+                <th>Modified</th>
+            </tr>
+        </thead>
+        <tbody>
+            {''.join(table_rows)}
+        </tbody>
+    </table>
+    """
+    title = "/" if path == "" else f"/{path}"
+    return render_base_html(title=title, body=body)
+
+
+def read_text_file(path: str) -> str:
+    for encoding in ("utf-8", "utf-8-sig", "latin-1"):
+        try:
+            with open(path, "r", encoding=encoding) as file:
+                return file.read()
+        except UnicodeDecodeError:
+            continue
+    with open(path, "r", encoding="latin-1", errors="replace") as file:
+        return file.read()
+
+
+def render_text_preview(path: str, internal_path: str) -> HTMLResponse:
+    filename = os.path.basename(internal_path)
+    content = html.escape(read_text_file(internal_path))
+    raw_url = safe_quote_url("/" + path) + "?raw=1"
+    title = html.escape(filename)
+
+    body = f"""
+    <div class="file-viewer-toolbar">
+        <a href="{raw_url}" class="raw-link">raw</a>
+    </div>
+    <h1>{title}</h1>
+    <pre>{content}</pre>
+    """
+    return render_base_html(title=filename, body=body)
+
+
+def file_media_type(file_extension: str) -> str | None:
+    if file_extension in TEXT_MIME_TYPES:
+        return f"{TEXT_MIME_TYPES[file_extension]}; charset=utf-8"
+
+    guessed_type, _ = mimetypes.guess_type(file_extension)
+    return guessed_type
+
+
+@app.get("/")
+@app.get("/{path:path}")
+async def read_path(
+    path: str = "",
+    raw: bool = Query(default=False),
+    credentials: HTTPBasicCredentials = Depends(authenticate),
+):
+    normalized_path, internal_path = resolve_internal_path(path)
+
+    if os.path.isdir(internal_path):
+        return render_directory(normalized_path, internal_path)
+
+    if os.path.isfile(internal_path):
+        file_extension = os.path.splitext(internal_path)[1].lower()
+
+        if not raw and file_extension in TEXT_PREVIEW_EXTENSIONS:
+            return render_text_preview(normalized_path, internal_path)
+
+        media_type = file_media_type(file_extension)
+        if media_type:
+            return FileResponse(internal_path, media_type=media_type)
+        return FileResponse(internal_path)
+
+    raise HTTPException(status_code=404, detail="Path not found")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=7788, reload=True)

@@ -1,0 +1,144 @@
+@font-face {
+    font-family: "FZFangJunHeiS";
+    src: url("https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+html {
+    font-size: 200%;
+}
+
+html,
+body,
+html * {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+}
+
+pre,
+pre * {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+body {
+    margin: 1.25rem;
+    background-color: #f8f9fa;
+}
+
+.breadcrumb {
+    background-color: white;
+    padding: 0.75rem 0.9375rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.breadcrumb-item,
+.breadcrumb-item *,
+.breadcrumb > :not(a) {
+    color: #1d910d;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 200%;
+}
+
+.breadcrumb-item:hover {
+    color: #26cc0e;
+    font-weight: bold;
+}
+
+.item-container {
+    display: flex;
+    align-items: center;
+}
+
+.index-number {
+    min-width: 3.5em;
+    text-align: right;
+    margin-right: 1em;
+    color: #666;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.25rem;
+}
+
+th,
+td {
+    padding: 0.75rem 0.9375rem;
+    text-align: left;
+    border-bottom: 0.0625rem solid #eee;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+a {
+    text-decoration: none;
+}
+
+.folder {
+    background-color: transparent;
+    color: #1d910d;
+    font-weight: bold;
+    font-size: 120%;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+.folder:hover {
+    background-color: transparent;
+}
+
+.file {
+    color: #db0bee;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+.file:hover {
+    background-color: transparent;
+}
+
+.size-col {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+    text-align: right;
+}
+
+h1,
+h2 {
+    color: #343a40;
+    margin-bottom: 1.25rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.file-viewer-toolbar {
+    margin-bottom: 0.75rem;
+}
+
+.raw-link {
+    color: #1d910d;
+    font-weight: bold;
+}
