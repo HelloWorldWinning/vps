@@ -953,20 +953,6 @@ function showHud(message, timeout = 900) {
 }
 
 
-function showActiveSelectionHud(node, extraLevels = null, timeout = 900) {
-  if (!node) return;
-
-  const visibleExtraLevels =
-    extraLevels === null || extraLevels === undefined
-      ? getVisibleExtraLevels(node)
-      : Math.max(0, Number(extraLevels) || 0);
-
-  const label = getNodeText(node) || "active node";
-
-  showHud(`Active +${visibleExtraLevels}: ${label}`, timeout);
-}
-
-
 
   function showSequenceHud(sequence) {
     if (sequence.includes("~")) {
@@ -1282,7 +1268,6 @@ function setActiveSelectionFromRenderedElement(
     drawTargetBox(currentEl);
   }
 
-showActiveSelectionHud(node, extraLevels, 900);
 
   return true;
 }
@@ -1308,9 +1293,8 @@ function renderActiveSelection(mm) {
         visibleExtraLevels
       );
 
-
-      showActiveSelectionHud(activeSelection.node, visibleExtraLevels, 900);
-
+      const label = getNodeText(activeSelection.node) || "active node";
+      showHud(`Active +${visibleExtraLevels}: ${label}`, 900);
     }, RENDER_SETTLE_MS);
   }
 
