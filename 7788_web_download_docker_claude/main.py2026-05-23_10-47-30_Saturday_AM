@@ -259,45 +259,21 @@ async def read_path(
             <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
-
-@font-face {{
-    font-family: 'FZFangJunHeiS';
-    src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-    font-display: swap;
-}}
-
-@font-face {{
-    font-family: 'PingFang SC';
-    src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/PingFang_SC_Light_300.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}}
-
-@font-face {{
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-    font-display: swap;
-}}
-
-html {{
-    zoom: 200%;
-}}
-
-body * {{
-    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-}}
-
-pre,
-pre * {{
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}}
-
-
-
+                @font-face {{
+                    font-family: 'FZFangJunHeiS';
+                    src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+                }}
+                html {{
+                    zoom: 200%;
+                }}
+                body, html * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                }}
+                pre, pre * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }}
                 body {{
                     margin: 20px;
                     background-color: #f8f9fa;
