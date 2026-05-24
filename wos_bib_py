@@ -25,8 +25,8 @@ from typing import Dict, List, Tuple
 
 
 FIELDS: List[Tuple[str, str]] = [
-    ("Author", "AU"),
     ("Title", "TI"),
+    ("Author", "AU"),
     ("Year", "YR"),
     ("Journal", "JO"),
     ("DOI", "DO"),
@@ -78,9 +78,7 @@ def grab(block: str, key: str) -> str:
     especially for Times-Cited.
     """
     pattern = re.compile(
-        r"^\s*"
-        + re.escape(key)
-        + r"\s*=\s*\{(.*?)(?=\n\s*[\w][\w-]*\s*=|\n\}|\Z)",
+        r"^\s*" + re.escape(key) + r"\s*=\s*\{(.*?)(?=\n\s*[\w][\w-]*\s*=|\n\}|\Z)",
         re.I | re.M | re.S,
     )
 
@@ -207,8 +205,7 @@ def parse_bib(input_path: Path) -> Tuple[str, int]:
     parsed.sort(key=lambda item: (-item["tc_sort"], item["original_index"]))
 
     output_blocks = [
-        format_entry(index, item["data"])
-        for index, item in enumerate(parsed, start=1)
+        format_entry(index, item["data"]) for index, item in enumerate(parsed, start=1)
     ]
 
     output_text = "\n\n".join(output_blocks)
