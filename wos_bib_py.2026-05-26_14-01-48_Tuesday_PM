@@ -26,10 +26,10 @@ from typing import Dict, List, Tuple
 
 FIELDS: List[Tuple[str, str]] = [
     ("Title", "TI"),
-    ("DOI", "DO"),
+    ("Author", "AU"),
     ("Year", "YR"),
     ("Journal", "JO"),
-    ("Author", "AU"),
+    ("DOI", "DO"),
     ("Keywords", "KW"),
     ("Times-Cited", "TC"),
     ("Abstract", "AB"),

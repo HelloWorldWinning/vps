@@ -17,17 +17,23 @@
 
 set -euo pipefail
 
-[[ $# -lt 1 || $# -gt 2 ]] && { echo "Usage: $0 <file.bib> [output.txt]" >&2; exit 1; }
+[[ $# -lt 1 || $# -gt 2 ]] && {
+	echo "Usage: $0 <file.bib> [output.txt]" >&2
+	exit 1
+}
 
 INPUT="$1"
-[[ ! -f "$INPUT" ]] && { echo "Not found: $INPUT" >&2; exit 1; }
+[[ ! -f "$INPUT" ]] && {
+	echo "Not found: $INPUT" >&2
+	exit 1
+}
 
 if [[ $# -eq 2 ]]; then
-  OUTFILE="$2"
+	OUTFILE="$2"
 else
-  base="$(basename "$INPUT")"
-  base="${base%.*}"
-  OUTFILE="$(dirname "$INPUT")/${base}_parsed.txt"
+	base="$(basename "$INPUT")"
+	base="${base%.*}"
+	OUTFILE="$(dirname "$INPUT")/${base}_parsed.txt"
 fi
 
 python3 - "$INPUT" "$OUTFILE" <<'PY'
@@ -41,17 +47,16 @@ text = Path(src).read_text(encoding="utf-8", errors="replace")
 # Canonical output fields and accepted BibTeX/BibLaTeX aliases.
 # Web of Science exports vary between title-case custom fields and standard lowercase BibTeX fields.
 # Zotero BibLaTeX commonly uses date + journaltitle/booktitle; Zotero BibTeX commonly uses year + journal.
-
 FIELD_ALIASES = [
     ("TI", ["title", "Title", "TI"]),
-    ("DO", ["doi", "DOI", "DO"]),
+    ("AU", ["author", "authors", "Author", "Authors", "AU"]),
     ("YR", ["year", "Year", "PY", "date", "Date", "issued"]),
     ("JO", [
         "journal", "Journal", "journaltitle", "journal-title", "journal_title",
         "booktitle", "Booktitle", "bookTitle", "publication", "publicationTitle",
         "source", "Source", "SO", "eventtitle", "event-title"
     ]),
-    ("AU", ["author", "authors", "Author", "Authors", "AU"]),
+    ("DO", ["doi", "DOI", "DO"]),
     ("KW", [
         "keywords", "keyword", "Keywords", "Keyword", "author_keywords",
         "author-keywords", "Author-Keywords", "DE", "ID"
@@ -409,4 +414,3 @@ for entry_type, entry in find_entries(text):
 Path(dst).write_text("\n\n".join(out_lines) + ("\n" if out_lines else ""), encoding="utf-8")
 print(f"Done: {count} entries -> {dst}")
 PY
-
