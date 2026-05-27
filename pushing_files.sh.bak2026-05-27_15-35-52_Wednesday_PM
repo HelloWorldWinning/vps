@@ -109,8 +109,7 @@ fi
 #echo -e "${GREEN}Server is online.${NC}"
 echo "---------------------------------"
 #echo -e "${BOLD_RED}Server is online.${NC}"
-#echo -e "${BOLD_RED}  online  ${NC}"
-echo -e "${BOLD_RED}  online  ${API_HOST}${NC}"
+echo -e "${BOLD_RED}  online  ${NC}"
 echo "---------------------------------"
 
 # === Step 2: Collect All File/Folder Paths ===
