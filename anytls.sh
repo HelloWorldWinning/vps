@@ -2,14 +2,23 @@
 #==============================================================================
 # anytls_maneger.sh — AnyTLS node manager for Debian (mihomo backend)
 #------------------------------------------------------------------------------
-# Commands:
-#   install | info | start/stop/restart/status | logs | reconfigure | update |
-#   repair | sync-cert | uninstall
+# Commands: install | info | start/stop/restart/status | logs | reconfigure |
+#           update | uninstall
 #
-# Main fix in this build:
-#   mihomo only allows certificate/key paths under its home/safe directory.
-#   Existing Let's Encrypt/acme.sh certs are now copied or installed into
-#   /etc/anytls/cert.crt and /etc/anytls/cert.key before config is written.
+# Highlights of this build:
+#   - Default install port: 344, default password: 344
+#   - Bundled custom padding-scheme replaces the upstream default scheme
+#   - Let's Encrypt issuing needs no email input (uses admin@<domain>)
+#   - ACME account registration is forced away from acme.sh's bad example.com
+#
+#   - FIX: mihomo only reads TLS files that live under its working directory
+#     (-d /etc/anytls). Pointing the config at /root/.acme.sh/... or
+#     /etc/letsencrypt/live/... made the listener fail with:
+#       "path is not subpath of home directory or SAFE_PATHS ... allowed
+#        paths: [/etc/anytls]"
+#     Certificates are now always COPIED into /etc/anytls and the config
+#     points there. Renewal hooks (acme.sh reloadcmd / certbot deploy hook)
+#     refresh those copies and restart the service automatically.
 #==============================================================================
 
 set -o pipefail
@@ -20,12 +29,16 @@ BIN="$DIR/mihomo"
 CONF="$DIR/config.yaml"
 META="$DIR/anytls.conf"
 PADDING="$DIR/padding.txt"
-SAFE_CRT="$DIR/cert.crt"
-SAFE_KEY="$DIR/cert.key"
+
+# All TLS material lives INSIDE $DIR so mihomo is always allowed to read it.
+SELFGEN_CRT="$DIR/cert.crt" # self-signed output
+SELFGEN_KEY="$DIR/cert.key"
+LIVE_CRT="$DIR/live_fullchain.pem" # copied-in CA cert (LE / acme.sh)
+LIVE_KEY="$DIR/live_privkey.pem"
+
 SERVICE_NAME="anytls"
 SERVICE="/etc/systemd/system/${SERVICE_NAME}.service"
 SELF_CMD="/usr/local/bin/anytls"
-CERTBOT_HOOK="/etc/letsencrypt/renewal-hooks/deploy/anytls.sh"
 
 MIHOMO_REPO="MetaCubeX/mihomo"
 ANYTLS_REPO="anytls/anytls-go"
@@ -64,10 +77,9 @@ need_root() { [ "$(id -u)" -eq 0 ] || die "Please run as root (sudo)."; }
 
 ensure_deps() {
 	local miss=()
-	for c in curl openssl gzip systemctl sed awk grep ss; do
+	for c in curl openssl gzip systemctl sed awk grep; do
 		command -v "$c" >/dev/null 2>&1 || miss+=("$c")
 	done
-
 	if [ "${#miss[@]}" -gt 0 ]; then
 		command -v apt-get >/dev/null 2>&1 || die "Missing dependencies: ${miss[*]}; apt-get was not found."
 		inf "Installing dependencies: ${miss[*]}"
@@ -94,7 +106,7 @@ latest_mihomo_tag() {
 	local url
 	url=$(curl -fsSLI -o /dev/null -w '%{url_effective}' \
 		"https://github.com/${MIHOMO_REPO}/releases/latest" 2>/dev/null) || return 1
-	basename "$url" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -n1
+	basename "$url" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+'
 }
 
 installed_mihomo_ver() {
@@ -106,10 +118,9 @@ installed_mihomo_ver() {
 }
 
 get_ip4() {
-	local ip u
+	local ip
 	for u in https://api.ipify.org https://ipv4.icanhazip.com https://ifconfig.me; do
-		ip=$(curl -fsS4 --max-time 6 "$u" 2>/dev/null | tr -d '[:space:]')
-		[ -n "$ip" ] && {
+		ip=$(curl -fsS4 --max-time 6 "$u" 2>/dev/null | tr -d '[:space:]') && [ -n "$ip" ] && {
 			echo "$ip"
 			return
 		}
@@ -118,10 +129,10 @@ get_ip4() {
 }
 
 get_ip6() {
-	local ip u
+	local ip
 	for u in https://api64.ipify.org https://ipv6.icanhazip.com; do
-		ip=$(curl -fsS6 --max-time 6 "$u" 2>/dev/null | tr -d '[:space:]')
-		[ -n "$ip" ] && [[ "$ip" == *:* ]] && {
+		ip=$(curl -fsS6 --max-time 6 "$u" 2>/dev/null | tr -d '[:space:]') &&
+			[ -n "$ip" ] && [[ "$ip" == *:* ]] && {
 			echo "$ip"
 			return
 		}
@@ -156,20 +167,26 @@ lower_domain() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space
 
 acme_auto_email() {
 	# No prompt. This avoids acme.sh falling back to forbidden example.com.
+	# Let's Encrypt only needs a syntactically valid contact; it does not need
+	# this script to read or verify the mailbox.
 	printf 'admin@%s' "$1"
+}
+
+find_acme() {
+	local a
+	for a in "${HOME:-/root}/.acme.sh/acme.sh" /root/.acme.sh/acme.sh; do
+		[ -x "$a" ] && {
+			printf '%s' "$a"
+			return 0
+		}
+	done
+	return 1
 }
 
 open_firewall() {
 	local p="$1"
 	if command -v ufw >/dev/null 2>&1 && ufw status 2>/dev/null | grep -qi "Status: active"; then
 		ufw allow "${p}/tcp" >/dev/null 2>&1 && inf "ufw: opened ${p}/tcp"
-	fi
-}
-
-copy_self_command() {
-	if [ "$0" != "$SELF_CMD" ] || [ ! -x "$SELF_CMD" ]; then
-		cp -f "$0" "$SELF_CMD" 2>/dev/null && chmod 0755 "$SELF_CMD" 2>/dev/null &&
-			inf "Manager installed as 'anytls' — run it anytime with: anytls"
 	fi
 }
 
@@ -187,14 +204,10 @@ load_meta() {
 	INSECURE="${INSECURE:-0}"
 	CERT_PATH="${CERT_PATH:-}"
 	KEY_PATH="${KEY_PATH:-}"
-	CERT_SRC_CRT="${CERT_SRC_CRT:-}"
-	CERT_SRC_KEY="${CERT_SRC_KEY:-}"
-	ACME_ECC="${ACME_ECC:-0}"
 	LISTEN="${LISTEN:-0.0.0.0}"
 }
 
 save_meta() {
-	mkdir -p "$DIR"
 	{
 		printf 'PORT=%q\n' "$PORT"
 		printf 'PASSWORD=%q\n' "$PASSWORD"
@@ -204,124 +217,12 @@ save_meta() {
 		printf 'INSECURE=%q\n' "$INSECURE"
 		printf 'CERT_PATH=%q\n' "$CERT_PATH"
 		printf 'KEY_PATH=%q\n' "$KEY_PATH"
-		printf 'CERT_SRC_CRT=%q\n' "$CERT_SRC_CRT"
-		printf 'CERT_SRC_KEY=%q\n' "$CERT_SRC_KEY"
-		printf 'ACME_ECC=%q\n' "$ACME_ECC"
 		printf 'LISTEN=%q\n' "$LISTEN"
 	} >"$META"
 	chmod 600 "$META"
 }
 
 is_installed() { [ -x "$BIN" ] && [ -f "$META" ] && [ -f "$SERVICE" ]; }
-
-#------------------------------- certificate safe-path handling ----------------
-validate_cert_file() { openssl x509 -in "$1" -noout >/dev/null 2>&1; }
-validate_key_file() { openssl pkey -in "$1" -noout >/dev/null 2>&1; }
-
-cert_key_match() {
-	local crt="$1" key="$2" crt_pub key_pub
-	crt_pub=$(openssl x509 -in "$crt" -pubkey -noout 2>/dev/null | openssl pkey -pubin -outform DER 2>/dev/null | sha256sum | awk '{print $1}') || return 1
-	key_pub=$(openssl pkey -in "$key" -pubout -outform DER 2>/dev/null | sha256sum | awk '{print $1}') || return 1
-	[ -n "$crt_pub" ] && [ "$crt_pub" = "$key_pub" ]
-}
-
-install_cert_to_safe_paths() {
-	local src_crt="$1" src_key="$2"
-	[ -f "$src_crt" ] || {
-		err "Certificate file not found: $src_crt"
-		return 1
-	}
-	[ -f "$src_key" ] || {
-		err "Private key file not found: $src_key"
-		return 1
-	}
-	validate_cert_file "$src_crt" || {
-		err "Invalid certificate PEM: $src_crt"
-		return 1
-	}
-	validate_key_file "$src_key" || {
-		err "Invalid private key PEM: $src_key"
-		return 1
-	}
-	cert_key_match "$src_crt" "$src_key" || {
-		err "Certificate and private key do not match."
-		return 1
-	}
-
-	mkdir -p "$DIR"
-	install -m 0644 "$src_crt" "${SAFE_CRT}.tmp" || return 1
-	install -m 0600 "$src_key" "${SAFE_KEY}.tmp" || return 1
-	mv -f "${SAFE_CRT}.tmp" "$SAFE_CRT"
-	mv -f "${SAFE_KEY}.tmp" "$SAFE_KEY"
-	chmod 0644 "$SAFE_CRT"
-	chmod 0600 "$SAFE_KEY"
-
-	CERT_PATH="$SAFE_CRT"
-	KEY_PATH="$SAFE_KEY"
-	return 0
-}
-
-ensure_cert_safe_paths() {
-	[ -n "${CERT_PATH:-}" ] && [ -n "${KEY_PATH:-}" ] || return 0
-
-	if [ "$CERT_PATH" = "$SAFE_CRT" ] && [ "$KEY_PATH" = "$SAFE_KEY" ]; then
-		[ -f "$SAFE_CRT" ] && [ -f "$SAFE_KEY" ] || return 1
-		validate_cert_file "$SAFE_CRT" || return 1
-		validate_key_file "$SAFE_KEY" || return 1
-		return 0
-	fi
-
-	warn "Certificate/key paths are outside ${DIR}; copying them into mihomo's safe path."
-	CERT_SRC_CRT="$CERT_PATH"
-	CERT_SRC_KEY="$KEY_PATH"
-	install_cert_to_safe_paths "$CERT_SRC_CRT" "$CERT_SRC_KEY"
-}
-
-sync_cert_from_meta() {
-	load_meta
-	if [ -z "${CERT_SRC_CRT:-}" ] || [ -z "${CERT_SRC_KEY:-}" ]; then
-		[ -f "$SAFE_CRT" ] && [ -f "$SAFE_KEY" ] && return 0
-		err "No source certificate paths are stored in $META."
-		return 1
-	fi
-	install_cert_to_safe_paths "$CERT_SRC_CRT" "$CERT_SRC_KEY" || return 1
-	save_meta
-}
-
-find_acme_bin() {
-	if [ -x "${HOME:-/root}/.acme.sh/acme.sh" ]; then
-		echo "${HOME:-/root}/.acme.sh/acme.sh"
-	elif [ -x "/root/.acme.sh/acme.sh" ]; then
-		echo "/root/.acme.sh/acme.sh"
-	else
-		command -v acme.sh 2>/dev/null || true
-	fi
-}
-
-acme_install_to_safe_paths() {
-	local domain="$1" ecc="$2" acme args=()
-	acme=$(find_acme_bin)
-	[ -n "$acme" ] && [ -x "$acme" ] || return 1
-	[ "$ecc" = "1" ] && args+=(--ecc)
-	"$acme" --install-cert -d "$domain" "${args[@]}" \
-		--key-file "$SAFE_KEY" \
-		--fullchain-file "$SAFE_CRT" \
-		--reloadcmd "systemctl restart ${SERVICE_NAME}" >/dev/null 2>&1
-}
-
-write_certbot_hook() {
-	[ -d /etc/letsencrypt ] || return 0
-	mkdir -p /etc/letsencrypt/renewal-hooks/deploy
-	cat >"$CERTBOT_HOOK" <<EOF_HOOK
-#!/bin/sh
-# Generated by anytls_maneger.sh. Keep mihomo-safe cert copies fresh.
-if [ -x "$SELF_CMD" ]; then
-  "$SELF_CMD" sync-cert --quiet >/dev/null 2>&1 || true
-fi
-systemctl restart "$SERVICE_NAME" >/dev/null 2>&1 || true
-EOF_HOOK
-	chmod +x "$CERTBOT_HOOK"
-}
 
 #------------------------------- padding --------------------------------------
 write_upstream_default_padding_tmp() {
@@ -353,7 +254,8 @@ padding_is_upstream_default() {
 }
 
 write_custom_padding() {
-	mkdir -p "$DIR"
+	# Custom AnyTLS padding-scheme. It intentionally differs from the public
+	# upstream default while staying modest enough for normal VPS bandwidth.
 	cat >"$PADDING" <<'EOF_PADDING'
 stop=10
 0=80-160
@@ -382,10 +284,49 @@ ensure_padding() {
 	fi
 }
 
+#------------------------------- cert plumbing --------------------------------
+# Copy a cert+key pair into $DIR so mihomo (working dir $DIR) is allowed to read
+# them. Sets CERT_PATH/KEY_PATH on success.
+copy_cert_into_dir() {
+	local src_crt="$1" src_key="$2"
+	[ -f "$src_crt" ] || {
+		err "Certificate not found: $src_crt"
+		return 1
+	}
+	[ -f "$src_key" ] || {
+		err "Private key not found: $src_key"
+		return 1
+	}
+	mkdir -p "$DIR"
+	install -m 600 "$src_crt" "$LIVE_CRT" || {
+		err "Failed to copy certificate into $DIR"
+		return 1
+	}
+	install -m 600 "$src_key" "$LIVE_KEY" || {
+		err "Failed to copy private key into $DIR"
+		return 1
+	}
+	CERT_PATH="$LIVE_CRT"
+	KEY_PATH="$LIVE_KEY"
+}
+
+# Safety net for older / externally-pointed installs: if meta still references a
+# cert outside $DIR, copy it in so the service can at least start.
+normalize_cert_paths() {
+	case "$CERT_PATH" in
+	"$DIR"/* | "") return 0 ;;
+	esac
+	if [ -f "$CERT_PATH" ] && [ -f "$KEY_PATH" ]; then
+		warn "TLS files live outside $DIR (mihomo cannot read them there); copying them in."
+		copy_cert_into_dir "$CERT_PATH" "$KEY_PATH" &&
+			warn "Re-run TLS setup (reconfigure → 3) if you want automatic renewal copies."
+	fi
+}
+
 #------------------------------- config write ---------------------------------
 write_config() {
 	ensure_padding
-	ensure_cert_safe_paths || die "Certificate setup failed. Run '$0 repair' or redo TLS."
+	normalize_cert_paths
 
 	# YAML single-quoted scalar escaping: ' becomes ''.
 	local pw_yaml="${PASSWORD//\'/\'\'}"
@@ -404,8 +345,8 @@ listeners:
     port: $PORT
     users:
       anytls: '$pw_yaml'
-    certificate: "$CERT_PATH"
-    private-key: "$KEY_PATH"
+    certificate: $CERT_PATH
+    private-key: $KEY_PATH
     padding-scheme: |
 $pad_indented
 rules:
@@ -425,7 +366,6 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=$DIR
 ExecStart=$BIN -d $DIR -f $CONF
 Restart=on-failure
 RestartSec=3
@@ -464,11 +404,17 @@ install_mihomo() {
 }
 
 #------------------------------- TLS handling ---------------------------------
+# collect_certs populates parallel arrays:
+#   C_NAME  domain name
+#   C_CRT   source fullchain path
+#   C_KEY   source private key path
+#   C_KIND  "certbot" | "acme"
+#   C_ECC   1 if acme.sh ECC cert, else 0
 collect_certs() {
 	C_NAME=()
 	C_CRT=()
 	C_KEY=()
-	C_TYPE=()
+	C_KIND=()
 	C_ECC=()
 	local d name base
 
@@ -479,7 +425,7 @@ collect_certs() {
 			C_NAME+=("$name")
 			C_CRT+=("${d}fullchain.pem")
 			C_KEY+=("${d}privkey.pem")
-			C_TYPE+=("certbot")
+			C_KIND+=("certbot")
 			C_ECC+=("0")
 		done
 	fi
@@ -490,23 +436,59 @@ collect_certs() {
 		[ -d "$base" ] || continue
 		for d in "$base"/*/; do
 			[ -d "$d" ] || continue
-			name=$(basename "$d")
-			local ecc=0
-			case "$name" in *_ecc)
-				name=${name%_ecc}
-				ecc=1
-				;;
-			esac
+			local raw ecc
+			raw=$(basename "$d")
+			name=${raw%_ecc}
+			[ "$raw" != "$name" ] && ecc=1 || ecc=0
 			[[ "$name" == *.* ]] || continue
 			if [ -f "${d}fullchain.cer" ] && [ -f "${d}${name}.key" ]; then
 				C_NAME+=("$name")
 				C_CRT+=("${d}fullchain.cer")
 				C_KEY+=("${d}${name}.key")
-				C_TYPE+=("acme.sh")
+				C_KIND+=("acme")
 				C_ECC+=("$ecc")
 			fi
 		done
 	done
+}
+
+# Re-point acme.sh's install target at $DIR and add a reloadcmd, so future
+# renewals copy the cert in and restart the service automatically.
+setup_acme_install() {
+	local domain="$1" ecc="$2" acme eccflag=""
+	acme=$(find_acme) || {
+		warn "acme.sh not found; auto-renew copy not configured."
+		return 0
+	}
+	[ "$ecc" = 1 ] && eccflag="--ecc"
+	# The reloadcmd is tolerant: during a fresh install the systemd unit does not
+	# exist yet, and a failing reloadcmd would otherwise make install-cert error.
+	if "$acme" --install-cert -d "$domain" $eccflag \
+		--fullchain-file "$LIVE_CRT" --key-file "$LIVE_KEY" \
+		--reloadcmd "systemctl restart ${SERVICE_NAME} 2>/dev/null || true" >/dev/null 2>&1; then
+		ok "acme.sh will refresh ${LIVE_CRT} on renewal and restart the service."
+	else
+		warn "Could not reconfigure acme.sh install-cert; the current copy works but auto-renew copy may not."
+	fi
+}
+
+# Certbot deploy hook: re-copy this domain's renewed cert into $DIR and restart.
+setup_certbot_deploy_hook() {
+	local domain="$1"
+	mkdir -p /etc/letsencrypt/renewal-hooks/deploy
+	cat >/etc/letsencrypt/renewal-hooks/deploy/anytls.sh <<EOF_HOOK
+#!/bin/sh
+# Installed by anytls manager. Re-copies the renewed cert into $DIR.
+LIVE_DIR="/etc/letsencrypt/live/$domain"
+if [ -z "\$RENEWED_LINEAGE" ] || [ "\$RENEWED_LINEAGE" = "\$LIVE_DIR" ]; then
+  cp -f "\$LIVE_DIR/fullchain.pem" "$LIVE_CRT" 2>/dev/null
+  cp -f "\$LIVE_DIR/privkey.pem"   "$LIVE_KEY" 2>/dev/null
+  chmod 600 "$LIVE_CRT" "$LIVE_KEY" 2>/dev/null
+  systemctl restart ${SERVICE_NAME}
+fi
+EOF_HOOK
+	chmod +x /etc/letsencrypt/renewal-hooks/deploy/anytls.sh
+	ok "Certbot deploy hook installed; renewals will refresh ${LIVE_CRT} and restart the service."
 }
 
 tls_use_existing() {
@@ -515,13 +497,12 @@ tls_use_existing() {
 		warn "No existing Let's Encrypt / acme.sh certificates were found."
 		return 1
 	fi
-
 	echo "Existing certificates:"
 	local i
 	for i in "${!C_NAME[@]}"; do
-		printf "  %2d) %-30s [%s]\n      crt: %s\n" "$((i + 1))" "${C_NAME[$i]}" "${C_TYPE[$i]}" "${C_CRT[$i]}"
+		printf "  %2d) %-30s [%s]\n      crt: %s\n" \
+			"$((i + 1))" "${C_NAME[$i]}" "${C_KIND[$i]}" "${C_CRT[$i]}"
 	done
-
 	local sel
 	read -rp "Pick a domain [1-${#C_NAME[@]}]: " sel
 	[[ "$sel" =~ ^[0-9]+$ ]] && [ "$sel" -ge 1 ] && [ "$sel" -le "${#C_NAME[@]}" ] || {
@@ -531,28 +512,17 @@ tls_use_existing() {
 	sel=$((sel - 1))
 
 	DOMAIN="${C_NAME[$sel]}"
+	copy_cert_into_dir "${C_CRT[$sel]}" "${C_KEY[$sel]}" || return 1
 	SNI="$DOMAIN"
 	INSECURE=0
 	TLS_MODE="le-existing"
-	CERT_SRC_CRT="${C_CRT[$sel]}"
-	CERT_SRC_KEY="${C_KEY[$sel]}"
-	ACME_ECC="${C_ECC[$sel]}"
 
-	if [ "${C_TYPE[$sel]}" = "acme.sh" ]; then
-		if acme_install_to_safe_paths "$DOMAIN" "$ACME_ECC"; then
-			ok "acme.sh install-cert now writes renewed certs directly into ${DIR}."
-		else
-			warn "Could not update acme.sh install-cert target; using a safe-path copy now."
-			install_cert_to_safe_paths "$CERT_SRC_CRT" "$CERT_SRC_KEY" || return 1
-		fi
+	if [ "${C_KIND[$sel]}" = "acme" ]; then
+		setup_acme_install "$DOMAIN" "${C_ECC[$sel]}"
 	else
-		install_cert_to_safe_paths "$CERT_SRC_CRT" "$CERT_SRC_KEY" || return 1
-		write_certbot_hook
+		setup_certbot_deploy_hook "$DOMAIN"
 	fi
-
-	CERT_PATH="$SAFE_CRT"
-	KEY_PATH="$SAFE_KEY"
-	ok "Using certificate for ${DOMAIN}; mihomo-safe copy: ${SAFE_CRT}"
+	ok "Using certificate for ${DOMAIN} (copied into ${DIR})."
 }
 
 tls_self_signed() {
@@ -560,24 +530,19 @@ tls_self_signed() {
 	read -rp "SNI/CN for the self-signed cert (use a real big-site name) [www.bing.com]: " cn
 	cn="${cn:-www.bing.com}"
 	inf "Generating EC self-signed certificate (36500 days, CN=${cn}) ..."
-	mkdir -p "$DIR"
-	openssl ecparam -name prime256v1 -genkey -noout -out "$SAFE_KEY" 2>/dev/null ||
+	openssl ecparam -name prime256v1 -genkey -noout -out "$SELFGEN_KEY" 2>/dev/null ||
 		die "openssl key generation failed."
-	openssl req -x509 -new -key "$SAFE_KEY" -out "$SAFE_CRT" -days 36500 -nodes \
+	openssl req -x509 -new -key "$SELFGEN_KEY" -out "$SELFGEN_CRT" -days 36500 -nodes \
 		-subj "/CN=${cn}" -addext "subjectAltName=DNS:${cn}" 2>/dev/null ||
 		die "openssl certificate generation failed."
-	chmod 0644 "$SAFE_CRT"
-	chmod 0600 "$SAFE_KEY"
-	CERT_PATH="$SAFE_CRT"
-	KEY_PATH="$SAFE_KEY"
-	CERT_SRC_CRT=""
-	CERT_SRC_KEY=""
-	ACME_ECC="0"
+	chmod 600 "$SELFGEN_KEY" "$SELFGEN_CRT"
+	CERT_PATH="$SELFGEN_CRT"
+	KEY_PATH="$SELFGEN_KEY"
 	DOMAIN=""
 	SNI="$cn"
 	INSECURE=1
 	TLS_MODE="self"
-	ok "Self-signed certificate created inside ${DIR}."
+	ok "Self-signed certificate created."
 }
 
 tls_letsencrypt_new() {
@@ -595,7 +560,7 @@ tls_letsencrypt_new() {
 
 	account_email=$(acme_auto_email "$domain")
 	inf "Using automatic Let's Encrypt account email: ${account_email}"
-	warn "Port 80 must be free for the HTTP-01 challenge. The script will start acme.sh standalone mode on port 80."
+	warn "Port 80 must be free for the HTTP-01 challenge (acme.sh standalone)."
 
 	if ! command -v socat >/dev/null 2>&1; then
 		inf "Installing socat (needed by acme.sh --standalone) ..."
@@ -603,16 +568,18 @@ tls_letsencrypt_new() {
 		apt-get install -y socat >/dev/null 2>&1 || die "Failed to install socat."
 	fi
 
-	acme="${HOME:-/root}/.acme.sh/acme.sh"
-	if [ ! -x "$acme" ]; then
+	acme=$(find_acme) || acme=""
+	if [ -z "$acme" ]; then
 		inf "Installing acme.sh ..."
 		curl -fsSL https://get.acme.sh | sh -s email="$account_email" >/dev/null 2>&1
-		acme="${HOME:-/root}/.acme.sh/acme.sh"
-		[ -x "$acme" ] || die "acme.sh installation failed."
+		acme=$(find_acme) || die "acme.sh installation failed."
 	fi
 
 	"$acme" --set-default-ca --server letsencrypt >/dev/null 2>&1 || return 1
 
+	# Some acme.sh installs retain a bad default account contact such as
+	# example.com. Register/update explicitly with a real-looking account email
+	# so acme.sh does not silently reuse example.com.
 	if ! "$acme" --register-account -m "$account_email" --server letsencrypt --accountemail "$account_email" >/dev/null 2>&1; then
 		warn "ACME account register did not succeed; trying account update with ${account_email}."
 		"$acme" --update-account -m "$account_email" --server letsencrypt --accountemail "$account_email" >/dev/null 2>&1 ||
@@ -626,33 +593,33 @@ tls_letsencrypt_new() {
 	inf "Issuing certificate for ${domain} (standalone HTTP-01, port 80) ..."
 	if ! "$acme" --issue -d "$domain" --standalone --httpport 80 \
 		--keylength ec-256 --server letsencrypt --accountemail "$account_email"; then
-		err "Certificate issuance failed. Check DNS A/AAAA records, firewall, and that port 80 is not occupied."
+		err "Certificate issuance failed. Check DNS A/AAAA records, firewall, and that port 80 is free."
 		return 1
 	fi
 
-	inf "Installing certificate into mihomo-safe paths under ${DIR} ..."
+	# EC key => acme.sh stores it in the _ecc lineage, so install-cert needs --ecc.
+	# The reloadcmd is tolerant because the systemd unit is created AFTER this step
+	# during a fresh install; a failing restart must not abort the whole script.
+	inf "Installing certificate into ${DIR} + renewal reload hook ..."
 	"$acme" --install-cert -d "$domain" --ecc \
-		--key-file "$SAFE_KEY" \
-		--fullchain-file "$SAFE_CRT" \
-		--reloadcmd "systemctl restart ${SERVICE_NAME}" >/dev/null 2>&1 ||
-		die "acme.sh install-cert failed."
+		--key-file "$LIVE_KEY" \
+		--fullchain-file "$LIVE_CRT" \
+		--reloadcmd "systemctl restart ${SERVICE_NAME} 2>/dev/null || true" >/dev/null 2>&1 || true
 
-	chmod 0644 "$SAFE_CRT"
-	chmod 0600 "$SAFE_KEY"
-	validate_cert_file "$SAFE_CRT" || die "Installed certificate is invalid."
-	validate_key_file "$SAFE_KEY" || die "Installed private key is invalid."
-	cert_key_match "$SAFE_CRT" "$SAFE_KEY" || die "Installed certificate/key do not match."
+	# Success is judged by the cert files actually landing in $DIR, not by the
+	# reloadcmd's exit status.
+	if [ ! -s "$LIVE_CRT" ] || [ ! -s "$LIVE_KEY" ]; then
+		die "acme.sh install-cert did not produce cert files in ${DIR}."
+	fi
 
-	CERT_PATH="$SAFE_CRT"
-	KEY_PATH="$SAFE_KEY"
-	CERT_SRC_CRT="$SAFE_CRT"
-	CERT_SRC_KEY="$SAFE_KEY"
-	ACME_ECC="1"
+	chmod 600 "$LIVE_KEY" "$LIVE_CRT"
+	CERT_PATH="$LIVE_CRT"
+	KEY_PATH="$LIVE_KEY"
 	DOMAIN="$domain"
 	SNI="$domain"
 	INSECURE=0
 	TLS_MODE="le-new"
-	ok "Let's Encrypt certificate issued for ${domain}; renewed certs will stay under ${DIR}."
+	ok "Let's Encrypt certificate issued for ${domain} (auto-renew via acme.sh cron)."
 }
 
 choose_tls() {
@@ -698,27 +665,17 @@ build_uri() {
 	echo "$uri"
 }
 
-port_listening() {
-	local p="$1"
-	ss -ltnH 2>/dev/null | awk -v p=":${p}" '{ if ($4 ~ p"$") found=1 } END { exit found ? 0 : 1 }'
-}
-
-service_state() { systemctl is-active "$SERVICE_NAME" 2>/dev/null || true; }
-
 show_info() {
 	is_installed || die "AnyTLS is not installed yet. Run: $0 install"
 	load_meta
-	local ip4 ip6 status listen_status
+	local ip4 ip6 status
 	ip4=$(get_ip4)
 	ip6=$(get_ip6)
-	status=$(service_state)
-	if port_listening "$PORT"; then listen_status="${G}yes${N}"; else listen_status="${R}no${N}"; fi
-
+	status=$(systemctl is-active "$SERVICE_NAME" 2>/dev/null)
 	hr
 	echo "${W}AnyTLS connection info${N}"
 	hr
-	printf "  %-14s %s\n" "Service:" "$([ "$status" = active ] && echo "${G}running${N}" || echo "${R}${status:-stopped}${N}")"
-	printf "  %-14s %s\n" "Listening:" "$listen_status on TCP/${PORT}"
+	printf "  %-14s %s\n" "Status:" "$([ "$status" = active ] && echo "${G}running${N}" || echo "${R}${status:-stopped}${N}")"
 	printf "  %-14s %s\n" "Core:" "mihomo $(installed_mihomo_ver)"
 	printf "  %-14s %s\n" "Server IP:" "${ip4:-n/a}${ip6:+ / [$ip6]}"
 	printf "  %-14s %s\n" "Port:" "$PORT"
@@ -730,8 +687,6 @@ show_info() {
 	*) printf "  %-14s %s\n" "TLS:" "unknown" ;;
 	esac
 	[ -n "$DOMAIN" ] && printf "  %-14s %s\n" "Domain/SNI:" "$DOMAIN"
-	printf "  %-14s %s\n" "Cert path:" "${CERT_PATH:-n/a}"
-	printf "  %-14s %s\n" "Key path:" "${KEY_PATH:-n/a}"
 	[ -f "$PADDING" ] && printf "  %-14s %s\n" "Padding:" "$PADDING"
 	hr
 	echo "${W}Share URI (Shadowrocket / NekoBox / sing-box / mihomo):${N}"
@@ -752,7 +707,7 @@ svc() {
 	case "$1" in
 	start)
 		systemctl start "$SERVICE_NAME"
-		verify_running
+		ok "started"
 		;;
 	stop)
 		systemctl stop "$SERVICE_NAME"
@@ -760,7 +715,7 @@ svc() {
 		;;
 	restart)
 		systemctl restart "$SERVICE_NAME"
-		verify_running
+		ok "restarted"
 		;;
 	status) systemctl status "$SERVICE_NAME" --no-pager ;;
 	esac
@@ -769,46 +724,16 @@ svc() {
 show_logs() { journalctl -u "$SERVICE_NAME" -n 80 --no-pager --output=short-iso; }
 
 verify_running() {
-	load_meta 2>/dev/null || true
 	sleep 1
-	if ! systemctl is-active --quiet "$SERVICE_NAME"; then
-		err "Service failed to start. Recent logs:"
-		journalctl -u "$SERVICE_NAME" -n 40 --no-pager
-		return 1
-	fi
-	if ! port_listening "$PORT"; then
-		err "Service process is active, but nothing is listening on TCP/${PORT}. Recent logs:"
-		journalctl -u "$SERVICE_NAME" -n 40 --no-pager
-		return 1
-	fi
-	ok "Service is active and listening on TCP/${PORT}."
-}
-
-#------------------------------- install / repair -----------------------------
-do_repair() {
-	need_root
-	is_installed || die "Not installed yet."
-	load_meta
-
-	if [ -n "${CERT_SRC_CRT:-}" ] && [ -n "${CERT_SRC_KEY:-}" ]; then
-		inf "Refreshing safe certificate copy from stored source paths."
-		sync_cert_from_meta || die "Certificate sync failed."
-	elif [ -n "${CERT_PATH:-}" ] && [ -n "${KEY_PATH:-}" ]; then
-		inf "Migrating configured certificate/key into ${DIR}."
-		ensure_cert_safe_paths || die "Certificate migration failed."
+	if systemctl is-active --quiet "$SERVICE_NAME"; then
+		ok "Service is active and listening on port ${PORT}."
 	else
-		die "No certificate paths found in ${META}. Redo TLS via: $0 reconfigure"
+		err "Service failed to start. Recent logs:"
+		journalctl -u "$SERVICE_NAME" -n 30 --no-pager
 	fi
-
-	CERT_PATH="$SAFE_CRT"
-	KEY_PATH="$SAFE_KEY"
-	write_config
-	write_service
-	save_meta
-	systemctl restart "$SERVICE_NAME"
-	verify_running
 }
 
+#------------------------------- install --------------------------------------
 do_install() {
 	need_root
 	ensure_deps
@@ -818,18 +743,17 @@ do_install() {
 		warn "AnyTLS is already installed."
 		read -rp "Reinstall / reconfigure? [y/N]: " yn
 		[[ "$yn" =~ ^[Yy]$ ]] || return 0
-		load_meta
 	fi
 
-	[ -x "$BIN" ] || install_mihomo ""
+	[ -x "$BIN" ] || install_mihomo
 
 	local p
-	read -rp "Listen port [${PORT:-$DEFAULT_PORT}]: " p
-	PORT="${p:-${PORT:-$DEFAULT_PORT}}"
+	read -rp "Listen port [${DEFAULT_PORT}]: " p
+	PORT="${p:-$DEFAULT_PORT}"
 	valid_port "$PORT" || die "Invalid port: $PORT"
 
-	read -rp "Password [${PASSWORD:-$DEFAULT_PASSWORD}]: " p
-	PASSWORD="${p:-${PASSWORD:-$DEFAULT_PASSWORD}}"
+	read -rp "Password [${DEFAULT_PASSWORD}]: " p
+	PASSWORD="${p:-$DEFAULT_PASSWORD}"
 
 	if ipv6_enabled; then LISTEN="::"; else LISTEN="0.0.0.0"; fi
 
@@ -839,12 +763,15 @@ do_install() {
 	write_service
 	save_meta
 	open_firewall "$PORT"
-	copy_self_command
-	write_certbot_hook
 
 	systemctl enable "$SERVICE_NAME" >/dev/null 2>&1
 	systemctl restart "$SERVICE_NAME"
 	verify_running
+
+	if [ ! -e "$SELF_CMD" ]; then
+		cp -f "$0" "$SELF_CMD" 2>/dev/null && chmod +x "$SELF_CMD" 2>/dev/null &&
+			inf "Manager installed as 'anytls' — run it anytime with: anytls"
+	fi
 
 	echo
 	show_info
@@ -863,8 +790,7 @@ reconfigure() {
 		echo "  3) Redo TLS certificate"
 		echo "  4) Edit padding scheme"
 		echo "  5) Reset to bundled custom padding scheme"
-		echo "  6) Repair/migrate cert paths into ${DIR}"
-		echo "  7) Back"
+		echo "  6) Back"
 		hr
 		local c
 		read -rp "Select: " c
@@ -882,33 +808,37 @@ reconfigure() {
 			save_meta
 			open_firewall "$PORT"
 			svc restart
+			verify_running
 			;;
 		2)
 			local npw
-			read -rp "New password [keep current]: " npw
-			[ -n "$npw" ] && PASSWORD="$npw"
+			read -rp "New password [${DEFAULT_PASSWORD}]: " npw
+			PASSWORD="${npw:-$DEFAULT_PASSWORD}"
 			write_config
 			save_meta
 			svc restart
+			verify_running
 			;;
 		3)
 			choose_tls
 			write_config
 			save_meta
 			svc restart
+			verify_running
 			;;
 		4)
 			${EDITOR:-nano} "$PADDING" 2>/dev/null || vi "$PADDING"
 			write_config
 			svc restart
+			verify_running
 			;;
 		5)
 			write_custom_padding
 			write_config
 			svc restart
+			verify_running
 			;;
-		6) do_repair ;;
-		7) break ;;
+		6) break ;;
 		*) err "Invalid choice." ;;
 		esac
 		ok "Applied."
@@ -938,6 +868,7 @@ do_update() {
 	[[ "$yn" =~ ^[Nn]$ ]] && return 0
 	install_mihomo "$new"
 	svc restart
+	verify_running
 }
 
 #------------------------------- uninstall ------------------------------------
@@ -950,7 +881,7 @@ do_uninstall() {
 	rm -f "$SERVICE"
 	systemctl daemon-reload
 	rm -rf "$DIR"
-	rm -f "$CERTBOT_HOOK" 2>/dev/null
+	rm -f /etc/letsencrypt/renewal-hooks/deploy/anytls.sh 2>/dev/null
 	[ "$0" != "$SELF_CMD" ] && rm -f "$SELF_CMD" 2>/dev/null
 	ok "AnyTLS removed. acme.sh / certbot themselves were left untouched."
 }
@@ -962,7 +893,7 @@ about() {
 	echo "AnyTLS protocol reference: https://github.com/${ANYTLS_REPO}"
 	echo "Compatible clients: Shadowrocket, NekoBox, sing-box, mihomo."
 	echo "Install defaults: port ${DEFAULT_PORT}, password ${DEFAULT_PASSWORD}."
-	echo "Cert safe-path fix: config always uses ${SAFE_CRT} and ${SAFE_KEY}."
+	echo "TLS files are kept under ${DIR} so mihomo can always read them."
 	hr
 }
 
@@ -971,11 +902,9 @@ menu() {
 		echo
 		echo "${W}===== AnyTLS Manager =====${N}"
 		if is_installed; then
-			local st lstn
-			load_meta
-			st=$(service_state)
-			if port_listening "$PORT"; then lstn="${G}listening${N}"; else lstn="${R}not-listening${N}"; fi
-			echo "  core: mihomo $(installed_mihomo_ver)   service: $([ "$st" = active ] && echo "${G}running${N}" || echo "${R}${st}${N}") / ${lstn}"
+			local st
+			st=$(systemctl is-active "$SERVICE_NAME" 2>/dev/null)
+			echo "  core: mihomo $(installed_mihomo_ver)   service: $([ "$st" = active ] && echo "${G}running${N}" || echo "${R}${st}${N}")"
 		else
 			echo "  ${Y}not installed${N}"
 		fi
@@ -987,9 +916,8 @@ menu() {
 		echo "  7) View logs"
 		echo "  8) Reconfigure (port / password / TLS / padding)"
 		echo "  9) Update core (mihomo) to latest"
-		echo " 10) Repair cert safe-path bug"
-		echo " 11) Uninstall"
-		echo " 12) About"
+		echo " 10) Uninstall"
+		echo " 11) About"
 		echo "  0) Exit"
 		echo "---------------------------------"
 		local c
@@ -1004,9 +932,8 @@ menu() {
 		7) show_logs ;;
 		8) reconfigure ;;
 		9) do_update ;;
-		10) do_repair ;;
-		11) do_uninstall ;;
-		12) about ;;
+		10) do_uninstall ;;
+		11) about ;;
 		0) exit 0 ;;
 		*) err "Invalid choice." ;;
 		esac
@@ -1023,8 +950,6 @@ Usage: $0 [command]
   logs                      recent service logs
   reconfigure | config      change port / password / TLS / padding
   update | upgrade          update mihomo core to the latest release
-  repair | fix              migrate/copy certs into /etc/anytls and restart
-  sync-cert                 refresh /etc/anytls cert copy from stored source paths
   uninstall | remove        remove AnyTLS
   about                     show about info
 EOF_USAGE
@@ -1045,12 +970,6 @@ start | stop | restart | status)
 logs) show_logs ;;
 reconfigure | config) reconfigure ;;
 update | upgrade) do_update ;;
-repair | fix) do_repair ;;
-sync-cert)
-	need_root
-	sync_cert_from_meta
-	[ "${2:-}" = "--quiet" ] || ok "Certificate copy refreshed: ${SAFE_CRT}"
-	;;
 uninstall | remove) do_uninstall ;;
 about) about ;;
 -h | --help | help) usage ;;

@@ -1188,7 +1188,6 @@ https://zhile.one/archives/1404.html
 	get_tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
 
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
-	anytls_claude) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls_claude.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
