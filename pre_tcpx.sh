@@ -740,4 +740,5 @@ apt install -y socat
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 install_openssh_server_forcefully 180s 90s 5s
 
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
 sudo reboot
