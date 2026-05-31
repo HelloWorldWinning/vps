@@ -294,17 +294,17 @@ JSON
 # --------------------------------------------------------------------------- #
 prompt_settings() {
 	local p
-	read -rp "Listen port (images_port) [8543]: " p
-	PORT="${p:-8543}"
+	read -rp "Listen port (images_port) [843]: " p
+	PORT="${p:-843}"
 	while ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; do
 		warn "Port must be 1-65535."
-		read -rp "Listen port [8543]: " p
-		PORT="${p:-8543}"
+		read -rp "Listen port [843]: " p
+		PORT="${p:-843}"
 	done
 	read -rp "Username [user]: " p
 	NAIVE_USER="${p:-user}"
-	read -rp "Password [8543]: " p
-	NAIVE_PASS="${p:-8543}"
+	read -rp "Password [843]: " p
+	NAIVE_PASS="${p:-843}"
 }
 
 # --------------------------------------------------------------------------- #
