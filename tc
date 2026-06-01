@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+API_BASE="http://141.98.197.246:6969"
+API_ANTHROPIC="${API_BASE}/tokenize_anthropic"
+API_GEMINI="${API_BASE}/tokenize_gemini"
+API_GPT4O="${API_BASE}/tokenize_o"
+
+MARKDOWN=false
+
+# --- parse args ---
+INPUT_FILE=""
+for arg in "$@"; do
+    case "$arg" in
+        -m) MARKDOWN=true ;;
+        *)  INPUT_FILE="$arg" ;;
+    esac
+done
+
+if [[ -z "$INPUT_FILE" ]]; then
+    echo "Usage: $(basename "$0") <file> [-m]" >&2
+    exit 1
+fi
+if [[ ! -f "$INPUT_FILE" ]]; then
+    echo "Error: file not found: $INPUT_FILE" >&2
+    exit 1
+fi
+
+DISPLAY_NAME=$(basename "$INPUT_FILE")
+
+temp_json=$(mktemp)
+tmp_a=$(mktemp)
+tmp_g=$(mktemp)
+tmp_o=$(mktemp)
+trap "rm -f '$temp_json' '$tmp_a' '$tmp_g' '$tmp_o'" EXIT
+
+# --- build JSON payload ---
+if command -v python3 &>/dev/null; then
+    python3 -c "
+import json, sys
+with open(sys.argv[1], 'r', errors='replace') as f:
+    print(json.dumps({'input_string': f.read()}))
+" "$INPUT_FILE" > "$temp_json" 2>/dev/null
+elif command -v jq &>/dev/null; then
+    jq -Rs '{input_string: .}' < "$INPUT_FILE" > "$temp_json" 2>/dev/null
+else
+    echo "Error: need python3 or jq" >&2
+    exit 1
+fi
+
+if [[ ! -s "$temp_json" ]]; then
+    echo "Error: failed to build JSON payload" >&2
+    exit 1
+fi
+
+# --- fire all three requests in parallel ---
+curl -s --max-time 120 -X POST "$API_ANTHROPIC" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_a" &
+curl -s --max-time 120 -X POST "$API_GEMINI" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_g" &
+curl -s --max-time 120 -X POST "$API_GPT4O" \
+     -H "Content-Type: application/json" -d @"$temp_json" > "$tmp_o" &
+wait
+
+# --- extract number ---
+extract_count() {
+    local raw
+    raw=$(<"$1")
+    raw="${raw//,/}"
+    raw=$(echo "$raw" | tr -d '[:space:]')
+    if [[ "$raw" =~ ^[0-9]+$ ]]; then
+        echo "$raw"
+    else
+        echo ""
+    fi
+}
+
+count_anthropic=$(extract_count "$tmp_a")
+count_gemini=$(extract_count "$tmp_g")
+count_gpt4o=$(extract_count "$tmp_o")
+
+# --- format number with commas ---
+fmt() {
+    local n="$1"
+    if [[ -n "$n" && "$n" =~ ^[0-9]+$ ]]; then
+        printf "%'d" "$n" 2>/dev/null || printf "%d" "$n"
+    else
+        echo "ERROR"
+    fi
+}
+
+count_anthropic=$(fmt "$count_anthropic")
+count_gemini=$(fmt "$count_gemini")
+count_gpt4o=$(fmt "$count_gpt4o")
+
+# --- output ---
+if $MARKDOWN; then
+    printf '\n**%s**\n\n' "$DISPLAY_NAME"
+    printf '| Model | Tokens |\n'
+    printf '|---|---:|\n'
+    printf '| Anthropic | %s |\n' "$count_anthropic"
+    printf '| Gemini | %s |\n' "$count_gemini"
+    printf '| GPT-4o | %s |\n\n' "$count_gpt4o"
+else
+    printf '\n  📄 %s\n' "$DISPLAY_NAME"
+    printf '  ╭─────────────┬────────────╮\n'
+    printf '  │ %-11s │ %10s │\n' "Model" "Tokens"
+    printf '  ├─────────────┼────────────┤\n'
+    printf '  │ %-11s │ %10s │\n' "Anthropic" "$count_anthropic"
+    printf '  │ %-11s │ %10s │\n' "Gemini"    "$count_gemini"
+    printf '  │ %-11s │ %10s │\n' "GPT-4o"    "$count_gpt4o"
+    printf '  ╰─────────────┴────────────╯\n\n'
+fi
