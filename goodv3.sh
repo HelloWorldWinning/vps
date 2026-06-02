@@ -1183,7 +1183,7 @@ https://zhile.one/archives/1404.html
 
 	wos_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
 	sco_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
-	tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tc -o /usr/local/bin/tc && chmod +x /usr/local/bin/tc ;;
+	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt ;;
 
 	refine) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
 
