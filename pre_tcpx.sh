@@ -733,6 +733,7 @@ install_openssh_server_forcefully() {
 	return "$final_rc"
 }
 
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
