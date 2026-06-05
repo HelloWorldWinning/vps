@@ -573,7 +573,8 @@ sudo apt update && sudo apt install cargo ripgrep pandoc
 cargo install ripgrep_all
 
 bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
-printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
+# rt 443 安装
+####printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
 
 curl -sL https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xz
 sudo mv lf /usr/local/bin/
