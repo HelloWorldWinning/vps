@@ -143,7 +143,7 @@ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i
 
 sleep 4
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh)
+#bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh)
 
 sudo apt install -y net-tools
 sudo apt install -y unzip
