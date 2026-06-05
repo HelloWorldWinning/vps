@@ -36,10 +36,11 @@ services:
     ports:
       - "33399:3389"
     volumes:
-      - /data/docker-remote-desktop_d/download:/downloads
+   #  - /data/docker-remote-desktop_d/download:/downloads
+      - ./Downloads:/Downloads
       - /usr/share/fonts:/usr/share/fonts:ro        # Share host fonts (if available)
     environment:
-      - DOWNLOAD_DIR=/downloads
+      - DOWNLOAD_DIR=/Downloads
       - LANG=C.UTF-8                            # Set locale to Simplified Chinese
       - LANGUAGE=zh_CN:zh                           # Language fallback chain
       - LC_ALL=C.UTF-8                          # Override all locale settings
