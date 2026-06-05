@@ -3,7 +3,7 @@
 # Define variables
 DOCKER_DIR="/data/docker-remote-desktop_d"
 COMPOSE_FILE="$DOCKER_DIR/docker-compose.yml"
-HOST_DOWNLOAD_DIR="$DOCKER_DIR/download"
+HOST_DOWNLOAD_DIR="$DOCKER_DIR/Downloads"
 
 # Create necessary directories
 mkdir -p "$DOCKER_DIR"
@@ -89,7 +89,7 @@ docker-compose up -d
 if docker-compose ps | grep -q "remote-desktop"; then
 	echo "Container is running successfully"
 	echo "You can connect to the remote desktop using:"
-	echo "Downloads will be available in /downloads inside the container"
+	echo "Downloads will be available in /Downloads inside the container"
 	echo "Host: $(hostname -I | awk '{print $1}')"
 	echo "Port: 33399"
 	echo "Username: ubuntu"
