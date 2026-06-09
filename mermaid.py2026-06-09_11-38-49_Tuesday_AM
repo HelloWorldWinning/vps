@@ -288,8 +288,7 @@ def read_block():
 def run_content_mode(code):
     """Process one pasted mermaid block."""
     path = generate(code)
-    abs_path = os.path.abspath(path)
-    print(f"✅  \033[1;31m{abs_path}\033[0m")
+    print(f"  ✅  {path}")
 
 
 def run_file_mode():
@@ -309,10 +308,10 @@ def run_file_mode():
     try:
         while True:
             line = tty.readline()
-            if not line:
+            if not line:  # EOF
                 break
             line = line.strip()
-            if not line:
+            if not line:  # empty line → done
                 break
             files.append(line)
     except (EOFError, KeyboardInterrupt):
@@ -334,8 +333,7 @@ def run_file_mode():
             print(f"  ⚠️  empty: {fpath}")
             continue
         path = generate(code)
-        abs_path = os.path.abspath(path)
-        print(f"✅  \033[1;31m{abs_path}\033[0m")
+        print(f"  ✅  {fpath}  →  {path}")
 
 
 # ───────────────────── main ────────────────────────────────────
