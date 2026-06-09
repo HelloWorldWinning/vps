@@ -36,6 +36,9 @@ _HTML = """\
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/svg+xml" href="https://mermaid.js.org/favicon.svg">
+
 <title>__TITLE__</title>
 <style>
 __CSS__
