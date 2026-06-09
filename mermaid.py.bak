@@ -62,116 +62,67 @@ _KEYWORDS = frozenset(
 # Friendly aliases for diagram-type identifiers
 _TYPE_ALIAS = {
     "sequenceDiagram": "sequence",
-    "classDiagram": "class_diagram",
+    "classDiagram":    "class_diagram",
     "classDiagram-v2": "class_diagram",
-    "stateDiagram": "state_diagram",
+    "stateDiagram":    "state_diagram",
     "stateDiagram-v2": "state_diagram",
-    "erDiagram": "er_diagram",
-    "gantt": "gantt",
-    "pie": "pie_chart",
-    "journey": "journey",
-    "gitgraph": "gitgraph",
-    "mindmap": "mindmap",
-    "timeline": "timeline",
-    "quadrantChart": "quadrant",
+    "erDiagram":       "er_diagram",
+    "gantt":           "gantt",
+    "pie":             "pie_chart",
+    "journey":         "journey",
+    "gitgraph":        "gitgraph",
+    "mindmap":         "mindmap",
+    "timeline":        "timeline",
+    "quadrantChart":   "quadrant",
     "requirementDiagram": "requirements",
-    "C4Context": "c4_context",
-    "sankey-beta": "sankey",
-    "xychart-beta": "xychart",
-    "block-beta": "block",
-    "zenuml": "zenuml",
-    "packet-beta": "packet",
+    "C4Context":       "c4_context",
+    "sankey-beta":     "sankey",
+    "xychart-beta":    "xychart",
+    "block-beta":      "block",
+    "zenuml":          "zenuml",
+    "packet-beta":     "packet",
 }
 
 
 # ───────────────────── helpers ─────────────────────────────────
 
-
 def _strip_frontmatter(lines):
-    """
-    Consume an optional YAML front-matter block delimited by '---' lines.
-
-    Rules
-    -----
-    * If the very first non-empty line is '---', we are inside front-matter.
-    * We scan forward for a closing '---'.  The first 'title: ...' we find
-      becomes the canonical title for the diagram.
-    * If the closing '---' is never found (malformed block), we return the
-      original lines unchanged so the rest of extract_name can still run.
-    * Quoting around the title value is stripped (' and " both).
-
-    Returns
-    -------
-    (title_or_None, remaining_lines)
-        title_or_None : str | None
-        remaining_lines : list[str]  — everything after the closing '---'
-    """
+    """Return (title_or_None, remaining_lines) after consuming YAML ---."""
     if not lines or lines[0].strip() != "---":
         return None, lines
-
     title = None
     for i, ln in enumerate(lines[1:], 1):
         if ln.strip() == "---":
-            # Found closing fence — return everything after it
-            return title, lines[i + 1 :]
+            return title, lines[i + 1:]
         m = re.match(r"\s*title\s*:\s*(.+)", ln)
         if m:
             title = m.group(1).strip().strip("\"'")
-
-    # Unclosed front-matter — treat whole content as body
-    return None, lines
-
-
-def _is_directive_line(ln):
-    """Return True for lines that carry no node content."""
-    s = ln.strip()
-    return (
-        not s  # blank
-        or s.startswith("%%")  # mermaid comment
-        or re.match(
-            r"(classDef|class|linkStyle|style" r"|click|direction)\b", s
-        )  # style/meta directives
-    )
+    return title, lines            # unclosed frontmatter — return as-is
 
 
 def _first_node_label(lines):
-    """Return the label of the first real node in a graph / flowchart."""
+    """Return the label of the first real node in a graph/flowchart."""
     for ln in lines:
-        if _is_directive_line(ln):
-            continue
-
-        # ── quoted label, possibly multi-line via \n ──────────────────────
-        # Matches: ID["..."]  ID("...")  ID{"..."}  ID[/"..."/]
-        # We want the LAST segment after a literal \n inside the quotes,
-        # e.g. `"x : [B, N, T, F]\nHistorical stock features"` → last segment
-        m = re.search(r'(\w+)\s*[\[\(\{/]+\s*"([^"]+)"', ln)
+        # quoted label: ID["label"]  ID("label")  ID{"label"}
+        m = re.search(r'(\w+)\s*[\[\(\{]+\s*"([^"]+)"', ln)
         if m and m.group(1) not in _KEYWORDS:
-            raw = m.group(2)
-            # split on escaped newline sequences and take the last non-empty part
-            parts = [p.strip() for p in re.split(r"\\n|\n", raw) if p.strip()]
-            if parts:
-                return parts[-1]
-
-        # ── unquoted: ID[label] ───────────────────────────────────────────
+            return m.group(2).strip()
+        # unquoted: ID[label]
         m = re.search(r"(\w+)\s*\[([^\]]+)\]", ln)
         if m and m.group(1) not in _KEYWORDS:
             return m.group(2).strip()
-
-        # ── rounded: ID(label)  — skip (( double-paren circles ───────────
+        # rounded: ID(label)  — skip (( double-paren circles
         m = re.search(r"(\w+)\s*\(([^()]+)\)", ln)
         if m and m.group(1) not in _KEYWORDS:
             return m.group(2).strip()
-
-        # ── diamond: ID{label} ───────────────────────────────────────────
+        # diamond: ID{label}
         m = re.search(r"(\w+)\s*\{([^{}]+)\}", ln)
         if m and m.group(1) not in _KEYWORDS:
             return m.group(2).strip()
-
-        # ── bare indented node ID ─────────────────────────────────────────
-        m = re.match(r"\s+(\w+)\s*$", ln)
+        # bare node ID (first word on an indented line)
+        m = re.match(r"\s+(\w+)", ln)
         if m and m.group(1) not in _KEYWORDS:
             return m.group(1)
-
     return None
 
 
@@ -260,7 +211,8 @@ def generate(mermaid_code):
     name = extract_name(mermaid_code)
     fname = unique_path(sanitize(name))
     html = (
-        _HTML.replace("__TITLE__", name)
+        _HTML
+        .replace("__TITLE__", name)
         .replace("__CSS__", CUSTOM_CSS)
         .replace("__MERMAID__", mermaid_code.strip())
     )
@@ -308,10 +260,10 @@ def run_file_mode():
     try:
         while True:
             line = tty.readline()
-            if not line:  # EOF
+            if not line:          # EOF
                 break
             line = line.strip()
-            if not line:  # empty line → done
+            if not line:          # empty line → done
                 break
             files.append(line)
     except (EOFError, KeyboardInterrupt):
@@ -337,7 +289,6 @@ def run_file_mode():
 
 
 # ───────────────────── main ────────────────────────────────────
-
 
 def main():
     print(
