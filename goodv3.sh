@@ -1190,6 +1190,7 @@ https://zhile.one/archives/1404.html
 	refine) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
 
 	get_tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
+	mermaid) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
 
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
 	naive) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
