@@ -319,7 +319,7 @@ fds() {
 
 
 
-alias m='mkdir '
+alias m='mkdir -p '
 
 echo ""
 exa -la --sort=changed
