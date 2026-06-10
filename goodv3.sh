@@ -718,7 +718,7 @@ ${Red_font_prefix}666${Font_color_suffix} temporary bash
 ${Red_font_prefix}a${Font_color_suffix}  177 docker  markdown_render_dockerfile/markdown_render_docker.sh
 ${Red_font_prefix}ax${Font_color_suffix} markdown.sh 177 render
 ${Red_font_prefix}b${Font_color_suffix} config_fzf.sh   install fzf
-${Red_font_prefix}c${Font_color_suffix} tmux_d/tmux_install.sh
+${Red_font_prefix}cccc${Font_color_suffix} tmux_d/tmux_install.sh
 ${Red_font_prefix}d${Font_color_suffix} share_data_to_accessor.sh /etc/exports /etc/fstab /mnt/vps_
 ${Red_font_prefix}e${Font_color_suffix} install_ftp_server.sh
 ${Red_font_prefix}i${Font_color_suffix} do_zip.sh zip to /data 
@@ -1084,7 +1084,7 @@ https://zhile.one/archives/1404.html
 	a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) ;;
 
 	b) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh) ;;
-	ccc) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh) ;;
+	cccc) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh) ;;
 	d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh) ;;
 	e) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_ftp_server.sh) ;;
 	i) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh) ;;
