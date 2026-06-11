@@ -30,76 +30,96 @@ NETPLAN_COPY_DIR="/root/netplan.backup.before_up_v4v6_aws.${STAMP}"
 PING4_TARGET="${PING4_TARGET:-8.8.8.8}"
 PING6_TARGET="${PING6_TARGET:-2606:4700:4700::1111}"
 
+ensure_ipv6_forwarding() {
+	local cur
+
+	cur="$(sysctl -n net.ipv6.conf.all.forwarding 2>/dev/null || echo 0)"
+
+	if [ "${cur}" != "1" ]; then
+		log "Enabling IPv6 forwarding."
+
+		sysctl -w net.ipv6.conf.all.forwarding=1 ||
+			die "Failed to enable net.ipv6.conf.all.forwarding"
+
+		# persist across reboot
+		if [ -d /etc/sysctl.d ]; then
+			cat >/etc/sysctl.d/99-ipv6-forwarding.conf <<EOF
+net.ipv6.conf.all.forwarding = 1
+EOF
+		fi
+	fi
+}
+
 log() {
-    echo "[$(date '+%F %T')] $*"
+	echo "[$(date '+%F %T')] $*"
 }
 
 die() {
-    echo "ERROR: $*" >&2
-    exit 1
+	echo "ERROR: $*" >&2
+	exit 1
 }
 
 cmd_exists() {
-    command -v "$1" >/dev/null 2>&1
+	command -v "$1" >/dev/null 2>&1
 }
 
 need_root() {
-    [ "$(id -u)" -eq 0 ] || die "Run as root."
+	[ "$(id -u)" -eq 0 ] || die "Run as root."
 }
 
 detect_iface() {
-    local detected=""
+	local detected=""
 
-    detected="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}' || true)"
+	detected="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}' || true)"
 
-    if [ -n "${detected}" ]; then
-        echo "${detected}"
-    else
-        echo "${IFACE}"
-    fi
+	if [ -n "${detected}" ]; then
+		echo "${detected}"
+	else
+		echo "${IFACE}"
+	fi
 }
 
 install_netplan_if_missing() {
-    if cmd_exists netplan; then
-        log "netplan already installed."
-        return 0
-    fi
+	if cmd_exists netplan; then
+		log "netplan already installed."
+		return 0
+	fi
 
-    log "netplan missing. Installing netplan.io before changing network."
+	log "netplan missing. Installing netplan.io before changing network."
 
-    cmd_exists apt-get || die "apt-get not found. Install netplan.io manually."
+	cmd_exists apt-get || die "apt-get not found. Install netplan.io manually."
 
-    export DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
 
-    apt-get update || die "apt-get update failed. Network unchanged."
-    apt-get install -y netplan.io || die "apt-get install netplan.io failed. Network unchanged."
+	apt-get update || die "apt-get update failed. Network unchanged."
+	apt-get install -y netplan.io || die "apt-get install netplan.io failed. Network unchanged."
 
-    cmd_exists netplan || die "netplan still missing after install. Network unchanged."
+	cmd_exists netplan || die "netplan still missing after install. Network unchanged."
 
-    log "netplan.io installed."
+	log "netplan.io installed."
 }
 
 backup_before_change() {
-    [ -f "${INTERFACES}" ] || die "Missing fallback file: ${INTERFACES}"
+	[ -f "${INTERFACES}" ] || die "Missing fallback file: ${INTERFACES}"
 
-    cp -a "${INTERFACES}" "${INTERFACES_ROLLBACK_COPY}"
-    log "Saved rollback copy: ${INTERFACES_ROLLBACK_COPY}"
+	cp -a "${INTERFACES}" "${INTERFACES_ROLLBACK_COPY}"
+	log "Saved rollback copy: ${INTERFACES_ROLLBACK_COPY}"
 
-    mkdir -p "${NETPLAN_DIR}"
-    mkdir -p "${NETPLAN_COPY_DIR}"
+	mkdir -p "${NETPLAN_DIR}"
+	mkdir -p "${NETPLAN_COPY_DIR}"
 
-    if ls "${NETPLAN_DIR}"/*.yaml >/dev/null 2>&1; then
-        cp -a "${NETPLAN_DIR}"/*.yaml "${NETPLAN_COPY_DIR}/"
-        log "Saved old netplan YAML files to: ${NETPLAN_COPY_DIR}"
-    else
-        log "No old netplan YAML files found."
-    fi
+	if ls "${NETPLAN_DIR}"/*.yaml >/dev/null 2>&1; then
+		cp -a "${NETPLAN_DIR}"/*.yaml "${NETPLAN_COPY_DIR}/"
+		log "Saved old netplan YAML files to: ${NETPLAN_COPY_DIR}"
+	else
+		log "No old netplan YAML files found."
+	fi
 }
 
 write_netplan() {
-    local mac="$1"
+	local mac="$1"
 
-    cat > "${NETPLAN_FILE}" <<EOF
+	cat >"${NETPLAN_FILE}" <<EOF
 network:
   version: 2
   ethernets:
@@ -111,116 +131,116 @@ network:
       set-name: "${IFACE}"
 EOF
 
-    chmod 600 "${NETPLAN_FILE}"
+	chmod 600 "${NETPLAN_FILE}"
 
-    log "Generated AWS-style netplan:"
-    cat "${NETPLAN_FILE}"
+	log "Generated AWS-style netplan:"
+	cat "${NETPLAN_FILE}"
 }
 
 restore_fallback() {
-    log "Fallback started."
+	log "Fallback started."
 
-    if [ -f "${NETPLAN_FILE}" ]; then
-        mv -f "${NETPLAN_FILE}" "${NETPLAN_FILE}.failed.${STAMP}"
-        log "Moved failed netplan file to: ${NETPLAN_FILE}.failed.${STAMP}"
-    fi
+	if [ -f "${NETPLAN_FILE}" ]; then
+		mv -f "${NETPLAN_FILE}" "${NETPLAN_FILE}.failed.${STAMP}"
+		log "Moved failed netplan file to: ${NETPLAN_FILE}.failed.${STAMP}"
+	fi
 
-    if [ -d "${NETPLAN_COPY_DIR}" ]; then
-        find "${NETPLAN_COPY_DIR}" -maxdepth 1 -type f -name '*.yaml' -exec cp -a {} "${NETPLAN_DIR}/" \;
-        log "Restored old netplan YAML files, if any."
-    fi
+	if [ -d "${NETPLAN_COPY_DIR}" ]; then
+		find "${NETPLAN_COPY_DIR}" -maxdepth 1 -type f -name '*.yaml' -exec cp -a {} "${NETPLAN_DIR}/" \;
+		log "Restored old netplan YAML files, if any."
+	fi
 
-    if [ -f "${INTERFACES_ROLLBACK_COPY}" ]; then
-        cp -a "${INTERFACES_ROLLBACK_COPY}" "${INTERFACES}"
-        log "Restored ${INTERFACES}"
-    fi
+	if [ -f "${INTERFACES_ROLLBACK_COPY}" ]; then
+		cp -a "${INTERFACES_ROLLBACK_COPY}" "${INTERFACES}"
+		log "Restored ${INTERFACES}"
+	fi
 
-    log "Restarting ifupdown networking."
+	log "Restarting ifupdown networking."
 
-    if cmd_exists ifdown; then
-        ifdown --force "${IFACE}" 2>/dev/null || true
-    fi
+	if cmd_exists ifdown; then
+		ifdown --force "${IFACE}" 2>/dev/null || true
+	fi
 
-    ip addr flush dev "${IFACE}" 2>/dev/null || true
+	ip addr flush dev "${IFACE}" 2>/dev/null || true
 
-    if cmd_exists ifup; then
-        ifup "${IFACE}" 2>/dev/null || true
-    fi
+	if cmd_exists ifup; then
+		ifup "${IFACE}" 2>/dev/null || true
+	fi
 
-    if cmd_exists systemctl; then
-        systemctl restart networking 2>/dev/null || true
-    else
-        service networking restart 2>/dev/null || true
-    fi
+	if cmd_exists systemctl; then
+		systemctl restart networking 2>/dev/null || true
+	else
+		service networking restart 2>/dev/null || true
+	fi
 
-    log "Fallback finished."
+	log "Fallback finished."
 
-    ip addr show dev "${IFACE}" || true
-    ip route || true
-    ip -6 route || true
+	ip addr show dev "${IFACE}" || true
+	ip route || true
+	ip -6 route || true
 }
 
 fail_and_restore() {
-    local reason="$1"
+	local reason="$1"
 
-    echo
-    log "FAILED: ${reason}"
-    restore_fallback
-    exit 1
+	echo
+	log "FAILED: ${reason}"
+	restore_fallback
+	exit 1
 }
 
 wait_for_ipv4() {
-    local i
+	local i
 
-    for i in $(seq 1 30); do
-        if ip -4 addr show dev "${IFACE}" scope global | grep -q 'inet '; then
-            return 0
-        fi
-        sleep 1
-    done
+	for i in $(seq 1 30); do
+		if ip -4 addr show dev "${IFACE}" scope global | grep -q 'inet '; then
+			return 0
+		fi
+		sleep 1
+	done
 
-    return 1
+	return 1
 }
 
 wait_for_ipv6() {
-    local i
+	local i
 
-    for i in $(seq 1 45); do
-        if ip -6 addr show dev "${IFACE}" scope global | grep -q 'inet6 '; then
-            return 0
-        fi
-        sleep 1
-    done
+	for i in $(seq 1 45); do
+		if ip -6 addr show dev "${IFACE}" scope global | grep -q 'inet6 '; then
+			return 0
+		fi
+		sleep 1
+	done
 
-    return 1
+	return 1
 }
 
 ping4_ok() {
-    ping -4 -c 3 -W 3 "${PING4_TARGET}" >/dev/null 2>&1
+	ping -4 -c 3 -W 3 "${PING4_TARGET}" >/dev/null 2>&1
 }
 
 ping6_ok() {
-    ping -6 -c 3 -W 5 "${PING6_TARGET}" >/dev/null 2>&1
+	ping -6 -c 3 -W 5 "${PING6_TARGET}" >/dev/null 2>&1
 }
 
 disable_ifupdown_after_success() {
-    log "Disabling old ifupdown config for ${IFACE}."
+	log "Disabling old ifupdown config for ${IFACE}."
 
-    if [ ! -f "${INTERFACES}" ]; then
-        log "${INTERFACES} does not exist; writing loopback-only file."
-    elif grep -Eq "^[[:space:]]*iface[[:space:]]+${IFACE}[[:space:]]+" "${INTERFACES}"; then
-        if [ -e "${INTERFACES_SUCCESS_BAK}" ]; then
-            mv -f "${INTERFACES_SUCCESS_BAK}" "${INTERFACES_SUCCESS_BAK}.${STAMP}"
-            log "Existing ${INTERFACES_SUCCESS_BAK} moved to ${INTERFACES_SUCCESS_BAK}.${STAMP}"
-        fi
+	if [ ! -f "${INTERFACES}" ]; then
+		log "${INTERFACES} does not exist; writing loopback-only file."
+	elif grep -Eq "^[[:space:]]*iface[[:space:]]+${IFACE}[[:space:]]+" "${INTERFACES}"; then
+		if [ -e "${INTERFACES_SUCCESS_BAK}" ]; then
+			mv -f "${INTERFACES_SUCCESS_BAK}" "${INTERFACES_SUCCESS_BAK}.${STAMP}"
+			log "Existing ${INTERFACES_SUCCESS_BAK} moved to ${INTERFACES_SUCCESS_BAK}.${STAMP}"
+		fi
 
-        mv -f "${INTERFACES}" "${INTERFACES_SUCCESS_BAK}"
-        log "Moved ${INTERFACES} to ${INTERFACES_SUCCESS_BAK}"
-    else
-        log "${INTERFACES} does not contain ${IFACE}; keeping a clean loopback-only file."
-    fi
+		mv -f "${INTERFACES}" "${INTERFACES_SUCCESS_BAK}"
+		log "Moved ${INTERFACES} to ${INTERFACES_SUCCESS_BAK}"
+	else
+		log "${INTERFACES} does not contain ${IFACE}; keeping a clean loopback-only file."
+	fi
 
-    cat > "${INTERFACES}" <<EOF
+	cat >"${INTERFACES}" <<EOF
 # This host uses netplan for primary networking.
 # Old config was moved to:
 #   ${INTERFACES_SUCCESS_BAK}
@@ -232,74 +252,76 @@ auto lo
 iface lo inet loopback
 EOF
 
-    chmod 644 "${INTERFACES}"
+	chmod 644 "${INTERFACES}"
 
-    log "Wrote loopback-only ${INTERFACES}"
+	log "Wrote loopback-only ${INTERFACES}"
 }
 
 main() {
-    need_root
+	need_root
 
-    cmd_exists ip || die "Missing command: ip"
-    cmd_exists awk || die "Missing command: awk"
-    cmd_exists grep || die "Missing command: grep"
-    cmd_exists ping || die "Missing command: ping"
+	cmd_exists ip || die "Missing command: ip"
+	cmd_exists awk || die "Missing command: awk"
+	cmd_exists grep || die "Missing command: grep"
+	cmd_exists ping || die "Missing command: ping"
 
-    IFACE="$(detect_iface)"
+	IFACE="$(detect_iface)"
 
-    [ -d "/sys/class/net/${IFACE}" ] || die "Interface does not exist: ${IFACE}"
+	ensure_ipv6_forwarding
 
-    local mac
-    mac="$(cat "/sys/class/net/${IFACE}/address")"
-    [ -n "${mac}" ] || die "Could not read MAC address for ${IFACE}"
+	[ -d "/sys/class/net/${IFACE}" ] || die "Interface does not exist: ${IFACE}"
 
-    log "Interface: ${IFACE}"
-    log "MAC: ${mac}"
-    log "Fallback file before success: ${INTERFACES}"
-    log "Target netplan file: ${NETPLAN_FILE}"
+	local mac
+	mac="$(cat "/sys/class/net/${IFACE}/address")"
+	[ -n "${mac}" ] || die "Could not read MAC address for ${IFACE}"
 
-    install_netplan_if_missing
-    backup_before_change
-    write_netplan "${mac}"
+	log "Interface: ${IFACE}"
+	log "MAC: ${mac}"
+	log "Fallback file before success: ${INTERFACES}"
+	log "Target netplan file: ${NETPLAN_FILE}"
 
-    if cmd_exists systemctl; then
-        systemctl enable systemd-networkd >/dev/null 2>&1 || true
-        systemctl start systemd-networkd >/dev/null 2>&1 || true
-    fi
+	install_netplan_if_missing
+	backup_before_change
+	write_netplan "${mac}"
 
-    log "Running: netplan generate"
-    netplan generate || fail_and_restore "netplan generate failed"
+	if cmd_exists systemctl; then
+		systemctl enable systemd-networkd >/dev/null 2>&1 || true
+		systemctl start systemd-networkd >/dev/null 2>&1 || true
+	fi
 
-    log "Running: netplan apply"
-    netplan apply || fail_and_restore "netplan apply failed"
+	log "Running: netplan generate"
+	netplan generate || fail_and_restore "netplan generate failed"
 
-    log "Waiting for IPv4 address."
-    wait_for_ipv4 || fail_and_restore "No IPv4 address after netplan apply"
+	log "Running: netplan apply"
+	netplan apply || fail_and_restore "netplan apply failed"
 
-    log "Waiting for IPv6 address."
-    wait_for_ipv6 || fail_and_restore "No IPv6 address after netplan apply"
+	log "Waiting for IPv4 address."
+	wait_for_ipv4 || fail_and_restore "No IPv4 address after netplan apply"
 
-    log "Current address state:"
-    ip addr show dev "${IFACE}" || true
+	log "Waiting for IPv6 address."
+	wait_for_ipv6 || fail_and_restore "No IPv6 address after netplan apply"
 
-    log "Current route state:"
-    ip route || true
-    ip -6 route || true
+	log "Current address state:"
+	ip addr show dev "${IFACE}" || true
 
-    log "Testing IPv4 ping: ${PING4_TARGET}"
-    ping4_ok || fail_and_restore "IPv4 ping failed"
+	log "Current route state:"
+	ip route || true
+	ip -6 route || true
 
-    log "Testing IPv6 ping: ${PING6_TARGET}"
-    ping6_ok || fail_and_restore "IPv6 ping failed"
+	log "Testing IPv4 ping: ${PING4_TARGET}"
+	ping4_ok || fail_and_restore "IPv4 ping failed"
 
-    disable_ifupdown_after_success
+	log "Testing IPv6 ping: ${PING6_TARGET}"
+	ping6_ok || fail_and_restore "IPv6 ping failed"
 
-    echo
-    log "SUCCESS: IPv4 and IPv6 both work."
-    log "Active netplan file: ${NETPLAN_FILE}"
-    log "Old ifupdown config: ${INTERFACES_SUCCESS_BAK}"
-    log "Current ${INTERFACES}: loopback only"
-    log "Emergency rollback copy: ${INTERFACES_ROLLBACK_COPY}"
+	disable_ifupdown_after_success
+
+	echo
+	log "SUCCESS: IPv4 and IPv6 both work."
+	log "Active netplan file: ${NETPLAN_FILE}"
+	log "Old ifupdown config: ${INTERFACES_SUCCESS_BAK}"
+	log "Current ${INTERFACES}: loopback only"
+	log "Emergency rollback copy: ${INTERFACES_ROLLBACK_COPY}"
 }
 
 main "$@"
