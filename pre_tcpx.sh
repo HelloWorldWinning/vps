@@ -738,13 +738,17 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 
+curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
+chmod +x /tmp/acme_one_time_install_after_rebuild.sh
+nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
+
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
 
 #sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
-#sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
-sudo curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
-sudo chmod +x /tmp/install_acme.sh
-sudo bash -x /tmp/install_acme.sh
+##sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
+#sudo curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
+#sudo chmod +x /tmp/install_acme.sh
+#sudo bash -x /tmp/install_acme.sh
 
 sudo reboot
