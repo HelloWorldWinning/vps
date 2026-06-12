@@ -4,6 +4,10 @@
 # Description:
 # This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
 
+curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
+chmod +x /tmp/acme_one_time_install_after_rebuild.sh
+nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
+
 # Define the tag to search for
 TAG="#install_1112_related_pre_tcpx_sh"
 
@@ -738,9 +742,9 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 
-curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
-chmod +x /tmp/acme_one_time_install_after_rebuild.sh
-nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
+#curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
+#chmod +x /tmp/acme_one_time_install_after_rebuild.sh
+#nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
 
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
