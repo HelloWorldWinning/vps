@@ -38,7 +38,23 @@ case "$CHOICE" in
 		exit 1
 	fi
 
-	printf '11\n' | "$ACME_MANAGER"
+	#printf '11\n' | "$ACME_MANAGER"
+
+	CRON_JOB="17 3 * * * /usr/local/bin/acme-manager --cron >> /var/log/acme-manager.log 2>&1 # acme-manager managed cron"
+	MARKER="acme-manager managed cron"
+
+	if crontab -l 2>/dev/null | grep -qF "$MARKER"; then
+		echo "Cron job already present, skipping."
+	else
+		echo "Installing acme-manager cron job..."
+		(
+			crontab -l 2>/dev/null
+			echo "$CRON_JOB"
+		) | crontab -
+		echo "Done. Verify:"
+		crontab -l | grep "$MARKER"
+	fi
+
 	;;
 
 2)
