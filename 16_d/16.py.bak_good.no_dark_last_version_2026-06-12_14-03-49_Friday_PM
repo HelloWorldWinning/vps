@@ -683,11 +683,7 @@ async def navigate(
             if full_path.endswith(".ipynb"):
                 return await notebooks(full_path, credentials)
             else:
-                dark = "dark" in request.query_params
-                return await render_file_with_pygments(
-                    full_path, ext, credentials, dark=dark
-                )
-
+                return await render_file_with_pygments(full_path, ext, credentials)
         else:
             # Serve the file
             return FileResponse(full_path)
@@ -697,7 +693,7 @@ async def navigate(
 
 
 async def render_file_with_pygments(
-    full_path: str, ext: str, credentials: HTTPBasicCredentials, dark: bool = False
+    full_path: str, ext: str, credentials: HTTPBasicCredentials
 ):
     if not os.path.isfile(full_path):
         raise HTTPException(status_code=404, detail="File not found")
@@ -718,10 +714,8 @@ async def render_file_with_pygments(
         # Fallback to TextLexer if no lexer is found
         lexer = TextLexer()
 
-    # style_name = "manni"  # As in original CODE_16
-    # style = get_style_by_name(style_name)
-
-    style = get_style_by_name("material") if dark else get_style_by_name("manni")
+    style_name = "manni"  # As in original CODE_16
+    style = get_style_by_name(style_name)
     formatter = HtmlFormatter(linenos=True, style=style)
     highlighted_code = highlight(content, lexer, formatter)
     custom_css = """html *, pre { font-family: 'Source Code Pro', monospace !important; }
