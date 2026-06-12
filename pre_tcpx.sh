@@ -4,11 +4,6 @@
 # Description:
 # This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
 
-curl -4Lo /tmp/install_acme.sh \
-	https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
-chmod +x /tmp/install_acme.sh
-bash -x /tmp/install_acme.sh
-
 # Define the tag to search for
 TAG="#install_1112_related_pre_tcpx_sh"
 
@@ -742,15 +737,16 @@ install_openssh_server_forcefully() {
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
-
-#curl -4Lo /tmp/install_acme.sh \
-#	https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
-#chmod +x /tmp/install_acme.sh
-#bash -x /tmp/install_acme.sh
 
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
+
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
+
+curl -4Lo /tmp/install_acme.sh \
+	https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
+chmod +x /tmp/install_acme.sh
+bash -x /tmp/install_acme.sh
 
 sudo reboot
