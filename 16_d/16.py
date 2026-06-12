@@ -721,7 +721,8 @@ async def render_file_with_pygments(
     # style_name = "manni"  # As in original CODE_16
     # style = get_style_by_name(style_name)
 
-    style = get_style_by_name("material") if dark else get_style_by_name("manni")
+    # style = get_style_by_name("material") if dark else get_style_by_name("manni")
+    style = get_style_by_name("solarized-dark") if dark else get_style_by_name("manni")
     formatter = HtmlFormatter(linenos=True, style=style)
     highlighted_code = highlight(content, lexer, formatter)
     custom_css = """html *, pre { font-family: 'Source Code Pro', monospace !important; }
