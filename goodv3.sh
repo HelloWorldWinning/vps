@@ -1198,6 +1198,7 @@ https://zhile.one/archives/1404.html
 	naive) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
 	singbox) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
 	qb) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
+	ccaav2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaav2.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
