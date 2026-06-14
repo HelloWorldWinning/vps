@@ -17,14 +17,14 @@ QBT_CONTAINER="qbittorrent"
 QBT_IMAGE="${QBT_IMAGE:-lscr.io/linuxserver/qbittorrent:latest}"
 QBT_WEBUI_PORT="${QBT_WEBUI_PORT:-16080}"
 QBT_BT_PORT="${QBT_BT_PORT:-16881}"
-QBT_USERNAME="${QBT_USERNAME:-q}"
+QBT_USERNAME="${QBT_USERNAME:-winner}"
 QBT_PASSWORD="${QBT_PASSWORD:-ofwardao@gmail.com}"
 
 FB_SERVICE="filebrowser"
 FB_CONTAINER="filebrowser"
 FB_IMAGE="${FB_IMAGE:-filebrowser/filebrowser:s6}"
 FB_WEBUI_PORT="${FB_WEBUI_PORT:-16081}"
-FB_USERNAME="${FB_USERNAME:-q}"
+FB_USERNAME="${FB_USERNAME:-winner}"
 FB_PASSWORD="${FB_PASSWORD:-ofwardao@gmail.com}"
 
 # Default File Browser root is downloads only.
