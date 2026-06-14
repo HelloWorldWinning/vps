@@ -152,7 +152,7 @@ write_compose_file() {
 services:
   ${QBT_SERVICE}:
     image: ${QBT_IMAGE}
-    container_name: ${QBT_CONTAINER}
+#   container_name: ${QBT_CONTAINER}
     restart: unless-stopped
     stop_grace_period: "10s"
     environment:
@@ -170,11 +170,11 @@ services:
       - "${QBT_BT_PORT}:${QBT_BT_PORT}"
       - "${QBT_BT_PORT}:${QBT_BT_PORT}/udp"
     networks:
-      - media_net
+      - qB_media_net
 
   ${FB_SERVICE}:
     image: ${FB_IMAGE}
-    container_name: ${FB_CONTAINER}
+#   container_name: ${FB_CONTAINER}
     restart: unless-stopped
     environment:
       - PUID=${PUID}
@@ -187,11 +187,11 @@ services:
     ports:
       - "${FB_WEBUI_PORT}:80"
     networks:
-      - media_net
+      - qB_media_net
 
 networks:
-  media_net:
-    name: media_net
+  qB_media_net:
+    name: qB_media_net
 YAML
 
 	chmod 600 "$COMPOSE_FILE"
