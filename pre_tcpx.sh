@@ -754,5 +754,6 @@ install_openssh_server_forcefully 180s 90s 5s
 #sudo curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
 #sudo chmod +x /tmp/install_acme.sh
 #sudo bash -x /tmp/install_acme.sh
+bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ install_filebrowser.sh)
 
 sudo reboot
