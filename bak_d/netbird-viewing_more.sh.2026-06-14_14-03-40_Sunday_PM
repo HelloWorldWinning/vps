@@ -254,7 +254,7 @@ def base_row(idx; p):
     (p.name//""),                             # NAME
     (p.dns_label//""),                        # DNS_LABEL
     (p.ip//""),                               # IP
-    (if p.connected then "✔" else "❌" end),   # CONN
+    (if p.connected then "✓" else "✗" end),   # CONN
     ((p.os//"")|split(" ")[0]),               # OS
     (p.city_name//""),                        # CITY
     (p.version//""),                          # VER
