@@ -479,7 +479,6 @@ async def navigate(
 
                 html {{
                     zoom: 200%;
-                      overflow-x: hidden; 
                 }}
 
                 body, html * {{
@@ -495,8 +494,6 @@ async def navigate(
                 body {{
                     margin: 20px;
                     background-color: #f8f9fa;
-                    overflow-x: hidden;
-
                 }}
 
                 .breadcrumb {{
