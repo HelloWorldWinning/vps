@@ -1,11 +1,38 @@
-apt-get -y  git
+# ===== temporary workspace =====
+
+OLD_TMPDIR="${TMPDIR:-}"
+
+mkdir -p ~/.tmp
+chmod 700 ~/.tmp
+
+export TMPDIR="$HOME/.tmp"
+
+cleanup_tmp() {
+	rm -rf "$HOME/.tmp"
+
+	if [ -n "$OLD_TMPDIR" ]; then
+		export TMPDIR="$OLD_TMPDIR"
+	else
+		unset TMPDIR
+	fi
+
+	unset OLD_TMPDIR
+}
+
+trap cleanup_tmp EXIT
+
+#########################
+#########################
+#########################
+
+apt-get -y git
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 #~/.fzf/install
 sudo yes | ~/.fzf/install
 
 apt-get update
 apt update
-apt  -y install sudo fd-find ripgrep ranger  
+apt -y install sudo fd-find ripgrep ranger
 
 sudo apt install bat -y
 sudo ln -s /usr/bin/batcat /usr/bin/bat
@@ -13,23 +40,22 @@ sudo ln -s /usr/bin/batcat /usr/bin/bat
 #sudo chmod 777  /usr/share/lintian/overrides/bat
 
 ##sudo mkdir  -p  /data/.fzf_d
-sudo mkdir  -p    ~/.fzf_d
+sudo mkdir -p ~/.fzf_d
 
 #wget -4 -O /data/.fzf_d/file_preview.py   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
-wget -4 -O  ~/.fzf_d/file_preview.py   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
+wget -4 -O ~/.fzf_d/file_preview.py https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/file_preview.py
 
-#sudo chmod 777 /data/.fzf_d/file_preview.py 
-sudo chmod 777 ~/.fzf_d/file_preview.py 
-
+#sudo chmod 777 /data/.fzf_d/file_preview.py
+sudo chmod 777 ~/.fzf_d/file_preview.py
 
 ranger --copy-config=all
-mv ~/.config/ranger/commands.py  ~/.config/ranger/commands.py.bak
-mv ~/.config/ranger/rc.conf  ~/.config/ranger/rc.conf.bak
+mv ~/.config/ranger/commands.py ~/.config/ranger/commands.py.bak
+mv ~/.config/ranger/rc.conf ~/.config/ranger/rc.conf.bak
 
-wget -4 -O  ~/.config/ranger/commands.py  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/commands.py
-wget -4 -O  ~/.config/ranger/rc.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/rc.conf
+wget -4 -O ~/.config/ranger/commands.py https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/commands.py
+wget -4 -O ~/.config/ranger/rc.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/rc.conf
 
-cat >> ~/.bashrc <<'EOF'
+cat >>~/.bashrc <<'EOF'
 ##### fzf  ##### 
 
 export FZF_DEFAULT_COMMAND='fdfind --hidden --follow -E ".git" -E "node_modules" . '
@@ -135,18 +161,13 @@ bind '"\el": "\e[1;5C"'   # Meta+l for Ctrl+Right (vim)
   #####   #####   ##### 
 EOF
 
-
 ####echo 'bind "\"\C-v\": \"\C-uvim \C-t\C-m\""' >> ~/.bashrc
 
-#########echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc 
+#########echo 'bind '"\ev": "\C-uvim \C-t\C-m"'' >> ~/.bashrc
 #
 #
 #cat >> ~/.bashrc << 'EOF'
 #EOF
-
-
-
-
 
 git clone https://github.com/wting/autojump.git
 cd autojump
@@ -154,20 +175,17 @@ cd autojump
 #cd ..
 #rm -r autojump
 
-echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autojump/etc/profile.d/autojump.sh" >> ~/.bashrc
-echo "export FZF_COMPLETION_TRIGGER='~~'" >> ~/.fzf.bash
-
+echo "[[ -s /root/.autojump/etc/profile.d/autojump.sh ]] && source /root/.autojump/etc/profile.d/autojump.sh" >>~/.bashrc
+echo "export FZF_COMPLETION_TRIGGER='~~'" >>~/.fzf.bash
 
 curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
-echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+echo 'export PATH="$PATH:/root/.local/bin"' >>~/.bashrc
+echo 'eval "$(zoxide init bash)"' >>~/.bashrc
 ##cat << 'EOF' >> ~/.bashrc
 ##export PATH="$PATH:/root/.local/bin"
 ##eval "$(zoxide init bash)"
 ##EOF
 
-cat >>~/.bashrc<<'EOF'
+cat >>~/.bashrc <<'EOF'
 eval "$(oh-my-posh init bash --config /root/themes/gmay3.omp.json)"
 EOF
-
-
