@@ -346,7 +346,8 @@ if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 	peer_name="${peer_fqdn%%.*}"
 
 	print_delim
-	echo -e "${BOLD_RED}  No.${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
+	#echo -e "${BOLD_RED}  No.${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
+	echo -e "${BOLD_RED}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
 	print_delim
 fi
 
