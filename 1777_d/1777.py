@@ -477,10 +477,6 @@ async def navigate(
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }}
 
-                html {{
-                    zoom: 200%;
-                      overflow-x: hidden; 
-                }}
 
                 body, html * {{
                     font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
@@ -493,9 +489,9 @@ async def navigate(
                 }}
 
                 body {{
-                    margin: 20px;
+                    margin: 5px 10px 6px 10px;
                     background-color: #f8f9fa;
-                    overflow-x: hidden;
+                     overflow-x: hidden;
 
                 }}
 
@@ -537,6 +533,8 @@ async def navigate(
                 table {{
                     border-collapse: collapse;
                     width: 100%;
+
+         table-layout: fixed;
                     background-color: white;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                     border-radius: 4px;
@@ -553,6 +551,21 @@ async def navigate(
                     font-weight: bold;
                     color: #495057;
                 }}
+
+th, td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.item-container {
+    min-width: 0;
+}
+
+.item-container a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
 
                 tr:hover {{
                     background-color: #f8f9fa;
@@ -734,6 +747,17 @@ async def render_markdown_with_mistune(
 
     # Reuse fonts + light background similar to your code view
     custom_css = """
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
     @font-face {
       font-family: 'WebSFPro';
       src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
