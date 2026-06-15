@@ -25,7 +25,6 @@ STATUS_COL_W=7
 BOLD_BLUE=$'\033[1;34m'
 BLUE=$'\033[0;34m'
 
-
 BOLD_YELLOW=$'\033[1;33m'
 GREEN=$'\033[0;32m'
 BOLD_GREEN=$'\033[1;32m'
@@ -59,15 +58,15 @@ expand_path() {
 	local p="$1"
 
 	case "$p" in
-		~)
-			printf '%s\n' "$HOME"
-			;;
-		~/*)
-			printf '%s\n' "$HOME/${p#~/}"
-			;;
-		*)
-			printf '%s\n' "$p"
-			;;
+	~)
+		printf '%s\n' "$HOME"
+		;;
+	~/*)
+		printf '%s\n' "$HOME/${p#~/}"
+		;;
+	*)
+		printf '%s\n' "$p"
+		;;
 	esac
 }
 
@@ -199,7 +198,6 @@ print_upload_queue() {
 	print_delim
 }
 
-
 print_upload_results() {
 	local total="$1"
 	local i result_file result_index status path message fail_count skip_count ok_count
@@ -236,21 +234,21 @@ print_upload_results() {
 		fi
 
 		case "$status" in
-			OK)
-				ok_count=$((ok_count + 1))
-				printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_RED}%s${NC}\n" \
-					"$i" "$STATUS_COL_W" "OK" "$shown_path" "$message"
-				;;
-			SKIP)
-				skip_count=$((skip_count + 1))
-				printf " %${NO_COL_W}d  ${YELLOW}%-*s${NC}  %b (%s)\n" \
-					"$i" "$STATUS_COL_W" "SKIP" "$shown_path" "$message"
-				;;
-			*)
-				fail_count=$((fail_count + 1))
-				printf " %${NO_COL_W}d  ${RED}%-*s${NC}  %b (%s)\n" \
-					"$i" "$STATUS_COL_W" "❌" "$shown_path" "$message"
-				;;
+		OK)
+			ok_count=$((ok_count + 1))
+			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_RED}%s${NC}\n" \
+				"$i" "$STATUS_COL_W" "OK" "$shown_path" "$message"
+			;;
+		SKIP)
+			skip_count=$((skip_count + 1))
+			printf " %${NO_COL_W}d  ${YELLOW}%-*s${NC}  %b (%s)\n" \
+				"$i" "$STATUS_COL_W" "SKIP" "$shown_path" "$message"
+			;;
+		*)
+			fail_count=$((fail_count + 1))
+			printf " %${NO_COL_W}d  ${RED}%-*s${NC}  %b (%s)\n" \
+				"$i" "$STATUS_COL_W" "❌" "$shown_path" "$message"
+			;;
 		esac
 	done
 
@@ -266,8 +264,6 @@ print_upload_results() {
 
 	return "$fail_count"
 }
-
-
 
 # --- Main Script Logic ---
 
@@ -318,7 +314,9 @@ echo -e "Available NetBird peers:${NC}"
 print_nb_list
 
 print_delim
-read -r -p "Pick peer No. or enter destination domain/IP:  " API_HOST
+
+#read -r -p "Pick peer No. or enter destination domain/IP:  " API_HOST
+read -r -p "Peer / Destination Domain / IP:  " API_HOST
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
