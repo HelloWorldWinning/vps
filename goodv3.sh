@@ -1187,7 +1187,7 @@ https://zhile.one/archives/1404.html
 	wos_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
 	sco_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
 	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
-	o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed" ;;
+	o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "o success installed" ;;
 
 	refine) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
 
