@@ -316,7 +316,8 @@ print_nb_list
 print_delim
 
 #read -r -p "Pick peer No. or enter destination domain/IP:  " API_HOST
-read -r -p "Peer / Destination Domain / IP:  " API_HOST
+#read -r -p "Peer / Destination Domain / IP:  " API_HOST
+read -r -p "No./Domain/IP: " API_HOST
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
