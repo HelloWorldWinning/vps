@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # command_netbird-viewing_more.sh — pretty "view-only" NetBird peers using netbird status command
-# Dependencies: jq, column
+# Dependencies: jq, column  ✗  ✓
 set -Eeuo pipefail
 
 # --- Defaults ---
