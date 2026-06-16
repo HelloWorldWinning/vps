@@ -16,7 +16,7 @@ API_PORT="7778"
 API_PASSWD="kkb"
 
 # --- Output formatting ---
-DELIM_WIDTH=80
+DELIM_WIDTH=90
 NO_COL_W=5
 STATUS_COL_W=7
 
