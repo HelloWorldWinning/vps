@@ -43,7 +43,8 @@ if [ ! -x "$MINICONDA_DIR/bin/python" ]; then
 
 	mkdir -p "$MINICONDA_DIR"
 
-	tmp_installer="$(mktemp /tmp/miniconda.XXXXXX.sh)"
+	#tmp_installer="$(mktemp /tmp/miniconda.XXXXXX.sh)"
+	tmp_installer="$(mktemp "$HOME/.tmp/miniconda.XXXXXX.sh")"
 	cleanup() {
 		rm -f "$tmp_installer"
 	}
