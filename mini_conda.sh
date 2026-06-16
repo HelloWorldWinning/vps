@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# ===== temporary workspace =====
+
+OLD_TMPDIR="${TMPDIR:-}"
+
+mkdir -p ~/.tmp
+chmod 700 ~/.tmp
+
+export TMPDIR="$HOME/.tmp"
+
+cleanup_tmp() {
+	rm -rf "$HOME/.tmp"
+
+	if [ -n "$OLD_TMPDIR" ]; then
+		export TMPDIR="$OLD_TMPDIR"
+	else
+		unset TMPDIR
+	fi
+
+	unset OLD_TMPDIR
+}
+
+trap cleanup_tmp EXIT
+
 # Complete Neovim + Miniconda + Python provider installer.
 # It installs pynvim into a dedicated Python venv and tells Neovim exactly which Python to use.
 
