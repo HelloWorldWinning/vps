@@ -535,7 +535,7 @@ def base_row(idx; p):
     ((p.netbirdIp//"") | split("/")[0]),
     (get_public_ipv4(p)),
     (get_public_ipv6(p)),
-    (if p.status == "Connected" then "✓" else "✗" end),
+    (if p.status == "Connected" then "✔" else "❌" end),
     (seen_ago(p)),
     (format_time(p.lastStatusUpdate))
   ];
