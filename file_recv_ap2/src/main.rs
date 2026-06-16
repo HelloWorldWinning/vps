@@ -1,3 +1,4 @@
+// main.rs
 use axum::{
     Json, Router,
     extract::{DefaultBodyLimit, Multipart, Query, Request, State},
@@ -26,6 +27,7 @@ use tracing_subscriber::{EnvFilter, fmt};
 struct AppState {
     base_path: PathBuf,
     allowed_exts: HashSet<String>,
+    file_types_use: bool,
     api_passwd: String,
     tz: Tz,
     // (host_prefix, container_prefix)
@@ -113,8 +115,25 @@ async fn main() -> anyhow::Result<()> {
         .and_then(|s| s.parse().ok())
         .unwrap_or(7778);
 
+    // FILE_TYPES_USE
+    //
+    // Default: false
+    //
+    // false:
+    //   /saving_path/2026/06/16/settings.json
+    //   /saving_path/2026/06/16/aria2.session
+    //
+    // true:
+    //   /saving_path/json_D/2026/06/16/settings.json
+    //   /saving_path/others_D/2026/06/16/aria2.session
+    let file_types_use = parse_bool_env("FILE_TYPES_USE", false);
+
     // Allowed extensions
-    // Preferred name (correct spelling, underscores)
+    //
+    // Used only when FILE_TYPES_USE=true to decide whether a file goes into
+    // "<ext>_D" or "others_D".
+    //
+    // Preferred name: FILE_TYPES_EXTENSION
     // Back-compat: accept hyphenated and misspelled envs too, with warnings.
     let default_exts = DEFAULT_ALLOWED_EXTS.to_string();
     let allowed_exts_raw = if let Ok(v) = env::var("FILE_TYPES_EXTENSION") {
@@ -133,8 +152,10 @@ async fn main() -> anyhow::Result<()> {
 
     let allowed_exts = parse_exts(&allowed_exts_raw);
 
-    // HOST_MAPPING_PATHS (optional)
-    // Format: "<HOST_PREFIX>:<CONTAINER_PREFIX>[; <HOST2>:<CONT2>, ...]"
+    // HOST_MAPPING_PATHS optional
+    //
+    // Format:
+    //   "<HOST_PREFIX>:<CONTAINER_PREFIX>[; <HOST2>:<CONT2>, ...]"
     let host_mappings = env::var("HOST_MAPPING_PATHS")
         .ok()
         .map(|s| parse_host_mappings(&s))
@@ -155,24 +176,31 @@ async fn main() -> anyhow::Result<()> {
     info!("FileRecvAPI starting on 0.0.0.0:{port}");
     info!("TIMEZONE: {}", tz);
     info!("SAVING_PATH: {}", base_path.display());
-    info!(
-        "Allowed extensions ({}): {:?}",
-        allowed_exts.len(),
-        allowed_exts
-    );
+    info!("FILE_TYPES_USE: {}", file_types_use);
+
+    if file_types_use {
+        info!(
+            "Allowed extensions for file-type directories ({}): {:?}",
+            allowed_exts.len(),
+            allowed_exts
+        );
+    } else {
+        info!("File-type directory level disabled. Files save directly under YYYY/MM/DD.");
+    }
 
     let state = AppState {
         base_path,
         allowed_exts,
+        file_types_use,
         api_passwd,
         tz,
         host_mappings,
     };
 
     let app = Router::new()
-        // Multipart upload (field name must be "file")
+        // Multipart upload; field name must be "file"
         .route("/", post(upload_multipart))
-        // Raw (non-multipart) upload
+        // Raw non-multipart upload
         .route("/raw", put(upload_raw))
         // Health
         .route("/healthz", get(|| async { "ok" }))
@@ -198,7 +226,11 @@ async fn upload_multipart(
         return Err(Unauthorized.into_response());
     }
 
-    // Content-Type sanity check with helpful message (common curl mistake: using -d instead of -F)
+    // Content-Type sanity check with helpful message.
+    //
+    // Common curl mistake:
+    //   wrong: curl -d ...
+    //   right: curl -F 'file=@path' ...
     if let Some(ct) = headers.get("content-type").and_then(|v| v.to_str().ok()) {
         let ct = ct.to_ascii_lowercase();
         if ct.starts_with("multipart/form-data") && !ct.contains("boundary=") {
@@ -209,7 +241,7 @@ async fn upload_multipart(
         }
     }
 
-    // Iterate to find the first 'file' field
+    // Iterate to find the first "file" field.
     while let Some(field) = multipart
         .next_field()
         .await
@@ -225,32 +257,25 @@ async fn upload_multipart(
             .unwrap_or_else(|| "upload.bin".to_string());
 
         let file_name = sanitize_file_name(&orig_name);
-        let ext = extension_of(&file_name);
 
-        // choose subdir by extension
-        let subdir = ext
-            .as_ref()
-            .filter(|e| state.allowed_exts.contains(&e.to_ascii_lowercase()))
-            .map(|e| format!("{}_D", e))
-            .unwrap_or_else(|| "others_D".to_string());
-
-        // date-dir
-        let now = Utc::now().with_timezone(&state.tz);
-        let dir = state
-            .base_path
-            .join(&subdir)
-            .join(format!("{:04}", now.year()))
-            .join(format!("{:02}", now.month()))
-            .join(format!("{:02}", now.day()));
+        // Build save directory.
+        //
+        // FILE_TYPES_USE=false:
+        //   base/YYYY/MM/DD
+        //
+        // FILE_TYPES_USE=true:
+        //   base/<ext>_D/YYYY/MM/DD
+        //   base/others_D/YYYY/MM/DD
+        let dir = build_save_dir(&state, &file_name);
 
         fs::create_dir_all(&dir)
             .await
             .map_err(|e| server_err(format!("failed to create dir: {e}")))?;
 
-        // temp file path (hidden + .part suffix)
+        // Temp file path: hidden + .part suffix.
         let tmp_path = dir.join(format!(".{}.part-{:08x}", file_name, rand::random::<u32>()));
 
-        // stream to temp
+        // Stream to temp file.
         let mut tmp = File::create(&tmp_path)
             .await
             .map_err(|e| server_err(format!("failed to create temp file: {e}")))?;
@@ -270,14 +295,15 @@ async fn upload_multipart(
             .await
             .map_err(|e| cleanup_and_500(&tmp_path, format!("flush error: {e}")))?;
 
-        // finalize: rename to target, resolving collisions
+        // Finalize: rename to target, resolving collisions.
         let final_path = finalize_move_with_collision(&tmp_path, &dir, &file_name)
             .await
             .map_err(|e| server_err(format!("finalize error: {e}")))?;
 
-        // success: return JSON (optionally map to host path)
+        // Success: return JSON, optionally mapped to host path.
         let exposed = map_to_host_path(&final_path, &state.host_mappings);
         let dest_str = exposed.to_string_lossy().to_string();
+
         return Ok(json_ok(dest_str));
     }
 
@@ -295,7 +321,7 @@ async fn upload_raw(
         return Err(Unauthorized.into_response());
     }
 
-    // filename: query ?filename=... or header X-Filename
+    // Filename: query ?filename=... or header X-Filename.
     let file_name = query
         .get("filename")
         .cloned()
@@ -308,35 +334,28 @@ async fn upload_raw(
         .map(|s| sanitize_file_name(&s))
         .unwrap_or_else(|| "upload.bin".to_string());
 
-    let ext = extension_of(&file_name);
+    // Build save directory.
+    //
+    // FILE_TYPES_USE=false:
+    //   base/YYYY/MM/DD
+    //
+    // FILE_TYPES_USE=true:
+    //   base/<ext>_D/YYYY/MM/DD
+    //   base/others_D/YYYY/MM/DD
+    let dir = build_save_dir(&state, &file_name);
 
-    // subdir by extension
-    let subdir = ext
-        .as_ref()
-        .filter(|e| state.allowed_exts.contains(&e.to_ascii_lowercase()))
-        .map(|e| format!("{}_D", e))
-        .unwrap_or_else(|| "others_D".to_string());
-
-    // date-dir
-    let now = Utc::now().with_timezone(&state.tz);
-    let dir = state
-        .base_path
-        .join(&subdir)
-        .join(format!("{:04}", now.year()))
-        .join(format!("{:02}", now.month()))
-        .join(format!("{:02}", now.day()));
     fs::create_dir_all(&dir)
         .await
         .map_err(|e| server_err(format!("failed to create dir: {e}")))?;
 
-    // temp file
+    // Temp file path: hidden + .part suffix.
     let tmp_path = dir.join(format!(".{}.part-{:08x}", file_name, rand::random::<u32>()));
 
     let mut tmp = File::create(&tmp_path)
         .await
         .map_err(|e| server_err(format!("failed to create temp file: {e}")))?;
 
-    // Stream the request body to disk (Axum 0.7)
+    // Stream request body to disk.
     let mut body = request.into_body().into_data_stream();
 
     while let Some(next) = body.next().await {
@@ -351,19 +370,41 @@ async fn upload_raw(
         .await
         .map_err(|e| cleanup_and_500(&tmp_path, format!("flush error: {e}")))?;
 
-    // finalize
+    // Finalize.
     let final_path = finalize_move_with_collision(&tmp_path, &dir, &file_name)
         .await
         .map_err(|e| server_err(format!("finalize error: {e}")))?;
 
     let exposed = map_to_host_path(&final_path, &state.host_mappings);
     let dest_str = exposed.to_string_lossy().to_string();
+
     Ok(json_ok(dest_str))
 }
 
 // ---------- Helpers ----------
 
 const DEFAULT_ALLOWED_EXTS: &str = "pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,json,xml,html,css,js,ts,py,java,c,cpp,cs,go,rs,rb,php,sh,bat,ps1,sql,yaml,yml,ini,log,jpg,jpeg,png,gif,bmp,svg,webp,tiff,ico,mp3,wav,aac,flac,ogg,m4a,mp4,mov,mkv,avi,webm,wmv,zip,rar,7z,tar,gz,bz2";
+
+fn parse_bool_env(name: &str, default_value: bool) -> bool {
+    match env::var(name) {
+        Ok(value) => {
+            let normalized = value.trim().to_ascii_lowercase();
+
+            match normalized.as_str() {
+                "1" | "true" | "yes" | "y" | "on" => true,
+                "0" | "false" | "no" | "n" | "off" => false,
+                _ => {
+                    warn!(
+                        "Env var {}='{}' is not a recognized boolean. Using default: {}.",
+                        name, value, default_value
+                    );
+                    default_value
+                }
+            }
+        }
+        Err(_) => default_value,
+    }
+}
 
 fn parse_exts(list: &str) -> HashSet<String> {
     list.split(',')
@@ -373,13 +414,36 @@ fn parse_exts(list: &str) -> HashSet<String> {
         .collect()
 }
 
+fn build_save_dir(state: &AppState, file_name: &str) -> PathBuf {
+    let now = Utc::now().with_timezone(&state.tz);
+
+    let mut dir = state.base_path.clone();
+
+    if state.file_types_use {
+        let ext = extension_of(file_name);
+
+        let subdir = ext
+            .as_ref()
+            .filter(|e| state.allowed_exts.contains(&e.to_ascii_lowercase()))
+            .map(|e| format!("{}_D", e))
+            .unwrap_or_else(|| "others_D".to_string());
+
+        dir = dir.join(subdir);
+    }
+
+    dir.join(format!("{:04}", now.year()))
+        .join(format!("{:02}", now.month()))
+        .join(format!("{:02}", now.day()))
+}
+
 fn sanitize_file_name(input: &str) -> String {
     // Keep only final path component; strip any dirs.
     let base = Path::new(input)
         .file_name()
         .and_then(|n| n.to_str())
         .unwrap_or("upload.bin");
-    // Disallow weird NULs or slashes (very conservative).
+
+    // Disallow weird NULs or slashes.
     base.chars()
         .filter(|&c| c != '/' && c != '\\' && c != '\0')
         .collect()
@@ -393,19 +457,21 @@ fn extension_of(file_name: &str) -> Option<String> {
 }
 
 fn auth_ok(secret: &str, headers: &HeaderMap, query: &HashMap<String, String>) -> bool {
-    // Query param
+    // Query param: ?api_passwd=...
     if let Some(q) = query.get("api_passwd") {
         if q == secret {
             return true;
         }
     }
-    // X-Api-Passwd header
+
+    // Header: X-Api-Passwd
     if let Some(h) = headers.get("x-api-passwd").and_then(|v| v.to_str().ok()) {
         if h == secret {
             return true;
         }
     }
-    // Authorization: Bearer <token>
+
+    // Header: Authorization: Bearer <token>
     if let Some(auth) = headers.get("authorization").and_then(|v| v.to_str().ok()) {
         if let Some(token) = auth
             .strip_prefix("Bearer ")
@@ -416,6 +482,7 @@ fn auth_ok(secret: &str, headers: &HeaderMap, query: &HashMap<String, String>) -
             }
         }
     }
+
     false
 }
 
@@ -425,9 +492,10 @@ async fn finalize_move_with_collision(
     file_name: &str,
 ) -> std::io::Result<PathBuf> {
     let (stem, ext_owned) = split_stem_ext(file_name);
-    let ext = ext_owned.as_deref(); // Option<&str>
+    let ext = ext_owned.as_deref();
 
     let mut i: u32 = 0;
+
     loop {
         let candidate = if i == 0 {
             make_name(dir, &stem, ext)
@@ -448,15 +516,18 @@ async fn finalize_move_with_collision(
 
 fn split_stem_ext(name: &str) -> (String, Option<String>) {
     let p = Path::new(name);
+
     let stem = p
         .file_stem()
         .and_then(|s| s.to_str())
         .unwrap_or("file")
         .to_string();
+
     let ext = p
         .extension()
         .and_then(|e| e.to_str())
         .map(|s| s.to_string());
+
     (stem, ext)
 }
 
@@ -468,10 +539,11 @@ fn make_name(dir: &Path, stem: &str, ext: Option<&str>) -> PathBuf {
 }
 
 fn cleanup_and_500(tmp_path: &Path, msg: String) -> Response {
-    // Best-effort cleanup
+    // Best-effort cleanup.
     if let Err(e) = std::fs::remove_file(tmp_path) {
         error!("cleanup failed for {}: {}", tmp_path.display(), e);
     }
+
     server_err(msg)
 }
 
@@ -487,24 +559,29 @@ fn parse_host_mappings(list: &str) -> Vec<(PathBuf, PathBuf)> {
     list.split(|c| c == ';' || c == ',')
         .filter_map(|pair| {
             let pair = pair.trim();
+
             if pair.is_empty() {
                 return None;
             }
-            // Format: "<HOST_PREFIX>:<CONTAINER_PREFIX>"
+
+            // Format:
+            //   "<HOST_PREFIX>:<CONTAINER_PREFIX>"
             let mut parts = pair.splitn(2, ':');
             let host = parts.next()?.trim();
             let container = parts.next()?.trim();
+
             if host.is_empty() || container.is_empty() {
                 return None;
             }
+
             Some((PathBuf::from(host), PathBuf::from(container)))
         })
         .collect()
 }
 
-
-/// If `path` starts with any container prefix from the mappings, replace that prefix with the
-/// corresponding host prefix. Otherwise, return the original path unchanged.
+/// If `path` starts with any container prefix from the mappings,
+/// replace that prefix with the corresponding host prefix.
+/// Otherwise, return the original path unchanged.
 fn map_to_host_path(path: &Path, mappings: &[(PathBuf, PathBuf)]) -> PathBuf {
     for (host_prefix, container_prefix) in mappings {
         if path.starts_with(container_prefix) {
@@ -513,6 +590,6 @@ fn map_to_host_path(path: &Path, mappings: &[(PathBuf, PathBuf)]) -> PathBuf {
             }
         }
     }
+
     path.to_path_buf()
 }
-

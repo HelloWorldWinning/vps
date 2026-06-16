@@ -11,4 +11,4 @@ docker build --no-cache -t oklove/file-recv-api:latest .
 # (Optional) Sanity check binary exists inside the image
 docker run --rm --entrypoint /bin/sh oklove/file-recv-api:latest -lc 'ls -lh /usr/local/bin/file-recv-api'
 
-#docker push oklove/file-recv-api:latest
+docker push oklove/file-recv-api:latest
