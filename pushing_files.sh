@@ -25,12 +25,13 @@ STATUS_COL_W=7
 BOLD_BLUE=$'\033[1;34m'
 BLUE=$'\033[0;34m'
 
-BOLD_YELLOW=$'\033[1;33m'
+YELLOW=$'\033[0;33m'      # normal yellow
+BOLD_YELLOW=$'\033[1;33m' # bold yellow
+
 GREEN=$'\033[0;32m'
 BOLD_GREEN=$'\033[1;32m'
 RED=$'\033[0;31m'
 BOLD_RED=$'\033[1;31m'
-YELLOW=$'\033[1;33m'
 CYAN=$'\033[0;36m'
 BOLD_CYAN=$'\033[1;36m'
 NC=$'\033[0m' # No Color
@@ -236,7 +237,8 @@ print_upload_results() {
 		case "$status" in
 		OK)
 			ok_count=$((ok_count + 1))
-			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_YELLOW}%s${NC}\n" \
+			#printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_YELLOW}%s${NC}\n" \
+			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${YELLOW}%s${NC}\n" \
 				"$i" "$STATUS_COL_W" "OK" "$shown_path" "$message"
 			;;
 		SKIP)
