@@ -552,20 +552,20 @@ async def navigate(
                     color: #495057;
                 }}
 
-th, td {
+th, td {{
     overflow-wrap: anywhere;
     word-break: break-word;
-}
+}}
 
-.item-container {
+.item-container {{
     min-width: 0;
-}
+}}
 
-.item-container a {
+.item-container a {{
     min-width: 0;
     overflow-wrap: anywhere;
     word-break: break-word;
-}
+}}
 
                 tr:hover {{
                     background-color: #f8f9fa;
@@ -863,3 +863,6 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=1777)
+error: cannot format -: Cannot parse: 556:17:     overflow-wrap: anywhere;
+error: cannot format -: Cannot parse: 556:17:     overflow-wrap: anywhere;
+error: cannot format -: Cannot parse: 866:14: error: cannot format -: Cannot parse: 556:17:     overflow-wrap: anywhere;
