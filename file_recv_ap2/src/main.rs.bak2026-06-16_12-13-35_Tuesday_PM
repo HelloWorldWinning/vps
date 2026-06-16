@@ -21,7 +21,7 @@ use tokio::{
     io::AsyncWriteExt,
 };
 use tracing::{error, info, warn};
-use tracing_subscriber::{EnvFilter, fmt, fmt::time::LocalTime};
+use tracing_subscriber::{EnvFilter, fmt};
 
 #[derive(Clone)]
 struct AppState {
@@ -87,14 +87,10 @@ impl IntoResponse for Unauthorized {
 async fn main() -> anyhow::Result<()> {
     // Logging
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
-    //  fmt::Subscriber::builder()
-    //      .with_env_filter(env_filter)
-    //      .init();
-
     fmt::Subscriber::builder()
         .with_env_filter(env_filter)
-        .with_timer(LocalTime::rfc_3339())
         .init();
+
     // Required: API_PASSWD
     let api_passwd =
         env::var("API_PASSWD").expect("Missing env var API_PASSWD (e.g., API_PASSWD=kkb)");

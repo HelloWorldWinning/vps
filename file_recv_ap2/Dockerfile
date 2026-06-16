@@ -27,7 +27,9 @@ RUN mkdir -p /saving_path
 HEALTHCHECK --interval=15s --timeout=3s --retries=5 \
   CMD curl -fsS http://127.0.0.1:7778/healthz || exit 1
 
-ENV TIMEZONE="Asia/Shanghai" \
+
+ENV TZ="Asia/Shanghai" \
+    TIMEZONE="Asia/Shanghai" \
     SAVING_PATH="/saving_path" \
     PORT="7778" \
     RUST_LOG="info"
