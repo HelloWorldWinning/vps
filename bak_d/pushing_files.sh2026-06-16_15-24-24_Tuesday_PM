@@ -228,15 +228,15 @@ print_upload_results() {
 		path_dir="${path%/*}"
 
 		if [ "$path_dir" = "$path" ]; then
-			shown_path="${BOLD_RED}${path_base}${NC}"
+			shown_path="${BOLD_YELLOW}${path_base}${NC}"
 		else
-			shown_path="${path_dir}/${BOLD_RED}${path_base}${NC}"
+			shown_path="${path_dir}/${BOLD_YELLOW}${path_base}${NC}"
 		fi
 
 		case "$status" in
 		OK)
 			ok_count=$((ok_count + 1))
-			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_YELLOW}%s${NC}\n" \
+			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_RED}%s${NC}\n" \
 				"$i" "$STATUS_COL_W" "OK" "$shown_path" "$message"
 			;;
 		SKIP)
