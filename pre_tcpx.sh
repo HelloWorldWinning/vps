@@ -775,5 +775,6 @@ install_openssh_server_forcefully 180s 90s 5s
 #sudo chmod +x /tmp/install_acme.sh
 #sudo bash -x /tmp/install_acme.sh
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh)
 
 sudo reboot
