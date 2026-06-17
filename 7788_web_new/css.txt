@@ -239,5 +239,6 @@ td:nth-child(3) {
 }
 
 th:nth-child(1) {
-    text-align: center;
+    text-align: left !important;
+    padding-left: 180px !important;
 }
