@@ -47,7 +47,8 @@ body {
 }
 
 .breadcrumb-item:hover {
-    color: #e60ce6;
+    color: #26cc0e;
+    font-weight: bold;
 }
 
 .item-container {

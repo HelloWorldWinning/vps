@@ -180,14 +180,6 @@ def get_file_info(path: str) -> dict:
         return {"size": 0, "modified": "-"}
 
 
-def get_sort_mtime(path: str) -> float:
-    """Return modified timestamp for sorting. Missing/inaccessible files go last."""
-    try:
-        return os.lstat(path).st_mtime
-    except (FileNotFoundError, PermissionError, OSError):
-        return 0.0
-
-
 def normalize_url_path(path: str) -> str:
     """Decode and normalize a URL path while keeping it relative to BASE_DIR."""
     decoded = unquote(path or "")
@@ -232,9 +224,7 @@ def create_breadcrumb(url_path: str) -> str:
     return "".join(breadcrumb_parts)
 
 
-def authenticate(
-    credentials: HTTPBasicCredentials = Depends(security),
-) -> HTTPBasicCredentials:
+def authenticate(credentials: HTTPBasicCredentials = Depends(security)) -> HTTPBasicCredentials:
     is_correct_username = secrets.compare_digest(
         credentials.username.encode("utf8"), USERNAME.encode("utf8")
     )
@@ -272,9 +262,7 @@ def render_base_html(title: str, body: str) -> HTMLResponse:
     return HTMLResponse(content=html_content)
 
 
-def build_directory_rows(
-    path: str, internal_path: str, items: Iterable[str]
-) -> List[str]:
+def build_directory_rows(path: str, internal_path: str, items: Iterable[str]) -> List[str]:
     table_rows: List[str] = []
 
     if path != "":
@@ -309,9 +297,7 @@ def build_directory_rows(
             item_class = "folder"
         else:
             item_display = html.escape(item)
-            item_size = (
-                format_size(item_info["size"]) if item_info["modified"] != "-" else "-"
-            )
+            item_size = format_size(item_info["size"]) if item_info["modified"] != "-" else "-"
             item_class = "file"
 
         table_rows.append(
@@ -332,9 +318,7 @@ def build_directory_rows(
     return table_rows
 
 
-def render_directory(
-    path: str, internal_path: str, s: str | None = None
-) -> HTMLResponse:
+def render_directory(path: str, internal_path: str) -> HTMLResponse:
     try:
         items = os.listdir(internal_path)
     except PermissionError:
@@ -347,26 +331,7 @@ def render_directory(
             detail=f"Unable to list directory: {e.strerror or str(e)}",
         )
 
-    if s is None:
-        # Default: sort by name
-        items.sort(key=str.casefold)
-    elif s == "1":
-        # ?s=1 means latest Modified at bottom
-        items.sort(
-            key=lambda item: (
-                get_sort_mtime(os.path.join(internal_path, item)),
-                item.casefold(),
-            )
-        )
-    else:
-        # ?s or ?s=0 means latest Modified at top
-        items.sort(
-            key=lambda item: (
-                -get_sort_mtime(os.path.join(internal_path, item)),
-                item.casefold(),
-            )
-        )
-
+    items.sort()
     breadcrumb = create_breadcrumb("/" + path)
     table_rows = build_directory_rows(path, internal_path, items)
 
@@ -431,13 +396,12 @@ def file_media_type(file_extension: str) -> str | None:
 async def read_path(
     path: str = "",
     raw: bool = Query(default=False),
-    s: str | None = Query(default=None),
     credentials: HTTPBasicCredentials = Depends(authenticate),
 ):
     normalized_path, internal_path = resolve_internal_path(path)
 
     if os.path.isdir(internal_path):
-        return render_directory(normalized_path, internal_path, s)
+        return render_directory(normalized_path, internal_path)
 
     if os.path.isfile(internal_path):
         file_extension = os.path.splitext(internal_path)[1].lower()
