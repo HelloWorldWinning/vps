@@ -284,17 +284,17 @@ def build_directory_rows(
         parent_info = get_file_info(parent_internal_path)
         table_rows.append(
             f"""
-            <tr>
-                <td>
-                    <div class="item-container">
-                        <span class="index-number">-</span>
-                        <a href="{parent_url}" class="folder">../</a>
-                    </div>
-                </td>
-                <td class="size-col">-</td>
-                <td>{html.escape(parent_info['modified'])}</td>
-            </tr>
-            """
+    <tr>
+        <td>
+            <div class="item-container">
+                <span class="index-number"></span>
+                <a href="{parent_url}" class="folder">../</a>
+            </div>
+        </td>
+        <td class="size-col"></td>
+        <td>{html.escape(parent_info['modified'])}</td>
+    </tr>
+    """
         )
 
     for idx, item in enumerate(items, 1):
