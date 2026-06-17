@@ -141,3 +141,95 @@ tr:last-child td {
     color: #1d910d;
     font-weight: bold;
 }
+
+
+
+
+
+/* Fix long filenames causing horizontal scroll in directory table */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+th,
+td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+    width: auto;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 5.5em;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 10.5em;
+}
+
+.item-container {
+    display: flex;
+    align-items: flex-start;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.index-number {
+    flex: 0 0 3.5em;
+    min-width: 3.5em;
+}
+
+.file,
+.folder {
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
+}
+
+
+
+.size-col,
+th:nth-child(2),
+td:nth-child(2) {
+    white-space: nowrap;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 7.5em;
+}
