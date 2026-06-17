@@ -4,8 +4,12 @@
 # It prints the NetBird peer list first, lets you pick a peer No.,
 # or allows manual destination domain/IP input.
 #
-# Important:
-# - NetBird status JSON is loaded once only, then reused everywhere.
+# Fixes:
+# - Upload jobs no longer print directly from background processes.
+#   Results are collected first, then printed neatly in order.
+# - All tables use a padded No. header and padded No. values.
+# - NetBird peer table highlights No. and NAME columns.
+# - Successful saved remote upload path is printed in bold red.
 
 # --- Configuration ---
 API_PORT="7778"
@@ -13,17 +17,16 @@ API_PASSWD="kkb"
 
 # --- Output formatting ---
 DELIM_WIDTH=90
-NO_COL_W=8
-NO_COL_W_TOP=9
-
+NO_COL_W=5
 STATUS_COL_W=7
 
 # --- Colors for better output ---
+#
 BOLD_BLUE=$'\033[1;34m'
 BLUE=$'\033[0;34m'
 
-YELLOW=$'\033[0;33m'
-BOLD_YELLOW=$'\033[1;33m'
+YELLOW=$'\033[0;33m'      # normal yellow
+BOLD_YELLOW=$'\033[1;33m' # bold yellow
 
 GREEN=$'\033[0;32m'
 BOLD_GREEN=$'\033[1;32m'
@@ -31,13 +34,7 @@ RED=$'\033[0;31m'
 BOLD_RED=$'\033[1;31m'
 CYAN=$'\033[0;36m'
 BOLD_CYAN=$'\033[1;36m'
-NC=$'\033[0m'
-
-# --- Cached NetBird status ---
-NB_JSON=""
-NB_JSON_OK=0
-NB_HAS_PEERS=0
-NB_ERROR_REASON=""
+NC=$'\033[0m' # No Color
 
 # --- Common delimiter ---
 make_delim() {
@@ -72,69 +69,6 @@ expand_path() {
 		printf '%s\n' "$p"
 		;;
 	esac
-}
-
-# Run NetBird status exactly once, cache JSON, and reuse NB_JSON later.
-load_netbird_status_once() {
-	NB_JSON=""
-	NB_JSON_OK=0
-	NB_HAS_PEERS=0
-	NB_ERROR_REASON=""
-
-	if ! command -v netbird >/dev/null 2>&1; then
-		NB_ERROR_REASON="'netbird' is not installed"
-		return 1
-	fi
-
-	NB_JSON="$(netbird status --json 2>/dev/null || true)"
-
-	if [ -z "$NB_JSON" ]; then
-		NB_ERROR_REASON="NetBird returned empty status JSON"
-		return 1
-	fi
-
-	if ! printf '%s' "$NB_JSON" | jq -e . >/dev/null 2>&1; then
-		NB_ERROR_REASON="NetBird returned invalid status JSON"
-		return 1
-	fi
-
-	NB_JSON_OK=1
-
-	if printf '%s' "$NB_JSON" | jq -e '.peers.details | length > 0' >/dev/null 2>&1; then
-		NB_HAS_PEERS=1
-	fi
-
-	return 0
-}
-
-get_current_peer() {
-	local peer=""
-
-	if [ "$NB_JSON_OK" -eq 1 ]; then
-		peer=$(
-			printf '%s' "$NB_JSON" | jq -r '
-				[
-					.fqdn?,
-					.localPeer.fqdn?,
-					.local_peer.fqdn?,
-					.peer.fqdn?,
-					.hostname?,
-					.hostName?,
-					.localPeer.hostname?,
-					.local_peer.hostname?
-				]
-				| map(select(type == "string" and length > 0))
-				| .[0] // empty
-			'
-		)
-	fi
-
-	if [ -z "$peer" ]; then
-		peer="$(hostname -s 2>/dev/null || hostname 2>/dev/null || printf 'unknown')"
-	fi
-
-	peer="${peer%%.*}"
-	printf '%s\n' "$peer"
 }
 
 # --- Function to upload a single file ---
@@ -175,20 +109,24 @@ upload_file() {
 	fi
 }
 
-# --- Function to print cached NetBird peer list before selection ---
+# --- Function to print NetBird peer list before selection ---
 # Output format: left-padded No., compact dynamic NAME/DNS_LABEL columns, IP
 print_nb_list() {
-	if [ "$NB_JSON_OK" -ne 1 ]; then
-		echo -e "${YELLOW}Warning: ${NB_ERROR_REASON}. Please enter destination domain/IP manually.${NC}"
+	local json
+
+	if ! command -v netbird >/dev/null 2>&1; then
+		echo -e "${YELLOW}Warning: 'netbird' is not installed. Please enter destination domain/IP manually.${NC}"
 		return 1
 	fi
 
-	if [ "$NB_HAS_PEERS" -ne 1 ]; then
+	json=$(netbird status --json 2>/dev/null)
+
+	if [ -z "$json" ] || ! printf '%s' "$json" | jq -e '.peers.details | length > 0' >/dev/null 2>&1; then
 		echo -e "${YELLOW}Warning: No NetBird peers found. Please enter destination domain/IP manually.${NC}"
 		return 1
 	fi
 
-	printf '%s' "$NB_JSON" | jq -r '
+	printf '%s' "$json" | jq -r '
 		.peers.details[]
 		| [.fqdn, .netbirdIp]
 		| @tsv
@@ -222,7 +160,7 @@ print_nb_list() {
 
 			table_w = 1 + no_w + 2 + name_w + 2 + dns_w + 2 + ip_w
 
-			printf " %*s  %-*s  %-*s  %s\n", no_w, "", name_w, "NAME", dns_w, "DNS_LABEL", "IP"
+			printf " %*s  %-*s  %-*s  %s\n", no_w, "No.", name_w, "NAME", dns_w, "DNS_LABEL", "IP"
 			for (i = 0; i < table_w; i++) printf "─"
 			printf "\n"
 
@@ -233,16 +171,12 @@ print_nb_list() {
 	'
 }
 
-# --- Function to resolve a peer No. from the cached NetBird list to its NetBird IP ---
+# --- Function to resolve a peer No. from the printed NetBird list to its NetBird IP ---
 # Mirrors print_nb_list's exact ordering: sort peers by fqdn, then number from 1.
 resolve_peer_ip() {
 	local num="$1"
 
-	if [ "$NB_HAS_PEERS" -ne 1 ]; then
-		return 1
-	fi
-
-	printf '%s' "$NB_JSON" | jq -r '
+	netbird status --json 2>/dev/null | jq -r '
 		.peers.details[]
 		| [.fqdn, .netbirdIp]
 		| @tsv
@@ -290,6 +224,7 @@ print_upload_results() {
 			message="Upload job ended without a result"
 		fi
 
+		# Make only the filename bold yellow, e.g. d.sh
 		path_base="${path##*/}"
 		path_dir="${path%/*}"
 
@@ -302,6 +237,7 @@ print_upload_results() {
 		case "$status" in
 		OK)
 			ok_count=$((ok_count + 1))
+			#printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${BOLD_YELLOW}%s${NC}\n" \
 			printf " %${NO_COL_W}d  ${BLUE}%-*s${NC}  %b -> ${YELLOW}%s${NC}\n" \
 				"$i" "$STATUS_COL_W" "OK" "$shown_path" "$message"
 			;;
@@ -372,21 +308,18 @@ command -v nc >/dev/null 2>&1 || {
 	exit 1
 }
 
-# Cache NetBird once. Manual destination input still works when this fails.
-load_netbird_status_once
-
 # === Step 1: Get Target Server and Check Connectivity ===
 echo -e "Step 1: Target Server${NC}"
 print_delim
-
-CURRENT_PEER="$(get_current_peer)"
-#printf "%b%${NO_COL_W_TOP}s%b Available Peers:\n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
-printf "%b%${NO_COL_W_TOP}s%b  Peers:\n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
+echo -e "Available NetBird peers:${NC}"
 
 print_nb_list
+
 print_delim
 
-read -r -p "Nnumber/Domain/IP: " API_HOST
+#read -r -p "Pick peer No. or enter destination domain/IP:  " API_HOST
+#read -r -p "Peer / Destination Domain / IP:  " API_HOST
+read -r -p "No./Domain/IP: " API_HOST
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
@@ -394,13 +327,13 @@ if [ -z "${API_HOST}" ]; then
 fi
 
 # --- Lazy input ---
-# If the entry is a 1-3 digit number, treat it as a peer No. from the printed cached NetBird list.
+# If the entry is a 1-3 digit number, treat it as a peer No. from the printed NetBird list.
 # Anything else, such as real IP, hostname, or domain, falls through to manual host behavior.
 if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 	peer_no="${API_HOST}"
 
-	if [ "$NB_HAS_PEERS" -ne 1 ]; then
-		echo -e "${RED}Error: a peer No. ('${peer_no}') was entered, but no cached NetBird peer list is available.${NC}"
+	if ! command -v netbird >/dev/null 2>&1; then
+		echo -e "${RED}Error: a peer No. ('${peer_no}') was entered but 'netbird' is not installed.${NC}"
 		exit 1
 	fi
 
@@ -416,6 +349,7 @@ if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 	peer_name="${peer_fqdn%%.*}"
 
 	print_delim
+	#echo -e "${BOLD_RED}  No.${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
 	echo -e "${BOLD_RED}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
 	print_delim
 fi
