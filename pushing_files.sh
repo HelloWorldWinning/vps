@@ -14,7 +14,7 @@ API_PASSWD="kkb"
 # --- Output formatting ---
 DELIM_WIDTH=90
 NO_COL_W=8
-NO_COL_W_TOP=9
+NO_COL_W_TOP=10
 
 STATUS_COL_W=7
 
@@ -381,12 +381,12 @@ print_delim
 
 CURRENT_PEER="$(get_current_peer)"
 #printf "%b%${NO_COL_W_TOP}s%b Available Peers:\n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
-printf "%b%${NO_COL_W_TOP}s%b  Peers:\n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
+printf "%b%${NO_COL_W_TOP}s%b   \n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
 
 print_nb_list
 print_delim
 
-read -r -p "Nnumber/Domain/IP: " API_HOST
+read -r -p "Number/Domain/IP: " API_HOST
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
