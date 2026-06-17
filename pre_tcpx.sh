@@ -4,6 +4,26 @@
 # Description:
 # This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
 
+# ===== temporary workspace =====
+OLD_TMPDIR="${TMPDIR:-}"
+
+TMPDIR_NEW=$(mktemp -d "$HOME/.tmp.XXXXXX")
+export TMPDIR="$TMPDIR_NEW"
+
+cleanup_tmp() {
+	rm -rf "$TMPDIR_NEW"
+
+	if [ -n "$OLD_TMPDIR" ]; then
+		export TMPDIR="$OLD_TMPDIR"
+	else
+		unset TMPDIR
+	fi
+}
+
+trap cleanup_tmp EXIT
+
+##############################
+
 curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
 chmod +x /tmp/acme_one_time_install_after_rebuild.sh
 nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
