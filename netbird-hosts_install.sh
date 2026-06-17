@@ -14,6 +14,29 @@
 #   chmod +x $HOME/netbird-hosts_install.sh
 #   $HOME/netbird-hosts_install.sh
 
+# ===== temporary workspace =====
+
+OLD_TMPDIR="${TMPDIR:-}"
+
+mkdir -p ~/.tmp
+chmod 700 ~/.tmp
+
+export TMPDIR="$HOME/.tmp"
+
+cleanup_tmp() {
+	rm -rf "$HOME/.tmp"
+
+	if [ -n "$OLD_TMPDIR" ]; then
+		export TMPDIR="$OLD_TMPDIR"
+	else
+		unset TMPDIR
+	fi
+
+	unset OLD_TMPDIR
+}
+
+trap cleanup_tmp EXIT
+
 set -euo pipefail
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
