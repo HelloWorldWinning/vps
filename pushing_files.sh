@@ -257,7 +257,7 @@ print_upload_results() {
 	print_delim
 
 	if [ "$fail_count" -eq 0 ] && [ "$skip_count" -eq 0 ]; then
-		echo -e "${BOLD_BLUE}All tasks finished successfully. Uploaded: ${ok_count}/${total}.${NC}"
+		echo -e "${BLUE}All tasks finished successfully. Uploaded: ${ok_count}/${total}.${NC}"
 	elif [ "$fail_count" -eq 0 ]; then
 		echo -e "${YELLOW}All tasks finished. Uploaded: ${ok_count}/${total}. Skipped: ${skip_count}.${NC}"
 	else
