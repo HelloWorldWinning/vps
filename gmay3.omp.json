@@ -99,7 +99,7 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#870fd1",
+          "foreground": "#a803a8",
           "style": "plain",
           "template": "<b> Tuesday  19 11:16 PM ☶ </b>",
           "type": "text"

@@ -115,7 +115,7 @@
             "cache_duration": "none"
           },
           "template": "<b> Sunday   14 PM 09:30   </b>",
-          "foreground": "#870fd1",
+          "foreground": "#a803a8",
           "type": "text",
           "style": "plain"
         }
