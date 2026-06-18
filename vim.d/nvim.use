@@ -12,7 +12,7 @@ let g:fzf_vim = {}
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'neovim/nvim-lspconfig'
+"Plug 'neovim/nvim-lspconfig'
 Plug 'folke/flash.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'echasnovski/mini.animate'  
@@ -516,7 +516,7 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 " --- LSP Configuration ---
 lua << EOF
 -- Enable Pyright (uses the server config shipped by nvim-lspconfig)
-vim.lsp.enable('pyright')
+"vim.lsp.enable('pyright')
 
 -- Optional: buffer-local keymaps only when LSP attaches
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -535,7 +535,7 @@ EOF
 
 
 lua << EOF
-vim.lsp.enable('pyright')
+"vim.lsp.enable('pyright')
 vim.lsp.enable('rust_analyzer')
 EOF
 
