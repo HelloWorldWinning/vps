@@ -48,7 +48,7 @@ LOG_FILE="${LOG_FILE:-/tmp/netbird-hosts.log}"
 CRON_BEGIN="# BEGIN NETBIRD HOSTS CRON"
 CRON_END="# END NETBIRD HOSTS CRON"
 #CRON_SCHEDULE="${CRON_SCHEDULE:-*/10 * * * *}"
-CRON_SCHEDULE="${CRON_SCHEDULE:-*/1 * * * *}"
+CRON_SCHEDULE="${CRON_SCHEDULE:-*/5 * * * *}"
 CRON_LINE="${CRON_SCHEDULE} ${TARGET_SCRIPT} >> ${LOG_FILE} 2>&1"
 
 INSTALL_DEPS="${INSTALL_DEPS:-1}"
@@ -245,7 +245,7 @@ awk -v begin="$BEGIN" -v end="$END" '
 ' "$HOSTS" | LC_ALL=C sort -u > "$tmp_current_entries"
 
 if cmp -s "$tmp_entries" "$tmp_current_entries"; then
-  echo "No change: NetBird hosts already up to date (${entry_count} entries)"
+# echo "No change: NetBird hosts already up to date (${entry_count} entries)"
   exit 0
 fi
 
