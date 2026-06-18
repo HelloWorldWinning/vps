@@ -1203,6 +1203,7 @@ https://zhile.one/archives/1404.html
 	ccaa2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaa2.sh) ;;
 	file) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh) ;;
 	nb_dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh) ;;
+	dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
