@@ -1075,7 +1075,7 @@ https://zhile.one/archives/1404.html
 	105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh) ;;
 	1066) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.sh) ;;
 	7777) bash <(curl -4Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh) ;;
-	7788) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh) ;;
+	7788) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh) ;;
 	107) curl -sL yabs.sh | bash -s -- -i ;;
 
 	108) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ddp_master.sh) ;;
