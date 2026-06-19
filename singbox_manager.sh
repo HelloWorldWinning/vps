@@ -642,13 +642,9 @@ do_install() {
 		pause
 		return 1
 	}
-	generate_reality_keypair || {
-		########	pause
-		########	return 1
-		REALITY_PRIVATE_KEY="$DEFAULT_REALITY_PRIVATE_KEY"
-		REALITY_PUBLIC_KEY="$DEFAULT_REALITY_PUBLIC_KEY"
-		REALITY_SHORT_ID="$DEFAULT_REALITY_SHORT_ID"
-	}
+	REALITY_PRIVATE_KEY="$DEFAULT_REALITY_PRIVATE_KEY"
+	REALITY_PUBLIC_KEY="$DEFAULT_REALITY_PUBLIC_KEY"
+	REALITY_SHORT_ID="$DEFAULT_REALITY_SHORT_ID"
 
 	save_conf
 	gen_config
@@ -821,10 +817,9 @@ do_reality_keys() {
 		pause
 		return 1
 	}
-	generate_reality_keypair || {
-		pause
-		return 1
-	}
+	REALITY_PRIVATE_KEY="$DEFAULT_REALITY_PRIVATE_KEY"
+	REALITY_PUBLIC_KEY="$DEFAULT_REALITY_PUBLIC_KEY"
+	REALITY_SHORT_ID="$DEFAULT_REALITY_SHORT_ID"
 	save_conf
 	gen_config
 	gen_compose quiet
