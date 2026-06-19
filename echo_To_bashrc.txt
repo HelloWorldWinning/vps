@@ -365,6 +365,7 @@ export HISTFILESIZE=-1
 ########alias rg='/usr/bin/rg   --colors path:fg:Red --color always --colors "match:fg:cyan" --colors "match:style:nobold"'  
 
 # rg = relative paths
+unalias rg 2>/dev/null
 rg() {
   /usr/bin/rg \
     --colors path:fg:Red \
@@ -388,7 +389,6 @@ r() {
     "$@" \
     "$(pwd -P)"
 }
-
 
 
 
