@@ -999,8 +999,8 @@ https://zhile.one/archives/1404.html
 	79) eval "${new_nginx_conf_docker}" ;;
 	799) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker_html.sh) ;;
 	80) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
-	81) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh) ;;
-	nvim_dc) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh) ;;
+	81) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh) ;;
+	nvim_dc) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh) ;;
 	811) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
 	nvim_cli) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
 	81a) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/bundle.sh) ;;

@@ -543,7 +543,6 @@ EOF
 
 sudo apt install fuse -y
 apt install fuse -y
-rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh)
 
@@ -590,9 +589,6 @@ curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
-#source "$HOME/.cargo/env" && rustup update
-#source "$HOME/.cargo/env" && rustup toolchain install stable
-#source "$HOME/.cargo/env" && rustup component add rust-analyzer
 sudo apt update && sudo apt install cargo ripgrep pandoc
 cargo install ripgrep_all
 
@@ -777,4 +773,8 @@ install_openssh_server_forcefully 180s 90s 5s
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh)
 
+#rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html
+#source "$HOME/.cargo/env" && rustup update
+#source "$HOME/.cargo/env" && rustup toolchain install stable
+#source "$HOME/.cargo/env" && rustup component add rust-analyzer
 sudo reboot
