@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ACME_EMAIL="ofwardao@gmail.com"
 MANAGER="/usr/local/bin/acme-manager"
 OLD_MANAGER="/usr/local/sbin/acme-renew-all.sh"
 MAP="/etc/acme-deploy-map.tsv"
