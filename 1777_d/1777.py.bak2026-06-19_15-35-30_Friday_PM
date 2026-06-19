@@ -514,7 +514,8 @@ async def navigate(
                 }}
 
                 .breadcrumb-item:hover {{
-                    color: #e60ce6;
+                    color: #26cc0e;
+                    font-weight: bold;
                 }}
 
                 .item-container {{
@@ -604,16 +605,6 @@ th, td {{
                     font-family: 'Source Code Pro', monospace;
                     text-align: right;
                 }}
-
-
-
-table th:nth-child(2),
-table td:nth-child(2) {{ width: 80px; }}
-
-table th:nth-child(3),
-table td:nth-child(3) {{ width: 15%; }}   
-
-
 
                 h2 {{
                     color: #343a40;
