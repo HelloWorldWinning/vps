@@ -614,9 +614,6 @@ th, td {{
                 tr:last-child td {{
                     border-bottom: none;
                 }}
-
-
-
             </style>
         </head>
         <body>
@@ -686,30 +683,7 @@ async def render_file_with_pygments(
     formatter = HtmlFormatter(linenos=True, style=style)
     highlighted_code = highlight(content, lexer, formatter)
     custom_css = """html *, pre { font-family: 'Source Code Pro', monospace !important; }
-                   .linenodiv { color: #bbb !important; }
-
-.code-block,
-.code-block *,
-.highlight,
-.highlight *,
-.highlighttable,
-.highlighttable *,
-.linenodiv,
-.linenodiv *,
-pre,
-pre *,
-code,
-code * {
-    font-family: "Source Code Pro", "SF Pro", -apple-system, BlinkMacSystemFont,
-                 "PingFang SC", "FZFangJunHeiS", monospace !important;
-}
-
-
-
-
-
-                   """
-
+                   .linenodiv { color: #bbb !important; }"""
     html_content = f"""
     <html>
     <head>
