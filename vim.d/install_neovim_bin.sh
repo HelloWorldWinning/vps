@@ -106,6 +106,26 @@ sudo apt update
 sudo apt install -y nodejs npm
 sudo npm install -g pyright
 
-source "$HOME/.cargo/env" && rustup update
-source "$HOME/.cargo/env" && rustup toolchain install stable
-source "$HOME/.cargo/env" && rustup component add rust-analyzer
+#source "$HOME/.cargo/env" && rustup update
+#source "$HOME/.cargo/env" && rustup toolchain install stable
+#source "$HOME/.cargo/env" && rustup component add rust-analyzer
+
+#source "$HOME/.cargo/env"
+#rustup set profile minimal
+#rustup update
+#rustup component add rust-src
+#rustup component add rust-analyzer
+
+if [ -f "$HOME/.cargo/env" ]; then
+	source "$HOME/.cargo/env"
+
+	rustup set profile minimal
+	rustup toolchain install stable --profile minimal
+	rustup default stable
+
+	rustup component add rust-analyzer
+
+	# Remove Rust HTML docs if rustup installed them earlier
+	rustup component remove rust-docs --toolchain stable 2>/dev/null || true
+	rm -rf "$HOME/.rustup/toolchains"/*/share/doc/rust/html
+fi
