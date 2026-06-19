@@ -1000,8 +1000,9 @@ https://zhile.one/archives/1404.html
 	799) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker_html.sh) ;;
 	80) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 	81) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh) ;;
+	nvim_dc) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh) ;;
 	811) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
-	nvim) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
+	nvim_cli) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
 	81a) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/bundle.sh) ;;
 	82) git clone https://github.com/HelloWorldWinning/vps.git ;;
 	83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh | bash ;;
