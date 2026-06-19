@@ -783,6 +783,18 @@ html, body {
     overflow-x: hidden;
 }
 
+@font-face {
+    font-family: "Source Code Pro";
+    src:
+        local("Source Code Pro"),
+        local("SourceCodePro-Regular"),
+        url("https://fonts.gstatic.com/s/sourcecodepro/....woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 
     @font-face {
       font-family: 'WebSFPro';
@@ -803,16 +815,31 @@ html, body {
       line-height: 140% !important;
     }
 
-    /* Keep code blocks readable and monospaced */
-    .markdown-body pre,
-    .markdown-body code,
-    .linenodiv,
-    .codehilite pre {
-      font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
-      font-weight: 400 !important;
-      text-align: left !important;
-      line-height: 1.4 !important;
-    }
+
+/* Keep Pygments code blocks monospaced */
+.markdown-body .code-block,
+.markdown-body .code-block *,
+.markdown-body .highlight,
+.markdown-body .highlight *,
+.markdown-body .highlighttable,
+.markdown-body .highlighttable *,
+.markdown-body .linenos,
+.markdown-body .linenos *,
+.markdown-body .linenodiv,
+.markdown-body .linenodiv *,
+.markdown-body td.code,
+.markdown-body td.code *,
+.markdown-body pre,
+.markdown-body pre *,
+.markdown-body code,
+.markdown-body code * {
+    font-family: "Source Code Pro", "FZFangJunHeiS", ui-monospace, SFMono-Regular,
+                 Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+}
+
 
     .markdown-body {
       max-width: 1000px;
