@@ -608,7 +608,7 @@ th, td {{
 
 
 table th:nth-child(2),
-table td:nth-child(2) {{ width: 80px; }}
+table td:nth-child(2) {{ width: 70px; }}
 
 table th:nth-child(3),
 table td:nth-child(3) {{ width: 15%; }}   
