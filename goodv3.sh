@@ -1118,10 +1118,10 @@ https://zhile.one/archives/1404.html
 	d7799) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh) ;;
 	webtop) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_webtop.sh) ;;
 	wg_newer) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh) ;;
-	netbird) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
+	nb_docker) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
+	nb_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
 	netbird_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
 	nb) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
-	nb_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
 	nnn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_manager_gm.sh) ;;
 	nn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh) ;;
 	n) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
