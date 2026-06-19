@@ -362,6 +362,35 @@ export HISTFILESIZE=-1
 #### alias rg='/usr/bin/rg   --colors path:fg:Red --color always --colors "match:fg:cyan" --colors "match:style:nobold"'
 #### alias rg='/usr/bin/rg   --colors path:fg:Yellow   --color always --colors "match:fg:cyan" --colors "match:style:nobold"'
 ######   echo_To_bashrc.txt  end
+########alias rg='/usr/bin/rg   --colors path:fg:Red --color always --colors "match:fg:cyan" --colors "match:style:nobold"'  
+
+# rg = relative paths
+rg() {
+  /usr/bin/rg \
+    --colors path:fg:Red \
+    --colors path:style:bold \
+    --color always \
+    --colors "match:fg:cyan" \
+    --colors "match:style:nobold" \
+    "$@"
+}
+
+
+
+# r = absolute paths
+r() {
+  /usr/bin/rg \
+    --colors path:fg:Red \
+    --colors path:style:bold \
+    --color always \
+    --colors "match:fg:cyan" \
+    --colors "match:style:nobold" \
+    "$@" \
+    "$(pwd -P)"
+}
+
+
+
 
 
 alias fd='/usr/lib/cargo/bin/fd  -H  --absolute-path --color always '
