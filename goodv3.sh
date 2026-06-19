@@ -1178,9 +1178,9 @@ https://zhile.one/archives/1404.html
 	nextcloud_doc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_Onlyoffice_publicip_domain.sh) ;;
 	nextcloud) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_publicip_domain.sh) ;;
 
-	acme_renew) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh) ;;
-	acme_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
-	install_acme) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
+	acme_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh) ;;
+		#acme_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
+		#install_acme) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
 	acme) bash /usr/local/bin/acme-manager ;;
 	ssl) bash /usr/local/bin/acme-manager ;;
 
