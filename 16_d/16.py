@@ -575,6 +575,8 @@ async def navigate(
   background-color: #EA580C !important;
   border-color: #C2410C;
   box-shadow: 0 4px 14px rgba(234,88,12,0.3);
+  border-radius: 5px;
+
 
                 }}
 
