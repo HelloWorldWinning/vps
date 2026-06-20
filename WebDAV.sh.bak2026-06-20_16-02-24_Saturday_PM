@@ -1131,74 +1131,6 @@ do_change_port() {
 	fi
 }
 
-do_change_webdav_path() {
-	load_state || return 1
-	echo ""
-	echo -e "${CYAN}── Change WebDAV Data Path ─────────────────${NC}"
-	echo -e "  Current path: ${CYAN}${WEBDAV_PATH}${NC}"
-	echo ""
-	ask "New WebDAV path" "$WEBDAV_PATH" 15
-	local NEW_PATH="$REPLY_VAL"
-
-	# Normalize: strip trailing slash (unless it's just "/")
-	NEW_PATH="${NEW_PATH%/}"
-	[ -z "$NEW_PATH" ] && NEW_PATH="/"
-
-	if [ "$NEW_PATH" = "$WEBDAV_PATH" ]; then
-		echo -e "${YELLOW}Path unchanged.${NC}"
-		return 0
-	fi
-
-	if [[ "$NEW_PATH" != /* ]]; then
-		echo -e "${RED}Path must be absolute (start with /).${NC}"
-		return 1
-	fi
-
-	local OLD_PATH="$WEBDAV_PATH"
-	local MOVE_DATA="n"
-
-	if [ -d "$OLD_PATH" ]; then
-		echo ""
-		if ask_yn "Move existing data from ${OLD_PATH} to ${NEW_PATH}?" "y" 15; then
-			MOVE_DATA="y"
-		fi
-	fi
-
-	safe_mkdir "$NEW_PATH"
-
-	if [ "$MOVE_DATA" = "y" ]; then
-		echo -e "  → Moving data (rsync, preserving permissions)..."
-		if command -v rsync >/dev/null 2>&1; then
-			rsync -a "${OLD_PATH}/" "${NEW_PATH}/"
-		else
-			cp -a "${OLD_PATH}/." "${NEW_PATH}/"
-		fi
-		echo -e "  → ${GREEN}Data copied to ${NEW_PATH}.${NC}"
-		echo -e "  ${YELLOW}Note: old data at ${OLD_PATH} was left in place (not deleted).${NC}"
-		echo -e "  ${YELLOW}Remove it manually once you've verified the new location: rm -rf ${OLD_PATH}${NC}"
-	else
-		echo -e "  → ${YELLOW}Skipping data move. ${NEW_PATH} will start empty (or as-is).${NC}"
-	fi
-
-	chown -R webdav:webdav "$NEW_PATH"
-	chmod 755 "$NEW_PATH"
-
-	WEBDAV_PATH="$NEW_PATH"
-
-	write_vhost "$USE_TLS"
-	save_state
-	write_info_file
-
-	echo -e "  → Testing Apache config..."
-	if apache2ctl configtest 2>&1; then
-		systemctl_or_service reload
-		echo -e "  ${GREEN}WebDAV path changed: ${OLD_PATH} → ${WEBDAV_PATH}${NC}"
-	else
-		echo -e "${RED}Config test failed after path change. Reverting state file path manually may be required.${NC}"
-		return 1
-	fi
-}
-
 do_migration_cmd() {
 	load_state || return 1
 	echo ""
@@ -1237,7 +1169,6 @@ main_menu() {
 		echo -e "  ${CYAN}[6]${NC}  Regenerate / change TLS cert"
 		echo -e "  ${CYAN}[7]${NC}  Change username / password"
 		echo -e "  ${CYAN}[8]${NC}  Change port"
-		echo -e "  ${CYAN}[c]${NC}  Change WebDAV path"
 		echo -e "  ${CYAN}[9]${NC}  Show client trust / Zotero notes"
 		echo -e "  ${CYAN}[m]${NC}  Show migration rsync command"
 		echo -e "  ${CYAN}[r]${NC}  Re-install (keeps data)"
@@ -1261,7 +1192,6 @@ main_menu() {
 		6) do_regen_tls ;;
 		7) do_change_credentials ;;
 		8) do_change_port ;;
-		c | C) do_change_webdav_path ;;
 		9) print_trust_instructions ;;
 		m | M) do_migration_cmd ;;
 		r | R) do_reinstall ;;
