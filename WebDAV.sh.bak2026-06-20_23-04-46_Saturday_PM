@@ -33,13 +33,11 @@ SSL_DIR="/etc/apache2/ssl"
 CONFIG_FILE="/etc/apache2/sites-available/webdav.conf"
 STATE_FILE="/etc/apache2/webdav-install.conf"
 ACME_HOME="/root/.acme.sh"
-
-INFO_FILE="/root/WebDAV.txt"
-PUBLIC_CA_COPY="/root/WebDAV-rootCA.crt"
-PUBLIC_SERVER_COPY="/root/WebDAV-server.crt"
-PUBLIC_CA_COPY_LEGACY="/root/rootCA.crt"
-PUBLIC_SERVER_COPY_LEGACY="/root/server.crt"
-
+INFO_FILE="/data/WebDAV.txt"
+PUBLIC_CA_COPY="/data/WebDAV-rootCA.crt"
+PUBLIC_SERVER_COPY="/data/WebDAV-server.crt"
+PUBLIC_CA_COPY_LEGACY="/data/rootCA.crt"
+PUBLIC_SERVER_COPY_LEGACY="/data/server.crt"
 CA_KEY="${SSL_DIR}/webdav-rootCA.key"
 CA_CERT="${SSL_DIR}/webdav-rootCA.crt"
 SERVER_KEY="${SSL_DIR}/webdav.key"
@@ -57,126 +55,6 @@ ACME_DOMAIN=""
 # ---------------------------------------------------------------------------
 # Basic helpers
 # ---------------------------------------------------------------------------
-
-# Normalize a path for Debian/GNU systems. Allows non-existing final path.
-webdav_normalize_path() {
-	local P="$1"
-
-	# Remove CR copied from terminals/files.
-	P="${P//$'\r'/}"
-
-	# Strip trailing slash, except for "/".
-	while [ "$P" != "/" ] && [[ "$P" == */ ]]; do
-		P="${P%/}"
-	done
-	[ -z "$P" ] && P="/"
-
-	if command -v readlink >/dev/null 2>&1; then
-		readlink -m -- "$P"
-	else
-		printf '%s\n' "$P"
-	fi
-}
-
-# Return 0 if $1 is a system/critical directory that must never be a DAV root.
-webdav_path_is_forbidden() {
-	case "$1" in
-	"" | / | /bin | /boot | /dev | /etc | /lib | /lib32 | /lib64 | /libx32 | \
-		/proc | /run | /sbin | /srv | /sys | /usr | /var | /root | /home | \
-		/mnt | /media | /opt | /tmp | /var/tmp | /lost+found)
-		return 0
-		;;
-	esac
-	return 1
-}
-
-# Is $1 an ancestor of (or equal to) $2? Both should already be normalized.
-path_is_ancestor_of() {
-	local A="$1" B="$2"
-
-	[ "$A" = "$B" ] && return 0
-	[ "$A" = "/" ] && return 0
-
-	case "$B/" in
-	"$A"/*) return 0 ;;
-	esac
-	return 1
-}
-
-# Ensure Apache's runtime user can traverse each ancestor directory.
-# This never changes ownership.
-ensure_path_traversable() {
-	local P="$1"
-	local CUR="$P"
-
-	while [ "$CUR" != "/" ] && [ -n "$CUR" ]; do
-		if [ -d "$CUR" ]; then
-			chmod a+x "$CUR" 2>/dev/null || true
-		fi
-		CUR="$(dirname -- "$CUR")"
-	done
-}
-
-# Repair the mod_dav lock database directory. A stale/root-owned DavLock DB
-# causes macOS WebDAVFS errors like "Could not open the lock database".
-ensure_dav_lockdb_ready() {
-	local CLEAN="${1:-no}"
-	local LOCK_DIR="/var/lock/apache2"
-	local LOCK_BASE="${LOCK_DIR}/DavLock"
-
-	safe_mkdir "$LOCK_DIR"
-	chown webdav:webdav "$LOCK_DIR"
-	chmod 755 "$LOCK_DIR"
-
-	if [ "$CLEAN" = "clean" ]; then
-		rm -f "${LOCK_BASE}" "${LOCK_BASE}.dir" "${LOCK_BASE}.pag" "${LOCK_BASE}.db" 2>/dev/null || true
-	fi
-}
-
-restart_apache_after_webdav_path_change() {
-	# Stop first so stale DavLock files can be safely removed.
-	systemctl_or_service stop >/dev/null 2>&1 || true
-	ensure_dav_lockdb_ready clean
-	systemctl_or_service start
-}
-
-# ---------------------------------------------------------------------------
-# Safe path-change helpers (v4.1)
-# ---------------------------------------------------------------------------
-
-# Return 0 if $1 is a system/critical directory that must never be a DAV root.
-webdav_path_is_forbidden() {
-	case "$1" in
-	"" | / | /bin | /boot | /dev | /etc | /lib | /lib32 | /lib64 | /libx32 | \
-		/proc | /run | /sbin | /srv | /sys | /usr | /var | /root | /home | \
-		/mnt | /media | /opt | /lost+found)
-		return 0
-		;;
-	esac
-	return 1
-}
-
-# Is $1 an ancestor of (or equal to) $2? Both must be normalized (no trailing /).
-path_is_ancestor_of() {
-	local A="$1" B="$2"
-	[ "$A" = "$B" ] && return 0
-	case "$B/" in
-	"$A"/*) return 0 ;;
-	esac
-	return 1
-}
-
-# Ensure every ancestor dir of $1 is searchable (o+x) so Apache (webdav) can
-# traverse into the DAV root. Never changes ownership.
-ensure_path_traversable() {
-	local P="$1" CUR="" SEG
-	IFS='/' read -r -a __PARTS <<<"$P"
-	for SEG in "${__PARTS[@]}"; do
-		[ -z "$SEG" ] && continue
-		CUR="${CUR}/${SEG}"
-		[ -d "$CUR" ] && chmod a+x "$CUR" 2>/dev/null || true
-	done
-}
 
 print_banner() {
 	echo -e "${CYAN}"
@@ -436,42 +314,6 @@ EOF2
 
 write_vhost() {
 	local PROTO_TLS="$1"
-	local DAV_ROOT DAV_ROOT_ESC CERT_FILE ENABLED_FILE ENABLED_BAK
-	local LOCK_DIR LOCK_BASE
-
-	DAV_ROOT="${WEBDAV_PATH%/}"
-	[ -z "$DAV_ROOT" ] && DAV_ROOT="/"
-
-	# Escape backslashes and double quotes for Apache config strings.
-	DAV_ROOT_ESC="${DAV_ROOT//\\/\\\\}"
-	DAV_ROOT_ESC="${DAV_ROOT_ESC//\"/\\\"}"
-
-	# Prefer certificate chain file when available.
-	CERT_FILE="${SERVER_CERT}"
-	if [ -n "${SERVER_CHAIN:-}" ] && [ -s "${SERVER_CHAIN:-}" ]; then
-		CERT_FILE="${SERVER_CHAIN}"
-	fi
-
-	# -----------------------------------------------------------------------
-	# Repair WebDAV lock database location.
-	#
-	# The lock DB itself is created by Apache/mod_dav_fs.
-	# The parent directory must be writable by Apache's runtime user.
-	# Remove stale/root-owned DB files so Apache can recreate them cleanly.
-	# -----------------------------------------------------------------------
-	LOCK_DIR="/var/lock/apache2"
-	LOCK_BASE="${LOCK_DIR}/DavLock"
-
-	mkdir -p "$LOCK_DIR"
-	chown webdav:webdav "$LOCK_DIR" 2>/dev/null || true
-	chmod 755 "$LOCK_DIR" 2>/dev/null || true
-
-	rm -f \
-		"${LOCK_BASE}" \
-		"${LOCK_BASE}.dir" \
-		"${LOCK_BASE}.pag" \
-		"${LOCK_BASE}.db" \
-		2>/dev/null || true
 
 	if [ "$PROTO_TLS" = true ]; then
 		cat >"$CONFIG_FILE" <<EOF2
@@ -479,49 +321,25 @@ write_vhost() {
     ServerName ${SERVER_NAME}
 
     SSLEngine on
-    SSLCertificateFile    ${CERT_FILE}
+    SSLCertificateFile    ${SERVER_CERT}
     SSLCertificateKeyFile ${SERVER_KEY}
 
+    # Modern TLS profile. TLSv1.2/1.3 remain available through Apache/OpenSSL defaults.
     SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
     SSLCompression off
 
-    # Map:
-    #   /webdav
-    #   /webdav/
-    #   /webdav/path/file
-    # to the DAV filesystem root.
-    #
-    # AliasMatch keeps slash behavior consistent for top-level roots like /data.
-    AliasMatch "^/webdav/?(.*)$" "${DAV_ROOT_ESC}/\$1"
+    Alias /webdav ${WEBDAV_PATH}
 
-    <Directory "${DAV_ROOT_ESC}">
+    <Directory ${WEBDAV_PATH}>
         DAV On
-
-        # Critical WebDAV fix:
-        # Prevent index.html/index.php/etc. in the DAV root OR subfolders from
-        # intercepting PROPFIND/LOCK/etc. and causing 405 Method Not Allowed.
-        DirectoryIndex disabled
-
-        Options Indexes FollowSymLinks
-        AllowOverride None
-
         AuthType Digest
         AuthName "webdav"
-        AuthUserFile "${AUTH_FILE}"
+        AuthUserFile ${AUTH_FILE}
         Require valid-user
+        Options Indexes FollowSymLinks
     </Directory>
 
-    # Keep URL-level auth/DAV binding for WebDAV clients.
-    # Plain Location avoids regex-location DAV edge cases.
-    <Location "/webdav">
-        DAV On
-        AuthType Digest
-        AuthName "webdav"
-        AuthUserFile "${AUTH_FILE}"
-        Require valid-user
-    </Location>
-
-    DavLockDB ${LOCK_BASE}
+    DavLockDB /var/lock/apache2/DavLock
 
     ErrorLog  \${APACHE_LOG_DIR}/webdav_error.log
     CustomLog \${APACHE_LOG_DIR}/webdav_access.log combined
@@ -532,51 +350,24 @@ EOF2
 <VirtualHost *:${APACHE_PORT}>
     ServerName ${SERVER_NAME}
 
-    AliasMatch "^/webdav/?(.*)$" "${DAV_ROOT_ESC}/\$1"
+    Alias /webdav ${WEBDAV_PATH}
 
-    <Directory "${DAV_ROOT_ESC}">
+    <Directory ${WEBDAV_PATH}>
         DAV On
-
-        # Critical WebDAV fix:
-        # Prevent index.html/index.php/etc. in the DAV root OR subfolders from
-        # intercepting PROPFIND/LOCK/etc. and causing 405 Method Not Allowed.
-        DirectoryIndex disabled
-
-        Options Indexes FollowSymLinks
-        AllowOverride None
-
         AuthType Digest
         AuthName "webdav"
-        AuthUserFile "${AUTH_FILE}"
+        AuthUserFile ${AUTH_FILE}
         Require valid-user
+        Options Indexes FollowSymLinks
     </Directory>
 
-    <Location "/webdav">
-        DAV On
-        AuthType Digest
-        AuthName "webdav"
-        AuthUserFile "${AUTH_FILE}"
-        Require valid-user
-    </Location>
-
-    DavLockDB ${LOCK_BASE}
+    DavLockDB /var/lock/apache2/DavLock
 
     ErrorLog  \${APACHE_LOG_DIR}/webdav_error.log
     CustomLog \${APACHE_LOG_DIR}/webdav_access.log combined
 </VirtualHost>
 EOF2
 	fi
-
-	# Ensure Apache reads the generated vhost from sites-enabled.
-	ENABLED_FILE="/etc/apache2/sites-enabled/$(basename -- "$CONFIG_FILE")"
-
-	if [ -e "$ENABLED_FILE" ] && [ ! -L "$ENABLED_FILE" ]; then
-		ENABLED_BAK="${ENABLED_FILE}.bak.$(date +%Y%m%d%H%M%S)"
-		mv -f "$ENABLED_FILE" "$ENABLED_BAK"
-		echo -e "  → Backed up stale enabled vhost: ${ENABLED_BAK}"
-	fi
-
-	ln -sfn "$CONFIG_FILE" "$ENABLED_FILE"
 }
 
 # ---------------------------------------------------------------------------
@@ -693,16 +484,11 @@ generate_private_ca_signed_cert() {
 	chmod 644 "$CA_CERT" "$SERVER_CERT" "$SERVER_CHAIN"
 	chown root:webdav "$CA_KEY" "$CA_CERT" "$SERVER_KEY" "$SERVER_CERT" "$SERVER_CHAIN" 2>/dev/null || true
 
-	safe_mkdir "$(dirname -- "$PUBLIC_CA_COPY")"
-	safe_mkdir "$(dirname -- "$PUBLIC_SERVER_COPY")"
-	safe_mkdir "$(dirname -- "$PUBLIC_CA_COPY_LEGACY")"
-	safe_mkdir "$(dirname -- "$PUBLIC_SERVER_COPY_LEGACY")"
-
+	safe_mkdir /data
 	cp -f "$CA_CERT" "$PUBLIC_CA_COPY"
 	cp -f "$SERVER_CERT" "$PUBLIC_SERVER_COPY"
 	cp -f "$CA_CERT" "$PUBLIC_CA_COPY_LEGACY"
 	cp -f "$SERVER_CERT" "$PUBLIC_SERVER_COPY_LEGACY"
-
 	chmod 644 "$PUBLIC_CA_COPY" "$PUBLIC_SERVER_COPY" "$PUBLIC_CA_COPY_LEGACY" "$PUBLIC_SERVER_COPY_LEGACY"
 
 	rm -rf "$TMPDIR"
@@ -979,7 +765,7 @@ write_info_file() {
 	local PROTO="http"
 	[ "${USE_TLS:-false}" = true ] && PROTO="https"
 
-	safe_mkdir "$(dirname -- "$INFO_FILE")"
+	safe_mkdir /data
 	{
 		echo "═══════════════════════════════════════════"
 		echo "  WebDAV Server Info"
@@ -1412,138 +1198,49 @@ do_change_webdav_path() {
 	ask "New WebDAV path" "$WEBDAV_PATH" 15
 	local NEW_PATH="$REPLY_VAL"
 
-	NEW_PATH="$(webdav_normalize_path "$NEW_PATH")"
-	WEBDAV_PATH="$(webdav_normalize_path "$WEBDAV_PATH")"
+	# Normalize: strip trailing slash (unless it's just "/")
+	NEW_PATH="${NEW_PATH%/}"
+	[ -z "$NEW_PATH" ] && NEW_PATH="/"
+
+	if [ "$NEW_PATH" = "$WEBDAV_PATH" ]; then
+		echo -e "${YELLOW}Path unchanged.${NC}"
+		return 0
+	fi
 
 	if [[ "$NEW_PATH" != /* ]]; then
 		echo -e "${RED}Path must be absolute (start with /).${NC}"
 		return 1
 	fi
 
-	# Keep Apache config safe. Existing write_vhost emits paths directly.
-	case "$NEW_PATH" in
-	*[[:space:]]*)
-		echo -e "${RED}Path must not contain whitespace.${NC}"
-		echo -e "${YELLOW}Use a simple path such as /data/WebDAV or /srv/webdav-data.${NC}"
-		return 1
-		;;
-	esac
-
+	repair_webdav_user
 	local OLD_PATH="$WEBDAV_PATH"
-
-	# Refuse system-critical/shared top-level directories.
-	if webdav_path_is_forbidden "$NEW_PATH"; then
-		echo -e "${RED}Refusing to use '${NEW_PATH}' as the WebDAV root.${NC}"
-		echo -e "${YELLOW}Use a dedicated subdirectory, for example:${NC}"
-		echo -e "${CYAN}  ${NEW_PATH%/}/WebDAV${NC}"
-		return 1
-	fi
-
-	# /data is not a safe DAV root for this script because WebDAV.sh stores
-	# WebDAV.txt and public certificate copies directly under /data.
-	# This block also fixes the previous failed state where WEBDAV_PATH=/data:
-	# pressing Enter will repair it to /data/WebDAV instead of returning
-	# "Path unchanged".
-	local ARTIFACT_DIR
-	ARTIFACT_DIR="$(webdav_normalize_path "$(dirname -- "$INFO_FILE")")"
-
-	if [ "$NEW_PATH" = "$ARTIFACT_DIR" ]; then
-		local SUGGESTED_PATH="${ARTIFACT_DIR}/WebDAV"
-		echo -e "${RED}'${NEW_PATH}' is reserved for WebDAV.sh files:${NC}"
-		echo -e "${YELLOW}  ${INFO_FILE}${NC}"
-		echo -e "${YELLOW}  ${PUBLIC_CA_COPY}${NC}"
-		echo -e "${YELLOW}  ${PUBLIC_SERVER_COPY}${NC}"
-		echo -e "${YELLOW}Do not use '${NEW_PATH}' itself as the DAV root.${NC}"
-		echo -e "${CYAN}Recommended DAV root: ${SUGGESTED_PATH}${NC}"
-
-		if [ "$OLD_PATH" = "$NEW_PATH" ]; then
-			echo -e "  → ${YELLOW}Current state is unsafe; repairing to ${SUGGESTED_PATH}.${NC}"
-			NEW_PATH="$SUGGESTED_PATH"
-		else
-			if ask_yn "Use ${SUGGESTED_PATH} instead?" "y" 15; then
-				NEW_PATH="$SUGGESTED_PATH"
-			else
-				echo -e "${YELLOW}Aborted.${NC}"
-				return 1
-			fi
-		fi
-	fi
-
-	NEW_PATH="$(webdav_normalize_path "$NEW_PATH")"
-
-	if [ "$NEW_PATH" = "$OLD_PATH" ]; then
-		echo -e "${YELLOW}Path unchanged.${NC}"
-		ensure_webdav_user
-		ensure_dav_lockdb_ready clean
-		if apache2ctl configtest 2>&1; then
-			restart_apache_after_webdav_path_change
-		fi
-		return 0
-	fi
-
-	# Do not auto-copy when old/new are nested. Example: /data -> /data/WebDAV
-	# would recursively copy the root into its child.
-	local NESTED=0
-	if path_is_ancestor_of "$NEW_PATH" "$OLD_PATH" ||
-		path_is_ancestor_of "$OLD_PATH" "$NEW_PATH"; then
-		NESTED=1
-		echo -e "${YELLOW}Old and new paths are nested; automatic data copy is disabled.${NC}"
-		echo -e "${YELLOW}Move selected files manually after the service is working.${NC}"
-	fi
-
-	ensure_webdav_user
-	apache_enable_modules
-
-	local NEW_EXISTED="no"
-	[ -d "$NEW_PATH" ] && NEW_EXISTED="yes"
-
-	safe_mkdir "$NEW_PATH"
-
-	local IS_EMPTY="yes"
-	if [ -n "$(find "$NEW_PATH" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
-		IS_EMPTY="no"
-	fi
-
 	local MOVE_DATA="n"
-	if [ "$NESTED" -eq 0 ] && [ -d "$OLD_PATH" ] &&
-		[ -n "$(find "$OLD_PATH" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
+
+	if [ -d "$OLD_PATH" ]; then
 		echo ""
-		if ask_yn "Copy existing data from ${OLD_PATH} to ${NEW_PATH}?" "y" 15; then
+		if ask_yn "Move existing data from ${OLD_PATH} to ${NEW_PATH}?" "y" 15; then
 			MOVE_DATA="y"
 		fi
 	fi
 
+	safe_mkdir "$NEW_PATH"
+
 	if [ "$MOVE_DATA" = "y" ]; then
-		echo -e "  → Copying data while preserving permissions..."
+		echo -e "  → Moving data (rsync, preserving permissions)..."
 		if command -v rsync >/dev/null 2>&1; then
-			rsync -aHAX --numeric-ids "${OLD_PATH}/" "${NEW_PATH}/"
+			rsync -a "${OLD_PATH}/" "${NEW_PATH}/"
 		else
 			cp -a "${OLD_PATH}/." "${NEW_PATH}/"
 		fi
 		echo -e "  → ${GREEN}Data copied to ${NEW_PATH}.${NC}"
-		echo -e "  ${YELLOW}Old data at ${OLD_PATH} was left in place. Remove only after verification:${NC}"
-		echo -e "  ${YELLOW}  rm -rf -- ${OLD_PATH}${NC}"
-	fi
-
-	# Ownership policy:
-	# - New/empty/copied roots are dedicated to WebDAV, so recursive chown is safe.
-	# - Existing populated roots may contain unrelated data, so ask before recursive chown.
-	if [ "$NEW_EXISTED" = "no" ] || [ "$IS_EMPTY" = "yes" ] || [ "$MOVE_DATA" = "y" ]; then
-		chown -R webdav:webdav "$NEW_PATH"
+		echo -e "  ${YELLOW}Note: old data at ${OLD_PATH} was left in place (not deleted).${NC}"
+		echo -e "  ${YELLOW}Remove it manually once you've verified the new location: rm -rf ${OLD_PATH}${NC}"
 	else
-		echo -e "  ${YELLOW}${NEW_PATH} already contains files.${NC}"
-		if ask_yn "Take ownership recursively so WebDAV can write all files there?" "n" 15; then
-			chown -R webdav:webdav "$NEW_PATH"
-		else
-			echo -e "  ${YELLOW}Only the top directory will be owned by webdav.${NC}"
-			echo -e "  ${YELLOW}Some existing files may be read-only/unwritable through WebDAV.${NC}"
-			chown webdav:webdav "$NEW_PATH"
-		fi
+		echo -e "  → ${YELLOW}Skipping data move. ${NEW_PATH} will start empty (or as-is).${NC}"
 	fi
 
+	chown -R webdav:webdav "$NEW_PATH"
 	chmod 755 "$NEW_PATH"
-	ensure_path_traversable "$NEW_PATH"
-	ensure_dav_lockdb_ready clean
 
 	WEBDAV_PATH="$NEW_PATH"
 
@@ -1553,24 +1250,12 @@ do_change_webdav_path() {
 
 	echo -e "  → Testing Apache config..."
 	if apache2ctl configtest 2>&1; then
-		if restart_apache_after_webdav_path_change; then
-			echo -e "  ${GREEN}WebDAV path changed: ${OLD_PATH} → ${WEBDAV_PATH}${NC}"
-			echo -e "  ${CYAN}Test with:${NC}"
-			echo -e "  curl --digest -u '${WEBDAV_USER}:<password>' -X PROPFIND -H 'Depth: 0' https://${SERVER_NAME}:${APACHE_PORT}/webdav/"
-			echo -e "  ${CYAN}Expected WebDAV response: HTTP 207 Multi-Status.${NC}"
-			return 0
-		fi
+		systemctl_or_service reload
+		echo -e "  ${GREEN}WebDAV path changed: ${OLD_PATH} → ${WEBDAV_PATH}${NC}"
+	else
+		echo -e "${RED}Config test failed after path change. Reverting state file path manually may be required.${NC}"
+		return 1
 	fi
-
-	echo -e "${RED}Path change failed. Reverting to ${OLD_PATH}.${NC}"
-	WEBDAV_PATH="$OLD_PATH"
-	write_vhost "$USE_TLS"
-	save_state
-	write_info_file
-	if apache2ctl configtest >/dev/null 2>&1; then
-		restart_apache_after_webdav_path_change || true
-	fi
-	return 1
 }
 
 do_migration_cmd() {
