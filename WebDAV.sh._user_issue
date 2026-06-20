@@ -168,56 +168,6 @@ ensure_webdav_user() {
 	fi
 }
 
-# ---------------------------------------------------------------------------
-# Repair: missing 'webdav' system user/group
-# ---------------------------------------------------------------------------
-
-repair_webdav_user() {
-	echo -e "${CYAN}── Checking system user 'webdav' ───────────────${NC}"
-
-	local NEEDS_GROUP=false
-	local NEEDS_USER=false
-
-	if ! getent group webdav >/dev/null 2>&1; then
-		NEEDS_GROUP=true
-	fi
-
-	if ! id -u webdav >/dev/null 2>&1; then
-		NEEDS_USER=true
-	fi
-
-	if [ "$NEEDS_GROUP" = false ] && [ "$NEEDS_USER" = false ]; then
-		echo -e "  → ${GREEN}'webdav' user/group already present. No repair needed.${NC}"
-		return 0
-	fi
-
-	echo -e "  → ${YELLOW}Missing: group=${NEEDS_GROUP} user=${NEEDS_USER}. Repairing...${NC}"
-
-	if [ "$NEEDS_GROUP" = true ]; then
-		groupadd --system webdav
-		echo -e "  → Created group 'webdav'."
-	fi
-
-	if [ "$NEEDS_USER" = true ]; then
-		useradd \
-			--system \
-			--gid webdav \
-			--home-dir /nonexistent \
-			--shell /usr/sbin/nologin \
-			webdav
-		echo -e "  → Created system user 'webdav'."
-	fi
-
-	if id -u webdav >/dev/null 2>&1 && getent group webdav >/dev/null 2>&1; then
-		echo -e "  → ${GREEN}Repair successful.${NC}"
-		id webdav
-		return 0
-	else
-		echo -e "${RED}Repair failed — check 'useradd'/'groupadd' output above.${NC}"
-		return 1
-	fi
-}
-
 prepare_directories() {
 	safe_mkdir "$WEBDAV_PATH"
 	chown -R webdav:webdav "$WEBDAV_PATH"
@@ -945,12 +895,6 @@ show_status() {
 		return 1
 	fi
 
-	if ! id -u webdav >/dev/null 2>&1; then
-		echo -e "${RED}⚠ 'webdav' system user is missing.${NC}"
-		echo -e "${YELLOW}  Run option [u] from the menu to repair it.${NC}"
-		echo ""
-	fi
-
 	local PROTO="http"
 	[ "${USE_TLS:-false}" = true ] && PROTO="https"
 
@@ -1134,9 +1078,7 @@ do_regen_tls() {
 }
 
 do_change_credentials() {
-
 	load_state || return 1
-	repair_webdav_user
 	echo ""
 	ask "New username" "$WEBDAV_USER" 5
 	local NEW_USER="$REPLY_VAL"
@@ -1212,7 +1154,6 @@ do_change_webdav_path() {
 		return 1
 	fi
 
-	repair_webdav_user
 	local OLD_PATH="$WEBDAV_PATH"
 	local MOVE_DATA="n"
 
@@ -1297,7 +1238,6 @@ main_menu() {
 		echo -e "  ${CYAN}[7]${NC}  Change username / password"
 		echo -e "  ${CYAN}[8]${NC}  Change port"
 		echo -e "  ${CYAN}[c]${NC}  Change WebDAV path"
-		echo -e "  ${CYAN}[u]${NC}  Repair WebDAV system user"
 		echo -e "  ${CYAN}[9]${NC}  Show client trust / Zotero notes"
 		echo -e "  ${CYAN}[m]${NC}  Show migration rsync command"
 		echo -e "  ${CYAN}[r]${NC}  Re-install (keeps data)"
@@ -1322,7 +1262,6 @@ main_menu() {
 		7) do_change_credentials ;;
 		8) do_change_port ;;
 		c | C) do_change_webdav_path ;;
-		u | U) repair_webdav_user ;;
 		9) print_trust_instructions ;;
 		m | M) do_migration_cmd ;;
 		r | R) do_reinstall ;;
