@@ -571,11 +571,8 @@ async def navigate(
                 }}
 
                 .breadcrumb-item:hover {{
-  color: #fff !important;
-  background-color: #EA580C !important;
-  border-color: #C2410C;
-  box-shadow: 0 4px 14px rgba(234,88,12,0.3);
-
+                    color: #26cc0e;
+                    font-weight: bold;
                 }}
 
                 .item-container {{

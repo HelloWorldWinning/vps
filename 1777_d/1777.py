@@ -559,7 +559,11 @@ code *,
                 }}
 
                 .breadcrumb-item:hover {{
-                    color: #e60ce6;
+  color: #FFFFFF !important;
+  background-color: #EA580C !important;
+  border-color: #C2410C;
+  box-shadow: 0 4px 14px rgba(234,88,12,0.3);
+
                 }}
 
                 .item-container {{
