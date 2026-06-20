@@ -502,31 +502,16 @@ async def navigate(
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }}
 
-@font-face {{
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-    font-display: swap;
-}}
 
+                body, html * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                }}
 
-body,
-body * {{
-    font-family: "SF Pro", -apple-system, BlinkMacSystemFont,
-                 "WebSFPro", "PingFang SC", "FZFangJunHeiS",
-                 sans-serif;
-}}
-
-/* only code-like / fixed-width metadata uses Source Code Pro */
-pre,
-pre *,
-code,
-code *,
-.size-col,
-.index-number {{
-    font-family: "Source Code Pro", "FZFangJunHeiS",
-                 ui-monospace, SFMono-Regular, Menlo, Monaco,
-                 Consolas, "Liberation Mono", monospace;
-}}
+                pre, pre * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }}
 
                 body {{
                     margin: 0px 5px 2px 5px;

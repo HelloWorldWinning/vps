@@ -381,41 +381,16 @@ async def navigate(
     #   full_path = os.path.normpath(os.path.join("/", subpath))
     full_path = os.path.normpath(os.path.join("/Host", subpath))
 
+    if not full_path.startswith("/Host"):
+        raise HTTPException(status_code=404, detail="Path not found")
+
     if os.path.isdir(full_path):
         try:
             items = os.listdir(full_path)
         except PermissionError:
             raise HTTPException(status_code=403, detail="Permission denied")
 
-        # Sort mode:
-        #   default: sort by name
-        #   ?s     : sort by file size, biggest first
-        #   ?t     : sort by modified time, latest first
-        sort_mode = None
-        if "s" in request.query_params:
-            sort_mode = "size"
-        elif "t" in request.query_params:
-            sort_mode = "time"
-
-        def item_sort_key(item: str):
-            item_full_path = os.path.join(full_path, item)
-
-            try:
-                stats = os.stat(item_full_path)
-            except Exception:
-                stats = None
-
-            if sort_mode == "size":
-                if os.path.isdir(item_full_path):
-                    return (1, 0, item.lower())
-                return (0, -stats.st_size if stats else 0, item.lower())
-
-            if sort_mode == "time":
-                return (0, -stats.st_mtime if stats else 0, item.lower())
-
-            return item.lower()
-
-        items.sort(key=item_sort_key)
+        items.sort()
 
         # Create breadcrumb navigation
         breadcrumb = create_breadcrumb(full_path)
@@ -502,31 +477,16 @@ async def navigate(
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }}
 
-@font-face {{
-    font-family: 'WebSFPro';
-    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-    font-display: swap;
-}}
 
+                body, html * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                }}
 
-body,
-body * {{
-    font-family: "SF Pro", -apple-system, BlinkMacSystemFont,
-                 "WebSFPro", "PingFang SC", "FZFangJunHeiS",
-                 sans-serif;
-}}
-
-/* only code-like / fixed-width metadata uses Source Code Pro */
-pre,
-pre *,
-code,
-code *,
-.size-col,
-.index-number {{
-    font-family: "Source Code Pro", "FZFangJunHeiS",
-                 ui-monospace, SFMono-Regular, Menlo, Monaco,
-                 Consolas, "Liberation Mono", monospace;
-}}
+                pre, pre * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }}
 
                 body {{
                     margin: 0px 5px 2px 5px;
