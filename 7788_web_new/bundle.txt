@@ -1,3 +1,6 @@
+<all_docs>
+
+<main_py>
 from datetime import datetime
 import html
 import mimetypes
@@ -188,14 +191,6 @@ def get_sort_mtime(path: str) -> float:
         return 0.0
 
 
-def get_sort_size(path: str) -> int:
-    """Return file size for sorting. Missing/inaccessible files go last."""
-    try:
-        return os.lstat(path).st_size
-    except (FileNotFoundError, PermissionError, OSError):
-        return 0
-
-
 def normalize_url_path(path: str) -> str:
     """Decode and normalize a URL path while keeping it relative to BASE_DIR."""
     decoded = unquote(path or "")
@@ -341,10 +336,7 @@ def build_directory_rows(
 
 
 def render_directory(
-    path: str,
-    internal_path: str,
-    sort_by_size: bool = False,
-    sort_by_time: bool = False,
+    path: str, internal_path: str, s: str | None = None
 ) -> HTMLResponse:
     try:
         items = os.listdir(internal_path)
@@ -357,25 +349,26 @@ def render_directory(
             status_code=500,
             detail=f"Unable to list directory: {e.strerror or str(e)}",
         )
-    if sort_by_size:
-        # ?s means biggest file size at top
+
+    if s is None:
+        # Default: sort by name
+        items.sort(key=str.casefold)
+    elif s == "1":
+        # ?s=1 means latest Modified at bottom
         items.sort(
             key=lambda item: (
-                -get_sort_size(os.path.join(internal_path, item)),
+                get_sort_mtime(os.path.join(internal_path, item)),
                 item.casefold(),
             )
         )
-    elif sort_by_time:
-        # ?t means latest modified file at top
+    else:
+        # ?s or ?s=0 means latest Modified at top
         items.sort(
             key=lambda item: (
                 -get_sort_mtime(os.path.join(internal_path, item)),
                 item.casefold(),
             )
         )
-    else:
-        # Default: sort by name
-        items.sort(key=str.casefold)
 
     breadcrumb = create_breadcrumb("/" + path)
     table_rows = build_directory_rows(path, internal_path, items)
@@ -384,15 +377,14 @@ def render_directory(
     <div class="breadcrumb">
         {breadcrumb}
     </div>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th style="text-align: right">Size</th>
-            <th>Modified</th>
-        </tr>
-    </thead>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th style="text-align: right">Size</th>
+                <th>Modified</th>
+            </tr>
+        </thead>
         <tbody>
             {''.join(table_rows)}
         </tbody>
@@ -443,18 +435,12 @@ async def read_path(
     path: str = "",
     raw: bool = Query(default=False),
     s: str | None = Query(default=None),
-    t: str | None = Query(default=None),
     credentials: HTTPBasicCredentials = Depends(authenticate),
 ):
     normalized_path, internal_path = resolve_internal_path(path)
 
     if os.path.isdir(internal_path):
-        return render_directory(
-            normalized_path,
-            internal_path,
-            sort_by_size=s is not None,
-            sort_by_time=t is not None,
-        )
+        return render_directory(normalized_path, internal_path, s)
 
     if os.path.isfile(internal_path):
         file_extension = os.path.splitext(internal_path)[1].lower()
@@ -474,3 +460,255 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=7788, reload=True)
+
+</main_py>
+
+<css_txt>
+@font-face {
+    font-family: "FZFangJunHeiS";
+    src: url("https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+html {
+    font-size: 200%;
+}
+
+html,
+body,
+html * {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+}
+
+pre,
+pre * {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+body {
+    margin: 1.25rem;
+    background-color: #f8f9fa;
+}
+
+.breadcrumb {
+    background-color: white;
+    padding: 0.75rem 0.9375rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.breadcrumb-item,
+.breadcrumb-item *,
+.breadcrumb > :not(a) {
+    color: #1d910d;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 200%;
+}
+
+.breadcrumb-item:hover {
+    color: #e60ce6;
+}
+
+
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.25rem;
+}
+
+th,
+td {
+    padding: 0.75rem 0.9375rem;
+    text-align: left;
+    border-bottom: 0.0625rem solid #eee;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+a {
+    text-decoration: none;
+}
+
+.folder {
+    background-color: transparent;
+    color: #1d910d;
+    font-weight: bold;
+    font-size: 120%;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+.folder:hover {
+    background-color: transparent;
+}
+
+.file {
+    color: #db0bee;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+}
+
+.file:hover {
+    background-color: transparent;
+}
+
+.size-col {
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+    text-align: right;
+}
+
+h1,
+h2 {
+    color: #343a40;
+    margin-bottom: 1.25rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.file-viewer-toolbar {
+    margin-bottom: 0.75rem;
+}
+
+.raw-link {
+    color: #1d910d;
+    font-weight: bold;
+}
+
+
+
+
+
+/* Fix long filenames causing horizontal scroll in directory table */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+th,
+td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+    width: auto;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 5.5em;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 10.5em;
+}
+
+
+
+
+
+
+.size-col,
+th:nth-child(2),
+td:nth-child(2) {
+    white-space: nowrap;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 7.5em;
+}
+
+
+
+
+/* Final directory row alignment + wrapping fix */
+.item-container {
+    display: grid;
+    grid-template-columns: 3.5em minmax(0, 1fr);
+    column-gap: 1em;
+    align-items: start;
+    min-width: 0;
+    max-width: 100%;
+}
+
+
+.index-number {
+    min-width: 0;
+    text-align: right;
+    color: #666;
+    line-height: 1.35;
+    padding-top: 0.1875rem;
+    transform: translateY(0.08em);
+}
+
+.file,
+.folder {
+    display: inline-block;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
+}
+
+th:nth-child(1) {
+    text-align: left !important;
+    padding-left: 180px !important;
+}
+
+</css_txt>
+
+</all_docs>

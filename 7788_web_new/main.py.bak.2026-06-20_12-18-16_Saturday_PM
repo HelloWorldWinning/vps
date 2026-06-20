@@ -188,14 +188,6 @@ def get_sort_mtime(path: str) -> float:
         return 0.0
 
 
-def get_sort_size(path: str) -> int:
-    """Return file size for sorting. Missing/inaccessible files go last."""
-    try:
-        return os.lstat(path).st_size
-    except (FileNotFoundError, PermissionError, OSError):
-        return 0
-
-
 def normalize_url_path(path: str) -> str:
     """Decode and normalize a URL path while keeping it relative to BASE_DIR."""
     decoded = unquote(path or "")
@@ -341,10 +333,7 @@ def build_directory_rows(
 
 
 def render_directory(
-    path: str,
-    internal_path: str,
-    sort_by_size: bool = False,
-    sort_by_time: bool = False,
+    path: str, internal_path: str, s: str | None = None
 ) -> HTMLResponse:
     try:
         items = os.listdir(internal_path)
@@ -357,25 +346,26 @@ def render_directory(
             status_code=500,
             detail=f"Unable to list directory: {e.strerror or str(e)}",
         )
-    if sort_by_size:
-        # ?s means biggest file size at top
+
+    if s is None:
+        # Default: sort by name
+        items.sort(key=str.casefold)
+    elif s == "1":
+        # ?s=1 means latest Modified at bottom
         items.sort(
             key=lambda item: (
-                -get_sort_size(os.path.join(internal_path, item)),
+                get_sort_mtime(os.path.join(internal_path, item)),
                 item.casefold(),
             )
         )
-    elif sort_by_time:
-        # ?t means latest modified file at top
+    else:
+        # ?s or ?s=0 means latest Modified at top
         items.sort(
             key=lambda item: (
                 -get_sort_mtime(os.path.join(internal_path, item)),
                 item.casefold(),
             )
         )
-    else:
-        # Default: sort by name
-        items.sort(key=str.casefold)
 
     breadcrumb = create_breadcrumb("/" + path)
     table_rows = build_directory_rows(path, internal_path, items)
@@ -443,18 +433,12 @@ async def read_path(
     path: str = "",
     raw: bool = Query(default=False),
     s: str | None = Query(default=None),
-    t: str | None = Query(default=None),
     credentials: HTTPBasicCredentials = Depends(authenticate),
 ):
     normalized_path, internal_path = resolve_internal_path(path)
 
     if os.path.isdir(internal_path):
-        return render_directory(
-            normalized_path,
-            internal_path,
-            sort_by_size=s is not None,
-            sort_by_time=t is not None,
-        )
+        return render_directory(normalized_path, internal_path, s)
 
     if os.path.isfile(internal_path):
         file_extension = os.path.splitext(internal_path)[1].lower()

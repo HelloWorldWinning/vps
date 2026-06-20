@@ -170,6 +170,17 @@ td:nth-child(1) {
     width: auto;
 }
 
+th:nth-child(2),
+td:nth-child(2) {
+    width: 5.5em;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 10.5em;
+}
+
+
 
 
 
@@ -188,6 +199,10 @@ td:nth-child(3) {
     line-height: 1.35;
 }
 
+th:nth-child(3),
+td:nth-child(3) {
+    width: 7.5em;
+}
 
 
 
@@ -226,84 +241,4 @@ td:nth-child(3) {
 th:nth-child(1) {
     text-align: left !important;
     padding-left: 180px !important;
-}
-
-/* Final directory table layout */
-table {
-    width: 100%;
-    max-width: 100%;
-    table-layout: fixed;
-}
-
-th,
-td {
-    box-sizing: border-box;
-}
-
-th:nth-child(1),
-td:nth-child(1) {
-    width: auto;
-}
-
-th:nth-child(2),
-td:nth-child(2) {
-    width: 4.8em;
-    white-space: nowrap;
-    text-align: center;
-}
-
-th:nth-child(3),
-td:nth-child(3) {
-    width: 12em;
-    white-space: nowrap;
-    word-break: break-word;
-    text-align: right;
-}
-
-th:nth-child(1) {
-    padding-left: 1rem !important;
-}
-
-
-
-/* Fix header alignment */
-th:nth-child(1) {
-    padding-left: calc(0.9375rem + 3.5em + 1em) !important;
-    text-align: left !important;
-}
-
-th:nth-child(2),
-td:nth-child(2) {
-    width: 5.5em;
-    text-align: right;
-}
-
-th:nth-child(3),
-td:nth-child(3) {
-    width: 9.5em;
-    text-align: right;
-}
-
-/* Allow Modified date to wrap when zoomed */
-td:nth-child(3) {
-    white-space: normal !important;
-    overflow-wrap: normal !important;
-    word-break: normal !important;
-    line-height: 1.35;
-}
-
-th:nth-child(3) {
-    white-space: normal !important;
-}
-
-
-th:nth-child(3),
-td:nth-child(3) {
-    min-width: 9.5em;
-    width: 18%;
-    text-align: right;
-}
-
-td:nth-child(3) {
-    white-space: normal;
 }
