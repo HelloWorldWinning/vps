@@ -148,11 +148,11 @@ unique_ports() {
 	for p in "$SMB_PORT" $SMB_EXTRA_PORTS; do
 		[[ -z "$p" ]] && continue
 		case "$seen" in
-		*" $p "*) ;;
-		*)
-			seen+="$p "
-			out+="${out:+ }$p"
-			;;
+			*" $p "*) ;;
+			*)
+				seen+="$p "
+				out+="${out:+ }$p"
+				;;
 		esac
 	done
 	echo "$out"
@@ -706,22 +706,10 @@ menu() {
 EOF_MENU
 		read -rp "  Choice: " ch
 		case "$ch" in
-		1)
-			act_start
-			pause
-			;;
-		2)
-			act_stop
-			pause
-			;;
-		3)
-			act_restart
-			pause
-			;;
-		4)
-			act_reload
-			pause
-			;;
+		1) act_start; pause ;;
+		2) act_stop; pause ;;
+		3) act_restart; pause ;;
+		4) act_reload; pause ;;
 		5) act_logs ;;
 		6) act_debug ;;
 		7) act_change_user ;;

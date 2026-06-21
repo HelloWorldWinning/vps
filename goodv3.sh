@@ -1211,7 +1211,7 @@ https://zhile.one/archives/1404.html
 	dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh) ;;
 	dns2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_openai.sh) ;;
 	strip_test) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/strip_test.py) ;;
-	smb) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/smb_install_manger.sh) ;;
+	smb) python <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/smb_install_manager_debugged.sh) ;;
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
