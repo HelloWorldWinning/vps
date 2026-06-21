@@ -105,7 +105,27 @@ alias c='clear'
 
 
 #alias l='exa -la --sort=changed'
-alias l='exa -laF --sort=changed'
+#alias l='exa -laF --sort=changed'
+
+# Robust `l` — lists files sorted oldest -> newest modified (newest at bottom)
+l() {
+	local sort_field="modified" # mtime; more portable than ctime ("changed"), esp. on SMB/network mounts
+
+	if command -v eza >/dev/null 2>&1; then
+		eza -laF --sort="$sort_field" "$@"
+	elif command -v exa >/dev/null 2>&1; then
+		exa -laF --sort="$sort_field" "$@" 2>/dev/null ||
+			exa -laF --sort=changed "$@" 2>/dev/null ||
+			ls -laFtr "$@"
+	else
+		# Plain ls fallback: -t sorts by mtime newest-first, -r reverses -> oldest first, newest at bottom
+		ls -laFtr "$@"
+	fi
+}
+
+
+
+
 alias lss='/usr/bin/ls '
 
 alias cc='exa -la --sort=created'
