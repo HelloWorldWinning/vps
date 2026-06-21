@@ -241,3 +241,9 @@ if [ -f "$HOME/.cargo/env" ]; then
 	rustup component remove rust-docs --toolchain stable 2>/dev/null || true
 	rm -rf "$HOME/.rustup/toolchains"/*/share/doc/rust/html
 fi
+
+pip3 install neovim pynvim jedi
+sudo apt install python3-jedi
+pip install neovim pynvim jedi
+pip install jedi
+pip3 install jedi
