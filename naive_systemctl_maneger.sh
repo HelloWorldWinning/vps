@@ -58,10 +58,10 @@ else
 	C_0=
 fi
 info() { printf '%s[*]%s %s\n' "$C_B" "$C_0" "$*"; }
-ok()   { printf '%s[+]%s %s\n' "$C_G" "$C_0" "$*"; }
+ok() { printf '%s[+]%s %s\n' "$C_G" "$C_0" "$*"; }
 warn() { printf '%s[!]%s %s\n' "$C_Y" "$C_0" "$*"; }
-err()  { printf '%s[x]%s %s\n' "$C_R" "$C_0" "$*" >&2; }
-hr()   { printf '%s\n' "------------------------------------------------------------"; }
+err() { printf '%s[x]%s %s\n' "$C_R" "$C_0" "$*" >&2; }
+hr() { printf '%s\n' "------------------------------------------------------------"; }
 pause() { read -rp "Press Enter to continue..." _ || true; }
 
 # --------------------------------------------------------------------------- #
@@ -77,6 +77,47 @@ NAIVE_USER="naive"
 NAIVE_PASS="naive_password"
 SECRET="$PROBE_DECOY"
 ECC="--ecc"
+
+_cleanup_build_cache() {
+	info "Cleaning up build caches ..."
+
+	# Go module cache (~/.cache/go/mod or GOPATH/pkg/mod)
+	local gopath="${GOPATH:-/root/go}"
+	if command -v go >/dev/null 2>&1; then
+		go clean -modcache 2>/dev/null && ok "Go module cache cleared." ||
+			warn "go clean -modcache failed (non-fatal)."
+	fi
+
+	# Go build cache (~/.cache/go/build)
+	if command -v go >/dev/null 2>&1; then
+		go clean -cache 2>/dev/null && ok "Go build cache cleared." ||
+			warn "go clean -cache failed (non-fatal)."
+	fi
+
+	# xcaddy itself (binary + its own temp work dirs under /tmp)
+	local xcaddy_bin
+	xcaddy_bin="$(command -v xcaddy 2>/dev/null || echo "${gopath}/bin/xcaddy")"
+	if [ -f "$xcaddy_bin" ]; then
+		rm -f "$xcaddy_bin"
+		ok "Removed xcaddy binary: ${xcaddy_bin}"
+	fi
+
+	# Any leftover xcaddy temp build dirs in /tmp
+	local d
+	for d in /tmp/xcaddy-* /tmp/buildcaddy* /tmp/tmp.*; do
+		[ -e "$d" ] || continue
+		rm -rf "$d"
+		info "Removed temp dir: ${d}"
+	done
+
+	# gopath/pkg (compiled object cache)
+	if [ -d "${gopath}/pkg" ]; then
+		rm -rf "${gopath}/pkg"
+		ok "Removed ${gopath}/pkg (compiled object cache)."
+	fi
+
+	ok "Build cache cleanup done."
+}
 
 detect_root() {
 	if [ "$(id -u)" -ne 0 ]; then
@@ -104,9 +145,9 @@ auto_install_go() {
 	info "Detecting system architecture ..."
 	local arch
 	case "$(uname -m)" in
-	x86_64)  arch="amd64"  ;;
-	aarch64) arch="arm64"  ;;
-	armv7l)  arch="armv6l" ;;
+	x86_64) arch="amd64" ;;
+	aarch64) arch="arm64" ;;
+	armv7l) arch="armv6l" ;;
 	*)
 		err "Unsupported arch: $(uname -m)"
 		return 1
@@ -172,25 +213,42 @@ detect_caddy() {
 	if [ ! -x "$CADDY_BIN" ]; then
 		warn "Caddy not found at ${CADDY_BIN}."
 		read -rp "Auto-build caddy with naive plugin now? [Y/n]: " a
-		case "$a" in n | N) err "caddy is required. Aborting."; exit 1 ;; esac
+		case "$a" in n | N)
+			err "caddy is required. Aborting."
+			exit 1
+			;;
+		esac
 
 		export PATH="/usr/local/go/bin:$PATH"
 		if ! command -v go >/dev/null 2>&1; then
 			warn "Go not found. Installing Go automatically ..."
-			auto_install_go || { err "Go install failed. Aborting."; exit 1; }
+			auto_install_go || {
+				err "Go install failed. Aborting."
+				exit 1
+			}
 		else
 			ok "Go found: $(go version)"
 		fi
 
-		build_caddy || { err "caddy build failed. Aborting."; exit 1; }
+		build_caddy || {
+			err "caddy build failed. Aborting."
+			exit 1
+		}
 	fi
 
 	if ! "$CADDY_BIN" list-modules 2>/dev/null | grep -q "http.handlers.forward_proxy"; then
 		err "Caddy at ${CADDY_BIN} does not include the naive forward_proxy module."
 		read -rp "Rebuild caddy with naive plugin now? [Y/n]: " a
-		case "$a" in n | N) err "Aborting."; exit 1 ;; esac
+		case "$a" in n | N)
+			err "Aborting."
+			exit 1
+			;;
+		esac
 		export PATH="/usr/local/go/bin:${GOPATH:-/root/go}/bin:$PATH"
-		build_caddy || { err "caddy rebuild failed. Aborting."; exit 1; }
+		build_caddy || {
+			err "caddy rebuild failed. Aborting."
+			exit 1
+		}
 	fi
 }
 
@@ -248,10 +306,10 @@ _gh_latest_tag() {
 download_naiveproxy() {
 	local michaol_arch
 	case "$(uname -m)" in
-	x86_64)  michaol_arch="amd64" ;;
+	x86_64) michaol_arch="amd64" ;;
 	aarch64) michaol_arch="arm64" ;;
-	armv7l)  michaol_arch=""      ;;
-	*)       michaol_arch=""      ;;
+	armv7l) michaol_arch="" ;;
+	*) michaol_arch="" ;;
 	esac
 
 	local tmpdir
@@ -485,7 +543,10 @@ issue_fresh_cert() {
 		;;
 	2)
 		read -rp "acme.sh DNS plugin name, e.g. dns_cf / dns_ali / dns_dp: " dns_plugin
-		[ -n "$dns_plugin" ] || { err "DNS plugin name is required."; return 1; }
+		[ -n "$dns_plugin" ] || {
+			err "DNS plugin name is required."
+			return 1
+		}
 		"$ACME_BIN" --issue -d "$DOMAIN" ${ECC} --dns "$dns_plugin" --force || return 1
 		;;
 	esac
@@ -613,7 +674,10 @@ EOF
 }
 
 validate_caddyfile() {
-	[ -x "$CADDY_BIN" ] || { err "Caddy binary not found: $CADDY_BIN"; return 1; }
+	[ -x "$CADDY_BIN" ] || {
+		err "Caddy binary not found: $CADDY_BIN"
+		return 1
+	}
 	"$CADDY_BIN" validate --config "$caddy_path" --adapter caddyfile || return 1
 	"$CADDY_BIN" fmt --overwrite "$caddy_path" >/dev/null 2>&1 || true
 }
@@ -647,11 +711,11 @@ EOF
 # --------------------------------------------------------------------------- #
 # Service helpers
 # --------------------------------------------------------------------------- #
-svc_enable()  { systemctl enable "$SERVICE_NAME" 2>/dev/null; }
-svc_start()   { systemctl start  "$SERVICE_NAME"; }
-svc_stop()    { systemctl stop   "$SERVICE_NAME"; }
+svc_enable() { systemctl enable "$SERVICE_NAME" 2>/dev/null; }
+svc_start() { systemctl start "$SERVICE_NAME"; }
+svc_stop() { systemctl stop "$SERVICE_NAME"; }
 svc_restart() { systemctl restart "$SERVICE_NAME"; }
-svc_status()  { systemctl status  "$SERVICE_NAME" --no-pager -l; }
+svc_status() { systemctl status "$SERVICE_NAME" --no-pager -l; }
 
 maybe_disable_stock_caddy_service() {
 	# A separate caddy.service often owns :80/:443 with old configs.
@@ -754,10 +818,17 @@ do_install() {
 	fi
 
 	detect_caddy
-	pick_domain || { pause; return 1; }
+	pick_domain || {
+		pause
+		return 1
+	}
 	prompt_settings
 	SECRET="$PROBE_DECOY"
-	_do_install_common || { pause; return 1; }
+	_do_install_common || {
+		pause
+		return 1
+	}
+	_cleanup_build_cache
 	pause
 }
 
@@ -783,7 +854,10 @@ do_install_no_build() {
 		}
 	fi
 
-	download_naiveproxy || { pause; return 1; }
+	download_naiveproxy || {
+		pause
+		return 1
+	}
 
 	if ! "$CADDY_BIN" list-modules 2>/dev/null | grep -q "http.handlers.forward_proxy"; then
 		err "Downloaded caddy does not include the naive forward_proxy module."
@@ -792,15 +866,24 @@ do_install_no_build() {
 		return 1
 	fi
 
-	pick_domain || { pause; return 1; }
+	pick_domain || {
+		pause
+		return 1
+	}
 	prompt_settings
 	SECRET="$PROBE_DECOY"
-	_do_install_common || { pause; return 1; }
+	_do_install_common || {
+		pause
+		return 1
+	}
 	pause
 }
 
 do_update() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	warn "This will rebuild caddy with xcaddy and restart the service."
 	read -rp "Continue? [y/N]: " a
 	case "$a" in y | Y) ;; *) return 0 ;; esac
@@ -811,15 +894,24 @@ do_update() {
 		return 1
 	fi
 
-	build_caddy || { pause; return 1; }
-	validate_caddyfile || { pause; return 1; }
+	build_caddy || {
+		pause
+		return 1
+	}
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	svc_restart
 	ok "Caddy rebuilt and service restarted."
 	pause
 }
 
 do_update_no_build() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	warn "This will download the latest pre-built Caddy+forwardproxy binary and restart the service."
 	read -rp "Continue? [y/N]: " a
 	case "$a" in y | Y) ;; *) return 0 ;; esac
@@ -836,7 +928,10 @@ do_update_no_build() {
 		pause
 		return 1
 	fi
-	validate_caddyfile || { pause; return 1; }
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	svc_start
 	ok "Caddy updated and service restarted."
 	pause
@@ -858,30 +953,48 @@ do_show() {
 }
 
 do_restart() {
-	load_conf || { pause; return 1; }
-	validate_caddyfile || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	svc_restart
 	ok "Restarted."
 	pause
 }
 
 do_stop() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	svc_stop
 	ok "Stopped."
 	pause
 }
 
 do_start() {
-	load_conf || { pause; return 1; }
-	validate_caddyfile || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	svc_start
 	ok "Started."
 	pause
 }
 
 do_logs() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	info "Following journal logs (Ctrl-C to exit) ..."
 	journalctl -u "$SERVICE_NAME" -f --no-pager || true
 	echo
@@ -891,7 +1004,10 @@ do_logs() {
 }
 
 do_status() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	svc_status
 	echo
 	info "Listening ports for caddy / common ports:"
@@ -930,12 +1046,18 @@ do_status() {
 }
 
 do_settings() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	echo "Leave blank to keep current value."
 	local old_domain="$DOMAIN" p a
 
 	read -rp "Change domain? current [${DOMAIN}] [y/N]: " a
-	case "$a" in y | Y) pick_domain || { pause; return 1; } ;; esac
+	case "$a" in y | Y) pick_domain || {
+		pause
+		return 1
+	} ;; esac
 
 	read -rp "Port [${PORT}]: " p
 	PORT="${p:-$PORT}"
@@ -952,12 +1074,18 @@ do_settings() {
 	SECRET="${p:-$SECRET}"
 
 	if [ "$DOMAIN" != "$old_domain" ]; then
-		install_cert || { pause; return 1; }
+		install_cert || {
+			pause
+			return 1
+		}
 	fi
 
 	save_conf
 	gen_caddyfile
-	validate_caddyfile || { pause; return 1; }
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	gen_service
 	svc_restart
 	ok "Settings applied."
@@ -966,7 +1094,10 @@ do_settings() {
 }
 
 do_cert() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	if [ -z "$ACME_BIN" ]; then
 		err "acme.sh not found."
 		pause
@@ -974,18 +1105,31 @@ do_cert() {
 	fi
 	info "Repairing/reinstalling TLS cert for ${DOMAIN} ..."
 	warn "If the private key is lost/zero-byte, this will offer a fresh re-issue."
-	install_cert || { pause; return 1; }
-	validate_caddyfile || { pause; return 1; }
+	install_cert || {
+		pause
+		return 1
+	}
+	validate_caddyfile || {
+		pause
+		return 1
+	}
 	svc_restart
 	ok "Cert installed and service restarted."
 	pause
 }
 
 do_uninstall() {
-	load_conf || { pause; return 1; }
+	load_conf || {
+		pause
+		return 1
+	}
 	warn "This stops and disables the service, and removes ${naive_path}."
 	read -rp "Type 'yes' to confirm: " a
-	[ "$a" = "yes" ] || { info "Cancelled."; pause; return 0; }
+	[ "$a" = "yes" ] || {
+		info "Cancelled."
+		pause
+		return 0
+	}
 
 	svc_stop 2>/dev/null || true
 	systemctl disable "$SERVICE_NAME" 2>/dev/null || true
@@ -1006,7 +1150,13 @@ menu() {
 		printf '  %sNaiveProxy Manager (systemctl)%s   (%s)\n' "$C_G" "$C_0" "$naive_path"
 		hr
 		if is_installed; then
-			printf '  status: %sinstalled%s  domain: %s  port: %s\n' "$C_G" "$C_0" "$(. "$conf_path"; echo "$DOMAIN")" "$(. "$conf_path"; echo "$PORT")"
+			printf '  status: %sinstalled%s  domain: %s  port: %s\n' "$C_G" "$C_0" "$(
+				. "$conf_path"
+				echo "$DOMAIN"
+			)" "$(
+				. "$conf_path"
+				echo "$PORT"
+			)"
 			if systemctl is-active --quiet "$SERVICE_NAME" 2>/dev/null; then
 				printf '  service: %srunning%s\n' "$C_G" "$C_0"
 			else
@@ -1035,21 +1185,24 @@ MENU
 		hr
 		read -rp "Choose: " c
 		case "$c" in
-		1)  do_install          ;;
-		2)  do_install_no_build ;;
-		3)  do_update           ;;
-		4)  do_update_no_build  ;;
-		5)  do_show             ;;
-		6)  do_restart          ;;
-		7)  do_stop             ;;
-		8)  do_start            ;;
-		9)  do_logs             ;;
-		10) do_settings         ;;
-		11) do_cert             ;;
-		12) do_status           ;;
-		13) do_uninstall        ;;
-		0)  exit 0              ;;
-		*) warn "Invalid option."; sleep 1 ;;
+		1) do_install ;;
+		2) do_install_no_build ;;
+		3) do_update ;;
+		4) do_update_no_build ;;
+		5) do_show ;;
+		6) do_restart ;;
+		7) do_stop ;;
+		8) do_start ;;
+		9) do_logs ;;
+		10) do_settings ;;
+		11) do_cert ;;
+		12) do_status ;;
+		13) do_uninstall ;;
+		0) exit 0 ;;
+		*)
+			warn "Invalid option."
+			sleep 1
+			;;
 		esac
 	done
 }
