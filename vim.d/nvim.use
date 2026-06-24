@@ -11,6 +11,7 @@ let g:fzf_vim = {}
 " https://github.com/numirias/semshi    python good colore
 
 call plug#begin('~/.local/share/nvim/plugged')
+Plug 'ojroques/nvim-osc52'
 
 "Plug 'neovim/nvim-lspconfig'
 Plug 'folke/flash.nvim'
@@ -558,3 +559,34 @@ vim.lsp.config('pyright', {
 vim.lsp.enable('pyright')
 EOF
 
+
+
+
+
+
+lua << EOF
+require('osc52').setup {
+ max_length = 0,
+ silent = false,
+ trim = true,
+ tmux_passthrough = true,
+}
+local function copy(lines, _)
+ require('osc52').copy(table.concat(lines, '\n'))
+end
+local function paste()
+ return {vim.fn.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('')}
+end
+vim.g.clipboard = {
+ name = 'osc52',
+ copy = {
+   ['+'] = copy,
+   ['*'] = copy,
+ },
+ paste = {
+   ['+'] = paste,
+   ['*'] = paste,
+ },
+}
+EOF
+set clipboard+=unnamedplus

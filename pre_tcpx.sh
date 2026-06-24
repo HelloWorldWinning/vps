@@ -571,6 +571,8 @@ bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh)
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh)
+
+bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh)
 ######## for nvim start
 
 pip install pynvim
@@ -592,7 +594,7 @@ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/s
 sudo apt update && sudo apt install cargo ripgrep pandoc
 cargo install ripgrep_all
 
-bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
+#bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
 # rt 443 安装
 ####printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
 

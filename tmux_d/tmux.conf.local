@@ -699,3 +699,10 @@ bind-key -n M-0 select-window -t 0
 
 
 
+
+set -g allow-passthrough on   
+set -s set-clipboard on
+
+
+
+
