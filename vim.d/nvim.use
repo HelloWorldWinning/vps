@@ -567,7 +567,7 @@ EOF
 lua << EOF
 require('osc52').setup {
  max_length = 0,
- silent = false,
+ silent = true,
  trim = true,
  tmux_passthrough = true,
 }
