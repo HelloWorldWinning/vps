@@ -174,26 +174,7 @@ hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=ma
 highlight StatusLineCol ctermbg=214 ctermfg=0 guibg=#ffa500 guifg=#000000 cterm=bold gui=bold
 "set statusline+=\ \ \ \ \ \ \ \ %L\ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 "set statusline=\ \ \ \ \ \ \ \ %L\ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
-
-function! FileSize()
-    let l:size = getfsize(expand('%:p'))
-
-    if l:size < 0
-        return ''
-    elseif l:size < 1024
-        return l:size . 'B'
-    elseif l:size < 1024 * 1024
-        return printf('%.1fK', l:size / 1024.0)
-    elseif l:size < 1024 * 1024 * 1024
-        return printf('%.1fM', l:size / 1024.0 / 1024.0)
-    else
-        return printf('%.1fG', l:size / 1024.0 / 1024.0 / 1024.0)
-    endif
-endfunction
-set statusline=\ \ \ \ \ %{FileSize()}\ \ %t\ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
-
-
-""set statusline=\ \ \ \ \ \ \ \ \ \ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
+set statusline=\ \ \ \ \ \ \ \ \ \ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 set laststatus=2
 
 "hi Normal     ctermfg=blue  guifg=blue guifg=#22e3dd  ctermbg=Black guibg=#283237  ctermbg=Black
