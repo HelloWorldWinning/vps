@@ -87,6 +87,8 @@ fi
 /root/miniconda3/bin/python -m pip install neovim
 python -m pip install pynvim
 python -m pip install neovim
+python3 -m pip install tiktoken
+python -m pip install tiktoken
 
 bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh)
 
@@ -129,3 +131,10 @@ if [ -f "$HOME/.cargo/env" ]; then
 	rustup component remove rust-docs --toolchain stable 2>/dev/null || true
 	rm -rf "$HOME/.rustup/toolchains"/*/share/doc/rust/html
 fi
+
+/root/miniconda3/bin/python -m pip install pynvim
+/root/miniconda3/bin/python -m pip install neovim
+python -m pip install pynvim
+python -m pip install neovim
+python3 -m pip install tiktoken
+python -m pip install tiktoken

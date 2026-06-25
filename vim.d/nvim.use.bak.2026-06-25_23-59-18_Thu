@@ -175,138 +175,23 @@ highlight StatusLineCol ctermbg=214 ctermfg=0 guibg=#ffa500 guifg=#000000 cterm=
 "set statusline+=\ \ \ \ \ \ \ \ %L\ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 "set statusline=\ \ \ \ \ \ \ \ %L\ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 
-"function! FileSize()
-"    let l:size = getfsize(expand('%:p'))
-"
-"    if l:size < 0
-"        return ''
-"    elseif l:size < 1024
-"        return l:size . 'B'
-"    elseif l:size < 1024 * 1024
-"        return printf('%.1fK', l:size / 1024.0)
-"    elseif l:size < 1024 * 1024 * 1024
-"        return printf('%.1fM', l:size / 1024.0 / 1024.0)
-"    else
-"        return printf('%.1fG', l:size / 1024.0 / 1024.0 / 1024.0)
-"    endif
-"endfunction
-"set statusline=\ \ \ \ \ %{FileSize()}\ \ %t\ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
-
-
-
-" ============================================================
-" FileSize_Token()
-" Example output:
-"   3.9K 1.1K
-"
-" - File size uses decimal units: 1000, 1000^2, ...
-" - Token count uses exact Python+tiktoken GPT-4o only
-" - No approximate fallback
-" - If python3 or tiktoken unavailable, token count is shown as ?
-" ============================================================
-
-function! s:Format_FileSize_Decimal(size) abort
-    if a:size < 0
-        return ''
-    elseif a:size < 1000
-        return a:size . 'B'
-    elseif a:size < 1000 * 1000
-        return printf('%.1fK', a:size / 1000.0)
-    elseif a:size < 1000 * 1000 * 1000
-        return printf('%.1fM', a:size / 1000.0 / 1000.0)
-    elseif a:size < 1000 * 1000 * 1000 * 1000
-        return printf('%.1fG', a:size / 1000.0 / 1000.0 / 1000.0)
-    else
-        return printf('%.1fT', a:size / 1000.0 / 1000.0 / 1000.0 / 1000.0)
-    endif
-endfunction
-
-
-function! s:Format_TokenSize(tokens) abort
-    if a:tokens < 0
-        return '?'
-    elseif a:tokens == 0
-        return '0'
-    elseif a:tokens < 1000
-        return string(a:tokens)
-    elseif a:tokens < 1000 * 1000
-        return printf('%.1fK', a:tokens / 1000.0)
-    elseif a:tokens < 1000 * 1000 * 1000
-        return printf('%.1fM', a:tokens / 1000.0 / 1000.0)
-    else
-        return printf('%.1fG', a:tokens / 1000.0 / 1000.0 / 1000.0)
-    endif
-endfunction
-
-
-function! s:Exact_Tokens_With_Python(path) abort
-    if !executable('python3')
-        return -1
-    endif
-
-    let l:py = [
-                \ 'import sys',
-                \ 'path = sys.argv[1]',
-                \ 'try:',
-                \ '    import tiktoken',
-                \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
-                \ '    with open(path, "rb") as f:',
-                \ '        data = f.read()',
-                \ '    text = data.decode("utf-8", errors="replace")',
-                \ '    print(len(enc.encode(text)))',
-                \ 'except Exception:',
-                \ '    print("-1")',
-                \ ]
-
-    let l:cmd = 'python3 -c ' . shellescape(join(l:py, "\n")) . ' ' . shellescape(a:path)
-    let l:out = systemlist(l:cmd)
-
-    if v:shell_error != 0 || empty(l:out)
-        return -1
-    endif
-
-    if l:out[0] !~# '^-\?\d\+$'
-        return -1
-    endif
-
-    let l:n = str2nr(l:out[0])
-
-    if l:n < 0
-        return -1
-    endif
-
-    return l:n
-endfunction
-
-
-function! FileSize_Token(...) abort
-    " Optional separator.
-    "
-    " Default:
-    "   FileSize_Token()      -> 3.9K 1.1K
-    "
-    " Custom:
-    "   FileSize_Token(' | ') -> 3.9K | 1.1K
-    let l:spliter = a:0 >= 1 ? a:1 : ' '
-
-    let l:path = expand('%:p')
-    let l:size = getfsize(l:path)
+function! FileSize()
+    let l:size = getfsize(expand('%:p'))
 
     if l:size < 0
         return ''
+    elseif l:size < 1024
+        return l:size . 'B'
+    elseif l:size < 1024 * 1024
+        return printf('%.1fK', l:size / 1024.0)
+    elseif l:size < 1024 * 1024 * 1024
+        return printf('%.1fM', l:size / 1024.0 / 1024.0)
+    else
+        return printf('%.1fG', l:size / 1024.0 / 1024.0 / 1024.0)
     endif
-
-    let l:file_size = s:Format_FileSize_Decimal(l:size)
-
-    " Exact GPT-4o token count only.
-    " No approximate fallback.
-    let l:tokens = s:Exact_Tokens_With_Python(l:path)
-
-  " return l:file_size . l:spliter . s:Format_TokenSize(l:tokens)
-    return  s:Format_TokenSize(l:tokens)
 endfunction
+set statusline=\ \ \ \ \ %{FileSize()}\ \ %t\ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 
-set statusline=\ \ %t\ %{FileSize_Token()}\ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 
 ""set statusline=\ \ \ \ \ \ \ \ \ \ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 set laststatus=2
