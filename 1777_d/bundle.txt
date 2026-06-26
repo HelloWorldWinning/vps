@@ -1,4 +1,6 @@
-from mistune.directives import DirectiveToc
+<all_docs>
+
+<1777_py>
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
@@ -564,7 +566,7 @@ code *,
   background-color: #EA580C !important;
     border-radius: 5px;
   border-color: #C2410C;
-  box-shadow: 0 4px 14px  rgba(59, 130, 246, 0.12) ;
+  box-shadow: 0 4px 14px rgba(234,88,12,0.3);
 
                 }}
 
@@ -827,47 +829,27 @@ async def render_markdown_with_mistune(
     class HighlightRenderer(mistune.HTMLRenderer):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
+            # linenos for parity with your code viewer
             self.formatter = HtmlFormatter(linenos=True, style=style_name)
 
         def block_code(self, code, info=None):
             lang = None
             if info:
                 lang = info.strip().split(None, 1)[0]
-
             try:
                 lexer = get_lexer_by_name(lang) if lang else TextLexer()
             except ClassNotFound:
                 lexer = TextLexer()
-
             highlighted = highlight(code, lexer, self.formatter)
             return f'<div class="code-block">{highlighted}</div>'
 
-        # Compatible with Mistune v3 TOC heading ids.
-        # Also harmless for normal Markdown headings.
-        def heading(self, text, level, tid=None, **attrs):
-            heading_id = attrs.get("id") or tid
-            if heading_id:
-                return (
-                    f'<h{level} id="{html.escape(str(heading_id), quote=True)}">'
-                    f"{text}"
-                    f"</h{level}>\n"
-                )
-            return f"<h{level}>{text}</h{level}>\n"
-
     renderer = HighlightRenderer()
-
     markdown = mistune.create_markdown(
-        renderer=renderer,
-        plugins=[
-            "strikethrough",
-            "table",
-            "task_lists",
-            DirectiveToc(),
-        ],
+        renderer=renderer, plugins=["strikethrough", "table", "task_lists"]
     )
-
     body_html = markdown(content)
 
+    # Reuse fonts + light background similar to your code view
     custom_css = """
 
 *, *::before, *::after {
@@ -890,43 +872,27 @@ html, body {
     font-display: swap;
 }
 
-@font-face {
-  font-family: 'WebSFPro';
-  src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-  font-display: swap;
-}
 
-@font-face {
-  font-family: 'FZFangJunHeiS';
-  src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
-  font-display: swap;
-}
 
-html * {
-  font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-  font-weight: 200 !important;
-  text-align: justify !important;
-  line-height: 140% !important;
-}
+    @font-face {
+      font-family: 'WebSFPro';
+      src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
+      font-display: swap;
+    }
 
-/* TOC rendered by Mistune */
-.markdown-body .toc {
-    border: 1px solid #eaecef;
-    border-radius: 6px;
-    background: #fafbfc;
-    padding: 10px 14px;
-    margin: 1em 0;
-}
+    @font-face {
+      font-family: 'FZFangJunHeiS';
+      src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
+       font-display: swap;
+    }
 
-.markdown-body .toc summary {
-    cursor: pointer;
-    font-weight: 600 !important;
-}
+    html * {
+      font-family: "SF Pro", -apple-system, BlinkMacSystemFont,"WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+      font-weight: 200 !important;
+      text-align: justify !important;
+      line-height: 140% !important;
+    }
 
-.markdown-body .toc ul {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
 
 /* Keep Pygments code blocks monospaced */
 .markdown-body .code-block,
@@ -952,191 +918,31 @@ html * {
     line-height: 1.4 !important;
 }
 
-.markdown-body {
-  max-width: 1000px;
-  background: white;
+
+    .markdown-body {
+      max-width: 1000px;
+      background: white;
+      /* #distance 1 */
   margin-top: auto;
   margin-right: auto;
   margin-bottom: auto;
   margin-left: auto;
+
+  /* #distance 2 */
   padding-top: 2px;
   padding-right: 20px;
-  padding-bottom: 4px;
+  padding-bottom: 4px ;
   padding-left: 20px;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3 {
-  margin-top: 1.2em;
-}
-
-.markdown-body pre {
-  overflow: auto;
-}
-
-.markdown-body code {
-  padding: 0.1em 0.3em;
-  border-radius: 4px;
-  background: #f6f8fa;
-}
-
-.markdown-body table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.markdown-body th,
-.markdown-body td {
-  border: 1px solid #eaecef;
-  padding: 6px 10px;
-}
-
-.markdown-body blockquote {
-  border-left: 4px solid #dfe2e5;
-  margin: 0;
-  padding: 0.5em 1em;
-  color: #6a737d;
-  background: #fafbfc;
-}
-
-
-
-/* ============================================================
-   Body headings ONLY
-   Do not visually apply these heading styles to TOC items.
-============================================================ */
-
-.markdown-body > h1 {
-    display: block;
-    margin: 0 auto;
-    margin-top: 1.2em;
-    margin-bottom: 0.4em;
-    padding: .3em 3em .3em 3em;
-    line-height: 1.35 !important;
-    text-align: center !important;
-    background-color: rgb(158, 34, 65);
-    color: #FFFFFF !important;
-    font-size: 1.5em !important;
-    font-weight: 700 !important;
-}
-
-.markdown-body > h2 {
-    display: block;
-    font-size: 1.3em !important;
-    background: #6c5ce7;
-    color: white !important;
-    padding: 10px 20px;
-    margin: 1.5em 0 0.8em 0;
-    border-radius: 0;
-    text-align: left !important;
-    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
-    font-weight: 700 !important;
-}
-
-.markdown-body > h3 {
-    font-size: 1.2em !important;
-    color: #e84393 !important;
-    margin: 1.2em 0 0.6em 0;
-    padding: 8px 0;
-    font-weight: bold !important;
-    position: relative;
-    text-align: left !important;
-}
-
-
-/* ============================================================
-   Mistune TOC: No Box / No Card
-============================================================ */
-
-.markdown-body .toc,
-.markdown-body details.toc {
-    display: block;
-    margin: 1.2em 0 1.6em 0;
-
-    /* remove the visible box */
-    padding: 0 !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-/* Remove Mistune's built-in TOC title */
-.markdown-body .toc > h1,
-.markdown-body .toc > h2,
-.markdown-body .toc > h3,
-.markdown-body .toc > h4,
-.markdown-body .toc > summary,
-.markdown-body details.toc > summary {
-    display: none !important;
-}
-
-/* Reset TOC lists only */
-.markdown-body .toc ul,
-.markdown-body details.toc ul {
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.markdown-body .toc li,
-.markdown-body details.toc li {
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* TOC links only */
-.markdown-body .toc a,
-.markdown-body details.toc a {
-    display: block;
-    padding: 5px 0;
-    margin: 1px 0;
-    border-radius: 0 !important;
-    color: #1f2937 !important;
-    background: transparent !important;
-    text-decoration: none !important;
-    line-height: 1.35 !important;
-    font-size: 15px;
-    font-weight: 400 !important;
-    text-align: left !important;
-    overflow-wrap: anywhere;
-}
-
-/* Top-level TOC item */
-.markdown-body .toc > ul > li > a,
-.markdown-body details.toc > ul > li > a {
-    font-weight: 700 !important;
-}
-
-/* Nested TOC indentation */
-.markdown-body .toc ul ul,
-.markdown-body details.toc ul ul {
-    margin-left: 18px !important;
-    padding-left: 14px !important;
-    border-left: 2px solid #eef0f4;
-}
-
-/* Third-level TOC */
-.markdown-body .toc ul ul ul a,
-.markdown-body details.toc ul ul ul a {
-    font-size: 14px;
-    color: #374151 !important;
-}
-
-/* Optional hover without box shape */
-.markdown-body .toc a:hover,
-.markdown-body details.toc a:hover {
-    background: transparent !important;
-    color: #1f2937 !important;
-    text-decoration: underline !important;
-}
-
-
-"""
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 { margin-top: 1.2em; }
+    .markdown-body pre { overflow: auto; }
+    .markdown-body code { padding: 0.1em 0.3em; border-radius: 4px; background: #f6f8fa; }
+    .markdown-body table { border-collapse: collapse; width: 100%; }
+    .markdown-body th, .markdown-body td { border: 1px solid #eaecef; padding: 6px 10px; }
+    .markdown-body blockquote { border-left: 4px solid #dfe2e5; margin: 0; padding: 0.5em 1em; color: #6a737d; background:#fafbfc; }
+    """
 
     html_content = f"""
     <html>
@@ -1188,3 +994,236 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=1777)
+
+</1777_py>
+
+<docker_compose_yml>
+
+services:
+  flask_app:
+    image: oklove/port1777_md
+    container_name: port1777_md_others
+    ports:
+      - "1777:1777"
+    volumes:
+      - /:/Host
+
+    restart: always
+    environment:
+      # Pygments style used ONLY for Markdown code blocks
+      # Examples: "manni" (default), "monokai", "friendly", "github-dark"
+      - markdown_theme=manni
+
+</docker_compose_yml>
+
+<dockerfile>
+# Use the official Python 3.10 slim image
+FROM python:3.10-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install the required Python packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code into the container
+COPY . .
+
+EXPOSE 1777
+
+# Run the Flask application
+CMD ["python", "1777.py"]
+
+
+</dockerfile>
+
+<build_sh>
+#!/bin/bash 
+
+# Build the Docker image with a meaningful name
+docker build -t oklove/port1777_md   .
+docker push oklove/port1777_md
+
+</build_sh>
+
+<requirements_txt>
+fastapi==0.95.2
+uvicorn==0.22.0
+nbformat==5.7.0
+nbconvert==7.2.10
+pygments==2.15.1
+mistune
+
+</requirements_txt>
+
+</all_docs>
+
+<update_doc>
+
+Mistune
+Projects 
+Sponsor me
+Search
+/
+
+Typlog
+A blogging and podcast hosting platform, simple yet elegant.
+How to Use Mistune
+Command line tools
+Renderers
+Built-in Plugins
+Directives
+Advanced Guide
+API Reference
+Upgrade Guide
+Community Extensions
+Changelog
+On this page
+Admonitions
+Table of Contents
+Include
+Image
+Figure
+lepture/mistune
+3046
+291
+Edit this page
+
+Copy page
+
+Directives
+A directive is a generic block of explicit markup that is powerful and extensible. In mistune v3, there are 2 styles of directives for now:
+
+reStructuredText style
+
+fenced style
+
+Changed in version 3.0: Fenced style directive is added in 3.0. Because v3 has multiple styles of directives, developers can not add each directive into plugins parameter of mistune.create_markdown directly. Instead, each directive should be wrapped by:
+
+import mistune
+from mistune.directives import FencedDirective, RSTDirective
+from mistune.directives import Admonition, TableOfContents
+
+markdown = mistune.create_markdown(plugins=[
+    'math',
+    'footnotes',
+    # ...
+    FencedDirective([
+        Admonition(),
+        TableOfContents(),
+    ]),
+])
+
+markdown = mistune.create_markdown(plugins=[
+    'math',
+    'footnotes',
+    # ...
+    RSTDirective([
+        Admonition(),
+        TableOfContents(),
+    ]),
+])
+A reStructuredText style of directive is inspired by reStructuredText, and the syntax looks like:
+
+.. directive-type:: title
+   :option-key: option value
+   :option-key: option value
+
+   content text here
+A fenced style of directive looks like a fenced code block, it is inspired by markdown-it-docutils. The syntax looks like:
+
+```{directive-type} title
+:option-key: option value
+:option-key: option value
+
+content text here
+```
+Developers can choose the directive style in their own favor.
+
+Admonitions
+The reStructuredText style syntax:
+
+.. warning::
+
+   You are looking at the **dev** documentation. Check out our
+   [stable](/stable/) documentation instead.
+The fenced style syntax:
+
+```{warning}
+You are looking at the **dev** documentation. Check out our
+[stable](/stable/) documentation instead.
+```
+Admonitions contains a group of directive-name:
+
+attention  caution  danger  error
+hint  important  note  tip  warning
+To enable admonitions:
+
+import mistune
+from mistune.directives import Admonition
+
+markdown = mistune.create_markdown(
+    plugins=[
+        ...
+        RSTDirective([Admonition()]),
+        # FencedDirective([Admonition()]),
+    ]
+)
+Table of Contents
+.. toc:: Table of Contents
+   :max-level: 3
+TOC plugin is based on directive. It can add a table of contents section in the documentation. Let’s take an example:
+
+Here is the first paragraph, and we put TOC below.
+
+.. toc::
+
+# H1 title
+
+## H2 title
+
+# H1 title
+The rendered HTML will show a TOC at the .. toc:: position. To enable TOC plugin:
+
+import mistune
+from mistune.directives import RSTDirective, TableOfContents
+
+markdown = mistune.create_markdown(
+    plugins=[
+        # ...
+        RSTDirective([TableOfContents()]),
+    ]
+)
+Include
+.. include:: hello.md
+include is a powerful plugin for documentation generator. With this plugin, we can embed contents from other files.
+
+Image
+```{image} https://domain/path.png
+:alt: alt text
+:width: 800
+:height: 500
+```
+Figure
+```{figure} https://domain/path.png
+:alt: alt text
+:width: 800
+:height: 500
+```
+Previous
+Built-in Plugins
+Next
+Advanced Guide
+2019, Hsiaoming Yang
+
+Made with Sphinx and Shibuya theme.
+
+
+</update_doc>
+
+-  mistune====2.0.5 is updated to mistune , but it seems TOC still not be rendered .
+-  should I update 1777.py ???  
+-  it seems no big updation?  just give me code  block to as drop-in replacements to 1777.py?  and intruct me to process
