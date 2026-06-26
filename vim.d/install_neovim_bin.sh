@@ -87,8 +87,8 @@ fi
 /root/miniconda3/bin/python -m pip install neovim
 python -m pip install pynvim
 python -m pip install neovim
-python3 -m pip install tiktoken
-python -m pip install tiktoken
+#python3 -m pip install tiktoken
+#python -m pip install tiktoken
 
 bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/handle_nvim_pluges.sh)
 
@@ -136,5 +136,6 @@ fi
 /root/miniconda3/bin/python -m pip install neovim
 python -m pip install pynvim
 python -m pip install neovim
-python3 -m pip install tiktoken
-python -m pip install tiktoken
+#python3 -m pip install tiktoken
+#python -m pip install tiktoken
+pip install --break-system-packages tiktoken

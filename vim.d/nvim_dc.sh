@@ -247,5 +247,7 @@ sudo apt install python3-jedi
 pip install neovim pynvim jedi
 pip install jedi
 pip3 install jedi
-python3 -m pip install tiktoken
-python -m pip install tiktoken
+#python3 -m pip install tiktoken
+#python -m pip install tiktoken
+
+pip install --break-system-packages tiktoken
