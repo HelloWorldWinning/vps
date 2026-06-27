@@ -5,6 +5,67 @@ wget --inet4-only -O ~/.config/nvim/init.vim https://raw.githubusercontent.com/H
 
 sudo rm -rf /tmp/* 2>/dev/null || true
 
+clean_install() {
+	echo "=== Running clean_install cleanup ==="
+
+	# Safety guard for rm -rf
+	safe_rm_rf() {
+		local target="$1"
+
+		if [ -z "$target" ]; then
+			echo "Skip empty path"
+			return 0
+		fi
+
+		case "$target" in
+		"/" | "$HOME" | "/root" | "/home")
+			echo "Refusing to remove unsafe path: $target"
+			return 1
+			;;
+		esac
+
+		if [ -e "$target" ]; then
+			echo "Removing: $target"
+			rm -rf "$target"
+		fi
+	}
+
+	# Remove Neovim build directory
+	if [ -n "${BUILD_DIR:-}" ]; then
+		safe_rm_rf "$BUILD_DIR"
+	fi
+
+	# Remove common temporary build leftovers
+	safe_rm_rf "$HOME/nvim_build_temp"
+	safe_rm_rf "/tmp/nvim_build_temp"
+
+	# Clean package/cache leftovers, but do not remove installed Neovim
+	if command -v apt >/dev/null 2>&1; then
+		sudo apt clean || true
+		sudo apt autoclean || true
+	fi
+
+	if command -v npm >/dev/null 2>&1; then
+		npm cache clean --force >/dev/null 2>&1 || true
+	fi
+
+	if command -v pip >/dev/null 2>&1; then
+		pip cache purge >/dev/null 2>&1 || true
+	fi
+
+	if [ -x "/root/miniconda3/bin/python" ]; then
+		/root/miniconda3/bin/python -m pip cache purge >/dev/null 2>&1 || true
+	fi
+
+	# Clean only temporary files related to this install, not all /tmp
+	find /tmp -maxdepth 1 \
+		-name "nvim*" -o \
+		-name "neovim*" -o \
+		-name "cmake*" \
+		-exec rm -rf {} + 2>/dev/null || true
+
+	echo "=== clean_install cleanup completed ==="
+}
 #set -e # Exit immediately if a command exits with a non-zero status
 
 # Define installation directory
@@ -139,3 +200,4 @@ python -m pip install neovim
 #python3 -m pip install tiktoken
 #python -m pip install tiktoken
 pip install --break-system-packages tiktoken
+clean_install
