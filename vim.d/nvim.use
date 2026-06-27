@@ -139,7 +139,7 @@ hi LineNr  term=none ctermfg=None cterm=none ctermfg=None gui=none  guifg=#53656
 "hi LineNr  term=bold ctermfg=None cterm=bold ctermfg=130  gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
+"hi CursorLineNr  term=bold ctermbg=None cterm=bold ctermfg=White gui=bold  guifg=Black guibg=None
 
 set cursorline
 "hi CursorLine term=bold cterm=bold guibg=NONE
@@ -157,7 +157,8 @@ hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black
 "
 "hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 """hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
-hi CursorLineNr term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold guifg=#ff0000 guibg=NONE              
+"hi CursorLineNr term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold guifg=#ff0000 guibg=NONE              
+hi CursorLineNr term=bold cterm=bold gui=bold guifg=#FDFDFD guibg=#CD2222
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
