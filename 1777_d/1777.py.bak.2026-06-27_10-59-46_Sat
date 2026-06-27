@@ -1127,90 +1127,13 @@ html * {
     color: #374151 !important;
 }
 
-
-
-
-/* ============================================================
-   Mistune TOC hover: text-only background, full-row hover kept
-============================================================ */
-
-.markdown-body {
-    --toc-hover-pink: #ec4899;
-}
-
-/* TOC list rows become clipping containers */
-.markdown-body .toc li,
-.markdown-body details.toc li {
-    position: relative;
-    overflow: hidden;
-}
-
-/* TOC links: visual box only wraps the text */
-.markdown-body .toc a,
-.markdown-body details.toc a {
-    display: inline-block;          /* background only around text */
-    max-width: 100%;
-    position: relative;
-
-    cursor: pointer;
-
-    padding: 3px 8px;
-    margin: 1px 0 1px -8px;
-    border-radius: 6px !important;
-
-    color: #1f2937 !important;
-    text-decoration: none !important;
-
-    line-height: 1.35 !important;
-    font-size: 15px;
-    font-weight: 400 !important;
-    text-align: left !important;
-    overflow-wrap: anywhere;
-
-    background-image: linear-gradient(
-        135deg,
-        var(--toc-hover-pink) 40%,
-        transparent 60%
-    ) !important;
-    background-size: 250% 250% !important;
-    background-position: 100% 100% !important;
-    background-repeat: no-repeat !important;
-
-    transition:
-        background-position 0.3s ease,
-        color 0.3s ease !important;
-}
-
-/* Invisible extension of the anchor's hover/click area */
-.markdown-body .toc a::after,
-.markdown-body details.toc a::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100vw;       /* extends hover area to the right */
-    height: 100%;
-
-    background: transparent;
-}
-
-/* Top-level TOC item */
-.markdown-body .toc > ul > li > a,
-.markdown-body details.toc > ul > li > a {
-    font-weight: 700 !important;
-}
-
-/* Hover: background paints only the real text-sized anchor */
+/* Optional hover without box shape */
 .markdown-body .toc a:hover,
-.markdown-body details.toc a:hover,
-.markdown-body .toc a:focus-visible,
-.markdown-body details.toc a:focus-visible {
-    background-position: 0 0 !important;
-    color: white !important;
-    text-decoration: none !important;
+.markdown-body details.toc a:hover {
+    background: transparent !important;
+    color: #1f2937 !important;
+    text-decoration: underline !important;
 }
-
 
 
 """
