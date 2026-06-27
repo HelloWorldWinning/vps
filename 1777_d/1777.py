@@ -1024,7 +1024,7 @@ html * {
 }
 
 .markdown-body > h2 {
-    display: block;
+    display: inline-block;
     font-size: 1.3em !important;
     background: #6c5ce7;
     color: white !important;
