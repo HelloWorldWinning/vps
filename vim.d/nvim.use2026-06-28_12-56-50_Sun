@@ -310,20 +310,7 @@ function! FileSize_Token(...) abort
     return  s:Format_TokenSize(l:tokens)
 endfunction
 
-
-hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cterm=bold
-set statusline=\ \ \
-      \ %t\
-      \ %#StatusLineSize#\ \
-      \%{FileSize_Token()}\ \
-      \%#StatusLineCol#\
-      \ %v\ \
-      \%#StatusLine#\
-      \ \ \ %{expand('%:p')}
-
-
-
-"""""""set statusline=\ \ %t\ %{FileSize_Token()}\ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
+set statusline=\ \ %t\ %{FileSize_Token()}\ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 
 ""set statusline=\ \ \ \ \ \ \ \ \ \ \ %t\ \ \ %#StatusLineCol#\ %v\ %#StatusLine#\ \ \ %{expand('%:p')}
 set laststatus=2
