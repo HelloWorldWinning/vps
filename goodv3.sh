@@ -1202,7 +1202,7 @@ https://zhile.one/archives/1404.html
 	me) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
 
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
-	naive) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
+	naive_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
 	naive_cli) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
 	singbox) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
 	qb) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
