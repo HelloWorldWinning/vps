@@ -425,8 +425,7 @@ e() {
 	local additional_terms=("$@")
 	/usr/lib/cargo/bin/fd -HI --absolute-path --color=never "$search_term" "${additional_terms[@]}" |
 		rg --color=always \
-                        --colors 'match:fg:red' \
-                        --colors 'match:style:bold' \
+			--colors 'match:fg:yellow' \
 			--colors 'line:none' \
 			--regexp "[^/]*${search_term}[^/]*"
 }
@@ -441,8 +440,7 @@ eee() {
 	local additional_terms=("$@")
 	/usr/lib/cargo/bin/fd -HI --list-details --color=never "$search_term" "${additional_terms[@]}" |
 		rg --color=always \
-                        --colors 'match:fg:red' \
-                        --colors 'match:style:bold' \
+			--colors 'match:fg:yellow' \
 			--colors 'line:none' \
 			--regexp "[^/]*${search_term}[^/]*"
 }
@@ -509,8 +507,7 @@ ee() {
 		esac
 	} | cut -d'|' -f2- |
 		rg --color=always \
-                        --colors 'match:fg:red' \
-                        --colors 'match:style:bold' \
+			--colors 'match:fg:yellow' \
 			--colors 'line:none' \
 			--regexp "[^/]*${search_term}[^/]*"
 }
