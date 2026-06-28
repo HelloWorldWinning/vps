@@ -904,7 +904,7 @@ html, body {
 
 html * {
   font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "WebSFPro", "PingFang SC", "FZFangJunHeiS", sans-serif !important;
-  font-weight: 200 !important;
+  font-weight: 400 !important;
   text-align: justify !important;
   line-height: 140% !important;
 }
