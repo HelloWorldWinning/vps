@@ -313,13 +313,22 @@ endfunction
 
 hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cterm=bold
 set statusline=\ \ \
-      \ %t\
+      \ %t\ \
       \ %#StatusLineSize#\ \
       \%{FileSize_Token()}\ \
       \%#StatusLineCol#\
       \ %v\ \
       \%#StatusLine#\
-      \ \ \ %{expand('%:p')}
+      \ \ %{expand('%:p')}
+
+"set statusline=\ \ \
+"      \ %t\
+"      \ %#StatusLineSize#\ \
+"      \%{FileSize_Token()}\ \
+"      \%#StatusLineCol#\
+"      \ %v\ \
+"      \%#StatusLine#\
+"      \ \ \ %{expand('%:p')}
 
 
 
