@@ -23,85 +23,6 @@ security = HTTPBasic()
 app.mount("/static", StaticFiles(directory="."), name="static")
 
 
-DEFAULT_STYLE_NAME = "manni"
-DARK_STYLE_NAME = "solarized-dark"
-
-# Optional user-friendly aliases.
-# Pygments usually has solarized-dark / solarized-light, not plain solarized.
-STYLE_ALIASES = {
-    "solarized": "solarized-dark",
-}
-
-
-def resolve_file_view_options(request: Request) -> dict:
-    """
-    Supported:
-      /path/a.py
-      /path/a.py?dark
-      /path/a.py?theme=solarized
-      /path/a.py?theme=solarized-dark
-      /path/a.py?theme=whatever
-
-    Invalid / unknown query params fall back to the no-query default.
-    """
-    default = {
-        "style_name": DEFAULT_STYLE_NAME,
-        "raw": False,
-    }
-
-    if not request.query_params:
-        return default
-
-    params = {
-        key.strip().lower(): value.strip()
-        for key, value in request.query_params.multi_items()
-    }
-
-    allowed_params = {"dark", "raw", "theme"}
-
-    # Anything unrelated means: behave like /path/a.py
-    if any(key not in allowed_params for key in params):
-        return default
-
-    # Preserve existing raw behavior.
-    if "raw" in params:
-        return {
-            "style_name": DEFAULT_STYLE_NAME,
-            "raw": True,
-        }
-
-    # New behavior: explicit Pygments theme.
-    if "theme" in params:
-        requested_style = params.get("theme", "").strip()
-
-        if not requested_style:
-            return default
-
-        requested_style = STYLE_ALIASES.get(
-            requested_style.lower(),
-            requested_style,
-        )
-
-        try:
-            get_style_by_name(requested_style)
-        except ClassNotFound:
-            return default
-
-        return {
-            "style_name": requested_style,
-            "raw": False,
-        }
-
-    # Preserve old ?dark behavior.
-    if "dark" in params:
-        return {
-            "style_name": DARK_STYLE_NAME,
-            "raw": False,
-        }
-
-    return default
-
-
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = "a"
     correct_password = "a"
@@ -768,18 +689,10 @@ async def navigate(
             if full_path.endswith(".ipynb"):
                 return await notebooks(full_path, credentials)
             else:
-                # dark = "dark" in request.query_params
-                # raw = "raw" in request.query_params
-                # return await render_file_with_pygments(
-                #    full_path, ext, credentials, dark=dark, raw=raw
-                # )
-                view_options = resolve_file_view_options(request)
+                dark = "dark" in request.query_params
+                raw = "raw" in request.query_params
                 return await render_file_with_pygments(
-                    full_path,
-                    ext,
-                    credentials,
-                    style_name=view_options["style_name"],
-                    raw=view_options["raw"],
+                    full_path, ext, credentials, dark=dark, raw=raw
                 )
 
         else:
@@ -794,43 +707,40 @@ async def render_file_with_pygments(
     full_path: str,
     ext: str,
     credentials: HTTPBasicCredentials,
-    style_name: str = DEFAULT_STYLE_NAME,
+    dark: bool = False,
     raw: bool = False,
 ):
     if not os.path.isfile(full_path):
         raise HTTPException(status_code=404, detail="File not found")
-
     try:
         with open(full_path, "r", encoding="utf-8") as f:
             content = f.read()
     except UnicodeDecodeError:
         with open(full_path, "r", encoding="latin-1") as f:
             content = f.read()
-
+    # ← ADD THIS BLOCK right after reading content
     if raw:
         return PlainTextResponse(content=content)
 
     lexer_name = LEXER_MAPPING.get(ext, None)
-
     try:
         if lexer_name:
             lexer = get_lexer_by_name(lexer_name)
         else:
             lexer = guess_lexer_for_filename(full_path, content)
     except ClassNotFound:
+        # Fallback to TextLexer if no lexer is found
         lexer = TextLexer()
 
-    try:
-        style = get_style_by_name(style_name)
-    except ClassNotFound:
-        style = get_style_by_name(DEFAULT_STYLE_NAME)
+    # style_name = "manni"  # As in original CODE_16
+    # style = get_style_by_name(style_name)
 
+    # style = get_style_by_name("material") if dark else get_style_by_name("manni")
+    style = get_style_by_name("solarized-dark") if dark else get_style_by_name("manni")
     formatter = HtmlFormatter(linenos=True, style=style)
     highlighted_code = highlight(content, lexer, formatter)
-
     custom_css = """html *, pre { font-family: 'Source Code Pro', monospace !important; }
                    .linenodiv { color: #bbb !important; }"""
-
     html_content = f"""
     <html>
     <head>
@@ -845,7 +755,6 @@ async def render_file_with_pygments(
     </body>
     </html>
     """
-
     return HTMLResponse(content=html_content)
 
 
