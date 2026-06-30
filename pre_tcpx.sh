@@ -369,9 +369,6 @@ EOF
 ########### vmess end
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )
 
-#  dns_test_claude.sh
-bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
-
 bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh')
 
 bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh)
@@ -779,4 +776,7 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 #source "$HOME/.cargo/env" && rustup update
 #source "$HOME/.cargo/env" && rustup toolchain install stable
 #source "$HOME/.cargo/env" && rustup component add rust-analyzer
+#  dns_test_claude.sh
+bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
+
 sudo reboot
