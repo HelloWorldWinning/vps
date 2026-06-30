@@ -23,8 +23,12 @@ security = HTTPBasic()
 app.mount("/static", StaticFiles(directory="."), name="static")
 
 
-DEFAULT_STYLE_NAME = "manni"
-DARK_STYLE_NAME = "solarized-dark"
+# DEFAULT_STYLE_NAME = "manni"
+# DARK_STYLE_NAME = "solarized-dark"
+# DARK_STYLE_NAME = "fruity"
+
+DEFAULT_STYLE_NAME = os.getenv("DEFAULT_STYLE_NAME", "manni")
+DARK_STYLE_NAME = os.getenv("DARK_STYLE_NAME", "fruity")
 
 # Optional user-friendly aliases.
 # Pygments usually has solarized-dark / solarized-light, not plain solarized.
