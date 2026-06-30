@@ -506,19 +506,17 @@ async def navigate(
 ):
     # Decode the subpath
     subpath = unquote(subpath)
-
     # Handle double slashes by normalizing the path
     while "//" in subpath:
         subpath = subpath.replace("//", "/")
-
     if subpath.startswith("/"):
         subpath = subpath.lstrip("/")
+    # Build the full path
+    # full_path = os.path.normpath(os.path.join("/", subpath))
+    #   full_path = os.path.normpath(os.path.join("/", subpath))
+    full_path = os.path.normpath(os.path.join("/Host", subpath))
 
-    host_root = "/Host"
-    full_path = os.path.normpath(os.path.join(host_root, subpath))
-
-    # Prevent escaping /Host with paths like ../
-    if os.path.commonpath([host_root, full_path]) != host_root:
+    if not full_path.startswith("/Host"):
         raise HTTPException(status_code=404, detail="Path not found")
 
     if os.path.isdir(full_path):
@@ -527,38 +525,7 @@ async def navigate(
         except PermissionError:
             raise HTTPException(status_code=403, detail="Permission denied")
 
-        # Sort mode:
-        #   default: sort by name
-        #   ?s     : sort by file size, biggest first
-        #   ?t     : sort by modified time, latest first
-        sort_mode = None
-        if "s" in request.query_params:
-            sort_mode = "size"
-        elif "t" in request.query_params:
-            sort_mode = "time"
-
-        is_raw = "raw" in request.query_params
-        raw_suffix = "?raw" if is_raw else ""
-
-        def item_sort_key(item: str):
-            item_full_path = os.path.join(full_path, item)
-
-            try:
-                stats = os.stat(item_full_path)
-            except Exception:
-                stats = None
-
-            if sort_mode == "size":
-                if os.path.isdir(item_full_path):
-                    return (1, 0, item.lower())
-                return (0, -stats.st_size if stats else 0, item.lower())
-
-            if sort_mode == "time":
-                return (0, -stats.st_mtime if stats else 0, item.lower())
-
-            return item.lower()
-
-        items.sort(key=item_sort_key)
+        items.sort()
 
         # Create breadcrumb navigation
         breadcrumb = create_breadcrumb(full_path)
@@ -566,19 +533,18 @@ async def navigate(
         # Prepare table rows
         table_rows = []
 
-        # Add parent directory link if not in /Host root
-        if full_path != host_root:
+        # Add parent directory link if not in root
+        if full_path != "/":
             parent_full_path = os.path.dirname(full_path)
-            parent_rel_path = os.path.relpath(parent_full_path, host_root)
-            parent_url = "" if parent_rel_path == "." else quote(parent_rel_path)
-
+            parent_rel_path = os.path.relpath(parent_full_path, "/Host")
+            parent_url = quote(parent_rel_path)
             table_rows.append(
                 f"""
                 <tr>
                     <td>
                         <div class="item-container">
                             <span class="index-number">-</span>
-                            <a href="/{parent_url}{raw_suffix}" class="folder">../</a>
+                            <a href="/{parent_url}" class="folder">../</a>
                         </div>
                     </td>
                     <td class="size-col">-</td>
@@ -591,25 +557,22 @@ async def navigate(
         idx = 1
         for item in items:
             if item.startswith("."):
-                continue
+                continue  # Skip hidden files
 
             item_full_path = os.path.join(full_path, item)
-            item_rel_path = os.path.relpath(item_full_path, host_root)
+            item_rel_path = os.path.relpath(item_full_path, "/Host")
             item_url = quote(item_rel_path)
 
             if os.path.isdir(item_full_path):
                 item_display = f"{item}/"
                 item_class = "folder"
-                item_suffix = raw_suffix
             else:
                 item_display = item
                 item_class = "file"
-                item_suffix = raw_suffix
 
             try:
                 item_info = get_file_info(item_full_path)
                 item_modified = item_info["modified"]
-
                 if os.path.isdir(item_full_path):
                     item_size = "-"
                 else:
@@ -624,7 +587,7 @@ async def navigate(
                     <td>
                         <div class="item-container">
                             <span class="index-number">{idx}.</span>
-                            <a href="/{item_url}{item_suffix}" class="{item_class}">{html.escape(item_display)}</a>
+                            <a href="/{item_url}" class="{item_class}">{html.escape(item_display)}</a>
                         </div>
                     </td>
                     <td class="size-col">{item_size}</td>
@@ -632,9 +595,9 @@ async def navigate(
                 </tr>
             """
             )
-
             idx += 1
 
+        # Create HTML content with table and custom styling
         html_content = f"""
         <html>
         <head>
@@ -649,34 +612,23 @@ async def navigate(
                     src: url('https://github.com/HelloWorldWinning/vps/raw/main/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf') format('truetype');
                 }}
 
-                @font-face {{
-                    font-family: 'WebSFPro';
-                    src: url('https://raw.githubusercontent.com/HelloWorldWinning/vps/main/folder_font_test/SF_Pro/SF-Pro.ttf') format('truetype');
-                    font-display: swap;
+                html {{
+                    zoom: 200%;
                 }}
 
-                body,
-                body * {{
-                    font-family: "SF Pro", -apple-system, BlinkMacSystemFont,
-                                 "WebSFPro", "PingFang SC", "FZFangJunHeiS",
-                                 sans-serif;
+                body, html * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
                 }}
 
-                pre,
-                pre *,
-                code,
-                code *,
-                .size-col,
-                .index-number {{
-                    font-family: "Source Code Pro", "FZFangJunHeiS",
-                                 ui-monospace, SFMono-Regular, Menlo, Monaco,
-                                 Consolas, "Liberation Mono", monospace;
+                pre, pre * {{
+                    font-family: 'Source Code Pro', 'FZFangJunHeiS', monospace;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
                 }}
 
                 body {{
-                    margin: 0px 5px 2px 5px;
+                    margin: 20px;
                     background-color: #f8f9fa;
-                    overflow-x: hidden;
                 }}
 
                 .breadcrumb {{
@@ -690,9 +642,7 @@ async def navigate(
                     white-space: nowrap;
                 }}
 
-                .breadcrumb-item,
-                .breadcrumb-item *,
-                .breadcrumb > :not(a) {{
+                .breadcrumb-item, .breadcrumb-item *, .breadcrumb > :not(a) {{
                     color: #1d910d;
                     text-decoration: none;
                     transition: color 0.2s;
@@ -700,17 +650,18 @@ async def navigate(
                 }}
 
                 .breadcrumb-item:hover {{
-                    color: #FFFFFF !important;
-                    background-color: #EA580C !important;
-                    border-radius: 5px;
-                    border-color: #C2410C;
-                    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.12);
+  color: #fff !important;
+  background-color: #EA580C !important;
+  border-color: #C2410C;
+  box-shadow: 0 4px 14px rgba(234,88,12,0.3);
+  border-radius: 5px;
+
+
                 }}
 
                 .item-container {{
                     display: flex;
                     align-items: center;
-                    min-width: 0;
                 }}
 
                 .index-number {{
@@ -723,31 +674,21 @@ async def navigate(
                 table {{
                     border-collapse: collapse;
                     width: 100%;
-                    table-layout: fixed;
                     background-color: white;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                     border-radius: 4px;
                 }}
 
-                th,
-                td {{
+                th, td {{
                     padding: 12px 15px;
                     text-align: left;
                     border-bottom: 1px solid #eee;
-                    overflow-wrap: anywhere;
-                    word-break: break-word;
                 }}
 
                 th {{
                     background-color: #f8f9fa;
                     font-weight: bold;
                     color: #495057;
-                }}
-
-                .item-container a {{
-                    min-width: 0;
-                    overflow-wrap: anywhere;
-                    word-break: break-word;
                 }}
 
                 tr:hover {{
@@ -759,7 +700,7 @@ async def navigate(
                 }}
 
                 .folder {{
-                    background-color: transparent;
+                    background-color: transparent ;
                     color: #1d910d;
                     font-weight: bold;
                     font-size: 120%;
@@ -769,33 +710,24 @@ async def navigate(
                 }}
 
                 .folder:hover {{
-                    background-color: transparent;
+                    background-color: transparent ;
                 }}
 
                 .file {{
-                    color: #db0bee;
-                    background-color: transparent;
+                    color: #db0bee ;
+                    background-color: transparent ;
                     padding: 3px 8px;
                     border-radius: 4px;
                     transition: background-color 0.2s;
                 }}
 
                 .file:hover {{
-                    background-color: transparent;
+                    background-color: transparent ;
                 }}
 
                 .size-col {{
+                    font-family: 'Source Code Pro', monospace;
                     text-align: right;
-                }}
-
-                table th:nth-child(2),
-                table td:nth-child(2) {{
-                    width: 70px;
-                }}
-
-                table th:nth-child(3),
-                table td:nth-child(3) {{
-                    width: 15%;
                 }}
 
                 h2 {{
@@ -827,29 +759,35 @@ async def navigate(
         </body>
         </html>
         """
-
         return HTMLResponse(content=html_content)
 
     elif os.path.isfile(full_path):
+        # Handle files
         ext = os.path.splitext(full_path)[1].lower()
-
         if ext in LEXER_MAPPING or full_path.endswith(".ipynb"):
             if full_path.endswith(".ipynb"):
                 return await notebooks(full_path, credentials)
+            else:
+                # dark = "dark" in request.query_params
+                # raw = "raw" in request.query_params
+                # return await render_file_with_pygments(
+                #    full_path, ext, credentials, dark=dark, raw=raw
+                # )
+                view_options = resolve_file_view_options(request)
+                return await render_file_with_pygments(
+                    full_path,
+                    ext,
+                    credentials,
+                    style_name=view_options["style_name"],
+                    raw=view_options["raw"],
+                )
 
-            view_options = resolve_file_view_options(request)
+        else:
+            # Serve the file
+            return FileResponse(full_path)
 
-            return await render_file_with_pygments(
-                full_path,
-                ext,
-                credentials,
-                style_name=view_options["style_name"],
-                raw=view_options["raw"],
-            )
-
-        return FileResponse(full_path)
-
-    raise HTTPException(status_code=404, detail="Path not found")
+    else:
+        raise HTTPException(status_code=404, detail="Path not found")
 
 
 async def render_file_with_pygments(
