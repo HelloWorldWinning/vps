@@ -1064,7 +1064,7 @@ https://zhile.one/archives/1404.html
 		echo "sleep 3 seconds..."
 		sleep 3
 		#netstat -tulnp |grep 166
-		netstat -tulnp | grep -E '166|177'
+		netstat -tulnp | grep -E '166|177|16'
 
 		#netstat -tulnp |grep 166 | wc -l
 		;;
