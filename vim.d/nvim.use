@@ -758,18 +758,69 @@ set clipboard+=unnamedplus
 
 
 
+"
+"" Tree-sitter setup
+"lua << EOF
+"require'nvim-treesitter.configs'.setup {
+"  ensure_installed = { "python", "lua", "javascript", "typescript", "html", "css" },
+"  highlight = {
+"    enable = true,
+"  },
+"}
+"EOF
+"
+"" Tree-sitter folding
+"set foldmethod=expr
+"set foldexpr=v:lua.vim.treesitter.foldexpr()
+"set foldenable
+"set foldlevel=99
+"set foldlevelstart=99
+"set foldcolumn=1
+"
+"" Fold keymaps
+"nnoremap <leader>zc zc
+"nnoremap <leader>zo zo
+"nnoremap <leader>za za
+"nnoremap <leader>zM zM
+"nnoremap <leader>zR zR
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+" ============================================================
 " Tree-sitter setup
+" ============================================================
+
 lua << EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "python", "lua", "javascript", "typescript", "html", "css" },
-  highlight = {
-    enable = true,
-  },
+require('nvim-treesitter.configs').setup {
+ensure_installed = {
+  "python",
+  "lua",
+  "javascript",
+  "typescript",
+  "html",
+  "css",
+},
+ highlight = {
+  enable = true,
+},
 }
 EOF
 
+" ============================================================
 " Tree-sitter folding
+" ============================================================
+
 set foldmethod=expr
 set foldexpr=v:lua.vim.treesitter.foldexpr()
 set foldenable
@@ -777,9 +828,74 @@ set foldlevel=99
 set foldlevelstart=99
 set foldcolumn=1
 
-" Fold keymaps
 nnoremap <leader>zc zc
 nnoremap <leader>zo zo
 nnoremap <leader>za za
 nnoremap <leader>zM zM
 nnoremap <leader>zR zR
+
+" ============================================================
+" Base colors (old style)
+" ============================================================
+
+hi Normal         guifg=#09F418 guibg=#283237 ctermfg=green ctermbg=NONE gui=NONE cterm=NONE
+hi NormalNC       guifg=#09F418 guibg=#283237 gui=NONE cterm=NONE
+
+hi CursorLine     guibg=#505050 gui=NONE cterm=NONE
+hi CursorColumn   guibg=#505050 gui=NONE cterm=NONE
+
+hi LineNr         guifg=#53656e gui=NONE cterm=NONE
+hi CursorLineNr   guifg=#FDFDFD guibg=#CD2222 gui=NONE cterm=NONE
+
+hi FoldColumn     guifg=#666666 guibg=#283237 gui=NONE cterm=NONE
+hi Folded         guifg=#AAAAAA guibg=#333333 gui=NONE cterm=NONE
+
+" ============================================================
+" Remove ALL bold from common Vim groups
+" ============================================================
+
+hi Function      gui=NONE cterm=NONE
+hi Type          gui=NONE cterm=NONE
+hi Keyword       gui=NONE cterm=NONE
+hi Conditional   gui=NONE cterm=NONE
+hi Repeat        gui=NONE cterm=NONE
+hi Statement     gui=NONE cterm=NONE
+hi Identifier    gui=NONE cterm=NONE
+hi Constant      gui=NONE cterm=NONE
+hi PreProc       gui=NONE cterm=NONE
+hi Special       gui=NONE cterm=NONE
+
+" ============================================================
+" Tree-sitter colors (NO BOLD)
+" ============================================================
+
+hi @variable          guifg=#09F418 gui=NONE cterm=NONE
+hi @parameter         guifg=#09F418 gui=NONE cterm=NONE
+hi @property          guifg=#09F418 gui=NONE cterm=NONE
+hi @field             guifg=#09F418 gui=NONE cterm=NONE
+
+hi @function          guifg=#80C0FF gui=NONE cterm=NONE
+hi @function.call     guifg=#80C0FF gui=NONE cterm=NONE
+hi @function.builtin  guifg=#87AFFF gui=NONE cterm=NONE
+
+hi @keyword           guifg=#FF8080 gui=NONE cterm=NONE
+hi @keyword.function  guifg=#FF8080 gui=NONE cterm=NONE
+hi @conditional       guifg=#FF8080 gui=NONE cterm=NONE
+hi @repeat            guifg=#FF8080 gui=NONE cterm=NONE
+
+hi @string            guifg=#D7AF5F gui=NONE cterm=NONE
+hi @string.escape     guifg=#FFD787 gui=NONE cterm=NONE
+
+hi @number            guifg=#FFAF5F gui=NONE cterm=NONE
+hi @float             guifg=#FFAF5F gui=NONE cterm=NONE
+hi @boolean           guifg=#FFAF5F gui=NONE cterm=NONE
+
+hi @type              guifg=#5FD7D7 gui=NONE cterm=NONE
+hi @type.builtin      guifg=#5FD7D7 gui=NONE cterm=NONE
+
+hi @comment           guifg=#707070 gui=italic cterm=italic
+
+hi @operator          guifg=#FFFFFF gui=NONE cterm=NONE
+hi @punctuation       guifg=#FFFFFF gui=NONE cterm=NONE
+
+hi CursorLineNr guifg=#FDFDFD guibg=#CD2222 gui=bold cterm=bold
