@@ -750,3 +750,36 @@ vim.g.clipboard = {
 }
 EOF
 set clipboard+=unnamedplus
+
+
+
+
+
+
+
+
+
+" Tree-sitter setup
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "python", "lua", "javascript", "typescript", "html", "css" },
+  highlight = {
+    enable = true,
+  },
+}
+EOF
+
+" Tree-sitter folding
+set foldmethod=expr
+set foldexpr=v:lua.vim.treesitter.foldexpr()
+set foldenable
+set foldlevel=99
+set foldlevelstart=99
+set foldcolumn=1
+
+" Fold keymaps
+nnoremap <leader>zc zc
+nnoremap <leader>zo zo
+nnoremap <leader>za za
+nnoremap <leader>zM zM
+nnoremap <leader>zR zR
