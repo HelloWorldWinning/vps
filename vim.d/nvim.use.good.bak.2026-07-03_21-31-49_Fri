@@ -11,23 +11,6 @@ let g:fzf_vim = {}
 " https://github.com/numirias/semshi    python good colore
 
 call plug#begin('~/.local/share/nvim/plugged')
-
-Plug 'folke/tokyonight.nvim'
-Plug 'uncleTen276/dark_flat.nvim'
-
-Plug 'olimorris/onedarkpro.nvim'
-Plug 'navarasu/onedark.nvim'
-Plug 'EdenEast/nightfox.nvim'
-Plug 'mitsuhiko/fruity-vim-colorscheme'
-
-
-
-Plug 'mitsuhiko/fruity-vim-colorscheme'
-Plug 'zootedb0t/citruszest.nvim'
-
-
-
-
 Plug 'ojroques/nvim-osc52'
 
 "Plug 'neovim/nvim-lspconfig'
@@ -129,12 +112,8 @@ call plug#end()
 set termguicolors       " enable true colors support
 
 set background=dark         " Use dark background
-"let g:gruvbox_contrast_dark = 'soft'  " Set hard contrast
-let g:gruvbox_contrast_dark = 'hard'  " Set hard contrast
-colorscheme gruvbox        
-"colorscheme carbonfox
-"colorscheme fruity
-"colorscheme dark_flat
+let g:gruvbox_contrast_dark = 'soft'  " Set hard contrast
+colorscheme gruvbox         " Apply the gruvbox colorscheme
 
 
 
@@ -698,7 +677,6 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 " --- LSP Configuration ---
 lua << EOF
 -- Enable Pyright (uses the server config shipped by nvim-lspconfig)
--- vim.lsp.enable('pyright')
 
 -- Optional: buffer-local keymaps only when LSP attaches
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -711,81 +689,36 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 EOF
 
-
-
-
-
-
 lua << EOF
 vim.diagnostic.config({ signs = false })
 EOF
 
 
 lua << EOF
--- vim.lsp.enable('pyright')
 vim.lsp.enable('rust_analyzer')
 EOF
 
 
-"lua << EOF
-"vim.lsp.config('pyright', {
-"  root_dir = function(bufnr, on_dir)
-"    local fname = vim.api.nvim_buf_get_name(bufnr)
-"
-"    local root = vim.fs.root(fname, {
-"      'pyrightconfig.json',
-"      'pyproject.toml',
-"      '.git',
-"    })
-"
-"    on_dir(root or vim.fn.getcwd())
-"  end,
-"})
-"
-"vim.lsp.enable('pyright')
-"EOF
 
-
-
-"lua << EOF
-"vim.lsp.config('basedpyright', {
-" root_dir = function(bufnr, on_dir)
-"   local fname = vim.api.nvim_buf_get_name(bufnr)
-"    local root = vim.fs.root(fname, {
-"     'pyrightconfig.json',
-"     'pyproject.toml',
-"     '.git',
-"   })
-"    on_dir(root or vim.fn.getcwd())
-" end,
-"})
-"vim.lsp.enable('basedpyright')
-"EOF
 
 lua << EOF
 vim.lsp.config('basedpyright', {
-  root_dir = function(bufnr, on_dir)
-    local fname = vim.api.nvim_buf_get_name(bufnr)
+ root_dir = function(bufnr, on_dir)
+   local fname = vim.api.nvim_buf_get_name(bufnr)
     local root = vim.fs.root(fname, {
-      'pyrightconfig.json',
-      'pyproject.toml',
-      '.git',
-    })
+     'pyrightconfig.json',
+     'pyproject.toml',
+     '.git',
+   })
     on_dir(root or vim.fn.getcwd())
-  end,
-
-  settings = {
-    basedpyright = {
-      analysis = {
-        typeCheckingMode = "off",
-        diagnosticMode = "workspace",
-      },
-    },
-  },
+ end,
 })
-
 vim.lsp.enable('basedpyright')
 EOF
+
+
+
+
 
 
 lua << EOF
@@ -822,6 +755,44 @@ set clipboard+=unnamedplus
 
 
 
+"
+"" Tree-sitter setup
+"lua << EOF
+"require'nvim-treesitter.configs'.setup {
+"  ensure_installed = { "python", "lua", "javascript", "typescript", "html", "css" },
+"  highlight = {
+"    enable = true,
+"  },
+"}
+"EOF
+"
+"" Tree-sitter folding
+"set foldmethod=expr
+"set foldexpr=v:lua.vim.treesitter.foldexpr()
+"set foldenable
+"set foldlevel=99
+"set foldlevelstart=99
+"set foldcolumn=1
+"
+"" Fold keymaps
+"nnoremap <leader>zc zc
+"nnoremap <leader>zo zo
+"nnoremap <leader>za za
+"nnoremap <leader>zM zM
+"nnoremap <leader>zR zR
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 " ============================================================
 " Tree-sitter setup
@@ -829,27 +800,20 @@ set clipboard+=unnamedplus
 
 lua << EOF
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {
-    "python",
-    "lua",
-    "javascript",
-    "typescript",
-    "html",
-    "css",
-  },
-
-  highlight = {
-    enable = true,
-  },
+ensure_installed = {
+  "python",
+  "lua",
+  "javascript",
+  "typescript",
+  "html",
+  "css",
+},
+ highlight = {
+  enable = true,
+},
 }
 EOF
 
-"lua << EOF
-"vim.diagnostic.config({
-"  underline = false,
-"})
-"EOF
-"
 " ============================================================
 " Tree-sitter folding
 " ============================================================
@@ -932,30 +896,3 @@ hi @operator          guifg=#FFFFFF gui=NONE cterm=NONE
 hi @punctuation       guifg=#FFFFFF gui=NONE cterm=NONE
 
 hi CursorLineNr guifg=#FDFDFD guibg=#CD2222 gui=bold cterm=bold
-hi @punctuation guifg=#808080 gui=NONE
-
-
-
-hi @function.call guifg=#8FBF8F gui=NONE
-
-hi @namespace guifg=#5FD7D7 gui=NONE cterm=NONE
-
-
-hi @module guifg=#5FD7D7 gui=NONE cterm=NONE
-
-
-
-"
-"lua << EOF
-"vim.api.nvim_create_autocmd("CursorHold", {
-"  callback = function()
-"    vim.diagnostic.open_float(nil, {
-"      focus = false,
-"      scope = "cursor",
-"    })
-"  end,
-"})
-"EOF
-"set updatetime=300
-"
-"
