@@ -428,7 +428,8 @@ bash <(curl -L4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/han
 
 sudo apt update
 sudo apt install -y nodejs npm
-sudo npm install -g pyright
+#sudo npm install -g pyright
+npm install -g basedpyright
 
 #source "$HOME/.cargo/env" && rustup update
 #source "$HOME/.cargo/env" && rustup toolchain install stable

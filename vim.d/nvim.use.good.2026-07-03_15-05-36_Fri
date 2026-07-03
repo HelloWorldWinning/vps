@@ -677,6 +677,7 @@ onoremap S <cmd>lua require("flash").treesitter()<cr>
 " --- LSP Configuration ---
 lua << EOF
 -- Enable Pyright (uses the server config shipped by nvim-lspconfig)
+-- vim.lsp.enable('pyright')
 
 -- Optional: buffer-local keymaps only when LSP attaches
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -695,25 +696,27 @@ EOF
 
 
 lua << EOF
+-- vim.lsp.enable('pyright')
 vim.lsp.enable('rust_analyzer')
 EOF
 
 
-
-
 lua << EOF
-vim.lsp.config('basedpyright', {
- root_dir = function(bufnr, on_dir)
-   local fname = vim.api.nvim_buf_get_name(bufnr)
+vim.lsp.config('pyright', {
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+
     local root = vim.fs.root(fname, {
-     'pyrightconfig.json',
-     'pyproject.toml',
-     '.git',
-   })
+      'pyrightconfig.json',
+      'pyproject.toml',
+      '.git',
+    })
+
     on_dir(root or vim.fn.getcwd())
- end,
+  end,
 })
-vim.lsp.enable('basedpyright')
+
+vim.lsp.enable('pyright')
 EOF
 
 
