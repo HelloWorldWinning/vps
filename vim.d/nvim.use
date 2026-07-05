@@ -183,6 +183,7 @@ hi CursorLineNr term=bold cterm=bold gui=bold guifg=#FDFDFD guibg=#CD2222
 lua << EOF
 vim.o.statuscolumn = "%=%l%#Normal# "
 EOF
+set statuscolumn=%4l\
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
