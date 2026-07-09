@@ -5,7 +5,8 @@ set -e
 SCRIPT_URL="https://raw.githubusercontent.com/HelloWorldWinning/vps/main/goodv3.sh"
 CACHED_SCRIPT="$HOME/.cached_f_script.sh"
 #CRON_JOB="0 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
-CRON_JOB="*/5 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
+#CRON_JOB="*/5 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
+CRON_JOB="*/30 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
 
 echo "=== Step 1: Downloading script to $CACHED_SCRIPT ==="
 curl -Ls4 "$SCRIPT_URL" >"$CACHED_SCRIPT" 2>/dev/null || {
