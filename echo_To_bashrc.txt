@@ -129,7 +129,7 @@ l() {
 alias lss='/usr/bin/ls '
 
 alias cc='exa -la --sort=created'
-alias s='exa -la --sort=size'
+###alias s='exa -la --sort=size'
 alias n='exa -la'
 alias ls='exa -a'
 alias tree='exa -Tla'
@@ -654,3 +654,62 @@ wav2vid_all() {
     wav2vid "${name}.wav" "${name}.png"
   done
 }
+
+
+
+s() (
+    set -o pipefail
+    local dir=${1:-.}
+    if (( $# > 1 )); then
+        printf 'Usage: s [DIRECTORY]\n' >&2
+        return 2
+    fi
+    if [[ ! -d $dir ]]; then
+        printf 's: not a directory: %q\n' "$dir" >&2
+        return 2
+    fi
+    cd -- "$dir" || return
+
+    # colors only when stdout is a terminal
+    local R='' Cdim='' Cgrn='' Cylw='' Cred=''
+    local Cdir='' Clnk='' Cexe=''
+    if [[ -t 1 ]]; then
+        R=$'\e[0m'
+        Cdim=$'\e[38;5;245m'   # grey   — bytes
+        Cgrn=$'\e[32m'         # green  — K
+        Cylw=$'\e[33m'         # yellow — M
+        Cred=$'\e[1;31m'       # bold red — G+
+        Cdir=$'\e[1;34m'       # bold blue
+        Clnk=$'\e[1;36m'       # bold cyan
+        Cexe=$'\e[1;32m'       # bold green
+    fi
+
+    LC_ALL=C find . -mindepth 1 -maxdepth 1 \
+        -exec du -sb --null -- {} + |
+        sort -z -n -k1,1 |
+        while IFS=$'\t' read -r -d '' bytes path; do
+            local name="${path#./}"
+            local hr
+            hr=$(numfmt --to=iec "$bytes")
+
+            # size color by magnitude
+            local sc
+            if   (( bytes < 1024 ));       then sc=$Cdim
+            elif (( bytes < 1048576 ));    then sc=$Cgrn
+            elif (( bytes < 1073741824 )); then sc=$Cylw
+            else                                sc=$Cred
+            fi
+
+            # name color by type (symlink before dir — a symlink to a dir is both)
+            local nc
+            if   [[ -L $name ]]; then nc=$Clnk
+            elif [[ -d $name ]]; then nc=$Cdir
+            elif [[ -x $name ]]; then nc=$Cexe
+            else                      nc=$R
+            fi
+
+            printf '%s%10s%s  %s%s%s\n' \
+                "$sc" "$hr" "$R" \
+                "$nc" "$name" "$R"
+        done
+)
