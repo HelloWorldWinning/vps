@@ -781,4 +781,7 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
 
 pip install --break-system-packages tiktoken
+#  setup_7788_web_download_docker.sh
+bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh)
+
 sudo reboot
