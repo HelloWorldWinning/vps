@@ -779,4 +779,5 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 #  dns_test_claude.sh
 bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
 
+pip install --break-system-packages tiktoken
 sudo reboot
