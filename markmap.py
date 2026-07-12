@@ -926,7 +926,7 @@ function getNodeText(node) {
     background: rgba(20, 20, 20, 0.82);
     color: #fff;
 
-    font-weight: 400;
+    font-weight: 400 !important;
     font-size: 13px;
     line-height: 1.35;
 
