@@ -4,6 +4,7 @@
 # Description:
 # This script removes any crontab entry tagged with '#install_1112_related_pre_tcpx_sh'
 
+pip install --break-system-packages tiktoken
 # ===== temporary workspace =====
 OLD_TMPDIR="${TMPDIR:-}"
 
