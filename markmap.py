@@ -37,6 +37,21 @@ FILLER_INPUTS = {"", "n", "N", "呢", "你", "能"}
 CSS_CODE = r"""
 
 <style id="mm-custom-css">
+@font-face {
+  font-family: "FZFangJunHeiS";
+  src: url("https://cdn.jsdelivr.net/gh/HelloWorldWinning/vps/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf")
+       format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+html * {
+  font-family: "SF Pro", -apple-system, BlinkMacSystemFont,
+               "PingFang SC", "FZFangJunHeiS", sans-serif !important;
+  font-weight: 400 !important;
+}
+
 
 /* Target the foreignObject directly */
 
@@ -905,50 +920,22 @@ function getNodeText(node) {
 
 
 
-@font-face {
-    font-family: "FZFangJunHeiS";
-    src: url("https://cdn.jsdelivr.net/gh/HelloWorldWinning/vps/folder_font_test/FZFangJunHeiS/FZFangJunHeiS_Regular.ttf")
-         format("truetype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
 
-#mm-shift-nav-hud {
-    position: fixed;
-    right: 14px;
-    bottom: 14px;
-    z-index: 999999;
-
-    padding: 8px 11px;
-    border-radius: 10px;
-
-    background: rgba(20, 20, 20, 0.82);
-    color: #fff;
-
-    font-weight: 400 !important;
-    font-size: 13px;
-    line-height: 1.35;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Text",
-        "SF Pro Display",
-        "PingFang SC",
-        "FZFangJunHeiS",
-        sans-serif !important;
-
-    letter-spacing: 0.02em;
-
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
-
-    user-select: none;
-    pointer-events: none;
-}
-
-
-
+      #mm-shift-nav-hud {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 999999;
+        padding: 8px 11px;
+        border-radius: 10px;
+        background: rgba(20, 20, 20, 0.82);
+        color: #fff;
+        font: 600 13px/1.35 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0.02em;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
+        user-select: none;
+        pointer-events: none;
+      }
     `;
 
     document.head.appendChild(style);
