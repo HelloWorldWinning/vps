@@ -180,24 +180,10 @@ hi statusline guifg=Magenta guibg=Black  ctermfg=Magenta ctermbg=Black
 """hi CursorLineNr  term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold  guifg=Black guibg=Red
 "hi CursorLineNr term=bold ctermbg=Red cterm=bold ctermfg=White gui=bold guifg=#ff0000 guibg=NONE              
 hi CursorLineNr term=bold cterm=bold gui=bold guifg=#FDFDFD guibg=#CD2222
-
-"--vim.o.statuscolumn = "%=%l%#Normal# "
 lua << EOF
-vim.opt.statuscolumn = table.concat({
-    "%=",
-    "%4l",
-    " ",          -- padding, inherits LineNr/CursorLineNr
-    "%#Normal#",
-    " ",          -- separator
-})
+vim.o.statuscolumn = "%=%l%#Normal# "
 EOF
-
-"set statuscolumn=%4l\ 
-"
-"set statuscolumn=%4l\ 
-"set statuscolumn=%=%l\ 
-"set numberwidth=1
-
+set statuscolumn=%4l\
 hi statusline  term=None ctermbg=Red cterm=none ctermfg=White gui=none  guifg=magenta guibg=black
 
 "set statusline+=\ \ \ \ \ \ [\ %l\ ]:[\ %v\ ]\ \ \ \ \ \ %p%%\ %L\ \ \ \ \ %F
