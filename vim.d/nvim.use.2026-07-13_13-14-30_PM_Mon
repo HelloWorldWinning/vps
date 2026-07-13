@@ -778,34 +778,7 @@ EOF
 "vim.lsp.enable('basedpyright')
 "EOF
 
-"lua << EOF
-"vim.lsp.config('basedpyright', {
-"  root_dir = function(bufnr, on_dir)
-"    local fname = vim.api.nvim_buf_get_name(bufnr)
-"    local root = vim.fs.root(fname, {
-"      'pyrightconfig.json',
-"      'pyproject.toml',
-"      '.git',
-"    })
-"    on_dir(root or vim.fn.getcwd())
-"  end,
-"
-"  settings = {
-"    basedpyright = {
-"      analysis = {
-"        typeCheckingMode = "off",
-"        diagnosticMode = "workspace",
-"      },
-"    },
-"  },
-"})
-"
-"vim.lsp.enable('basedpyright')
-"EOF
-
-
 lua << EOF
--- Python: basedpyright
 vim.lsp.config('basedpyright', {
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
@@ -817,10 +790,6 @@ vim.lsp.config('basedpyright', {
     on_dir(root or vim.fn.getcwd())
   end,
 
-  filetypes = {
-    "python",
-  },
-
   settings = {
     basedpyright = {
       analysis = {
@@ -831,37 +800,7 @@ vim.lsp.config('basedpyright', {
   },
 })
 
-
--- Rust: rust_analyzer
-vim.lsp.config('rust_analyzer', {
-  filetypes = {
-    "rust",
-  },
-
-  root_dir = function(bufnr, on_dir)
-    local fname = vim.api.nvim_buf_get_name(bufnr)
-    local root = vim.fs.root(fname, {
-      'Cargo.toml',
-      '.git',
-    })
-    on_dir(root or vim.fn.getcwd())
-  end,
-
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = {
-        allFeatures = true,
-      },
-      checkOnSave = {
-        command = "clippy",
-      },
-    },
-  },
-})
-
-
 vim.lsp.enable('basedpyright')
-vim.lsp.enable('rust_analyzer')
 EOF
 
 
