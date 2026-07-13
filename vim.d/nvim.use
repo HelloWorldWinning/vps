@@ -1036,3 +1036,11 @@ hi @module guifg=#5FD7D7 gui=NONE cterm=NONE
 "set updatetime=300
 "
 "
+
+
+
+lua << EOF
+vim.diagnostic.config({
+  underline = false,
+})
+EOF
