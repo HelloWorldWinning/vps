@@ -963,17 +963,17 @@ hi Folded         guifg=#AAAAAA guibg=#333333 gui=NONE cterm=NONE
 " ============================================================
 " Remove ALL bold from common Vim groups
 " ============================================================
-""  https://share.gemini.google/zlonmCsIyFUU
-hi! link Function Normal
-hi! link Type Normal
-hi! link Keyword Normal
-hi! link Conditional Normal
-hi! link Repeat Normal
-hi! link Statement Normal
-hi! link Identifier Normal
-hi! link Constant Normal
-hi! link PreProc Normal
-hi! link Special Normal
+
+hi Function      gui=NONE cterm=NONE
+hi Type          gui=NONE cterm=NONE
+hi Keyword       gui=NONE cterm=NONE
+hi Conditional   gui=NONE cterm=NONE
+hi Repeat        gui=NONE cterm=NONE
+hi Statement     gui=NONE cterm=NONE
+hi Identifier    gui=NONE cterm=NONE
+hi Constant      gui=NONE cterm=NONE
+hi PreProc       gui=NONE cterm=NONE
+hi Special       gui=NONE cterm=NONE
 
 " ============================================================
 " Tree-sitter colors (NO BOLD)
