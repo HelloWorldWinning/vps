@@ -1,3 +1,5 @@
+" https://chatgpt.com/share/6a586215-bee4-83e8-941f-5f6f77594a8a  Fixing nvim-treesitter Error
+" https://share.gemini.google/zlonmCsIyFUU  __Fix Neovim Color Flash
 "set term=xterm-256color   docker nvim config
 set termguicolors
 let g:deoplete#enable_at_startup = 1
