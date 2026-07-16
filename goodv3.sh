@@ -1201,6 +1201,8 @@ https://zhile.one/archives/1404.html
 	get_tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
 	me) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
 
+	cx) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed" ;;
+
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
 	naive_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
 	naive_cli) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
