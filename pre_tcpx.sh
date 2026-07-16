@@ -783,5 +783,6 @@ bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/d
 pip install --break-system-packages tiktoken
 #  setup_7788_web_download_docker.sh
 bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh)
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed"
 
 sudo reboot
