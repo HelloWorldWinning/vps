@@ -3,18 +3,14 @@
 # Robust tar.xz compressor
 #
 # Usage:
-#   bash compress_xz file/folder [file/folder ...]
+#   bash compress_xz file folder file2 folder2 ...
 #
-# Output:
-#   Single input:
-#       input_name.tar.xz
-#
-#   Multiple inputs:
-#       archive_YYYYMMDD_HHMMSS.tar.xz
-
+# Then:
+#   asks compression level
+#   waits 3 seconds
+#   default = 6
 
 set -euo pipefail
-
 
 DEFAULT_LEVEL=6
 READ_TIMEOUT=3
@@ -25,16 +21,15 @@ usage()
     echo "Usage:"
     echo "  $0 file/folder [file/folder ...]"
     echo
-    echo "Examples:"
-    echo "  $0 folder"
-    echo "  $0 file"
+    echo "Example:"
+    echo "  $0 trading_system_v2.2_train_high/"
     echo "  $0 folder1 file1 folder2"
     exit 1
 }
 
 
 # -----------------------------
-# Require input
+# Require input files/folders
 # -----------------------------
 if [[ $# -eq 0 ]]; then
     usage
@@ -56,7 +51,7 @@ fi
 
 
 # -----------------------------
-# Validate input paths
+# Validate paths
 # -----------------------------
 INPUTS=()
 
@@ -73,35 +68,16 @@ done
 
 
 # -----------------------------
-# Determine output filename
+# Output name
 # -----------------------------
-if [[ ${#INPUTS[@]} -eq 1 ]]; then
-
-    # Single file/folder
-    BASE_NAME="$(basename "${INPUTS[0]}")"
-
-    OUTPUT="${BASE_NAME}.tar.xz"
-
-else
-
-    # Multiple files/folders
-    OUTPUT="archive_$(date +%Y%m%d_%H%M%S).tar.xz"
-
-fi
-
-
-# Avoid overwriting existing archive
-if [[ -e "$OUTPUT" ]]; then
-    echo "ERROR: output already exists: $OUTPUT"
-    exit 1
-fi
+NAME="archive_$(date +%Y%m%d_%H%M%S).tar.xz"
 
 
 echo
 echo "======================================"
 echo " Compression started"
 echo " Compression level : $LEVEL"
-echo " Output            : $OUTPUT"
+echo " Output            : $NAME"
 echo
 echo " Input:"
 printf "   %s\n" "${INPUTS[@]}"
@@ -121,12 +97,12 @@ tar \
     -T0 \
     -"${LEVEL}" \
     --verbose \
-    > "$OUTPUT"
+    > "$NAME"
 
 
 echo
 echo "======================================"
-echo " Compression completed"
-echo " File : $OUTPUT"
-echo " Size : $(du -h "$OUTPUT" | awk '{print $1}')"
+echo " Done"
+echo " File : $NAME"
+echo " Size : $(du -h "$NAME" | awk '{print $1}')"
 echo "======================================"
