@@ -75,25 +75,22 @@ done
 # -----------------------------
 # Determine output filename
 # -----------------------------
-SINGLE_INPUT=false
-
 if [[ ${#INPUTS[@]} -eq 1 ]]; then
 
-    SINGLE_INPUT=true
-
+    # Single file/folder
     BASE_NAME="$(basename "${INPUTS[0]}")"
+
     OUTPUT="${BASE_NAME}.tar.xz"
 
 else
 
+    # Multiple files/folders
     OUTPUT="archive_$(date +%Y%m%d_%H%M%S).tar.xz"
 
 fi
 
 
-# -----------------------------
-# Avoid overwrite
-# -----------------------------
+# Avoid overwriting existing archive
 if [[ -e "$OUTPUT" ]]; then
     echo "ERROR: output already exists: $OUTPUT"
     exit 1
@@ -127,27 +124,9 @@ tar \
     > "$OUTPUT"
 
 
-# -----------------------------
-# Completion report
-# -----------------------------
-FILE_SIZE=$(du -h "$OUTPUT" | awk '{print $1}')
-
-
 echo
 echo "======================================"
 echo " Compression completed"
-echo " Output file : $OUTPUT"
-echo " File size   : $FILE_SIZE"
-
-
-# MD5 only for single file/folder case
-if [[ "$SINGLE_INPUT" == true ]]; then
-
-    MD5_VALUE=$(md5sum "$OUTPUT" | awk '{print $1}')
-
-    echo " MD5 checksum: $MD5_VALUE"
-
-fi
-
-
+echo " File : $OUTPUT"
+echo " Size : $(du -h "$OUTPUT" | awk '{print $1}')"
 echo "======================================"
