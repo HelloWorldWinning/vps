@@ -115,7 +115,7 @@ l() {
 		eza --icons -laF --sort="$sort_field" "$@"
 	elif command -v exa >/dev/null 2>&1; then
 		exa --icons -laF --sort="$sort_field" "$@" 2>/dev/null ||
-			exa -laF --sort=changed "$@" 2>/dev/null ||
+			exa --icons -laF --sort=changed "$@" 2>/dev/null ||
 			ls -laFtr "$@"
 	else
 		# Plain ls fallback: -t sorts by mtime newest-first, -r reverses -> oldest first, newest at bottom
@@ -128,13 +128,13 @@ l() {
 
 alias lss='/usr/bin/ls '
 
-alias cc='exa -la --sort=created'
+alias cc='exa --icons  -la --sort=created'
 ###alias s='exa -la --sort=size'
-alias n='exa -la'
-alias ls='exa -a'
-alias tree='exa -Tla'
+alias n='exa -la --icons '
+alias ls='exa -a --icons '
+alias tree='exa -Tla --icons '
 alias tre='/usr/bin/tree'
-alias t='exa -lT -L 2'
+alias t='exa -lT -L 2 --icons '
 
 alias fw='/usr/lib/cargo/bin/fd --changed-within   '
 
@@ -341,8 +341,6 @@ fds() {
 
 alias m='mkdir -p '
 
-echo ""
-exa -la --sort=changed
 
 
 
@@ -796,4 +794,9 @@ _l_by_kind() {
 
 lk()  { _l_by_kind "modified" "$@"; }   # group by kind, sort by mtime within group (oldest→newest, newest at bottom)
 lm() { _l_by_kind "name"     "$@"; }   # group by kind, sort by name within group (A→Z)
+
+#echo ""
+#exa -la --sort=changed
+lm
+
 
