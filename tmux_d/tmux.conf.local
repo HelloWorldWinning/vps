@@ -704,9 +704,9 @@ set -g allow-passthrough on
 set -s set-clipboard on
 
 
-
-set -g mouse on
-setw -g mode-keys vi
-
+#
+#set -g mouse on
+#setw -g mode-keys vi
+#
 
 
