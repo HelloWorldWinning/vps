@@ -705,4 +705,8 @@ set -s set-clipboard on
 
 
 
+set -g mouse on
+setw -g mode-keys vi
+
+
 
