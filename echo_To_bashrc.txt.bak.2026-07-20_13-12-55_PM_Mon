@@ -112,9 +112,9 @@ l() {
 	local sort_field="modified" # mtime; more portable than ctime ("changed"), esp. on SMB/network mounts
 
 	if command -v eza >/dev/null 2>&1; then
-		eza --icons -laF --sort="$sort_field" "$@"
+		eza -laF --sort="$sort_field" "$@"
 	elif command -v exa >/dev/null 2>&1; then
-		exa --icons -laF --sort="$sort_field" "$@" 2>/dev/null ||
+		exa -laF --sort="$sort_field" "$@" 2>/dev/null ||
 			exa -laF --sort=changed "$@" 2>/dev/null ||
 			ls -laFtr "$@"
 	else
@@ -357,17 +357,17 @@ exa -la --sort=changed
 # Conditional ll alias based on Debian version
 if [[ -f /etc/debian_version ]] && [[ $(cat /etc/debian_version | cut -d. -f1) == "13" ]]; then
     # Debian 13 - use eza
-alias ll='eza --icons  --all --long --sort=newest --no-user --no-permissions --git --header --color=always --only-files'  
+alias ll='eza --all --long --sort=newest --no-user --no-permissions --git --header --color=always --only-files'  
 else
    
-alias ll='exa --icons --all --long --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify --no-icons | grep -v "/$"'
+alias ll='exa --all --long --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify --no-icons | grep -v "/$"'
 
 fi
 
 
 
 
-alias ff='exa --icons  --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify'
+alias ff='exa --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify'
 
 alias b='bat '
 alias m='mkdir '
