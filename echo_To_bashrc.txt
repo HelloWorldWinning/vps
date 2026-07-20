@@ -713,3 +713,10 @@ s() (
                 "$nc" "$name" "$R"
         done
 )
+
+
+
+
+#unalias kw ks 2>/dev/null
+#kw() { tmux kill-window ${1:+-t "$1"}; }
+#ks() { tmux kill-session ${1:+-t "$1"}; }

@@ -44,15 +44,11 @@ alias nw='tmux new-window -c "#{pane_current_path}" -n "$(basename $(pwd))"'
 # Kill a specific window
 
 # usage: tkw window_old
-#alias kw='tmux kill-window -t'
+alias kw='tmux kill-window -t'
 
 # Kill a specific session
 # usage: tks session_old
-#alias ks='tmux kill-session -t'
-
-unalias kw ks 2>/dev/null
-kw() { tmux kill-window ${1:+-t "$1"}; }
-ks() { tmux kill-session ${1:+-t "$1"}; }
+alias ks='tmux kill-session -t'
 
 
 # Switch to next tmux window
