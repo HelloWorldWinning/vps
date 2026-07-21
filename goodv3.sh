@@ -1139,8 +1139,8 @@ https://zhile.one/archives/1404.html
 	f_cache) curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash ;;
 	install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
 	install_affine) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh) ;;
-	install_notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
-	install_notepad_passwd) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
+	notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
+	notepad_pw) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
 	install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh) ;;
 	install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
 	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
