@@ -6,8 +6,6 @@
 #
 # Important:
 # - NetBird status JSON is loaded once only, then reused everywhere.
-# - The current node is included in the numbered peer table and highlighted.
-# - The displayed ordering and peer-number resolution use the exact same cached rows.
 
 # --- Configuration ---
 API_PORT="7778"
@@ -33,9 +31,6 @@ RED=$'\033[0;31m'
 BOLD_RED=$'\033[1;31m'
 CYAN=$'\033[0;36m'
 BOLD_CYAN=$'\033[1;36m'
-
-# Current-node row: white text on a red background.
-CURRENT_ROW=$'\033[1;37;41m'
 NC=$'\033[0m'
 
 # --- Cached NetBird status ---
@@ -43,11 +38,6 @@ NB_JSON=""
 NB_JSON_OK=0
 NB_HAS_PEERS=0
 NB_ERROR_REASON=""
-
-# Cached, normalized table rows:
-# marker<TAB>fqdn<TAB>ip
-# marker is CURRENT or PEER.
-NB_PEER_ROWS=""
 
 # --- Common delimiter ---
 make_delim() {
@@ -90,7 +80,6 @@ load_netbird_status_once() {
 	NB_JSON_OK=0
 	NB_HAS_PEERS=0
 	NB_ERROR_REASON=""
-	NB_PEER_ROWS=""
 
 	if ! command -v netbird >/dev/null 2>&1; then
 		NB_ERROR_REASON="'netbird' is not installed"
@@ -111,152 +100,41 @@ load_netbird_status_once() {
 
 	NB_JSON_OK=1
 
-	build_nb_peer_rows
-
-	if [ -n "$NB_PEER_ROWS" ]; then
+	if printf '%s' "$NB_JSON" | jq -e '.peers.details | length > 0' >/dev/null 2>&1; then
 		NB_HAS_PEERS=1
 	fi
 
 	return 0
 }
 
-# Return the local node's best available FQDN/hostname.
-get_current_peer_fqdn() {
+get_current_peer() {
 	local peer=""
 
 	if [ "$NB_JSON_OK" -eq 1 ]; then
 		peer=$(
 			printf '%s' "$NB_JSON" | jq -r '
-                [
-                    .fqdn?,
-                    .localPeer.fqdn?,
-                    .local_peer.fqdn?,
-                    .peer.fqdn?,
-                    .hostname?,
-                    .hostName?,
-                    .localPeer.hostname?,
-                    .local_peer.hostname?,
-                    .localPeer.name?,
-                    .local_peer.name?
-                ]
-                | map(select(type == "string" and length > 0))
-                | .[0] // empty
-            '
+				[
+					.fqdn?,
+					.localPeer.fqdn?,
+					.local_peer.fqdn?,
+					.peer.fqdn?,
+					.hostname?,
+					.hostName?,
+					.localPeer.hostname?,
+					.local_peer.hostname?
+				]
+				| map(select(type == "string" and length > 0))
+				| .[0] // empty
+			'
 		)
 	fi
 
 	if [ -z "$peer" ]; then
-		peer="$(hostname -f 2>/dev/null || hostname 2>/dev/null || printf 'unknown')"
+		peer="$(hostname -s 2>/dev/null || hostname 2>/dev/null || printf 'unknown')"
 	fi
 
-	printf '%s\n' "$peer"
-}
-
-# Return the local node's best available NetBird IP.
-get_current_peer_ip() {
-	local ip=""
-
-	if [ "$NB_JSON_OK" -eq 1 ]; then
-		ip=$(
-			printf '%s' "$NB_JSON" | jq -r '
-                [
-                    .netbirdIp?,
-                    .netbirdIP?,
-                    .ip?,
-                    .localPeer.netbirdIp?,
-                    .localPeer.netbirdIP?,
-                    .localPeer.ip?,
-                    .local_peer.netbirdIp?,
-                    .local_peer.netbirdIP?,
-                    .local_peer.ip?,
-                    .peer.netbirdIp?,
-                    .peer.netbirdIP?,
-                    .peer.ip?
-                ]
-                | map(select(type == "string" and length > 0))
-                | .[0] // empty
-            '
-		)
-	fi
-
-	printf '%s\n' "$ip"
-}
-
-get_current_peer() {
-	local peer
-	peer="$(get_current_peer_fqdn)"
 	peer="${peer%%.*}"
 	printf '%s\n' "$peer"
-}
-
-# Build one normalized, sorted table used by both display and number resolution.
-#
-# Output stored in NB_PEER_ROWS:
-# CURRENT<TAB>fqdn<TAB>ip
-# PEER<TAB>fqdn<TAB>ip
-#
-# The local node is inserted even though NetBird normally omits it from
-# .peers.details. Duplicate peer rows are removed.
-build_nb_peer_rows() {
-	local current_fqdn current_ip current_name remote_rows
-
-	NB_PEER_ROWS=""
-
-	[ "$NB_JSON_OK" -eq 1 ] || return 1
-
-	current_fqdn="$(get_current_peer_fqdn)"
-	current_ip="$(get_current_peer_ip)"
-	current_name="${current_fqdn%%.*}"
-
-	remote_rows=$(
-		printf '%s' "$NB_JSON" | jq -r '
-            (.peers.details? // [])
-            | .[]
-            | [
-                (
-                    .fqdn?
-                    // .hostname?
-                    // .hostName?
-                    // .name?
-                    // empty
-                ),
-                (
-                    .netbirdIp?
-                    // .netbirdIP?
-                    // .ip?
-                    // empty
-                )
-              ]
-            | select(.[0] != "" or .[1] != "")
-            | @tsv
-        '
-	)
-
-	NB_PEER_ROWS=$(
-		{
-			if [ -n "$current_fqdn" ] || [ -n "$current_ip" ]; then
-				printf 'CURRENT\t%s\t%s\n' "$current_fqdn" "$current_ip"
-			fi
-
-			if [ -n "$remote_rows" ]; then
-				while IFS=$'\t' read -r fqdn ip; do
-					[ -n "$fqdn" ] || fqdn="$ip"
-
-					# Do not duplicate the current node if it also appears remotely.
-					if { [ -n "$current_ip" ] && [ "$ip" = "$current_ip" ]; } ||
-						{ [ -n "$current_fqdn" ] && [ "$fqdn" = "$current_fqdn" ]; } ||
-						{ [ -n "$current_name" ] && [ "${fqdn%%.*}" = "$current_name" ]; }; then
-						continue
-					fi
-
-					printf 'PEER\t%s\t%s\n' "$fqdn" "$ip"
-				done <<<"$remote_rows"
-			fi
-		} | awk -F'\t' '
-            BEGIN { OFS = FS }
-            !seen[$2 FS $3]++
-        ' | sort -t$'\t' -k2,2 -k3,3
-	)
 }
 
 # --- Function to upload a single file ---
@@ -298,99 +176,77 @@ upload_file() {
 }
 
 # --- Function to print cached NetBird peer list before selection ---
-# Output format: left-padded No., compact dynamic NAME/DNS_LABEL columns, IP.
-# The current node appears in the same numbered list with a red background.
+# Output format: left-padded No., compact dynamic NAME/DNS_LABEL columns, IP
 print_nb_list() {
 	if [ "$NB_JSON_OK" -ne 1 ]; then
 		echo -e "${YELLOW}Warning: ${NB_ERROR_REASON}. Please enter destination domain/IP manually.${NC}"
 		return 1
 	fi
 
-	if [ "$NB_HAS_PEERS" -ne 1 ] || [ -z "$NB_PEER_ROWS" ]; then
+	if [ "$NB_HAS_PEERS" -ne 1 ]; then
 		echo -e "${YELLOW}Warning: No NetBird peers found. Please enter destination domain/IP manually.${NC}"
 		return 1
 	fi
 
-	printf '%s\n' "$NB_PEER_ROWS" | awk -F'\t' \
+	printf '%s' "$NB_JSON" | jq -r '
+		.peers.details[]
+		| [.fqdn, .netbirdIp]
+		| @tsv
+	' | sort -t$'\t' -k1 | awk -F'\t' \
 		-v no_w="$NO_COL_W" \
-		-v peer_hi="$BOLD_RED" \
-		-v current_hi="$CURRENT_ROW" \
+		-v hi="$BOLD_RED" \
 		-v nc="$NC" '
-        BEGIN {
-            name_w = length("NAME")
-            dns_w  = length("DNS_LABEL")
-            ip_w   = length("IP")
-        }
+		BEGIN {
+			name_w = length("NAME")
+			dns_w  = length("DNS_LABEL")
+			ip_w   = length("IP")
+		}
 
-        NF >= 3 {
-            marker = $1
-            fqdn   = $2
-            ip     = $3
-	    sub(/\/.*/, "", ip)
-            name   = fqdn
-            sub(/\..*/, "", name)
+		{
+			fqdn = $1
+			ip   = $2
+			name = fqdn
+			sub(/\..*/, "", name)
 
-            if (name == "") name = "-"
-            if (fqdn == "") fqdn = "-"
-            if (ip == "")   ip = "-"
+			names[NR] = name
+			dns[NR]   = fqdn
+			ips[NR]   = ip
 
-            markers[NR] = marker
-            names[NR]   = name
-            dns[NR]     = fqdn
-            ips[NR]     = ip
+			if (length(name) > name_w) name_w = length(name)
+			if (length(fqdn) > dns_w) dns_w = length(fqdn)
+			if (length(ip)   > ip_w)   ip_w   = length(ip)
+		}
 
-            if (length(name) > name_w) name_w = length(name)
-            if (length(fqdn) > dns_w) dns_w = length(fqdn)
-            if (length(ip)   > ip_w)   ip_w   = length(ip)
-        }
+		END {
+			if (NR == 0) exit
 
-        END {
-            if (NR == 0) exit
+			table_w = 1 + no_w + 2 + name_w + 2 + dns_w + 2 + ip_w
 
-            table_w = 1 + no_w + 2 + name_w + 2 + dns_w + 2 + ip_w
+			printf " %*s  %-*s  %-*s  %s\n", no_w, "", name_w, "NAME", dns_w, "DNS_LABEL", "IP"
+			for (i = 0; i < table_w; i++) printf "─"
+			printf "\n"
 
-            printf " %*s  %-*s  %-*s  %s\n", no_w, "", name_w, "NAME", dns_w, "DNS_LABEL", "IP"
-            for (i = 0; i < table_w; i++) printf "─"
-            printf "\n"
-
-            for (i = 1; i <= NR; i++) {
-                if (markers[i] == "CURRENT") {
-                    # Color the complete current-node row, including padding.
-printf " "
-
-printf "%*s", no_w - length(i), ""
-
-printf "%s%d  %-*s  %-*s  %-*s%s\n",
-    current_hi,
-    i,
-    name_w, names[i],
-    dns_w, dns[i],
-    ip_w, ips[i],
-    nc
-
-                } else {
-                    printf " %s%*d%s  %s%-*s%s  %-*s  %s\n",
-                        peer_hi, no_w, i, nc,
-                        peer_hi, name_w, names[i], nc,
-                        dns_w, dns[i],
-                        ips[i]
-                }
-            }
-        }
-    '
+			for (i = 1; i <= NR; i++) {
+				printf " %s%*d%s  %s%-*s%s  %-*s  %s\n", hi, no_w, i, nc, hi, name_w, names[i], nc, dns_w, dns[i], ips[i]
+			}
+		}
+	'
 }
 
-# --- Function to resolve a peer No. from the cached displayed list ---
-# Uses NB_PEER_ROWS directly, so numbering always matches print_nb_list.
+# --- Function to resolve a peer No. from the cached NetBird list to its NetBird IP ---
+# Mirrors print_nb_list's exact ordering: sort peers by fqdn, then number from 1.
 resolve_peer_ip() {
 	local num="$1"
 
-	if [ "$NB_HAS_PEERS" -ne 1 ] || [ -z "$NB_PEER_ROWS" ]; then
+	if [ "$NB_HAS_PEERS" -ne 1 ]; then
 		return 1
 	fi
 
-	printf '%s\n' "$NB_PEER_ROWS" |
-		awk -F'\t' -v n="$num" 'NR == n { print $2 "\t" $3 }'
+	printf '%s' "$NB_JSON" | jq -r '
+		.peers.details[]
+		| [.fqdn, .netbirdIp]
+		| @tsv
+	' | sort -t$'\t' -k1 | awk -F'\t' -v n="$num" 'NR==n { print $1"\t"$2 }'
 }
 
 print_upload_queue() {
@@ -523,6 +379,10 @@ load_netbird_status_once
 echo -e "Step 1: Target Server${NC}"
 print_delim
 
+CURRENT_PEER="$(get_current_peer)"
+#printf "%b%${NO_COL_W_TOP}s%b Available Peers:\n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
+printf "%b%${NO_COL_W_TOP}s%b   \n" "$BOLD_RED" "$CURRENT_PEER" "$NC"
+
 print_nb_list
 print_delim
 
@@ -554,11 +414,6 @@ if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 	peer_fqdn="${peer_line%%$'\t'*}"
 	API_HOST="${peer_line##*$'\t'}"
 	peer_name="${peer_fqdn%%.*}"
-
-	if [ -z "$API_HOST" ] || [ "$API_HOST" = "-" ]; then
-		echo -e "${RED}Error: peer No. ${peer_no} ('${peer_name}') has no usable NetBird IP.${NC}"
-		exit 1
-	fi
 
 	print_delim
 	echo -e "${BOLD_RED}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
