@@ -35,7 +35,8 @@ CYAN=$'\033[0;36m'
 BOLD_CYAN=$'\033[1;36m'
 
 # Current-node row: white text on a red background.
-CURRENT_ROW=$'\033[1;37;41m'
+#CURRENT_ROW=$'\033[1;37;41m'
+CURRENT_ROW=$'\033[1;37;44m'
 NC=$'\033[0m'
 
 # --- Cached NetBird status ---
