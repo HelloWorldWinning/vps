@@ -1,0 +1,39 @@
+function! s:Count_Selection_Tokens(text) abort
+    if !executable('python3')
+        return -1
+    endif
+    let l:py = [
+                \ 'import sys',
+                \ 'text = sys.stdin.read()',
+                \ 'try:',
+                \ '    import tiktoken',
+                \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
+                \ '    print(len(enc.encode(text)))',
+                \ 'except Exception:',
+                \ '    print("-1")',
+                \ ]
+    let l:cmd = 'python3 -c ' . shellescape(join(l:py, "\n"))
+    let l:out = systemlist(l:cmd, a:text)
+    if v:shell_error != 0 || empty(l:out)
+        return -1
+    endif
+    if l:out[0] !~# '^-\?\d\+$'
+        return -1
+    endif
+    return str2nr(l:out[0])
+endfunction
+
+function! s:TT_Range() range abort
+    let l:lines = getline(a:firstline, a:lastline)
+    let l:text = join(l:lines, "\n")
+    let l:tokens = s:Count_Selection_Tokens(l:text)
+    if l:tokens < 0
+        echohl WarningMsg | echo 'tt: token count failed' | echohl None
+        return
+    endif
+    echo printf('%d lines, %d bytes, %d tokens',
+                \ len(l:lines), strlen(l:text), l:tokens)
+endfunction
+
+command! -range TT <line1>,<line2>call s:TT_Range()
+xnoremap <silent> tt :TT<CR>
