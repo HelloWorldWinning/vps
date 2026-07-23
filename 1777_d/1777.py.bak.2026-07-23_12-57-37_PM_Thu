@@ -875,11 +875,8 @@ async def render_markdown_with_mistune(
 }
 
 html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    background: white;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 @font-face {
@@ -921,7 +918,7 @@ html * {
     margin: 1em 0;
 }
 
-..markdown-bodymarkdown-body .toc summary {
+.markdown-body .toc summary {
     cursor: pointer;
     font-weight: 600 !important;
 }
@@ -956,27 +953,18 @@ html * {
 }
 
 .markdown-body {
-    width: 100%;
-    max-width: none;
-
-    margin: 0;
-
-
-    /* 4px reading space on both edges */
-    padding-top: 2px;
-    padding-bottom: 4px;
-
-
-    padding-right: 14px;
-    padding-left: 14px;
-
-
-    background: white;
-
-    /* Remove the card/layer appearance */
-    border-radius: 0;
-    box-shadow: none;
-
+  max-width: 1000px;
+  background: white;
+  margin-top: auto;
+  margin-right: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  padding-top: 2px;
+  padding-right: 20px;
+  padding-bottom: 4px;
+  padding-left: 20px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .markdown-body h1,
