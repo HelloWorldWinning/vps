@@ -4,14 +4,10 @@
 #   tagcat                      # all regular files in cwd
 #   tagcat a.md b.txt           # only these files
 #   tagcat -o out.txt *.md      # custom output name
+
 set -u
 
-folder=$(basename "$(pwd)")
-datetag=$(date '+%Y-%m-%d_%H-%M-%S_%p_%a')
-
-# Default output name: bundle_{folder}_{date_time_tag}.txt
-output="bundle_${folder}_${datetag}.txt"
-
+output="bundle.txt"
 if [ "${1:-}" = "-o" ]; then
 	if [ -z "${2:-}" ]; then
 		echo "tagcat: -o needs a filename" >&2
@@ -53,28 +49,32 @@ for file in "${files[@]}"; do
 		echo "tagcat: skipping '$file' (not a regular file)" >&2
 		continue
 	fi
-	# Tag: original file name (basename), unchanged
-	tag=$(basename "$file")
-	# Absolute path for the cat header line
-	abspath=$(realpath -- "$file" 2>/dev/null || readlink -f -- "$file" 2>/dev/null || printf '%s/%s' "$(pwd)" "$file")
+
+	# Build tag: basename, replace . - space with _, lowercase
+	#   tag=$(basename "$file" | tr '.- ' '___' | tr '[:upper:]' '[:lower:]') # for macos
+	tag=$(basename "$file" | tr '. -' '___' | tr '[:upper:]' '[:lower:]') # for debian
+
 	{
 		printf '<%s>\n' "$tag"
-		printf 'cat %s\n' "$abspath"
 		cat -- "$file"
 		printf '\n</%s>\n\n' "$tag"
 	} >>"$output"
+
 	echo "  + $file  ->  <$tag>"
 	count=$((count + 1))
 done
 
-head_info="<all_docs_in_folder_${folder}>"
-tail_info="</all_docs_in_folder_${folder}>"
+head_info='''<all_docs>
+'''
+tail_info="</all_docs>"
 
 # Prepend
-printf '%s\n\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile "$output"
+printf '%s\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile "$output"
+
 # Append
 printf '%s\n' "$tail_info" >>"$output"
 
+#echo "tagcat: wrote $count file(s) to $output"
 echo "tagcat: wrote $count file(s) to"
+#echo "$(pwd)/$output"
 echo -e "\033[1;31m$(pwd)/$output\033[0m"
-

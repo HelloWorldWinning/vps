@@ -1173,7 +1173,7 @@ https://zhile.one/archives/1404.html
 	mmc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mmc -o /usr/local/bin/mmc && chmod +x /usr/local/bin/mmc && echo "✅ Done! 'mmc' command installed successfully." || echo "❌ Installation failed." ;;
 	rmm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap_html_to_outline.py -o /usr/local/bin/rmm && chmod +x /usr/local/bin/rmm && echo "✅ Done! 'rmm' cormmand installed successfully." || echo "❌ Installation failed." ;;
 		#wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
-	tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
+		#tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
 	webdav) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
 	nextcloud_aio) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;
 	nextcloud_doc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_Onlyoffice_publicip_domain.sh) ;;
@@ -1203,6 +1203,7 @@ https://zhile.one/archives/1404.html
 	me) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
 
 	cx) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed" ;;
+	tagcat) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat -o /usr/local/bin/tagcat && chmod +x /usr/local/bin/tagcat && echo "tagcat installed" ;;
 
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
 	naive_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
