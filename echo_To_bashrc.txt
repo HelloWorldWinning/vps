@@ -724,76 +724,106 @@ s() (
 
 
 # --- grouped listing: group by kind, then sort within each group ---
+# --- grouped listing: group by kind, then sort within each group ---
 
 _l_by_kind() {
-	local sort_field="$1"; shift
+	local sort_field="$1"
+	shift
 	local dir="${1:-.}"
 	(
-		cd "$dir" || return 1
+		cd -- "$dir" || return 1
 		shopt -s dotglob nullglob
 
-		declare -A groups
-		declare -a kind_order
-		local f kind
+		declare -A groups=()
+		declare -a kind_order=()
+		local f kind key
 
 		for f in *; do
 			[[ "$f" == "." || "$f" == ".." ]] && continue
+
 			if [[ -L "$f" ]]; then
 				kind="1-link"
 			elif [[ -d "$f" ]]; then
 				kind="0-dir"
-			elif [[ "$f" == *.* && "$f" != .* ]]; then
-				kind="${f##*.}"
-				kind="${kind,,}"          # Foo.TXT and foo.txt -> same group
 			else
-				kind="zzz-noext"          # dotfiles + extension-less files
+				local base="${f##*/}"
+				local stem="${base#.}"          # ignore leading dot(s) for dotfiles
+				if [[ "$stem" == *.* ]]; then
+					kind="${stem##*.}"
+					kind="${kind,,}"
+					# extension must be sane: non-empty, no weird chars
+					if [[ -z "$kind" || "$kind" == *[^a-z0-9_+-]* ]]; then
+						kind="zzz-other"
+					fi
+				else
+					kind="zzz-noext"
+				fi
 			fi
 
-			[[ -z "${groups[$kind]+x}" ]] && kind_order+=("$kind")
-			groups["$kind"]+="$f"$'\n'
+			# guard: never an empty subscript
+			[[ -z "$kind" ]] && kind="zzz-other"
+			key="k_$kind"
+
+			if [[ -z "${groups[$key]+set}" ]]; then
+				kind_order+=("$kind")
+				groups[$key]=""
+			fi
+			groups[$key]+="$f"$'\n'
 		done
 
-		IFS=$'\n' kind_order=($(printf '%s\n' "${kind_order[@]}" | sort))
-		unset IFS
+		((${#kind_order[@]})) || return 0
+
+		local sorted=()
+		while IFS= read -r line; do
+			[[ -n "$line" ]] && sorted+=("$line")
+		done < <(printf '%s\n' "${kind_order[@]}" | LC_ALL=C sort)
+		kind_order=("${sorted[@]}")
 
 		local k label first=1
 		for k in "${kind_order[@]}"; do
-			[[ $first -eq 1 ]] && first=0 || echo
+			((first)) && first=0 || echo
 			case "$k" in
-				0-dir)     label="[directories]" ;;
-				1-link)    label="[symlinks]" ;;
-				zzz-noext) label="[no extension]" ;;
-				*)         label="[.$k]" ;;
+			0-dir) label="[directories]" ;;
+			1-link) label="[symlinks]" ;;
+			zzz-noext) label="[no extension]" ;;
+			zzz-other) label="[other]" ;;
+			*) label="[.$k]" ;;
 			esac
 			printf '\033[1m%s\033[0m\n' "$label"
 
 			local files=()
 			while IFS= read -r line; do
 				[[ -n "$line" ]] && files+=("$line")
-			done <<< "${groups[$k]}"
+			done <<<"${groups[k_$k]}"
+
+			((${#files[@]})) || continue
 
 			local dflag=()
-			[[ "$k" == "0-dir" ]] && dflag=(-d)   # don't descend into dirs, list them as entries
+			[[ "$k" == "0-dir" ]] && dflag=(-d)
 
 			if command -v eza >/dev/null 2>&1; then
-				eza --icons -laF --sort="$sort_field" "${dflag[@]}" "${files[@]}"
+				eza --icons -laF --sort="$sort_field" "${dflag[@]}" -- "${files[@]}"
 			elif command -v exa >/dev/null 2>&1; then
-				exa --icons -laF --sort="$sort_field" "${dflag[@]}" "${files[@]}" 2>/dev/null ||
-					exa -laF --sort="$sort_field" "${dflag[@]}" "${files[@]}" 2>/dev/null ||
-					ls -laF "${dflag[@]}" "${files[@]}"
+				exa --icons -laF --sort="$sort_field" "${dflag[@]}" -- "${files[@]}" 2>/dev/null ||
+					exa -laF --sort="$sort_field" "${dflag[@]}" -- "${files[@]}" 2>/dev/null ||
+					ls -laF "${dflag[@]}" -- "${files[@]}"
 			else
 				if [[ "$sort_field" == "modified" ]]; then
-					ls -laFtr "${dflag[@]}" "${files[@]}"
+					ls -laFtr "${dflag[@]}" -- "${files[@]}"
 				else
-					ls -laF "${dflag[@]}" "${files[@]}"
+					ls -laF "${dflag[@]}" -- "${files[@]}"
 				fi
 			fi
 		done
 	)
 }
 
-lk()  { _l_by_kind "modified" "$@"; }   # group by kind, sort by mtime within group (oldest→newest, newest at bottom)
-lm() { _l_by_kind "name"     "$@"; }   # group by kind, sort by name within group (A→Z)
+lk() { _l_by_kind "modified" "$@"; }
+lm() { _l_by_kind "name" "$@"; }
+
+
+
+
 
 #echo ""
 #exa -la --sort=changed
