@@ -399,13 +399,7 @@ async def navigate(
             sort_mode = "time"
 
         is_raw = "raw" in request.query_params
-        is_md = "md" in request.query_params
-        if is_raw:
-            raw_suffix = "?raw"
-        elif is_md:
-            raw_suffix = "?md"
-        else:
-            raw_suffix = ""
+        raw_suffix = "?raw" if is_raw else ""
 
         def item_sort_key(item: str):
             item_full_path = os.path.join(full_path, item)
@@ -711,18 +705,10 @@ table td:nth-child(3) {{ width: 15%; }}
         if "raw" in request.query_params:
             return await serve_raw_text(full_path)
 
-        # ext = os.path.splitext(full_path)[1].lower()
-        # # Markdown: render with mistune + Pygments (env-configurable style)
-        # if ext == ".md":
-        #     return await render_markdown_with_mistune(full_path, credentials)
-
         ext = os.path.splitext(full_path)[1].lower()
-        # ?md forces markdown rendering regardless of extension
-        force_md = "md" in request.query_params
         # Markdown: render with mistune + Pygments (env-configurable style)
-        if force_md or ext in (".md", ".markdown"):
+        if ext == ".md":
             return await render_markdown_with_mistune(full_path, credentials)
-
         if ext in LEXER_MAPPING or full_path.endswith(".ipynb"):
             if full_path.endswith(".ipynb"):
                 return await notebooks(full_path, credentials)
