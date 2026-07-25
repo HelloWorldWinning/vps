@@ -573,7 +573,8 @@ if ! nc -z -w 5 "$API_HOST" "$API_PORT"; then
 fi
 
 print_delim
-echo -e "${BOLD_RED}  online  ${API_HOST}${NC}"
+#echo -e "${BOLD_RED}  online  ${API_HOST}${NC}"
+echo -e "${BOLD_RED}   Online   ${NC}"
 print_delim
 
 # === Step 2: Collect All File/Folder Paths ===
