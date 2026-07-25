@@ -186,7 +186,7 @@ sudo apt install -y htop
 sudo apt install -y tmux
 sudo apt install -y rsync
 
-sudo timedatectl set-timezone Australia/Perth
+sudo timedatectl set-timezone Asia/Shanghai
 echo '--ipv4' >>~/.curlrc
 echo 'inet4_only = on' >>~/.wgetrc
 #alias tls="tmux list-sessions"

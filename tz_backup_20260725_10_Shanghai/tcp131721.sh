@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 apt install -y sudo netcat-openbsd  tree
-sudo timedatectl set-timezone Australia/Perth
+sudo timedatectl set-timezone Asia/Shanghai
 
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 
