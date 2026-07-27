@@ -657,12 +657,8 @@ while IFS= read -r raw_item; do
 		continue
 	fi
 
-	# Only announce rewrites that were more than whitespace trimming
-	# (i.e. quote stripping or backslash unescaping).
-	raw_trimmed="${raw_item//$'\r'/}"
-	raw_trimmed="${raw_trimmed#"${raw_trimmed%%[![:space:]]*}"}"
-	raw_trimmed="${raw_trimmed%"${raw_trimmed##*[![:space:]]}"}"
-	if [ "$item" != "$raw_trimmed" ]; then
+	# Tell the user when the line was rewritten, so surprises are visible.
+	if [ "$item" != "$raw_item" ]; then
 		echo -e "${CYAN}Note: read as:${NC} ${item}"
 	fi
 
