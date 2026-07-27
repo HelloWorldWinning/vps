@@ -85,60 +85,6 @@ expand_path() {
 	esac
 }
 
-# --- Normalize one user-entered path line ---
-# Fixes the usual typing/paste artifacts:
-#   "  file1  "     -> file1         (leading/trailing spaces and tabs)
-#   "file1<CR>"     -> file1         (CRLF paste)
-#   '"my file.txt"' -> my file.txt   (surrounding double quotes)
-#   "'my file.txt'" -> my file.txt   (surrounding single quotes)
-#   "my\ file.txt"  -> my file.txt   (shell drag-and-drop / tab-completion escaping)
-#
-# A rewritten form is only preferred when it actually exists on disk, so
-# real filenames containing quotes, backslashes or trailing spaces still work.
-# Prints the empty string for a blank or whitespace-only line.
-normalize_input_path() {
-	local raw="$1"
-	local trimmed unquoted unescaped c
-
-	raw="${raw//$'\r'/}"
-
-	trimmed="${raw#"${raw%%[![:space:]]*}"}"
-	trimmed="${trimmed%"${trimmed##*[![:space:]]}"}"
-
-	if [ -z "$trimmed" ]; then
-		printf '\n'
-		return 0
-	fi
-
-	unquoted="$trimmed"
-	if [ "${#unquoted}" -ge 2 ]; then
-		case "$unquoted" in
-		\'*\') unquoted="${unquoted:1:${#unquoted}-2}" ;;
-		\"*\") unquoted="${unquoted:1:${#unquoted}-2}" ;;
-		esac
-	fi
-
-	unescaped="$unquoted"
-	case "$unescaped" in
-	*\\*)
-		# Drop a backslash only when it escapes a non-alphanumeric char.
-		unescaped=$(printf '%s' "$unquoted" | sed 's/\\\([^A-Za-z0-9]\)/\1/g')
-		;;
-	esac
-
-	for c in "$unescaped" "$unquoted" "$trimmed" "$raw"; do
-		[ -n "$c" ] || continue
-		if [ -e "$(expand_path "$c")" ]; then
-			printf '%s\n' "$c"
-			return 0
-		fi
-	done
-
-	# Nothing matched — return the most likely intent so the
-	# "not a valid file or directory" warning shows something sane.
-	printf '%s\n' "$unescaped"
-}
-
 # Run NetBird status exactly once, cache JSON, and reuse NB_JSON later.
 load_netbird_status_once() {
 	NB_JSON=""
@@ -637,31 +583,8 @@ echo -e "Enter one file/folder path per line. \nPress ENTER on an empty line whe
 print_delim
 
 declare -a all_items=()
-
-while IFS= read -r raw_item; do
-	item="$(normalize_input_path "$raw_item")"
-
-	# A blank OR whitespace-only line ends the input.
+while IFS= read -r item; do
 	[ -z "$item" ] && break
-
-	# Skip duplicates silently (same path entered twice).
-	dup=0
-	for existing in "${all_items[@]}"; do
-		if [ "$existing" = "$item" ]; then
-			dup=1
-			break
-		fi
-	done
-	if [ "$dup" -eq 1 ]; then
-		echo -e "${YELLOW}Note: duplicate ignored:${NC} ${item}"
-		continue
-	fi
-
-	# Tell the user when the line was rewritten, so surprises are visible.
-	if [ "$item" != "$raw_item" ]; then
-		echo -e "${CYAN}Note: read as:${NC} ${item}"
-	fi
-
 	all_items+=("$item")
 done
 
