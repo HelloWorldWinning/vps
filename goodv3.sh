@@ -1196,6 +1196,7 @@ https://zhile.one/archives/1404.html
 	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
 	o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "o success installed" ;;
 	pl) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/extract_project_digest.py -o /usr/local/bin/pl && chmod +x /usr/local/bin/pl && echo "pl success installed" ;;
+	pp) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pp -o /usr/local/bin/pp && chmod +x /usr/local/bin/pp && echo "pp success installed" ;;
 
 	refine) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
 

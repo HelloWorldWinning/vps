@@ -1,0 +1,1190 @@
+#!/usr/bin/env python3
+"""
+pp — compact, level-controlled Python project summarizer.
+
+Sticky levels:
+    pp -0 path_a -3 path_b path_c -5 path_d -raw path_e
+
+Each level applies to following paths until another level appears.
+Only *.py files are semantically extracted. Directory trees include every
+entry, including hidden files and hidden directories. Directory symlinks are
+shown but are not traversed.
+"""
+
+from __future__ import annotations
+
+import ast
+import copy
+import datetime as _dt
+import io
+import os
+import re
+import stat
+import sys
+import tokenize
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
+
+LEVEL_TEXT = {0: "-0", 1: "-1", 2: "-2", 3: "-3", 4: "-4", 5: "-5", 6: "-raw"}
+LEVEL_ARGS = {value: key for key, value in LEVEL_TEXT.items()}
+
+USAGE = """\
+usage:
+  pp [-0|-1|-2|-3|-4|-5|-raw] PATH ...
+
+examples:
+  pp src/model.py
+  pp -0 src -3 tests -5 scripts/train.py
+  pp -raw src/model.py
+  pp -0 folder_a -3 folder_b folder_c -4 file.py other.py
+
+rules:
+  * the current level is sticky; omitted level defaults to -0
+  * only files ending in .py are extracted
+  * directory trees include all entries, including hidden entries
+  * overlapping inputs are deduplicated; the highest level wins
+  * directory symlinks are listed but not followed
+  * output is written to the current directory
+"""
+
+
+@dataclass
+class InputSpec:
+    original: str
+    path: Path
+    level: int
+    order: int
+
+
+@dataclass
+class PythonFile:
+    path: Path
+    level: int
+    order: int
+    requested_by: List[Path] = field(default_factory=list)
+
+
+@dataclass
+class ReadResult:
+    source: str
+    encoding: str
+    error: Optional[str]
+
+
+# ---------------------------------------------------------------------------
+# General helpers
+# ---------------------------------------------------------------------------
+
+
+def level_name(level: int) -> str:
+    return LEVEL_TEXT[level]
+
+
+def safe_resolve(path: Path) -> Path:
+    try:
+        return path.expanduser().resolve(strict=False)
+    except OSError:
+        return Path(os.path.abspath(os.path.expanduser(str(path))))
+
+
+def path_is_within(path: Path, parent: Path) -> bool:
+    try:
+        path.relative_to(parent)
+        return True
+    except ValueError:
+        return False
+
+
+def human_size(size: int) -> str:
+    if size < 1024:
+        return f"{size}B"
+    units = ("K", "M", "G", "T")
+    value = float(size)
+    for unit in units:
+        value /= 1024.0
+        if value < 1024.0 or unit == units[-1]:
+            if value >= 100:
+                return f"{value:.0f}{unit}"
+            if value >= 10:
+                return f"{value:.1f}{unit}"
+            return f"{value:.2f}{unit}"
+    return f"{size}B"
+
+
+def line_count(text: str) -> int:
+    if not text:
+        return 0
+    return text.count("\n") + (0 if text.endswith("\n") else 1)
+
+
+def sanitize_filename_component(name: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", name.strip())
+    cleaned = cleaned.strip("._-")
+    return cleaned or "summary"
+
+
+def make_output_path(inputs: Sequence[InputSpec], cwd: Path) -> Path:
+    timestamp = _dt.datetime.now().strftime("%Y-%m-%d_%I-%M-%S_%p_%a")
+    if len(inputs) == 1:
+        p = inputs[0].path
+        if p.is_file() or (p.is_symlink() and not p.is_dir()):
+            base = p.stem
+        else:
+            base = p.name or "root"
+        filename = f"{sanitize_filename_component(base)}_summary_{timestamp}.txt"
+    else:
+        filename = f"summary_{timestamp}.txt"
+
+    candidate = cwd / filename
+    counter = 2
+    while candidate.exists():
+        candidate = cwd / f"{Path(filename).stem}_{counter}.txt"
+        counter += 1
+    return candidate
+
+
+def parse_args(argv: Sequence[str]) -> List[InputSpec]:
+    if not argv or argv == ["-h"]:
+        print(USAGE)
+        raise SystemExit(0 if argv else 2)
+
+    current_level = 0
+    specs: List[InputSpec] = []
+
+    for token in argv:
+        if token == "-h":
+            print(USAGE)
+            raise SystemExit(0)
+        if token in LEVEL_ARGS:
+            current_level = LEVEL_ARGS[token]
+            continue
+
+        path = safe_resolve(Path(token))
+        specs.append(
+            InputSpec(original=token, path=path, level=current_level, order=len(specs))
+        )
+
+    if not specs:
+        print("pp: no input paths", file=sys.stderr)
+        print(USAGE, file=sys.stderr)
+        raise SystemExit(2)
+
+    return specs
+
+
+# ---------------------------------------------------------------------------
+# Filesystem inventory and Python discovery
+# ---------------------------------------------------------------------------
+
+
+def scandir_sorted(path: Path) -> Tuple[List[os.DirEntry[str]], Optional[str]]:
+    try:
+        with os.scandir(path) as iterator:
+            entries = list(iterator)
+    except OSError as exc:
+        return [], f"{type(exc).__name__}: {exc}"
+
+    def key(entry: os.DirEntry[str]) -> Tuple[int, str, str]:
+        try:
+            is_dir = entry.is_dir(follow_symlinks=False)
+        except OSError:
+            is_dir = False
+        return (0 if is_dir else 1, entry.name.casefold(), entry.name)
+
+    entries.sort(key=key)
+    return entries, None
+
+
+def entry_kind(entry: os.DirEntry[str]) -> str:
+    try:
+        if entry.is_symlink():
+            return "symlink"
+        mode = entry.stat(follow_symlinks=False).st_mode
+    except OSError:
+        return "unknown"
+
+    if stat.S_ISDIR(mode):
+        return "dir"
+    if stat.S_ISREG(mode):
+        return "file"
+    if stat.S_ISFIFO(mode):
+        return "fifo"
+    if stat.S_ISSOCK(mode):
+        return "socket"
+    if stat.S_ISCHR(mode):
+        return "char"
+    if stat.S_ISBLK(mode):
+        return "block"
+    return "special"
+
+
+def render_tree_root(root: Path) -> List[str]:
+    lines: List[str] = []
+
+    if not root.exists() and not root.is_symlink():
+        return [f"{root}  [missing]"]
+
+    if root.is_symlink():
+        try:
+            target = os.readlink(root)
+        except OSError as exc:
+            target = f"? ({type(exc).__name__})"
+        return [f"{root} -> {target}"]
+
+    if root.is_file():
+        try:
+            size = root.stat().st_size
+            return [f"{root}  [{human_size(size)}]"]
+        except OSError as exc:
+            return [f"{root}  [{type(exc).__name__}: {exc}]"]
+
+    lines.append(f"{root}/")
+
+    def walk(directory: Path, prefix: str) -> None:
+        entries, error = scandir_sorted(directory)
+        if error:
+            lines.append(f"{prefix}! {error}")
+            return
+
+        for index, entry in enumerate(entries):
+            last = index == len(entries) - 1
+            branch = "└── " if last else "├── "
+            child_prefix = prefix + ("    " if last else "│   ")
+            child = Path(entry.path)
+            kind = entry_kind(entry)
+
+            if kind == "dir":
+                lines.append(f"{prefix}{branch}{entry.name}/")
+                walk(child, child_prefix)
+            elif kind == "symlink":
+                try:
+                    target = os.readlink(child)
+                except OSError as exc:
+                    target = f"? ({type(exc).__name__})"
+                lines.append(f"{prefix}{branch}{entry.name} -> {target}")
+            elif kind == "file":
+                try:
+                    size = entry.stat(follow_symlinks=False).st_size
+                    lines.append(f"{prefix}{branch}{entry.name}  [{human_size(size)}]")
+                except OSError as exc:
+                    lines.append(
+                        f"{prefix}{branch}{entry.name}  [{type(exc).__name__}: {exc}]"
+                    )
+            else:
+                lines.append(f"{prefix}{branch}{entry.name}  [{kind}]")
+
+    walk(root, "")
+    return lines
+
+
+def minimal_inventory_roots(inputs: Sequence[InputSpec]) -> List[Path]:
+    unique: List[Path] = []
+    seen: set[str] = set()
+    for spec in inputs:
+        key = os.path.normcase(str(spec.path))
+        if key not in seen:
+            seen.add(key)
+            unique.append(spec.path)
+
+    result: List[Path] = []
+    for candidate in unique:
+        covered = False
+        for other in unique:
+            if candidate == other:
+                continue
+            if other.is_dir() and path_is_within(candidate, other):
+                covered = True
+                break
+        if not covered:
+            result.append(candidate)
+    return result
+
+
+def iter_python_files(root: Path) -> Iterator[Path]:
+    if root.is_symlink():
+        if root.name.endswith(".py") and root.is_file():
+            yield safe_resolve(root)
+        return
+
+    if root.is_file():
+        if root.name.endswith(".py"):
+            yield safe_resolve(root)
+        return
+
+    if not root.is_dir():
+        return
+
+    def walk(directory: Path) -> Iterator[Path]:
+        entries, _error = scandir_sorted(directory)
+        for entry in entries:
+            child = Path(entry.path)
+            try:
+                if entry.is_symlink():
+                    if entry.name.endswith(".py") and entry.is_file(
+                        follow_symlinks=True
+                    ):
+                        yield safe_resolve(child)
+                    continue
+                if entry.is_dir(follow_symlinks=False):
+                    yield from walk(child)
+                elif entry.is_file(follow_symlinks=False) and entry.name.endswith(
+                    ".py"
+                ):
+                    yield safe_resolve(child)
+            except OSError:
+                continue
+
+    yield from walk(root)
+
+
+def discover_python(inputs: Sequence[InputSpec]) -> Tuple[List[PythonFile], List[str]]:
+    found: Dict[str, PythonFile] = {}
+    warnings: List[str] = []
+    next_order = 0
+
+    for spec in inputs:
+        if not spec.path.exists() and not spec.path.is_symlink():
+            warnings.append(f"missing: {spec.path}")
+            continue
+
+        saw_any = False
+        for path in iter_python_files(spec.path):
+            saw_any = True
+            key = os.path.normcase(str(path))
+            existing = found.get(key)
+            if existing is None:
+                found[key] = PythonFile(
+                    path=path,
+                    level=spec.level,
+                    order=next_order,
+                    requested_by=[spec.path],
+                )
+                next_order += 1
+            else:
+                existing.level = max(existing.level, spec.level)
+                if spec.path not in existing.requested_by:
+                    existing.requested_by.append(spec.path)
+
+        if spec.path.is_file() and not spec.path.name.endswith(".py"):
+            warnings.append(f"not extracted (not .py): {spec.path}")
+        elif spec.path.is_dir() and not saw_any:
+            warnings.append(f"no .py files found: {spec.path}")
+
+    return sorted(found.values(), key=lambda item: item.order), warnings
+
+
+# ---------------------------------------------------------------------------
+# Source reading and AST helpers
+# ---------------------------------------------------------------------------
+
+
+def read_python_source(path: Path) -> ReadResult:
+    try:
+        with tokenize.open(path) as handle:
+            return ReadResult(handle.read(), handle.encoding, None)
+    except Exception as primary:
+        try:
+            data = path.read_bytes()
+            return ReadResult(
+                data.decode("utf-8", errors="replace"), "utf-8/replace", str(primary)
+            )
+        except Exception as secondary:
+            return ReadResult(
+                "", "unreadable", f"{type(secondary).__name__}: {secondary}"
+            )
+
+
+def unparse(node: ast.AST) -> str:
+    try:
+        return ast.unparse(node)
+    except Exception:
+        return "..."
+
+
+def first_paragraph(text: Optional[str], max_lines: int = 4) -> str:
+    if not text:
+        return ""
+    lines = text.strip().splitlines()
+    result: List[str] = []
+    for line in lines:
+        if not line.strip() and result:
+            break
+        result.append(line.rstrip())
+        if len(result) >= max_lines:
+            break
+    return "\n".join(result)
+
+
+def ellipsis_stmt() -> ast.Expr:
+    return ast.Expr(value=ast.Constant(value=Ellipsis))
+
+
+def is_docstring_stmt(stmt: ast.stmt) -> bool:
+    return (
+        isinstance(stmt, ast.Expr)
+        and isinstance(stmt.value, ast.Constant)
+        and isinstance(stmt.value.value, str)
+    )
+
+
+def shortened_doc_stmt(node: ast.AST, max_lines: int = 4) -> Optional[ast.Expr]:
+    text = first_paragraph(ast.get_docstring(node, clean=False), max_lines=max_lines)
+    if not text:
+        return None
+    return ast.Expr(value=ast.Constant(value=text))
+
+
+def positional_args(args: ast.arguments) -> List[ast.arg]:
+    return list(args.posonlyargs) + list(args.args)
+
+
+def function_shell(
+    node: ast.FunctionDef | ast.AsyncFunctionDef, body: List[ast.stmt]
+) -> ast.AST:
+    new_node = copy.deepcopy(node)
+    new_node.body = body or [ellipsis_stmt()]
+    return new_node
+
+
+def class_shell(node: ast.ClassDef, body: List[ast.stmt]) -> ast.ClassDef:
+    new_node = copy.deepcopy(node)
+    new_node.body = body or [ellipsis_stmt()]
+    return new_node
+
+
+def assignment_is_compact(stmt: ast.stmt, max_chars: int = 180) -> bool:
+    try:
+        return len(ast.unparse(stmt)) <= max_chars
+    except Exception:
+        return False
+
+
+def target_names(node: ast.AST) -> List[str]:
+    names: List[str] = []
+    for part in ast.walk(node):
+        if isinstance(part, ast.Name):
+            names.append(part.id)
+    return names
+
+
+def is_level0_assignment(stmt: ast.stmt) -> bool:
+    if isinstance(stmt, ast.AnnAssign):
+        return True
+    if isinstance(stmt, ast.Assign):
+        names: List[str] = []
+        for target in stmt.targets:
+            names.extend(target_names(target))
+        return any(name.isupper() for name in names)
+    return False
+
+
+def compact_assignment(stmt: ast.stmt, max_chars: int = 220) -> ast.stmt:
+    cloned = copy.deepcopy(stmt)
+    if assignment_is_compact(cloned, max_chars=max_chars):
+        return cloned
+    if isinstance(cloned, ast.Assign):
+        cloned.value = ast.Constant(value=Ellipsis)
+    elif isinstance(cloned, ast.AnnAssign) and cloned.value is not None:
+        cloned.value = ast.Constant(value=Ellipsis)
+    return cloned
+
+
+def clone_control(
+    stmt: ast.stmt, body: List[ast.stmt], orelse: Optional[List[ast.stmt]] = None
+) -> ast.stmt:
+    new_stmt = copy.deepcopy(stmt)
+    if hasattr(new_stmt, "body"):
+        new_stmt.body = body or [ellipsis_stmt()]
+    if orelse is not None and hasattr(new_stmt, "orelse"):
+        new_stmt.orelse = orelse
+    return new_stmt
+
+
+def contains_yield_expr(stmt: ast.stmt) -> bool:
+    return any(isinstance(node, (ast.Yield, ast.YieldFrom)) for node in ast.walk(stmt))
+
+
+def prune_stmt_level2(stmt: ast.stmt) -> Optional[ast.stmt]:
+    if isinstance(stmt, (ast.Return, ast.Raise, ast.Assert)):
+        return copy.deepcopy(stmt)
+    if isinstance(stmt, ast.Expr) and contains_yield_expr(stmt):
+        return copy.deepcopy(stmt)
+
+    if isinstance(stmt, ast.If):
+        body = prune_block(stmt.body, 2)
+        orelse = prune_block(stmt.orelse, 2)
+        if body or orelse:
+            return clone_control(stmt, body, orelse)
+        return None
+
+    if isinstance(stmt, (ast.For, ast.AsyncFor, ast.While)):
+        body = prune_block(stmt.body, 2)
+        orelse = prune_block(stmt.orelse, 2)
+        if body or orelse:
+            return clone_control(stmt, body, orelse)
+        return None
+
+    if isinstance(stmt, (ast.With, ast.AsyncWith)):
+        body = prune_block(stmt.body, 2)
+        if body:
+            return clone_control(stmt, body)
+        return None
+
+    if isinstance(stmt, (ast.Try, getattr(ast, "TryStar", ast.Try))):
+        body = prune_block(stmt.body, 2)
+        orelse = prune_block(stmt.orelse, 2)
+        finalbody = prune_block(stmt.finalbody, 2)
+        handler_bodies = [prune_block(handler.body, 2) for handler in stmt.handlers]
+        if not (body or orelse or finalbody or any(handler_bodies)):
+            return None
+
+        new_stmt = copy.deepcopy(stmt)
+        new_stmt.body = body or [ellipsis_stmt()]
+        new_stmt.orelse = orelse
+        new_stmt.finalbody = finalbody
+        new_handlers: List[ast.ExceptHandler] = []
+        for handler, kept_body in zip(stmt.handlers, handler_bodies):
+            new_handler = copy.deepcopy(handler)
+            new_handler.body = kept_body or [ellipsis_stmt()]
+            new_handlers.append(new_handler)
+        new_stmt.handlers = new_handlers
+        return new_stmt
+
+    if isinstance(stmt, ast.Match):
+        new_stmt = copy.deepcopy(stmt)
+        new_cases: List[ast.match_case] = []
+        for case in stmt.cases:
+            body = prune_block(case.body, 2)
+            if body:
+                new_case = copy.deepcopy(case)
+                new_case.body = body
+                new_cases.append(new_case)
+        new_stmt.cases = new_cases
+        return new_stmt if new_cases else None
+
+    if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        body: List[ast.stmt] = []
+        doc = shortened_doc_stmt(stmt)
+        if doc:
+            body.append(doc)
+        body.extend(
+            prune_block(
+                (
+                    stmt.body[1:]
+                    if stmt.body and is_docstring_stmt(stmt.body[0])
+                    else stmt.body
+                ),
+                2,
+            )
+        )
+        return function_shell(stmt, body)
+
+    if isinstance(stmt, ast.ClassDef):
+        body: List[ast.stmt] = []
+        doc = shortened_doc_stmt(stmt)
+        if doc:
+            body.append(doc)
+        for item in stmt.body:
+            if is_docstring_stmt(item):
+                continue
+            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                pruned = prune_stmt_level2(item)
+                if pruned:
+                    body.append(pruned)
+            elif isinstance(item, (ast.Assign, ast.AnnAssign)):
+                body.append(compact_assignment(item))
+        return class_shell(stmt, body)
+
+    return None
+
+
+def is_meaningful_expr(stmt: ast.Expr) -> bool:
+    return isinstance(
+        stmt.value,
+        (
+            ast.Call,
+            ast.Await,
+            ast.Yield,
+            ast.YieldFrom,
+            ast.NamedExpr,
+        ),
+    )
+
+
+def prune_stmt_level3(stmt: ast.stmt) -> Optional[ast.stmt]:
+    if isinstance(
+        stmt,
+        (
+            ast.Assign,
+            ast.AnnAssign,
+            ast.AugAssign,
+            ast.Delete,
+            ast.Return,
+            ast.Raise,
+            ast.Assert,
+            ast.Import,
+            ast.ImportFrom,
+            ast.Global,
+            ast.Nonlocal,
+            ast.Break,
+            ast.Continue,
+            ast.Pass,
+        ),
+    ):
+        return copy.deepcopy(stmt)
+
+    type_alias = getattr(ast, "TypeAlias", None)
+    if type_alias is not None and isinstance(stmt, type_alias):
+        return copy.deepcopy(stmt)
+
+    if isinstance(stmt, ast.Expr):
+        return copy.deepcopy(stmt) if is_meaningful_expr(stmt) else None
+
+    if isinstance(stmt, ast.If):
+        body = prune_block(stmt.body, 3)
+        orelse = prune_block(stmt.orelse, 3)
+        if body or orelse:
+            return clone_control(stmt, body, orelse)
+        return None
+
+    if isinstance(stmt, (ast.For, ast.AsyncFor, ast.While)):
+        body = prune_block(stmt.body, 3)
+        orelse = prune_block(stmt.orelse, 3)
+        if body or orelse:
+            return clone_control(stmt, body, orelse)
+        return None
+
+    if isinstance(stmt, (ast.With, ast.AsyncWith)):
+        body = prune_block(stmt.body, 3)
+        if body:
+            return clone_control(stmt, body)
+        return None
+
+    if isinstance(stmt, (ast.Try, getattr(ast, "TryStar", ast.Try))):
+        body = prune_block(stmt.body, 3)
+        orelse = prune_block(stmt.orelse, 3)
+        finalbody = prune_block(stmt.finalbody, 3)
+        handler_bodies = [prune_block(handler.body, 3) for handler in stmt.handlers]
+        if not (body or orelse or finalbody or any(handler_bodies)):
+            return None
+
+        new_stmt = copy.deepcopy(stmt)
+        new_stmt.body = body or [ellipsis_stmt()]
+        new_stmt.orelse = orelse
+        new_stmt.finalbody = finalbody
+        new_handlers: List[ast.ExceptHandler] = []
+        for handler, kept_body in zip(stmt.handlers, handler_bodies):
+            new_handler = copy.deepcopy(handler)
+            new_handler.body = kept_body or [ellipsis_stmt()]
+            new_handlers.append(new_handler)
+        new_stmt.handlers = new_handlers
+        return new_stmt
+
+    if isinstance(stmt, ast.Match):
+        new_stmt = copy.deepcopy(stmt)
+        new_cases: List[ast.match_case] = []
+        for case in stmt.cases:
+            body = prune_block(case.body, 3)
+            if body:
+                new_case = copy.deepcopy(case)
+                new_case.body = body
+                new_cases.append(new_case)
+        new_stmt.cases = new_cases
+        return new_stmt if new_cases else None
+
+    if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        body: List[ast.stmt] = []
+        doc = shortened_doc_stmt(stmt)
+        if doc:
+            body.append(doc)
+        original_body = (
+            stmt.body[1:]
+            if stmt.body and is_docstring_stmt(stmt.body[0])
+            else stmt.body
+        )
+        body.extend(prune_block(original_body, 3))
+        return function_shell(stmt, body)
+
+    if isinstance(stmt, ast.ClassDef):
+        body: List[ast.stmt] = []
+        doc = shortened_doc_stmt(stmt)
+        if doc:
+            body.append(doc)
+        for item in stmt.body:
+            if is_docstring_stmt(item):
+                continue
+            pruned = prune_stmt_level3(item)
+            if pruned:
+                body.append(pruned)
+        return class_shell(stmt, body)
+
+    return None
+
+
+def prune_block(statements: Sequence[ast.stmt], level: int) -> List[ast.stmt]:
+    result: List[ast.stmt] = []
+    for stmt in statements:
+        pruned = prune_stmt_level2(stmt) if level == 2 else prune_stmt_level3(stmt)
+        if pruned is not None:
+            result.append(pruned)
+    return result
+
+
+class DocstringShortener(ast.NodeTransformer):
+    def _shorten_body(self, node: ast.AST) -> ast.AST:
+        body = getattr(node, "body", None)
+        if isinstance(body, list) and body and is_docstring_stmt(body[0]):
+            text = first_paragraph(ast.get_docstring(node, clean=False), max_lines=4)
+            if text:
+                body[0] = ast.Expr(value=ast.Constant(value=text))
+            else:
+                body.pop(0)
+        return node
+
+    def visit_Module(self, node: ast.Module) -> ast.AST:
+        self.generic_visit(node)
+        return self._shorten_body(node)
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> ast.AST:
+        self.generic_visit(node)
+        return self._shorten_body(node)
+
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> ast.AST:
+        self.generic_visit(node)
+        return self._shorten_body(node)
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> ast.AST:
+        self.generic_visit(node)
+        return self._shorten_body(node)
+
+
+def build_level0(tree: ast.Module) -> ast.Module:
+    body: List[ast.stmt] = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            body.append(copy.deepcopy(node))
+        elif is_level0_assignment(node):
+            body.append(compact_assignment(node, max_chars=140))
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            body.append(function_shell(node, [ellipsis_stmt()]))
+        elif isinstance(node, ast.ClassDef):
+            class_body: List[ast.stmt] = []
+            for item in node.body:
+                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    class_body.append(function_shell(item, [ellipsis_stmt()]))
+                elif isinstance(item, ast.ClassDef):
+                    class_body.append(class_shell(item, [ellipsis_stmt()]))
+            body.append(class_shell(node, class_body))
+    return ast.Module(body=body, type_ignores=[])
+
+
+def build_level1(tree: ast.Module) -> ast.Module:
+    body: List[ast.stmt] = []
+    module_doc = shortened_doc_stmt(tree)
+    if module_doc:
+        body.append(module_doc)
+
+    for node in tree.body:
+        if is_docstring_stmt(node):
+            continue
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            body.append(copy.deepcopy(node))
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            body.append(compact_assignment(node))
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            fn_body: List[ast.stmt] = []
+            doc = shortened_doc_stmt(node)
+            if doc:
+                fn_body.append(doc)
+            fn_body.append(ellipsis_stmt())
+            body.append(function_shell(node, fn_body))
+        elif isinstance(node, ast.ClassDef):
+            class_body: List[ast.stmt] = []
+            doc = shortened_doc_stmt(node)
+            if doc:
+                class_body.append(doc)
+            for item in node.body:
+                if is_docstring_stmt(item):
+                    continue
+                if isinstance(item, (ast.Assign, ast.AnnAssign)):
+                    class_body.append(compact_assignment(item))
+                elif isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    fn_body = []
+                    fn_doc = shortened_doc_stmt(item)
+                    if fn_doc:
+                        fn_body.append(fn_doc)
+                    fn_body.append(ellipsis_stmt())
+                    class_body.append(function_shell(item, fn_body))
+                elif isinstance(item, ast.ClassDef):
+                    class_body.append(class_shell(item, [ellipsis_stmt()]))
+            body.append(class_shell(node, class_body))
+        else:
+            type_alias = getattr(ast, "TypeAlias", None)
+            if type_alias is not None and isinstance(node, type_alias):
+                body.append(copy.deepcopy(node))
+
+    return ast.Module(body=body, type_ignores=[])
+
+
+def build_level2(tree: ast.Module) -> ast.Module:
+    body: List[ast.stmt] = []
+    module_doc = shortened_doc_stmt(tree)
+    if module_doc:
+        body.append(module_doc)
+
+    for node in tree.body:
+        if is_docstring_stmt(node):
+            continue
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            body.append(copy.deepcopy(node))
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            body.append(compact_assignment(node))
+        else:
+            pruned = prune_stmt_level2(node)
+            if pruned:
+                body.append(pruned)
+    return ast.Module(body=body, type_ignores=[])
+
+
+def build_level3(tree: ast.Module) -> ast.Module:
+    body: List[ast.stmt] = []
+    module_doc = shortened_doc_stmt(tree)
+    if module_doc:
+        body.append(module_doc)
+
+    for node in tree.body:
+        if is_docstring_stmt(node):
+            continue
+        pruned = prune_stmt_level3(node)
+        if pruned:
+            body.append(pruned)
+    return ast.Module(body=body, type_ignores=[])
+
+
+def dense_source_comments(source: str) -> List[str]:
+    pattern = re.compile(
+        r"(\[[^\n#]*\]|→|->|OUTPUT|INPUT|reshape|view\(|unsqueeze|squeeze|permute|transpose|shape|dtype|device|dim)",
+        re.IGNORECASE,
+    )
+    comments: List[str] = []
+    seen: set[str] = set()
+    try:
+        for tok in tokenize.generate_tokens(io.StringIO(source).readline):
+            if tok.type != tokenize.COMMENT:
+                continue
+            text = tok.string.rstrip()
+            if pattern.search(text) and text not in seen:
+                seen.add(text)
+                comments.append(text)
+    except (tokenize.TokenError, IndentationError):
+        pass
+    return comments
+
+
+def fallback_extract(source: str, level: int, parse_error: str) -> str:
+    prefix = f"# pp: {parse_error}"
+    if level >= 4:
+        return prefix + "\n" + source.rstrip()
+
+    selected: List[str] = []
+    patterns = [
+        re.compile(r"^\s*(?:from\s+\S+\s+import\s+|import\s+)"),
+        re.compile(r"^\s*(?:async\s+def|def|class)\s+"),
+        re.compile(r"^\s*@"),
+    ]
+    if level >= 1:
+        patterns.append(re.compile(r"^\s*[A-Za-z_]\w*\s*(?::[^=]+)?="))
+    if level >= 2:
+        patterns.append(re.compile(r"^\s*(?:return|yield|raise|assert)\b"))
+    if level >= 3:
+        patterns.extend(
+            [
+                re.compile(
+                    r"^\s*(?:if|elif|else:|for|while|try:|except|finally:|with|match|case)\b"
+                ),
+                re.compile(r"^\s*[A-Za-z_][\w.\[\], ]*\s*(?:=|\+=|-=|\*=|/=)"),
+                re.compile(r"^\s*[A-Za-z_][\w.]*\s*\("),
+            ]
+        )
+
+    for line in source.splitlines():
+        if any(pattern.search(line) for pattern in patterns):
+            selected.append(line.rstrip())
+
+    return prefix + ("\n" + "\n".join(selected) if selected else "")
+
+
+def render_python_level(
+    source: str, path: Path, level: int
+) -> Tuple[str, Optional[str]]:
+    if level == 6:
+        return source, None
+
+    try:
+        tree = ast.parse(source, filename=str(path), type_comments=True)
+    except SyntaxError as exc:
+        error = f"SyntaxError: {exc.msg} (line {exc.lineno}, column {exc.offset})"
+        return fallback_extract(source, level, error), error
+
+    if level == 0:
+        selected = build_level0(tree)
+    elif level == 1:
+        selected = build_level1(tree)
+    elif level == 2:
+        selected = build_level2(tree)
+    elif level == 3:
+        selected = build_level3(tree)
+    elif level == 4:
+        selected = DocstringShortener().visit(copy.deepcopy(tree))
+    else:
+        selected = copy.deepcopy(tree)
+
+    ast.fix_missing_locations(selected)
+    rendered = ast.unparse(selected).rstrip()
+
+    if level in (2, 3, 4, 5):
+        comments = dense_source_comments(source)
+        if comments:
+            rendered += "\n\n" + "\n".join(comments)
+
+    return rendered, None
+
+
+# ---------------------------------------------------------------------------
+# Token counting
+# ---------------------------------------------------------------------------
+
+
+# def get_token_encoders() -> Tuple[List[Tuple[str, object]], Optional[str]]:
+#    try:
+#        import tiktoken  # type: ignore
+#    except Exception as exc:
+#        return [], f"tiktoken unavailable: {type(exc).__name__}: {exc}"
+#
+#    encoders: List[Tuple[str, object]] = []
+#    errors: List[str] = []
+#
+#    try:
+#        encoders.append(("gpt-4o/o200k_base", tiktoken.encoding_for_model("gpt-4o")))
+#    except Exception as exc:
+#        try:
+#            encoders.append(("o200k_base", tiktoken.get_encoding("o200k_base")))
+#        except Exception as fallback_exc:
+#            errors.append(f"o200k_base: {fallback_exc or exc}")
+#
+#    try:
+#        encoders.append(("cl100k_base", tiktoken.get_encoding("cl100k_base")))
+#    except Exception as exc:
+#        errors.append(f"cl100k_base: {exc}")
+#
+#    extra = os.environ.get("PP_TIKTOKEN_ENCODINGS", "").strip()
+#    if extra:
+#        existing = {name for name, _ in encoders}
+#        for name in [part.strip() for part in extra.split(",") if part.strip()]:
+#            if name in existing:
+#                continue
+#            try:
+#                encoders.append((name, tiktoken.get_encoding(name)))
+#            except Exception as exc:
+#                errors.append(f"{name}: {exc}")
+#
+#    return encoders, "; ".join(errors) if errors else None
+
+
+def get_token_encoders() -> Tuple[List[Tuple[str, object]], Optional[str]]:
+    try:
+        import tiktoken  # type: ignore
+    except Exception as exc:
+        return [], f"tiktoken unavailable: {type(exc).__name__}: {exc}"
+
+    encoders: List[Tuple[str, object]] = []
+    errors: List[str] = []
+
+    try:
+        encoders.append(("GPT", tiktoken.encoding_for_model("gpt-4o")))
+    except Exception as exc:
+        errors.append(f"GPT: {exc}")
+
+    try:
+        encoders.append(("Claude", tiktoken.get_encoding("o200k_base")))
+    except Exception as exc:
+        errors.append(f"Claude: {exc}")
+
+    return encoders, "; ".join(errors) if errors else None
+
+
+def token_count(encoder: object, text: str) -> int:
+    return len(encoder.encode(text, disallowed_special=()))  # type: ignore[attr-defined]
+
+
+def append_token_report(
+    base_text: str,
+    tree_text: str,
+    python_text: str,
+) -> Tuple[str, List[Tuple[str, int]]]:
+    encoders, error = get_token_encoders()
+    if not encoders:
+        separator = "" if base_text.endswith("\n") else "\n"
+        report = separator + "# tokens\n" + (error or "tiktoken unavailable") + "\n"
+        return base_text + report, []
+
+    tree_counts = {name: token_count(enc, tree_text) for name, enc in encoders}
+    python_counts = {name: token_count(enc, python_text) for name, enc in encoders}
+
+    report = ""
+    separator = "" if base_text.endswith("\n") else "\n"
+    report_base = base_text + separator
+    final_text = report_base
+    final_counts: Dict[str, int] = {}
+
+    for _ in range(10):
+        lines = ["# tokens"]
+        for name, _enc in encoders:
+            total = final_counts.get(
+                name, token_count(dict(encoders)[name], final_text)
+            )
+            lines.append(
+                f"{name}: total={total:,}  tree={tree_counts[name]:,}  python={python_counts[name]:,}"
+            )
+        if error:
+            lines.append(error)
+        new_report = "\n".join(lines) + "\n"
+        candidate = report_base + new_report
+        new_counts = {name: token_count(enc, candidate) for name, enc in encoders}
+        if new_report == report and new_counts == final_counts:
+            final_text = candidate
+            break
+        report = new_report
+        final_counts = new_counts
+        final_text = candidate
+
+    return final_text, [(name, final_counts[name]) for name, _ in encoders]
+
+
+# ---------------------------------------------------------------------------
+# Rendering
+# ---------------------------------------------------------------------------
+
+
+def render_inputs(inputs: Sequence[InputSpec]) -> str:
+    lines = ["# inputs"]
+    for spec in inputs:
+        lines.append(f"{level_name(spec.level)}  {spec.path}")
+    return "\n".join(lines)
+
+
+def render_tree(inputs: Sequence[InputSpec]) -> str:
+    lines = ["# tree"]
+    for index, root in enumerate(minimal_inventory_roots(inputs)):
+        if index:
+            lines.append("")
+        lines.extend(render_tree_root(root))
+    return "\n".join(lines)
+
+
+def render_python_files(files: Sequence[PythonFile]) -> Tuple[str, List[str]]:
+    lines = ["# python"]
+    errors: List[str] = []
+
+    for item in files:
+        read = read_python_source(item.path)
+        try:
+            size = item.path.stat().st_size
+        except OSError:
+            size = len(read.source.encode("utf-8", errors="replace"))
+
+        rendered, parse_error = render_python_level(read.source, item.path, item.level)
+        lines.append("")
+        lines.append(
+            f"===== {level_name(item.level)}  {human_size(size)}  {line_count(read.source)}L  {item.path} ====="
+        )
+        if read.error:
+            lines.append(f"# pp: source decoding fallback: {read.error}")
+        lines.append(rendered)
+
+        if parse_error:
+            errors.append(f"{item.path}: {parse_error}")
+        if read.error and not rendered:
+            errors.append(f"{item.path}: {read.error}")
+
+    return "\n".join(lines), errors
+
+
+def render_warnings(warnings: Sequence[str], errors: Sequence[str]) -> str:
+    all_items = list(warnings) + list(errors)
+    if not all_items:
+        return ""
+    return "# warnings\n" + "\n".join(f"- {item}" for item in all_items)
+
+
+def build_output(
+    inputs: Sequence[InputSpec],
+    files: Sequence[PythonFile],
+    warnings: Sequence[str],
+) -> Tuple[str, List[Tuple[str, int]]]:
+    now = _dt.datetime.now().astimezone().isoformat(timespec="seconds")
+    cwd = Path.cwd().resolve()
+
+    input_text = render_inputs(inputs)
+    tree_text = render_tree(inputs)
+    python_text, parse_errors = render_python_files(files)
+    warning_text = render_warnings(warnings, parse_errors)
+
+    header = "\n".join(
+        [
+            "# pp summary",
+            f"generated: {now}",
+            f"cwd: {cwd}",
+            f"python_files: {len(files)}",
+        ]
+    )
+
+    parts = [header, input_text, tree_text, python_text]
+    if warning_text:
+        parts.append(warning_text)
+    base = "\n\n".join(parts)
+    if not base.endswith("\n"):
+        base += "\n"
+    return append_token_report(base, tree_text, python_text)
+
+
+def print_extracted_files(files: Sequence[PythonFile]) -> None:
+    print(Path.cwd().resolve())
+    for item in files:
+        try:
+            size = item.path.stat().st_size
+        except OSError:
+            size = 0
+        print(f"{human_size(size):>7}  {level_name(item.level):>4}  {item.path}")
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    inputs = parse_args(args)
+    files, warnings = discover_python(inputs)
+
+    if not files:
+        print_extracted_files(files)
+        for warning in warnings:
+            print(f"pp: {warning}", file=sys.stderr)
+        print("pp: no Python files to extract", file=sys.stderr)
+        return 1
+
+    output_path = make_output_path(inputs, Path.cwd().resolve())
+    text, token_counts = build_output(inputs, files, warnings)
+    output_path.write_text(text, encoding="utf-8")
+
+    print_extracted_files(files)
+    print(f"\nwritten: {output_path}")
+    for name, count in token_counts:
+        print(f"tokens {name}: {count:,}")
+    if not token_counts:
+        print(
+            "tokens: tiktoken unavailable; install with: python3 -m pip install tiktoken"
+        )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

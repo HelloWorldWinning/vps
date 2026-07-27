@@ -1,0 +1,662 @@
+#!/usr/bin/env python3
+"""
+pp — token-aware Python project summarizer for LLM context windows.
+
+Usage:
+  pp [LEVEL] PATH [PATH ...] [LEVEL PATH ...]
+
+Levels (cumulative; a level flag applies to all paths that follow it,
+until the next level flag; paths before any flag default to -0):
+
+  -0    map       tree + imports + def/class names with line numbers   [default]
+  -1    api       + full signatures, decorators, base classes
+  -2    contract  + one-line docstrings, return expressions, raises, module constants
+  -3    flow      + paragraph docstrings, shape comments, control-flow skeleton
+  -4    docs      + full docstrings, class attributes, assignment targets
+  -5    logic     minified source: ALL executable logic, docstrings/comments stripped
+  -raw            verbatim file content (.py, or any text file < 512KB)
+
+Output naming (written to pwd):
+  pp model.py            ->  model_summary_{ts}.txt
+  pp src/                ->  src_summary_{ts}.txt
+  pp a.py b.py src/      ->  summary_{ts}.txt
+
+Examples:
+  pp model.py
+  pp -3 src/ -4 src/model.py
+  pp -1 a.py b.py -5 core/engine.py -raw notes.md
+"""
+
+from __future__ import annotations
+
+import ast
+import io
+import os
+import re
+import sys
+import textwrap
+import tokenize
+from datetime import datetime
+from pathlib import Path
+
+# ── Constants ────────────────────────────────────────────────────────────────
+
+RAW = 6
+LEVEL_FLAGS = {"-0": 0, "-1": 1, "-2": 2, "-3": 3, "-4": 4, "-5": 5, "-raw": RAW}
+LEVEL_NAMES = {
+    0: "map",
+    1: "api",
+    2: "contract",
+    3: "flow",
+    4: "docs",
+    5: "logic",
+    6: "raw",
+}
+
+SKIP_DIRS = {
+    "__pycache__",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "env",
+    "dist",
+    "build",
+    ".tox",
+    ".ipynb_checkpoints",
+    ".eggs",
+}
+MAX_RAW_BYTES = 512 * 1024
+MAX_LINE = 160
+
+SHAPE_RE = re.compile(
+    r"#.*(\[.*\]|→|OUTPUT|INPUT|reshape|unsqueeze|squeeze|shape|dim)"
+    r"|#\s*\w+\s*:\s*\[",
+    re.IGNORECASE,
+)
+FLOW_RE = re.compile(
+    r"^\s*(if\b|elif\b|else\b|for\b|while\b|try\b|except\b|finally\b|with\b|match\b|case\b)"
+)
+
+# ── Token counting (gpt via gpt-4o encoding; claude via o200k_base) ─────────
+
+_ENC_GPT = None
+_ENC_CLAUDE = None
+_TIKTOKEN_OK = False
+
+
+def _load_tiktoken():
+    global _ENC_GPT, _ENC_CLAUDE, _TIKTOKEN_OK
+    try:
+        import tiktoken
+
+        _ENC_GPT = tiktoken.encoding_for_model("gpt-4o")
+        _ENC_CLAUDE = tiktoken.get_encoding("o200k_base")
+        _TIKTOKEN_OK = True
+    except Exception:
+        _TIKTOKEN_OK = False
+
+
+def count_tokens(text: str) -> tuple[int, int, bool]:
+    """Return (gpt_tokens, claude_tokens, exact?)."""
+    if _TIKTOKEN_OK:
+        try:
+            g = len(_ENC_GPT.encode(text, disallowed_special=()))
+            c = len(_ENC_CLAUDE.encode(text, disallowed_special=()))
+            return g, c, True
+        except Exception:
+            pass
+    est = max(1, len(text) // 3)
+    return est, est, False
+
+
+# ── Small helpers ────────────────────────────────────────────────────────────
+
+
+def _unparse(node) -> str:
+    try:
+        return ast.unparse(node)
+    except Exception:
+        return "..."
+
+
+def _first_line(doc: str) -> str:
+    for ln in textwrap.dedent(doc).strip().splitlines():
+        if ln.strip():
+            return ln.strip()
+    return ""
+
+
+def _first_paragraph(doc: str, max_lines: int = 4) -> str:
+    if not doc:
+        return ""
+    lines = textwrap.dedent(doc).strip().splitlines()
+    para = []
+    for line in lines:
+        if line.strip() == "" and para:
+            break
+        para.append(line.rstrip())
+        if len(para) >= max_lines:
+            break
+    return "\n".join(para)
+
+
+def human(n: int) -> str:
+    if n < 1024:
+        return f"{n}B"
+    if n < 1024**2:
+        return f"{n/1024:.1f}K"
+    return f"{n/1024**2:.1f}M"
+
+
+def _walk_no_nested(node):
+    """Walk children, never descending into nested func/class defs."""
+    stack = list(ast.iter_child_nodes(node))
+    while stack:
+        n = stack.pop()
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        yield n
+        stack.extend(ast.iter_child_nodes(n))
+
+
+# ── Signature formatting (adapted from pl) ───────────────────────────────────
+
+
+def _format_args(args: ast.arguments) -> str:
+    parts = []
+    num_defaults = len(args.defaults)
+    num_args = len(args.args)
+    for i, arg in enumerate(args.args):
+        off = i - (num_args - num_defaults)
+        ann = f": {_unparse(arg.annotation)}" if arg.annotation else ""
+        dflt = f" = {_unparse(args.defaults[off])}" if off >= 0 else ""
+        parts.append(f"{arg.arg}{ann}{dflt}")
+    if args.vararg:
+        ann = f": {_unparse(args.vararg.annotation)}" if args.vararg.annotation else ""
+        parts.append(f"*{args.vararg.arg}{ann}")
+    elif args.kwonlyargs:
+        parts.append("*")
+    kw_dflts = {
+        k: v for k, v in zip(args.kwonlyargs, args.kw_defaults) if v is not None
+    }
+    for arg in args.kwonlyargs:
+        ann = f": {_unparse(arg.annotation)}" if arg.annotation else ""
+        dflt = f" = {_unparse(kw_dflts[arg])}" if arg in kw_dflts else ""
+        parts.append(f"{arg.arg}{ann}{dflt}")
+    if args.kwarg:
+        ann = f": {_unparse(args.kwarg.annotation)}" if args.kwarg.annotation else ""
+        parts.append(f"**{args.kwarg.arg}{ann}")
+    return ", ".join(parts)
+
+
+def _func_sig(node) -> str:
+    prefix = "async def " if isinstance(node, ast.AsyncFunctionDef) else "def "
+    ret = f" -> {_unparse(node.returns)}" if node.returns else ""
+    return f"{prefix}{node.name}({_format_args(node.args)}){ret}"
+
+
+# ── Per-file extractor ───────────────────────────────────────────────────────
+
+
+class PyExtract:
+    def __init__(self, path: Path, level: int):
+        self.path = path
+        self.level = level
+        self.source = path.read_text(encoding="utf-8", errors="replace")
+        self.lines = self.source.splitlines()
+        try:
+            self.tree = ast.parse(self.source, filename=str(path))
+            self.parse_ok = True
+        except SyntaxError as e:
+            self.tree = None
+            self.parse_ok = False
+            self.parse_error = str(e)
+
+    # ── shared collectors ────────────────────────────────────────────────
+
+    def _imports(self) -> str:
+        mods = set()
+        for node in ast.walk(self.tree):
+            if isinstance(node, ast.Import):
+                for a in node.names:
+                    mods.add(a.name.split(".")[0])
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                mods.add(node.module.split(".")[0])
+        return ", ".join(sorted(mods))
+
+    def _module_constants(self) -> list[str]:
+        out = []
+        for node in self.tree.body:
+            if isinstance(node, ast.Assign):
+                for t in node.targets:
+                    name = _unparse(t)
+                    val = _unparse(node.value)
+                    if (name.isupper() or len(name) <= 20) and len(val) <= 80:
+                        out.append(f"{name} = {val}")
+            elif isinstance(node, ast.AnnAssign):
+                name, ann = _unparse(node.target), _unparse(node.annotation)
+                val = f" = {_unparse(node.value)}" if node.value else ""
+                out.append(f"{name}: {ann}{val}")
+        return out[:12]
+
+    def _returns(self, node) -> list[str]:
+        rets = []
+        for n in _walk_no_nested(node):
+            if isinstance(n, ast.Return) and n.value is not None:
+                rets.append(_unparse(n.value))
+        return list(dict.fromkeys(rets))[:4]
+
+    def _raises(self, node) -> list[str]:
+        out = []
+        for n in _walk_no_nested(node):
+            if isinstance(n, ast.Raise) and n.exc is not None:
+                out.append(_unparse(n.exc))
+        return list(dict.fromkeys(out))[:2]
+
+    def _shapes(self, node) -> list[str]:
+        out = []
+        for i in range(node.lineno - 1, min(node.end_lineno, len(self.lines))):
+            s = self.lines[i].strip()
+            if s.startswith("#") and SHAPE_RE.search(s):
+                out.append(s)
+        return out[:8]
+
+    def _skeleton(self, node) -> list[str]:
+        out = []
+        for i in range(node.lineno, min(node.end_lineno, len(self.lines))):
+            s = self.lines[i].strip()
+            if FLOW_RE.match(s):
+                out.append(s if len(s) <= 100 else s[:97] + "...")
+        return out[:15]
+
+    def _assign_targets(self, node) -> list[str]:
+        out = []
+        for n in _walk_no_nested(node):
+            if isinstance(n, ast.Assign):
+                for t in n.targets:
+                    txt = f"{_unparse(t)} = {_unparse(n.value)}"
+                    out.append(txt if len(txt) <= 70 else txt[:67] + "...")
+            elif isinstance(n, ast.AnnAssign):
+                txt = f"{_unparse(n.target)}: {_unparse(n.annotation)}"
+                out.append(txt if len(txt) <= 70 else txt[:67] + "...")
+        return list(dict.fromkeys(out))[:10]
+
+    def _doc_lines(self, node, ind: str) -> list[str]:
+        doc = ast.get_docstring(node)
+        if not doc or self.level < 2:
+            return []
+        if self.level == 2:
+            return [f"{ind}# {_first_line(doc)}"]
+        if self.level == 3:
+            txt = _first_paragraph(doc, max_lines=4)
+        else:
+            txt = "\n".join(textwrap.dedent(doc).strip().splitlines()[:30])
+        return [f"{ind}# {ln}" for ln in txt.splitlines()]
+
+    # ── function / class blocks ──────────────────────────────────────────
+
+    def _func_block(self, node, indent: int) -> list[str]:
+        ind = " " * indent
+        kw = "async def" if isinstance(node, ast.AsyncFunctionDef) else "def"
+        if self.level == 0:
+            return [f"{ind}L{node.lineno} {kw} {node.name}"]
+        lines = [f"{ind}@{_unparse(d)}" for d in node.decorator_list]
+        lines.append(f"{ind}L{node.lineno} {_func_sig(node)}")
+        lines += self._doc_lines(node, ind + "    ")
+        if self.level >= 2:
+            for r in self._returns(node):
+                lines.append(
+                    f"{ind}    return {r if len(r) <= 120 else r[:117] + '...'}"
+                )
+            for r in self._raises(node):
+                lines.append(f"{ind}    # raises: {r}")
+        if self.level >= 3:
+            sh = self._shapes(node)
+            if sh:
+                lines.append(f"{ind}    # ── shape/flow ──")
+                lines += [f"{ind}    {s}" for s in sh]
+            sk = self._skeleton(node)
+            if sk:
+                lines.append(f"{ind}    # ── control flow ──")
+                lines += [f"{ind}    {s}" for s in sk]
+        if self.level >= 4:
+            at = self._assign_targets(node)
+            if at:
+                lines.append(f"{ind}    # ── assignments ──")
+                lines += [f"{ind}    {s}" for s in at]
+        return lines
+
+    def _class_block(self, node, indent: int) -> list[str]:
+        ind = " " * indent
+        if self.level == 0:
+            return [f"{ind}L{node.lineno} class {node.name}"]
+        lines = [f"{ind}@{_unparse(d)}" for d in node.decorator_list]
+        bases = ", ".join(_unparse(b) for b in node.bases)
+        lines.append(
+            f"{ind}L{node.lineno} class {node.name}{f'({bases})' if bases else ''}"
+        )
+        lines += self._doc_lines(node, ind + "    ")
+        if self.level >= 4:
+            for item in node.body:
+                if isinstance(item, ast.AnnAssign):
+                    txt = f"{_unparse(item.target)}: {_unparse(item.annotation)}"
+                    if item.value:
+                        txt += f" = {_unparse(item.value)}"
+                    lines.append(
+                        f"{ind}    {txt if len(txt) <= 90 else txt[:87] + '...'}"
+                    )
+                elif isinstance(item, ast.Assign):
+                    for t in item.targets:
+                        txt = f"{_unparse(t)} = {_unparse(item.value)}"
+                        if len(txt) <= 90:
+                            lines.append(f"{ind}    {txt}")
+        for item in node.body:
+            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                lines.append("")
+                lines += self._func_block(item, indent + 4)
+        return lines
+
+    # ── degraded fallback (syntax error) ─────────────────────────────────
+
+    def _degraded(self) -> list[str]:
+        out = [f"# degraded extraction (syntax error: {self.parse_error})"]
+        imp = re.compile(r"^\s*(?:import|from)\s+(\S+)")
+        dfn = re.compile(r"^(\s*)(async def|def|class)\s+.*")
+        for i, ln in enumerate(self.lines, 1):
+            m = imp.match(ln)
+            if m:
+                out.append(f"L{i} import {m.group(1)}")
+                continue
+            m = dfn.match(ln)
+            if m:
+                out.append(f"L{i} {ln.strip()[:120]}")
+        return out
+
+    # ── L5: minified logic ───────────────────────────────────────────────
+
+    def _minify(self) -> str:
+        src = self._strip_comments(self.source)
+        drop = set()
+        if self.parse_ok:
+            for node in ast.walk(self.tree):
+                if isinstance(
+                    node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module),
+                ):
+                    if (
+                        node.body
+                        and isinstance(node.body[0], ast.Expr)
+                        and isinstance(node.body[0].value, ast.Constant)
+                        and isinstance(node.body[0].value.value, str)
+                    ):
+                        d = node.body[0]
+                        drop.update(range(d.lineno, d.end_lineno + 1))
+        out = []
+        for i, ln in enumerate(src.splitlines(), 1):
+            if i in drop or not ln.strip():
+                continue
+            out.append(ln if len(ln) <= MAX_LINE else ln[: MAX_LINE - 3] + "...")
+        return "\n".join(out)
+
+    @staticmethod
+    def _strip_comments(source: str) -> str:
+        lines = source.splitlines(keepends=True)
+        try:
+            toks = list(tokenize.generate_tokens(io.StringIO(source).readline))
+        except Exception:
+            return source
+        cuts = []
+        for t in toks:
+            if t.type == tokenize.COMMENT:
+                if SHAPE_RE.search(t.string):  # keep shape/flow comments
+                    continue
+                (sr, sc), (er, ec) = t.start, t.end
+                if sr == er:
+                    cuts.append((sr, sc, ec))
+        out = []
+        for i, ln in enumerate(lines, 1):
+            for r, s, e in cuts:
+                if r == i:
+                    ln = ln[:s] + ln[e:]
+            out.append(ln.rstrip())
+        return "\n".join(out)
+
+    # ── raw ──────────────────────────────────────────────────────────────
+
+    def _raw(self) -> str:
+        return self.source.rstrip()
+
+    # ── render ───────────────────────────────────────────────────────────
+
+    def render_body(self) -> str:
+        if self.level == RAW:
+            return self._raw()
+        if self.level == 5:
+            return self._minify()
+        if not self.parse_ok:
+            return "\n".join(self._degraded())
+        out = []
+        imp = self._imports()
+        if imp:
+            out.append(f"imports: {imp}")
+        if self.level >= 2:
+            consts = self._module_constants()
+            if consts:
+                out.append("constants: " + " | ".join(consts))
+        for node in self.tree.body:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                out.append("")
+                out += self._func_block(node, 0)
+            elif isinstance(node, ast.ClassDef):
+                out.append("")
+                out += self._class_block(node, 0)
+        return "\n".join(out)
+
+
+# ── Tree ─────────────────────────────────────────────────────────────────────
+
+
+def _keep_dir(name: str) -> bool:
+    return not name.startswith(".") and name not in SKIP_DIRS
+
+
+def walk_py(root: Path) -> list[Path]:
+    out = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if _keep_dir(d)]
+        for fn in filenames:
+            if fn.endswith(".py") and not fn.startswith("."):
+                out.append(Path(dirpath) / fn)
+    return sorted(out)
+
+
+def render_tree(roots: list[Path], level_map: dict) -> list[str]:
+    lines = []
+    for r in sorted(set(roots)):
+        if r.is_file():
+            tag = (
+                f"  [L{level_map[r]}:{LEVEL_NAMES[level_map[r]]}]"
+                if r in level_map
+                else ""
+            )
+            lines.append(f"{r.name}  ({human(r.stat().st_size)}){tag}")
+            continue
+        lines.append(f"{r.name}/")
+        for dirpath, dirnames, filenames in os.walk(r):
+            dirnames[:] = sorted(d for d in dirnames if _keep_dir(d))
+            depth = len(Path(dirpath).relative_to(r).parts)
+            ind = "  " * (depth + 1)
+            for d in dirnames:
+                lines.append(f"{ind}{d}/")
+            for fn in sorted(filenames):
+                if fn.startswith("."):
+                    continue
+                p = Path(dirpath) / fn
+                tag = (
+                    f"  [L{level_map[p]}:{LEVEL_NAMES[level_map[p]]}]"
+                    if p in level_map
+                    else ""
+                )
+                lines.append(f"{ind}{fn}  ({human(p.stat().st_size)}){tag}")
+    return lines
+
+
+# ── CLI parsing ──────────────────────────────────────────────────────────────
+
+USAGE = __doc__.strip()
+
+
+def parse_cli(argv: list[str]) -> list[tuple[str, int]]:
+    specs = []
+    current = 0
+    for tok in argv:
+        if tok in ("-h", "--help"):
+            print(USAGE)
+            sys.exit(0)
+        if tok in LEVEL_FLAGS:
+            current = LEVEL_FLAGS[tok]
+        else:
+            specs.append((tok, current))
+    return specs
+
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+
+
+def main():
+    _load_tiktoken()
+    argv = sys.argv[1:]
+    if not argv:
+        print(USAGE)
+        sys.exit(1)
+
+    specs = parse_cli(argv)
+    if not specs:
+        print("pp: no paths given\n\n" + USAGE)
+        sys.exit(1)
+
+    warnings: list[str] = []
+    level_map: dict[Path, int] = {}  # file -> level (max wins)
+    tree_roots: list[Path] = []
+
+    for p_str, lvl in specs:
+        p = Path(p_str).resolve()
+        if not p.exists():
+            print(f"pp: error: no such path: {p_str}", file=sys.stderr)
+            sys.exit(1)
+        if p.is_dir():
+            tree_roots.append(p)
+            for f in walk_py(p):
+                level_map[f] = max(level_map.get(f, -1), lvl)
+        else:
+            tree_roots.append(p)
+            if lvl == RAW:
+                if p.stat().st_size > MAX_RAW_BYTES:
+                    warnings.append(
+                        f"SKIP {p} (>{human(MAX_RAW_BYTES)}, too big for -raw)"
+                    )
+                else:
+                    try:
+                        p.read_text(encoding="utf-8")
+                        level_map[p] = RAW
+                    except Exception:
+                        warnings.append(f"SKIP {p} (not a text file)")
+            elif p.suffix == ".py":
+                level_map[p] = max(level_map.get(p, -1), lvl)
+            else:
+                warnings.append(f"SKIP {p} (non-.py needs -raw)")
+
+    if not level_map:
+        print(
+            "pp: nothing to extract (no .py files found, no -raw targets)",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    # ── render sections (highest level first, then biggest first) ────────
+    files_sorted = sorted(
+        level_map, key=lambda f: (-level_map[f], -f.stat().st_size, str(f))
+    )
+    sections = []
+    for f in files_sorted:
+        lvl = level_map[f]
+        ext = PyExtract(f, lvl)
+        body = ext.render_body()
+        g, _, exact = count_tokens(body)
+        est_mark = "" if exact else " (est)"
+        degraded = " [degraded: syntax error]" if (lvl < 5 and not ext.parse_ok) else ""
+        header = f"### {f} [L{lvl}:{LEVEL_NAMES[lvl]}]{degraded} ~{g:,} tok{est_mark}"
+        sections.append(header + "\n" + body)
+
+    tree_lines = render_tree(tree_roots, level_map)
+
+    # ── assemble with token placeholder ──────────────────────────────────
+    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%p_%a")
+    root_paths = [str(p) for p in tree_roots]
+    common = (
+        os.path.commonpath(root_paths)
+        if len(root_paths) > 1
+        else (
+            root_paths[0]
+            if Path(root_paths[0]).is_dir()
+            else str(Path(root_paths[0]).parent)
+        )
+    )
+
+    head = [
+        "# Project Summary",
+        f"generated: {ts}",
+        f"root: {common}",
+        f"files extracted: {len(files_sorted)} .py/text  |  tokens: __TOKENS__",
+        "NOTE TO LLM: lower-level files are structural references only —",
+        "do not assume their internals; ask for a higher level if needed.",
+        "",
+        "## TREE (hidden/noise dirs excluded)",
+        "```",
+        *tree_lines,
+        "```",
+        "",
+        "## FILES",
+    ]
+    for w in warnings:
+        head.insert(4, f"WARNING: {w}")
+
+    body_text = "\n\n".join(sections)
+    full = "\n".join(head) + "\n\n" + body_text
+
+    g_total, c_total, exact = count_tokens(full)
+    mark = "" if exact else " (est — install tiktoken for exact counts)"
+    token_line = f"gpt {g_total:,} | claude {c_total:,}{mark}"
+    full = full.replace("__TOKENS__", token_line)
+
+    # ── output filename ──────────────────────────────────────────────────
+    spec_paths = [Path(s).resolve() for s, _ in specs]
+    if len(spec_paths) == 1:
+        p = spec_paths[0]
+        base = p.stem if p.is_file() else p.name
+    else:
+        base = "summary"
+    out = Path.cwd() / f"{base}_summary_{ts}.txt"
+    n = 2
+    while out.exists():
+        out = Path.cwd() / f"{base}_summary_{ts}_{n}.txt"
+        n += 1
+
+    out.write_text(full, encoding="utf-8")
+
+    # ── console echo ─────────────────────────────────────────────────────
+    print(f"pwd: {Path.cwd()}")
+    print(f"output: {out.name}")
+    print(f"tokens: {token_line}")
+    if warnings:
+        for w in warnings:
+            print(f"  ! {w}")
+    print(f"extracted ({len(files_sorted)} files):")
+    for f in files_sorted:
+        lvl = level_map[f]
+        size = f.stat().st_size
+        print(f"  {human(size):>7}  [L{lvl}]  {f}")
+
+
+if __name__ == "__main__":
+    main()
