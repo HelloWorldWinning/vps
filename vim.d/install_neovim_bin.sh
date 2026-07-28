@@ -202,3 +202,5 @@ python -m pip install neovim
 #python -m pip install tiktoken
 pip install --break-system-packages tiktoken
 clean_install
+sudo pip install --break-system-packages tiktoken
+pip install --break-system-packages tiktoken

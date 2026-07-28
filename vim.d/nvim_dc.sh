@@ -468,3 +468,6 @@ pip3 install jedi
 pip install --break-system-packages tiktoken
 
 clean_install
+
+sudo pip install --break-system-packages tiktoken
+pip install --break-system-packages tiktoken
