@@ -352,11 +352,7 @@ endfunction
 
 hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cterm=bold
 "set statusline=\ \ \
-
-
-highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
-"set statusline=%L\
-set statusline=%#StatusLineBold#%L%*\
+set statusline=%L\
       \ %t\ \
       \ %#StatusLineSize#\ \
       \%{FileSize_Token()}\ \
