@@ -382,6 +382,9 @@ bash <(curl -4Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/u
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh)
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh)
 
+#  setup_7788_web_download_docker.sh
+bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh)
+
 cat <<"EOF" >>/etc/resolv.conf
 nameserver 8.8.4.4
 nameserver 1.1.1.1
@@ -759,8 +762,6 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_
 #chmod +x /tmp/acme_one_time_install_after_rebuild.sh
 #nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
 
-bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh)
-
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
 
@@ -780,6 +781,8 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
 
 pip install --break-system-packages tiktoken
+#  setup_7788_web_download_docker.sh
+bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_download_docker_claude/setup_7788_web_download_docker.sh)
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed"
 
 sudo apt install vivid -y
