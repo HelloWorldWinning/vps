@@ -25,10 +25,8 @@ app.mount("/static", StaticFiles(directory="."), name="static")
 
 
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
-    #   correct_username = "a"
-    #   correct_password = "a"
-    correct_username = os.getenv("USERNAME", "a")
-    correct_password = os.getenv("PASSWORD", "a")
+    correct_username = "a"
+    correct_password = "a"
 
     is_correct_username = secrets.compare_digest(
         credentials.username.encode("utf8"), correct_username.encode("utf8")
@@ -394,51 +392,20 @@ async def navigate(
         #   default: sort by name
         #   ?s     : sort by file size, biggest first
         #   ?t     : sort by modified time, latest first
-        #       sort_mode = None
-        #       if "s" in request.query_params:
-        #           sort_mode = "size"
-        #       elif "t" in request.query_params:
-        #           sort_mode = "time"
-
-        #       is_raw = "raw" in request.query_params
-        #       is_md = "md" in request.query_params
-        #       if is_raw:
-        #           raw_suffix = "?raw"
-        #       elif is_md:
-        #           raw_suffix = "?md"
-        #       else:
-        #           raw_suffix = ""
-
-        # Collect flags tolerantly: handles ?t&md (correct) and ?t?md (typo),
-        # since the latter arrives as key "t" with value "?md".
-        flags = set()
-        for k, v in request.query_params.multi_items():
-            flags.add(k.strip().lower())
-            for extra in str(v).replace("?", "&").split("&"):
-                extra = extra.strip().lower()
-                if extra:
-                    flags.add(extra)
-
         sort_mode = None
-        if "s" in flags:
+        if "s" in request.query_params:
             sort_mode = "size"
-        elif "t" in flags:
+        elif "t" in request.query_params:
             sort_mode = "time"
 
-        is_raw = "raw" in flags
-        is_md = "md" in flags
-
-        # Build the suffix passed down to child links, preserving every flag.
-        _parts = []
-        if sort_mode == "size":
-            _parts.append("s")
-        elif sort_mode == "time":
-            _parts.append("t")
+        is_raw = "raw" in request.query_params
+        is_md = "md" in request.query_params
         if is_raw:
-            _parts.append("raw")
+            raw_suffix = "?raw"
         elif is_md:
-            _parts.append("md")
-        raw_suffix = ("?" + "&".join(_parts)) if _parts else ""
+            raw_suffix = "?md"
+        else:
+            raw_suffix = ""
 
         def item_sort_key(item: str):
             item_full_path = os.path.join(full_path, item)
@@ -741,33 +708,18 @@ table td:nth-child(3) {{ width: 15%; }}
 
     elif os.path.isfile(full_path):
         # Handle files
-        # if "raw" in request.query_params:
-        #     return await serve_raw_text(full_path)
-
-        # # ext = os.path.splitext(full_path)[1].lower()
-        # # # Markdown: render with mistune + Pygments (env-configurable style)
-        # # if ext == ".md":
-        # #     return await render_markdown_with_mistune(full_path, credentials)
-
-        # ext = os.path.splitext(full_path)[1].lower()
-        # # ?md forces markdown rendering regardless of extension
-        # force_md = "md" in request.query_params
-        # Markdown: render with mistune + Pygments (env-configurable style)
-
-        file_flags = set()
-        for k, v in request.query_params.multi_items():
-            file_flags.add(k.strip().lower())
-            for extra in str(v).replace("?", "&").split("&"):
-                extra = extra.strip().lower()
-                if extra:
-                    file_flags.add(extra)
-
-        if "raw" in file_flags:
+        if "raw" in request.query_params:
             return await serve_raw_text(full_path)
 
-        ext = os.path.splitext(full_path)[1].lower()
-        force_md = "md" in file_flags
+        # ext = os.path.splitext(full_path)[1].lower()
+        # # Markdown: render with mistune + Pygments (env-configurable style)
+        # if ext == ".md":
+        #     return await render_markdown_with_mistune(full_path, credentials)
 
+        ext = os.path.splitext(full_path)[1].lower()
+        # ?md forces markdown rendering regardless of extension
+        force_md = "md" in request.query_params
+        # Markdown: render with mistune + Pygments (env-configurable style)
         if force_md or ext in (".md", ".markdown"):
             return await render_markdown_with_mistune(full_path, credentials)
 
