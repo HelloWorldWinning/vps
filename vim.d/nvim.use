@@ -354,8 +354,16 @@ hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cte
 "set statusline=\ \ \
 
 
+
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
-highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ebcb8b
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ff6b6b
+highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#8043f7
 "set statusline=%L\
 set statusline=%#StatusLineBold#%L%*\
       \ %t\ \
