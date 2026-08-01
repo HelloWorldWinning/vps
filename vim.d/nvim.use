@@ -1185,3 +1185,9 @@ augroup TT_Yank
  autocmd TextYankPost * call s:TT_Event()
 augroup END
 
+
+
+"  Preventing flash display of intermediate steps 
+"  https://claude.ai/share/e8f76ced-dbeb-41b1-8285-8158b6ae2b73
+
+set report=9999
