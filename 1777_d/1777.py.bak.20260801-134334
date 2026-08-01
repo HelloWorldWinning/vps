@@ -359,46 +359,6 @@ LEXER_MAPPING.update(
 )
 
 
-# --- patched: robust query-flag parsing -------------------------------------
-def _collect_flags(request) -> set:
-    """
-    Turn the RAW query string into a flat set of lowercase flags.
-
-    Starlette hands "?t?md" to us as a single key "t?md" (no "=" -> no value),
-    which is why per-key/value parsing used to lose the second flag.  Working
-    from request.url.query instead makes every separator equivalent:
-
-        ?t&md   ?t?md   ?md?t   ?t;md   ?t,md   ?T?MD   ?t=1&md
-    """
-    try:
-        raw = request.url.query or ""
-    except Exception:
-        try:
-            raw = request.scope.get("query_string", b"") or b""
-        except Exception:
-            raw = ""
-
-    if isinstance(raw, (bytes, bytearray)):
-        raw = raw.decode("utf-8", "ignore")
-
-    try:
-        raw = unquote(str(raw))
-    except Exception:
-        raw = str(raw)
-
-    # every separator (and "=", so "?t=1&md" also yields "t") is equivalent
-    for ch in "?;,&=+":
-        raw = raw.replace(ch, " ")
-
-    flags = set()
-    for token in raw.split():
-        token = token.strip().lower()
-        if token:
-            flags.add(token)
-    return flags
-# --- end patch --------------------------------------------------------------
-
-
 @app.get("/", response_class=HTMLResponse)
 async def root(
     request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)
@@ -451,7 +411,13 @@ async def navigate(
 
         # Collect flags tolerantly: handles ?t&md (correct) and ?t?md (typo),
         # since the latter arrives as key "t" with value "?md".
-        flags = _collect_flags(request)
+        flags = set()
+        for k, v in request.query_params.multi_items():
+            flags.add(k.strip().lower())
+            for extra in str(v).replace("?", "&").split("&"):
+                extra = extra.strip().lower()
+                if extra:
+                    flags.add(extra)
 
         sort_mode = None
         if "s" in flags:
@@ -788,7 +754,13 @@ table td:nth-child(3) {{ width: 15%; }}
         # force_md = "md" in request.query_params
         # Markdown: render with mistune + Pygments (env-configurable style)
 
-        file_flags = _collect_flags(request)
+        file_flags = set()
+        for k, v in request.query_params.multi_items():
+            file_flags.add(k.strip().lower())
+            for extra in str(v).replace("?", "&").split("&"):
+                extra = extra.strip().lower()
+                if extra:
+                    file_flags.add(extra)
 
         if "raw" in file_flags:
             return await serve_raw_text(full_path)
