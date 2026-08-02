@@ -1105,11 +1105,14 @@ function! s:TT_Chunks(nlines, tokens) abort
  return [
        \ [s:TT_Comma(a:nlines),  'TTLines'],
        \ [' lines',              'TTUnit'],
-       \ ['  •  ',               'TTSep'],
+       \ ['   ',               'TTSep'],
        \ [s:TT_Comma(a:tokens),  'TTNum'],
        \ [' tokens',             'TTUnit'],
        \ ]
 endfunction
+
+"      \ ['  •  ',               'TTSep'],
+
 function! s:TT_Show(chunks) abort
  if exists('*nvim_echo')
    call nvim_echo(a:chunks, v:false, {})
@@ -1123,6 +1126,10 @@ function! s:TT_Show(chunks) abort
  endif
 endfunction
 
+
+"  enc = tiktoken.get_encoding("o200k_base")
+
+"             \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
 function! s:Count_Selection_Tokens(text) abort
   if !executable('python3')
       return -1
@@ -1132,7 +1139,7 @@ function! s:Count_Selection_Tokens(text) abort
               \ 'text = sys.stdin.read()',
               \ 'try:',
               \ '    import tiktoken',
-              \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
+              \ '    enc = tiktoken.get_encoding("o200k_base")',
               \ '    print(len(enc.encode(text)))',
               \ 'except Exception:',
               \ '    print("-1")',
