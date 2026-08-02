@@ -191,7 +191,7 @@ vim.opt.statuscolumn = table.concat({
     "%4l",
     " ",          -- padding, inherits LineNr/CursorLineNr
     "%#Normal#",
-    "",          -- separator
+    " ",          -- separator
 })
 EOF
 
@@ -364,23 +364,15 @@ hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cte
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ebcb8b
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ff6b6b
 highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#8043f7
-set statusline=%#StatusLineBold#%L%*\
-      \ \ %#StatusLineCol#\
-      \ %v\ %*\
-      \ \ %t\ \ \
-      \ %#StatusLineSize#\
-      \ \ %{FileSize_Token()}\ \
-      \ \%#StatusLine#\
-      \ \ %{expand('%:p')}
 "set statusline=%L\
-"set statusline=%#StatusLineBold#%L%*\
-"      \ %t\ \
-"      \ %#StatusLineSize#\ \
-"      \%{FileSize_Token()}\ \
-"      \%#StatusLineCol#\
-"      \ %v\ \
-"      \%#StatusLine#\
-"      \ \ %{expand('%:p')}
+set statusline=%#StatusLineBold#%L%*\
+      \ %t\ \
+      \ %#StatusLineSize#\ \
+      \%{FileSize_Token()}\ \
+      \%#StatusLineCol#\
+      \ %v\ \
+      \%#StatusLine#\
+      \ \ %{expand('%:p')}
 
 "set statusline=\ \ \
 "      \ %t\
