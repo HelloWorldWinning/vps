@@ -640,37 +640,33 @@ gen_caddyfile() {
 
 	cat >"$caddy_path" <<EOF
 {
-  admin off
-  auto_https off
+    admin off
+    auto_https off
 
-  log {
-    output file ${log_dir}/access.log
-    level INFO
-  }
-
-  servers :${PORT} {
-    protocols h1 h2 h3
-  }
+    log {
+        output file ${log_dir}/access.log
+        level INFO
+    }
 }
 
+https://${DOMAIN}:${PORT} {
+    tls ${cert_dir}/fullchain.cer ${cert_dir}/private.key
 
-https://${DOMAIN}:${PORT}{
-  tls ${cert_dir}/fullchain.cer ${cert_dir}/private.key
+    route {
+        forward_proxy {
+            basic_auth "${u}" "${p}"
+            hide_ip
+            hide_via
+            probe_resistance ${s}
+        }
 
-  route {
-    forward_proxy {
-      basic_auth "${u}" "${p}"
-      hide_ip
-      hide_via
-      probe_resistance ${s}
+        file_server {
+            root ${www_dir}
+        }
     }
-
-    file_server {
-      root ${www_dir}
-    }
-  }
 }
 EOF
+
 	ok "Wrote ${caddy_path}"
 }
 
