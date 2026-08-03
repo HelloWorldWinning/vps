@@ -369,9 +369,13 @@ set statusline=%#StatusLineBold#%L%*\
       \ %v\ %*\
       \ \ %t\ \ \
       \ %#StatusLineSize#\
-      \ \ %{FileSize_Token()}\ \
+      \ %{FileSize_Token()}\
       \ \%#StatusLine#\
       \ \ %{expand('%:p')}
+
+
+"     \ \ %{FileSize_Token()}\ \
+
 "set statusline=%L\
 "set statusline=%#StatusLineBold#%L%*\
 "      \ %t\ \
