@@ -1208,7 +1208,9 @@ https://zhile.one/archives/1404.html
 
 	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
 	naive_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
+	8543) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
 	naive_cli) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
+	8443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
 	singbox) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
 	qb) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
 	ccaa2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaa2.sh) ;;
