@@ -396,8 +396,6 @@ def _collect_flags(request) -> set:
         if token:
             flags.add(token)
     return flags
-
-
 # --- end patch --------------------------------------------------------------
 
 
@@ -692,42 +690,28 @@ th, td {{
     word-break: break-word;
 }}
 
-                tr:hover,tr:focus-within {{
-                    background-color: transparent;
+                tr:hover {{
+                    background-color: #f8f9fa;
                 }}
 
                 a {{
                     text-decoration: none;
                 }}
 
-
-
-
                 .folder {{
-    color: #1d910d;
-    font-weight: bold;
-    font-size: 120%;
-    padding: 3px 8px;
+                    background-color: transparent ;
+                    color: #1d910d;
+                    font-weight: bold;
+                    font-size: 120%;
+                    padding: 3px 8px;
+                    border-radius: 4px;
+                    transition: background-color 0.2s;
+                }}
 
-    background: transparent;
-    border-radius: 0;
+                .folder:hover {{
+                    background-color: transparent ;
+                }}
 
-    /* Reserve space for the selection line */
-    border-bottom: 2px solid transparent;
-
-    transition: border-color 0.15s ease;
-}}
-
-.folder:hover,
-.folder:focus,
-.folder:focus-visible,
-.folder:active {{
-    color: #1d910d;
-    background: transparent !important;
-    border-bottom-color: currentColor;
-    outline: none;
-    box-shadow: none;
-}}
                 .file {{
                     color: #db0bee ;
                     background-color: transparent ;
