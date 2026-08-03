@@ -692,26 +692,42 @@ th, td {{
     word-break: break-word;
 }}
 
-                tr:hover {{
+                tr:hover,tr:focus-within {{
                     background-color: transparent;
                 }}
-
 
                 a {{
                     text-decoration: none;
                 }}
 
+
+
+
                 .folder {{
-                    background-color: transparent ;
-                    color: #1d910d;
-                    font-weight: bold;
-                    font-size: 120%;
-                    padding: 3px 8px;
-                    border-radius: 4px;
-                    transition: background-color 0.2s;
-                }}
+    color: #1d910d;
+    font-weight: bold;
+    font-size: 120%;
+    padding: 3px 8px;
 
+    background: transparent;
+    border-radius: 0;
 
+    /* Reserve space for the selection line */
+    border-bottom: 2px solid transparent;
+
+    transition: border-color 0.15s ease;
+}}
+
+.folder:hover,
+.folder:focus,
+.folder:focus-visible,
+.folder:active {{
+    color: #1d910d;
+    background: transparent !important;
+    border-bottom-color: currentColor;
+    outline: none;
+    box-shadow: none;
+}}
                 .file {{
                     color: #db0bee ;
                     background-color: transparent ;
@@ -720,12 +736,8 @@ th, td {{
                     transition: background-color 0.2s;
                 }}
 
-.folder:hover, .file:hover {{
-                    background-color: transparent;
-                    text-decoration: underline;
-                    text-decoration-thickness: 2px;
-                    text-underline-offset: 4px;
-                    text-decoration-color: currentColor;
+                .file:hover {{
+                    background-color: transparent ;
                 }}
 
                 .size-col {{
