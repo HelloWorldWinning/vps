@@ -653,7 +653,8 @@ gen_caddyfile() {
   }
 }
 
-:${PORT}, ${DOMAIN} {
+
+https://${DOMAIN}:${PORT}{
   tls ${cert_dir}/fullchain.cer ${cert_dir}/private.key
 
   route {
