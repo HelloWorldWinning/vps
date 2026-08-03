@@ -632,6 +632,7 @@ install_cert() {
 # --------------------------------------------------------------------------- #
 # File generators
 # --------------------------------------------------------------------------- #
+
 gen_caddyfile() {
 	local u p s
 	u="$(caddy_escape "$NAIVE_USER")"
@@ -641,15 +642,19 @@ gen_caddyfile() {
 	cat >"$caddy_path" <<EOF
 {
     admin off
-    auto_https off
+    auto_https disable_redirects
 
     log {
         output file ${log_dir}/access.log
         level INFO
     }
+
+    servers :${PORT} {
+        protocols h1 h2 h3
+    }
 }
 
-https://${DOMAIN}:${PORT} {
+:${PORT} {
     tls ${cert_dir}/fullchain.cer ${cert_dir}/private.key
 
     route {
