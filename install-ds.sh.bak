@@ -56,16 +56,9 @@ DS_THINKING_SLOTS="auto"
 DS_THINKING_PRO="on"
 DS_THINKING_FLASH="auto"
 
-# Reasoning effort per profile, sent as the Anthropic output_config.effort field
-# (budget_tokens is ignored by DeepSeek). Accepted here: low | high | xhigh | max.
-# DeepSeek's documented mapping of requested -> actual effort:
-#   deepseek-v4-flash : low->low   high->high  xhigh->high  max->max
-#   deepseek-v4-pro   : low->high  high->high  xhigh->max   max->max
-# So v4-pro has no cheap tier, and only xhigh/max reach its deepest mode.
-# DeepSeek says the v4-pro mapping changes in early August 2026 — recheck then.
-DS_EFFORT_SLOTS="high"
-DS_EFFORT_PRO="max"
-DS_EFFORT_FLASH="high"
+# Reasoning effort. DeepSeek maps the Anthropic output_config.effort field to
+# its own thinking effort (high, and max -> xhigh). budget_tokens is ignored.
+DS_EFFORT_LEVEL="high"
 
 # Max output tokens. DeepSeek V4 allows up to 384000; Claude Code defaults are
 # much lower. Keep this comfortably below the context window.
@@ -284,9 +277,7 @@ MODELS_TMP="$MODELS_FILE.tmp.$$"
   write_shell_var DS_THINKING_SLOTS "$DS_THINKING_SLOTS"
   write_shell_var DS_THINKING_PRO "$DS_THINKING_PRO"
   write_shell_var DS_THINKING_FLASH "$DS_THINKING_FLASH"
-  write_shell_var DS_EFFORT_SLOTS "$DS_EFFORT_SLOTS"
-  write_shell_var DS_EFFORT_PRO "$DS_EFFORT_PRO"
-  write_shell_var DS_EFFORT_FLASH "$DS_EFFORT_FLASH"
+  write_shell_var DS_EFFORT_LEVEL "$DS_EFFORT_LEVEL"
   write_shell_var DS_MAX_OUTPUT_TOKENS "$DS_MAX_OUTPUT_TOKENS"
 } > "$MODELS_TMP"
 chmod 600 "$MODELS_TMP"
@@ -378,15 +369,11 @@ Wrapper options:
       --model-id MODEL     Pin every slot to an arbitrary DeepSeek model ID.
       --context TOKENS     Context window for --model-id.
       --thinking MODE      on, off, or auto (overrides the profile default).
-      --effort LEVEL       low, high, xhigh, or max (overrides the profile).
       --profiles           Show configured profile mappings.
       --api-models         Query the DeepSeek List Models API.
       --balance            Query the DeepSeek account balance API.
       --set-key            Store or replace the DeepSeek API key.
       --check-key          Show which key source ds would use (masked).
-      --trust [DIR]        Pre-accept the folder-trust prompt for DIR (default:
-                           current directory) inside the ds profile only.
-      --doctor             Show what ds isolates and what it shares.
       --show-config        Print the effective ds configuration, without key.
       --ds-help            Show this help.
       --                   Stop parsing ds options; pass the rest to Claude.
@@ -409,14 +396,14 @@ ds_profiles() {
   cat <<EOF
 Configured ds profiles:
   default : $DS_DEFAULT_PROFILE
-  slots   : start=$DS_SLOTS_START_ALIAS, context=$DS_CONTEXT_SLOTS, thinking=$DS_THINKING_SLOTS, effort=$DS_EFFORT_SLOTS
+  slots   : start=$DS_SLOTS_START_ALIAS, context=$DS_CONTEXT_SLOTS, thinking=$DS_THINKING_SLOTS
             opus   -> $ANTHROPIC_DEFAULT_OPUS_MODEL
             sonnet -> $ANTHROPIC_DEFAULT_SONNET_MODEL
             haiku  -> $ANTHROPIC_DEFAULT_HAIKU_MODEL
             fable  -> $ANTHROPIC_DEFAULT_FABLE_MODEL
             subagent -> $CLAUDE_CODE_SUBAGENT_MODEL
-  pro     : $DS_MODEL_PRO  (context=$DS_CONTEXT_PRO, thinking=$DS_THINKING_PRO, effort=$DS_EFFORT_PRO)
-  flash   : $DS_MODEL_FLASH  (context=$DS_CONTEXT_FLASH, thinking=$DS_THINKING_FLASH, effort=$DS_EFFORT_FLASH)
+  pro     : $DS_MODEL_PRO  (context=$DS_CONTEXT_PRO, thinking=$DS_THINKING_PRO)
+  flash   : $DS_MODEL_FLASH  (context=$DS_CONTEXT_FLASH, thinking=$DS_THINKING_FLASH)
 EOF
 }
 
@@ -492,109 +479,6 @@ ds_check_key() {
   fi
 }
 
-ds_trust() {
-  local dir="${1:-$PWD}"
-  [ -d "$dir" ] || ds_die "Not a directory: $dir"
-  dir="$(cd "$dir" && pwd -P)"
-  DS_TRUST_DIR="$dir" DS_TRUST_FILE="$DS_HOME/.claude.json"
-  export DS_TRUST_DIR DS_TRUST_FILE
-  if command -v python3 >/dev/null 2>&1; then
-    python3 <<'PY' || ds_die 'Could not update the ds trust store.'
-import json, os
-from pathlib import Path
-path = Path(os.environ["DS_TRUST_FILE"])
-data = {}
-try:
-    loaded = json.loads(path.read_text(encoding="utf-8"))
-    if isinstance(loaded, dict):
-        data = loaded
-except Exception:
-    pass
-data["hasCompletedOnboarding"] = True
-projects = data.get("projects")
-if not isinstance(projects, dict):
-    projects = {}
-    data["projects"] = projects
-entry = projects.get(os.environ["DS_TRUST_DIR"])
-if not isinstance(entry, dict):
-    entry = {}
-    projects[os.environ["DS_TRUST_DIR"]] = entry
-entry["hasTrustDialogAccepted"] = True
-entry["hasCompletedProjectOnboarding"] = True
-path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-os.chmod(path, 0o600)
-PY
-  elif command -v node >/dev/null 2>&1; then
-    node <<'JS' || ds_die 'Could not update the ds trust store.'
-const fs = require('fs');
-const file = process.env.DS_TRUST_FILE;
-let data = {};
-try {
-  const loaded = JSON.parse(fs.readFileSync(file, 'utf8'));
-  if (loaded && typeof loaded === 'object' && !Array.isArray(loaded)) data = loaded;
-} catch (_) {}
-data.hasCompletedOnboarding = true;
-if (!data.projects || typeof data.projects !== 'object' || Array.isArray(data.projects)) data.projects = {};
-const dir = process.env.DS_TRUST_DIR;
-if (!data.projects[dir] || typeof data.projects[dir] !== 'object') data.projects[dir] = {};
-data.projects[dir].hasTrustDialogAccepted = true;
-data.projects[dir].hasCompletedProjectOnboarding = true;
-fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', { mode: 0o600 });
-fs.chmodSync(file, 0o600);
-JS
-  else
-    ds_die 'python3 or node is required for --trust.'
-  fi
-  unset DS_TRUST_DIR DS_TRUST_FILE
-  printf '[ds] Trusted for ds only: %s\n' "$dir"
-  printf '[ds] Written to %s. The normal `claude` profile is unchanged.\n' "$DS_HOME/.claude.json"
-  if [ -e "$dir/.claude/settings.local.json" ]; then
-    printf '[ds] NOTE: %s still applies to ds — it lives in the project, not in a home profile.\n' \
-      "$dir/.claude/settings.local.json"
-  fi
-}
-
-ds_mtime() {
-  stat -c '%y' "$1" 2>/dev/null || stat -f '%Sm' "$1" 2>/dev/null || printf 'unknown\n'
-}
-
-ds_doctor() {
-  local key_state='missing'
-  ds_load_key && key_state="$DS_KEY_SOURCE"
-  cat <<EOF
-ds isolation report
--------------------
-Private to ds (CLAUDE_CONFIG_DIR=$DS_HOME):
-  config + history + trust : $DS_HOME/.claude.json
-  settings                 : $DS_HOME/settings.json
-  user memory              : $DS_HOME/CLAUDE.md $([ -e "$DS_HOME/CLAUDE.md" ] || printf '(absent)')
-  credentials              : $KEY_FILE
-  model map                : $MODELS_FILE
-  runtime overrides        : $RUNTIME_DIR
-  debug logs               : $LOG_DIR
-  key source               : $key_state
-
-Untouched by ds (normal Claude Code profile):
-  $HOME/.claude       last modified: $([ -e "$HOME/.claude" ] && ds_mtime "$HOME/.claude" || printf 'absent')
-  $HOME/.claude.json  last modified: $([ -e "$HOME/.claude.json" ] && ds_mtime "$HOME/.claude.json" || printf 'absent')
-
-Deliberately shared:
-  the claude executable    : $(command -v claude 2>/dev/null || printf 'not on PATH')
-  the project directory    : $PWD
-EOF
-  for f in .claude/settings.json .claude/settings.local.json .mcp.json CLAUDE.md; do
-    if [ -e "$PWD/$f" ]; then printf '    applies to ds too     : %s\n' "$PWD/$f"; fi
-  done
-  cat <<EOF
-
-Project-level files are read by BOTH \`claude\` and \`ds\`, by design: they are
-part of the repository, not of a home profile. Their env blocks cannot change
-ds routing (the --settings runtime file outranks them), but their permission
-rules do apply. The folder-trust prompt is per profile, so ds asks once on its
-own; accept it interactively or run: ds --trust
-EOF
-}
-
 ds_api_models() {
   ds_require_key
   command -v curl >/dev/null 2>&1 || ds_die "curl is required for --api-models."
@@ -625,7 +509,6 @@ profile="${DS_PROFILE:-$DS_DEFAULT_PROFILE}"
 custom_model=""
 custom_context=""
 custom_thinking=""
-custom_effort=""
 show_config=0
 claude_args=()
 
@@ -666,31 +549,6 @@ while [ "$#" -gt 0 ]; do
     --thinking=*)
       custom_thinking="${1#*=}"
       shift
-      ;;
-    --effort)
-      [ "$#" -ge 2 ] || ds_die "$1 requires low, high, xhigh, or max."
-      custom_effort="$2"
-      shift 2
-      ;;
-    --effort=*)
-      custom_effort="${1#*=}"
-      shift
-      ;;
-    --trust)
-      if [ "$#" -ge 2 ] && [ "${2#-}" = "$2" ]; then
-        ds_trust "$2"
-      else
-        ds_trust "$PWD"
-      fi
-      exit 0
-      ;;
-    --trust=*)
-      ds_trust "${1#*=}"
-      exit 0
-      ;;
-    --doctor)
-      ds_doctor
-      exit 0
       ;;
     --profiles|--list-profiles)
       ds_profiles
@@ -756,7 +614,6 @@ case "$profile" in
     compact_window="$DS_CONTEXT_SLOTS"
     start_alias="$DS_SLOTS_START_ALIAS"
     force_thinking="$DS_THINKING_SLOTS"
-    effort_level="${DS_EFFORT_SLOTS:-high}"
     opus_model="$ANTHROPIC_DEFAULT_OPUS_MODEL"
     opus_name="$ANTHROPIC_DEFAULT_OPUS_MODEL_NAME"
     sonnet_model="$ANTHROPIC_DEFAULT_SONNET_MODEL"
@@ -772,7 +629,6 @@ case "$profile" in
     model_label="$selected_model"
     compact_window="$DS_CONTEXT_PRO"
     force_thinking="$DS_THINKING_PRO"
-    effort_level="${DS_EFFORT_PRO:-max}"
     opus_model="$selected_model"; sonnet_model="$selected_model"
     haiku_model="$selected_model"; fable_model="$selected_model"
     subagent_model="$selected_model"
@@ -784,7 +640,6 @@ case "$profile" in
     model_label="$selected_model"
     compact_window="$DS_CONTEXT_FLASH"
     force_thinking="$DS_THINKING_FLASH"
-    effort_level="${DS_EFFORT_FLASH:-high}"
     opus_model="$selected_model"; sonnet_model="$selected_model"
     haiku_model="$selected_model"; fable_model="$selected_model"
     subagent_model="$selected_model"
@@ -796,7 +651,6 @@ case "$profile" in
     model_label="$selected_model"
     compact_window="$custom_context"
     force_thinking="auto"
-    effort_level="${DS_EFFORT_SLOTS:-high}"
     opus_model="$selected_model"; sonnet_model="$selected_model"
     haiku_model="$selected_model"; fable_model="$selected_model"
     subagent_model="$selected_model"
@@ -809,17 +663,10 @@ case "$profile" in
 esac
 
 # An explicit --thinking flag overrides the profile default.
-if [ -n "$custom_thinking" ]; then force_thinking="$custom_thinking"; fi
+[ -n "$custom_thinking" ] && force_thinking="$custom_thinking"
 case "$force_thinking" in
   on|off|auto) ;;
   *) ds_die "Thinking mode must be on, off, or auto (got '$force_thinking')." ;;
-esac
-
-# An explicit --effort flag overrides the profile default.
-if [ -n "$custom_effort" ]; then effort_level="$custom_effort"; fi
-case "$effort_level" in
-  low|high|xhigh|max) ;;
-  *) ds_die "Effort must be low, high, xhigh, or max (got '$effort_level'). DeepSeek accepts no other value." ;;
 esac
 
 case "$start_alias" in
@@ -847,7 +694,7 @@ ds effective configuration:
   subagent         : $subagent_model
   compact window   : $compact_window
   thinking         : $force_thinking
-  effort level     : $effort_level
+  effort level     : ${DS_EFFORT_LEVEL:-high}
   max output       : ${DS_MAX_OUTPUT_TOKENS:-65536}
   key source       : $key_state
 EOF
@@ -887,7 +734,7 @@ export CLAUDE_CODE_SUBAGENT_MODEL="$subagent_model"
 
 export ENABLE_TOOL_SEARCH="false"
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW="$compact_window"
-export CLAUDE_CODE_EFFORT_LEVEL="$effort_level"
+export CLAUDE_CODE_EFFORT_LEVEL="${CLAUDE_CODE_EFFORT_LEVEL:-${DS_EFFORT_LEVEL:-high}}"
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS="${CLAUDE_CODE_MAX_OUTPUT_TOKENS:-${DS_MAX_OUTPUT_TOKENS:-65536}}"
 export API_TIMEOUT_MS="${API_TIMEOUT_MS:-600000}"
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
@@ -901,7 +748,7 @@ export CLAUDE_CODE_DEBUG_LOGS_DIR="$LOG_DIR"
 # A highest-priority --settings file prevents project/user settings.json env
 # blocks from silently replacing the DeepSeek endpoint, key, model aliases, or
 # context window. It is kept under ~/.ds and mode 0600.
-runtime_key="$(printf '%s\n' "$profile|$compact_window|$opus_model|$sonnet_model|$haiku_model|$fable_model|$subagent_model|$force_thinking|$effort_level" | cksum | awk '{print $1}')"
+runtime_key="$(printf '%s\n' "$profile|$compact_window|$opus_model|$sonnet_model|$haiku_model|$fable_model|$subagent_model|$force_thinking" | cksum | awk '{print $1}')"
 runtime_file="$RUNTIME_DIR/settings-$profile-$runtime_key.json"
 runtime_tmp="$runtime_file.tmp.$$"
 
@@ -1065,7 +912,6 @@ Default profile: $DS_DEFAULT_PROFILE
 Useful commands:
   ds --profiles
   ds --show-config
-  ds --doctor
   ds --check-key
   ds --api-models
   ds --balance
@@ -1079,13 +925,6 @@ Inside the default slots profile:
   /model fable   -> $ANTHROPIC_DEFAULT_FABLE_MODEL
 
 Verify routing inside Claude Code with /status.
-
-First run in a project: ds asks the folder-trust question again even if plain
-'claude' already trusts that folder. That is the isolation working — trust is
-recorded in $DS_HOME/.claude.json, not in ~/.claude.json. Accept it once, or
-run 'ds --trust' in the directory. Project-level .claude/settings*.json and
-CLAUDE.md are shared with 'claude' on purpose; run 'ds --doctor' to see exactly
-what is private and what is shared.
 MSG
 
 # --- Final API key check ---------------------------------------------------
