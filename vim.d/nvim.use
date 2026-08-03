@@ -1130,6 +1130,8 @@ endfunction
 "  enc = tiktoken.get_encoding("o200k_base")
 
 "             \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
+"             \ '    enc = tiktoken.get_encoding("o200k_base")',
+
 function! s:Count_Selection_Tokens(text) abort
   if !executable('python3')
       return -1
@@ -1139,7 +1141,7 @@ function! s:Count_Selection_Tokens(text) abort
               \ 'text = sys.stdin.read()',
               \ 'try:',
               \ '    import tiktoken',
-              \ '    enc = tiktoken.get_encoding("o200k_base")',
+              \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
               \ '    print(len(enc.encode(text)))',
               \ 'except Exception:',
               \ '    print("-1")',
