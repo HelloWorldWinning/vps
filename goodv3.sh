@@ -1219,7 +1219,7 @@ https://zhile.one/archives/1404.html
 	strip_test) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/strip_test.py) ;;
 	smb) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/smb_install_manager_debugged.sh) ;;
 	km) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-km.sh) ;;
-
+	ds) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-ds.sh) ;;
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
