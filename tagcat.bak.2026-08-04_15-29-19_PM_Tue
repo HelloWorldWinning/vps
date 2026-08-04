@@ -76,8 +76,6 @@ printf '%s\n\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile 
 printf '%s\n' "$tail_info" >>"$output"
 
 echo "tagcat: wrote $count file(s) to"
+echo -e "\033[1;31m$(pwd)/$output\033[0m"
 
 tt $(pwd)/$output
-
-echo -e "\033[1;31m$(pwd)/$output\033[0m"
-echo ""
