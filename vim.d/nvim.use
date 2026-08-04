@@ -972,6 +972,36 @@ nnoremap <leader>za za
 nnoremap <leader>zM zM
 nnoremap <leader>zR zR
 
+
+
+lua << EOF
+require('nvim-treesitter.configs').setup {
+  ensure_installed = {
+    "python","rust"
+  },
+  highlight = {
+    enable = true,
+    disable = { "markdown", "markdown_inline" },
+  },
+}
+
+-- markdown: no treesitter parsing at all
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function(args)
+    pcall(vim.treesitter.stop, args.buf)
+    vim.opt_local.foldmethod = "manual"
+    vim.opt_local.foldexpr = ""
+  end,
+})
+EOF
+
+
+
+
+
+
+
 " ============================================================
 " Base colors (old style)
 " ============================================================
