@@ -617,7 +617,9 @@ if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 
 	print_delim
 	#echo -e "${BOLD_RED}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
-	echo -e "${BOLD_CYAN}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
+	#echo -e "${BOLD_CYAN}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
+	#echo -e "${CYAN}  ${peer_no}  ${peer_name}  ->  ${API_HOST}${NC}"
+	echo -e "  ${peer_no}  ${peer_name}  ->  ${API_HOST}  "
 	print_delim
 fi
 
