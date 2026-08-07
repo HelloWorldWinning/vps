@@ -29,7 +29,7 @@ import sys
 from datetime import datetime
 
 C_FOOTER_TOKENS = "1;31"  # bold red
-C_FOOTER_FILES = "1;34"  # bold blue
+C_FOOTER_FILES = "1;33"  # bold blue
 
 # ===========================================================================
 # WARNING 1 -- only these are tokenized (pure text / string-content files).
