@@ -1224,7 +1224,7 @@ https://zhile.one/archives/1404.html
 	ds) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-ds.sh) ;;
 		#kk) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk ;;
 	kk) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk_color.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk ;;
-	ii) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/k && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii ;;
+	ii) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii ;;
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
