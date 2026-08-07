@@ -235,7 +235,9 @@ C_USER_ME = "1;33"
 C_USER_OTHER = "2;33"
 C_DATE = "34"
 # C_TOKENS = "36"
-C_TOKENS = "1;31"
+# C_TOKENS = "1;31"
+C_TOKENS = "0;31"
+
 C_ARROW = "2;37"  # the -> of a symlink
 C_BROKEN = "1;31"
 C_FOOTER = "2"
