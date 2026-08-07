@@ -783,5 +783,6 @@ pip install --break-system-packages tiktoken
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed"
 
 sudo apt install vivid -y
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk
 
 sudo reboot
