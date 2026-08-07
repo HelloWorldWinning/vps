@@ -1222,7 +1222,8 @@ https://zhile.one/archives/1404.html
 	smb) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/smb_install_manager_debugged.sh) ;;
 	km) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-km.sh) ;;
 	ds) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-ds.sh) ;;
-	kk) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk ;;
+		#kk) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk ;;
+	kk) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk_color.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk ;;
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
