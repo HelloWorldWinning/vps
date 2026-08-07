@@ -207,12 +207,6 @@ CACHE_MAX_ENTRIES = 20000
 SHOW_TOTAL = True  # print a total-tokens footer
 BATCH = 16  # files encoded per tiktoken batch call
 
-
-TOKEN_HUMAN = True  # False -> back to 5,240
-TOKEN_DECIMAL = False  # True -> 5.2k / 28k (eza's rule); False -> 5k / 28k
-TOKEN_TOTAL_HUMAN = False  # footer total: keep it exact
-
-
 # ===========================================================================
 # WARNING 3 -- THEME. Everything below is cosmetic; edit freely.
 #              File-name colours come from $LS_COLORS (same source eza uses),
@@ -243,7 +237,7 @@ C_DATE = "34"
 # C_TOKENS = "36"
 # C_TOKENS = "1;31"
 C_TOKENS = "0;31"
-C_TOKENS_UNIT = "2;36"
+
 C_ARROW = "2;37"  # the -> of a symlink
 C_BROKEN = "1;31"
 C_FOOTER = "2"
@@ -539,21 +533,6 @@ def human_size(n: int) -> str:
     return f"{v:.0f}E"
 
 
-def human_count(n: int) -> str:
-    if not TOKEN_HUMAN:
-        return f"{n:,}"
-    if n < 1000:
-        return str(n)
-    v = float(n)
-    for unit in ("k", "M", "G", "T"):
-        v /= 1000.0
-        if v < 999.5:
-            if TOKEN_DECIMAL and v < 10:
-                return f"{v:.1f}{unit}"
-            return f"{v:.0f}{unit}"
-    return f"{v:.0f}P"
-
-
 def split_size(s: str):
     m = re.match(r"^([\d.]+)(\D*)$", s)
     return (m.group(1), m.group(2)) if m else (s, "")
@@ -676,10 +655,7 @@ class Theme:
         return self.paint(s, C_DATE)
 
     def tokens(self, s: str) -> str:
-        num, unit = split_size(s)
-        if not unit:
-            return self.paint(s, C_TOKENS)
-        return self.paint(num, C_TOKENS) + self.paint(unit, C_TOKENS_UNIT)
+        return self.paint(s, C_TOKENS)
 
     def footer(self, s: str) -> str:
         return self.paint(s, C_FOOTER)
@@ -939,7 +915,7 @@ def render(entries, theme: Theme):
                 "size": human_size(st.st_size),
                 "user": owner_name(st.st_uid),
                 "date": fmt_time(st.st_mtime, now_year),
-                "tok": human_count(e.tok) if e.tok is not None else e.note,
+                "tok": f"{e.tok:,}" if e.tok is not None else e.note,
                 "uid": st.st_uid,
                 "e": e,
             }
