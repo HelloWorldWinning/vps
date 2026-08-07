@@ -234,10 +234,12 @@ C_SIZE_UNIT = "2;32"  # k  in "9.6k"
 C_USER_ME = "1;33"
 C_USER_OTHER = "2;33"
 C_DATE = "34"
-C_TOKENS = "36"
+# C_TOKENS = "36"
+C_TOKENS = "1;31"
 C_ARROW = "2;37"  # the -> of a symlink
 C_BROKEN = "1;31"
 C_FOOTER = "2"
+
 
 # Used only when $LS_COLORS is empty (GNU dircolors defaults + a few extras).
 DEFAULT_LS_COLORS = (
