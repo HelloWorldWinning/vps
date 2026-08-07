@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-kk / km  --  ls -laF style listing with a tiktoken (gpt-4o) token count column.
+kk / kkk  --  ls -laF style listing with a tiktoken (gpt-4o) token count column.
 
   kk   sort by mtime, OLDEST first  -> newest modified file at the BOTTOM
-  km   sort by name, A-Z ascending
+  kkk   sort by name, A-Z ascending
 
 Install:
   sudo install -m 0755 kk.py /usr/local/bin/kk
-  sudo ln -sf kk /usr/local/bin/km          # same script, behaviour from argv[0]
+  sudo ln -sf kk /usr/local/bin/kkk          # same script, behaviour from argv[0]
 
 Behaviour is chosen by the program name, so the symlink is all you need.
 """
@@ -511,7 +511,7 @@ def main(argv):
     if len(cache) != before:
         cache_save(cache)
 
-    if prog.startswith("km"):
+    if prog.startswith("kkk"):
         entries.sort(key=lambda e: (e.name.lower().lstrip("."), e.name))
     else:  # kk: oldest first -> newest at the bottom
         entries.sort(key=lambda e: e.st.st_mtime_ns)
