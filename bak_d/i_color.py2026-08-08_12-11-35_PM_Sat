@@ -984,10 +984,10 @@ def render(entries, theme: Theme):
         counted = sum(1 for e in entries if e.tok is not None)
         sys.stdout.write(
             theme.paint("-- ", C_FOOTER)
-            + theme.paint(str(counted), C_FOOTER_FILES)
-            + theme.paint(" file(s)  tokens ", C_FOOTER)
             + theme.paint(f"{total:,}", C_FOOTER_TOKENS)
-            + theme.paint(" --", C_FOOTER)
+            + theme.paint(" tokens in ", C_FOOTER)
+            + theme.paint(str(counted), C_FOOTER_FILES)
+            + theme.paint(" file(s) --", C_FOOTER)
         )
 
 
