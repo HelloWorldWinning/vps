@@ -282,9 +282,6 @@ function! s:Format_TokenSize(tokens) abort
 endfunction
 
 
-"               \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
-"
-"               \ '    enc = tiktoken.get_encoding("o200k_base")',
 function! s:Exact_Tokens_With_Python(path) abort
     if !executable('python3')
         return -1
@@ -357,6 +354,9 @@ hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cte
 "set statusline=\ \ \
 
 
+
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
+"highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#fabd2f
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=NONE guifg=NONE
@@ -364,6 +364,18 @@ hi StatusLineSize guifg=#ffffff guibg=#9B2226 gui=bold ctermfg=15 ctermbg=88 cte
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ebcb8b
 "highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#ff6b6b
 highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#8043f7
+set statusline=%#StatusLineBold#%L%*\
+      \ \ %#StatusLineCol#\
+      \ %v\ %*\
+      \ \ %t\ \ \
+      \ %#StatusLineSize#\
+      \ %{FileSize_Token()}\
+      \ \%#StatusLine#\
+      \ \ %{expand('%:p')}
+
+
+"     \ \ %{FileSize_Token()}\ \
+
 "set statusline=%L\
 "set statusline=%#StatusLineBold#%L%*\
 "      \ %t\ \
@@ -373,36 +385,6 @@ highlight StatusLineBold cterm=bold gui=bold ctermfg=214 guifg=#8043f7
 "      \ %v\ \
 "      \%#StatusLine#\
 "      \ \ %{expand('%:p')}
-
-
-"set statusline=%#StatusLineBold#%L%*\
-"      \ %t\ \
-"      \ %#StatusLineCol#\
-"      \ %v\
-"      \ %#StatusLineSize#\
-"      \ %{FileSize_Token()}\ \
-"      \%#StatusLine#\
-"      \ %{expand('%:p')}
-
-"set statusline=%#StatusLineBold#%L%*\
-"      \ %#StatusLineCol#%v%*\
-"      \ \ %t\ \ \
-"      \ %#StatusLineSize#\
-"      \ %{FileSize_Token()}\ \
-"      \%#StatusLine#\
-"      \ %{expand('%:p')}
-
-"set statusline=%#StatusLineBold#%L%*\ \ %#StatusLineCol#\ %v\ %*\ \ %t\ \ \ %#StatusLineSize#\ \ %{FileSize_Token()}\ \ \%#StatusLine#\ \ %{expand('%:p')}
-
-
-set statusline=%#StatusLineBold#%L%*\
-      \ \ %#StatusLineCol#\
-      \ %v\ %*\
-      \ \ %t\ \ \
-      \ %#StatusLineSize#\
-      \ %{FileSize_Token()}\
-      \ \%#StatusLine#\
-      \ \ %{expand('%:p')}
 
 "set statusline=\ \ \
 "      \ %t\
@@ -560,6 +542,18 @@ highlight IncSearch gui=bold guifg=#8B0000 guibg=#FFB6C1 cterm=bold ctermfg=NONE
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))  
 
 
+let g:clipboard = {
+      \   'name': 'xsel',
+      \   'copy': {
+      \      '+': 'xsel --clipboard --input',
+      \      '*': 'xsel --primary --input',
+      \    },
+      \   'paste': {
+      \      '+': 'xsel --clipboard --output',
+      \      '*': 'xsel --primary --output',
+      \    },
+      \   'cache_enabled': 0,
+      \ }
 
 
 command! -bang -nargs=* Rg
@@ -978,6 +972,8 @@ nnoremap <leader>za za
 nnoremap <leader>zM zM
 nnoremap <leader>zR zR
 
+
+
 lua << EOF
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
@@ -999,6 +995,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 EOF
+
+
+
+
+
+
 
 " ============================================================
 " Base colors (old style)
@@ -1133,7 +1135,6 @@ augroup END
 "        \ [' tokens',             'TTUnit'],
 "        \ ]
 "endfunction
-"      \ ['  •  ',               'TTSep'],
 function! s:TT_Chunks(nlines, tokens) abort
  return [
        \ [s:TT_Comma(a:nlines),  'TTLines'],
@@ -1143,6 +1144,9 @@ function! s:TT_Chunks(nlines, tokens) abort
        \ [' tokens',             'TTUnit'],
        \ ]
 endfunction
+
+"      \ ['  •  ',               'TTSep'],
+
 function! s:TT_Show(chunks) abort
  if exists('*nvim_echo')
    call nvim_echo(a:chunks, v:false, {})
@@ -1156,13 +1160,16 @@ function! s:TT_Show(chunks) abort
  endif
 endfunction
 
+
+"  enc = tiktoken.get_encoding("o200k_base")
+
+"             \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
+"             \ '    enc = tiktoken.get_encoding("o200k_base")',
+
 function! s:Count_Selection_Tokens(text) abort
   if !executable('python3')
       return -1
   endif
-
-  "  \ '    enc = tiktoken.encoding_for_model("gpt-4o")',
-"    \ '    enc = tiktoken.get_encoding("o200k_base")',
   let l:py = [
               \ 'import sys',
               \ 'text = sys.stdin.read()',
@@ -1230,31 +1237,35 @@ function! s:TT_Event() abort
 ""        \ l:op ==# 'd' ? 'del' : 'yank', len(l:regcontents), l:tokens))
 " call s:TT_Report(printf('%d lines, %d tokens',
 "     \ len(l:regcontents), l:tokens))
-call s:TT_Report(s:TT_Chunks(len(l:regcontents), l:tokens))
+ call s:TT_Report(s:TT_Chunks(len(l:regcontents), l:tokens))
 endfunction
-
-
-
-
 augroup TT_Yank
  autocmd!
  autocmd TextYankPost * call s:TT_Event()
 augroup END
 
-"    Preventing flash display of intermediate steps 
-"    https://claude.ai/share/e8f76ced-dbeb-41b1-8285-8158b6ae2b73
+
+
+"  Preventing flash display of intermediate steps 
+"  https://claude.ai/share/e8f76ced-dbeb-41b1-8285-8158b6ae2b73
 
 set report=9999
 
 
 
+
+
+
+
+
+
+""""""""
 " Keep large yank registers across Neovim restarts
 " <200000 = up to 200,000 lines per register
 " s102400 = up to 100 MiB per ShaDa item
-"set shada=!,'100,<200000,s102400,h,r/tmp/,r/private/
+set shada=!,'100,<200000,s102400,h,r/tmp/,r/private/
 
 " Keep normal y/p inside Neovim; use "+y / "+p explicitly for OS clipboard
-"set clipboard=
-"
-set clipboard+=unnamedplus
-set shada=!,'100,<500000,s262144,h,r/tmp/,r/private/
+" set clipboard=
+
+
