@@ -1250,3 +1250,22 @@ augroup END
 "  https://claude.ai/share/e8f76ced-dbeb-41b1-8285-8158b6ae2b73
 
 set report=9999
+
+
+
+
+
+
+
+
+
+""""""""
+" Keep large yank registers across Neovim restarts
+" <200000 = up to 200,000 lines per register
+" s102400 = up to 100 MiB per ShaDa item
+set shada=!,'100,<200000,s102400,h,r/tmp/,r/private/
+
+" Keep normal y/p inside Neovim; use "+y / "+p explicitly for OS clipboard
+" set clipboard=
+
+
