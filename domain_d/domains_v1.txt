@@ -1,3 +1,4 @@
+howquant.com
 whatquant.com
 pushquant.com
 modequant.com
@@ -21,7 +22,6 @@ stdquant.com
 skewquant.com
 quantstd.com
 quanttail.com
-howquant.com
 whoquant.com
 gowaquant.com
 puresquant.com
