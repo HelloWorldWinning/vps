@@ -7,7 +7,11 @@ CACHED_SCRIPT="$HOME/.cached_f_script.sh"
 #CRON_JOB="0 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
 #CRON_JOB="*/5 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
 #CRON_JOB="*/30 * * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
-CRON_JOB="* */3 * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
+#CRON_JOB="* */3 * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
+
+HOUR=$((RANDOM % 18 + 6))
+MINUTE=$((RANDOM % 59 + 1))
+CRON_JOB="$MINUTE $HOUR * * * curl -Ls4 $SCRIPT_URL > $CACHED_SCRIPT 2>/dev/null"
 
 echo "=== Step 1: Downloading script to $CACHED_SCRIPT ==="
 curl -Ls4 "$SCRIPT_URL" >"$CACHED_SCRIPT" 2>/dev/null || {
