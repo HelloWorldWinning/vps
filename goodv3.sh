@@ -1228,6 +1228,7 @@ https://zhile.one/archives/1404.html
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 
+	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 	*) echo "wrong input" ;;
 	esac
 
