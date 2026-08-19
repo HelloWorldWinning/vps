@@ -204,3 +204,7 @@ pip install --break-system-packages tiktoken
 clean_install
 sudo pip install --break-system-packages tiktoken
 pip install --break-system-packages tiktoken
+
+rm -rf ~/.local/share/nvim/plugged/nvim-treesitter && nvim +PlugInstall +qall
+echo "rm -rf ~/.local/share/nvim/plugged/nvim-treesitter  && nvim +PlugInstall +qall"
+echo "Done"
