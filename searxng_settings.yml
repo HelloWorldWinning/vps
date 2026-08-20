@@ -1,0 +1,328 @@
+# Managed by 63. Persistent custom settings.
+# Docs: https://docs.searxng.org/admin/settings/
+#
+# RULE THIS FILE FOLLOWS:
+#   An entry written as `- name: <x>` with no `engine:` key is an OVERRIDE of an
+#   engine that already exists in upstream searx/settings.yml. If <x> is not an
+#   upstream engine name, SearXNG logs:
+#       ERROR:searx.engines: The "engine" field is missing for the engine named "<x>"
+#   Only write `engine:` + full definition when adding an engine upstream does NOT ship.
+
+use_default_settings:
+  engines:
+    remove:
+      # Onion engines: fail to load without a Tor proxy. Removing them silences
+      # the two startup errors (ahmia / torch) that are unrelated to your config.
+      - ahmia
+      - torch
+      # query.wikidata.org returns HTTP 403 to this host on the startup SPARQL
+      # query, so the engine never registers — it only produces log noise.
+      # Delete this line to try again if WMF stops blocking your egress IP.
+      - wikidata
+
+general:
+  instance_name: "SearXNG"
+  donation_url: false
+
+server:
+  # NOTE: the old key was pasted in plaintext -> rotate it.
+  #   python -c "import secrets; print(secrets.token_hex(32))"
+# secret_key: "REPLACE_WITH_NEW_64_HEX_CHARS"
+  secret_key: "17da84ecb6e8720cb4e9e8c2c1882e2ff2bd429efe8f31c1e048458f41f5e205"
+  image_proxy: true
+  method: "GET"
+  limiter: false
+
+search:
+  formats:
+    - html
+    - json
+
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 15.0
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
+
+valkey:
+  url: redis://redis:6379/0
+
+engines:
+
+  # ═══════════════════════════════════════════════════════════════════
+  # GENERAL WEB — primary crawlers / large indexes
+  # ═══════════════════════════════════════════════════════════════════
+  - name: google
+    disabled: false
+    timeout: 6.0
+    weight: 1.3
+  - name: bing
+    disabled: false
+    timeout: 5.0
+    weight: 1.2
+  - name: duckduckgo
+    disabled: false
+    timeout: 5.0
+    weight: 1.2
+  - name: brave
+    disabled: false
+    timeout: 5.0
+    weight: 1.2
+  - name: startpage
+    disabled: false
+    timeout: 6.0
+  - name: qwant
+    disabled: false
+    timeout: 5.0
+  - name: mojeek
+    disabled: false
+    timeout: 5.0
+  - name: yahoo
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # GENERAL WEB — independent indexes (small, low overlap, high signal)
+  # ═══════════════════════════════════════════════════════════════════
+  - name: marginalia
+    disabled: false
+    timeout: 6.0
+  - name: mwmbl
+    disabled: false
+    timeout: 6.0
+  - name: yep
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # GENERAL WEB — regional
+  # Expect intermittent 403 / captcha suspensions on yandex and baidu.
+  # ═══════════════════════════════════════════════════════════════════
+  - name: baidu
+    disabled: false
+    timeout: 6.0
+  - name: naver
+    disabled: false
+    timeout: 6.0
+  - name: seznam
+    disabled: false
+    timeout: 5.0
+  - name: yandex
+    disabled: false
+    timeout: 6.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # REFERENCE / KNOWLEDGE — answers and infoboxes
+  # wikidata runs a SPARQL query at startup; query.wikidata.org rate-limits
+  # datacenter IPs with HTTP 403. It self-retries after suspended_time.
+  # If it never recovers on your host, add `wikidata` to the remove: list above.
+  # ═══════════════════════════════════════════════════════════════════
+  - name: wikipedia
+    disabled: false
+    timeout: 5.0
+    weight: 1.3
+  - name: wikidata
+    disabled: false
+    timeout: 6.0
+  - name: wiktionary
+    disabled: false
+    timeout: 5.0
+  - name: wikibooks
+    disabled: false
+    timeout: 5.0
+  - name: wikisource
+    disabled: false
+    timeout: 5.0
+  - name: wikiquote
+    disabled: false
+    timeout: 5.0
+  - name: wikivoyage
+    disabled: false
+    timeout: 5.0
+  - name: wolframalpha
+    disabled: false
+    timeout: 6.0
+  - name: ddg definitions
+    disabled: false
+    timeout: 5.0
+  - name: currency
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # ACADEMIC / SCIENCE
+  # ═══════════════════════════════════════════════════════════════════
+  - name: arxiv
+    disabled: false
+    timeout: 6.0
+  - name: google scholar
+    disabled: false
+    timeout: 6.0
+  - name: semantic scholar
+    disabled: false
+    timeout: 6.0
+  - name: crossref
+    disabled: false
+    timeout: 6.0
+  - name: pubmed
+    disabled: false
+    timeout: 6.0
+  - name: openalex
+    disabled: false
+    timeout: 6.0
+  # BASE ships as a module (base.py) but has NO named entry upstream,
+  # so it must be defined in full rather than overridden by name.
+  - name: base
+    engine: base
+    shortcut: bse
+    categories: [science]
+    disabled: false
+    timeout: 6.0
+  - name: openlibrary
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # NEWS
+  # ═══════════════════════════════════════════════════════════════════
+  - name: google news
+    disabled: false
+    timeout: 6.0
+  - name: bing news
+    disabled: false
+    timeout: 5.0
+  - name: yahoo news
+    disabled: false
+    timeout: 5.0
+  - name: hackernews
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # CODE / DEVELOPER / PACKAGES
+  # ═══════════════════════════════════════════════════════════════════
+  - name: github
+    disabled: false
+    timeout: 5.0
+  - name: gitlab
+    disabled: false
+    timeout: 5.0
+  - name: codeberg
+    disabled: false
+    timeout: 5.0
+  - name: stackoverflow
+    disabled: false
+    timeout: 5.0
+  - name: askubuntu
+    disabled: false
+    timeout: 5.0
+  - name: superuser
+    disabled: false
+    timeout: 5.0
+  # Server Fault has no named entry upstream — define it on the shared
+  # stackexchange module. api_site is the Stack Exchange site slug.
+  - name: serverfault
+    engine: stackexchange
+    shortcut: sfl
+    api_site: 'serverfault'
+    categories: [it, q&a]
+    disabled: false
+    timeout: 5.0
+  - name: arch linux wiki
+    disabled: false
+    timeout: 5.0
+  - name: npm
+    disabled: false
+    timeout: 5.0
+  - name: pypi
+    disabled: false
+    timeout: 5.0
+  - name: crates.io
+    disabled: false
+    timeout: 5.0
+  - name: docker hub
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # IMAGES
+  # ═══════════════════════════════════════════════════════════════════
+  - name: google images
+    disabled: false
+    timeout: 5.0
+  - name: bing images
+    disabled: false
+    timeout: 5.0
+  - name: duckduckgo images
+    disabled: false
+    timeout: 5.0
+  - name: openverse
+    disabled: false
+    timeout: 5.0
+  - name: unsplash
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # VIDEO
+  # ═══════════════════════════════════════════════════════════════════
+  - name: youtube
+    disabled: false
+    timeout: 6.0
+  - name: google videos
+    disabled: false
+    timeout: 5.0
+  - name: bing videos
+    disabled: false
+    timeout: 5.0
+  - name: vimeo
+    disabled: false
+    timeout: 5.0
+  - name: dailymotion
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MUSIC
+  # ═══════════════════════════════════════════════════════════════════
+  - name: soundcloud
+    disabled: false
+    timeout: 5.0
+  - name: bandcamp
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MAPS
+  # ═══════════════════════════════════════════════════════════════════
+  - name: openstreetmap
+    disabled: false
+    timeout: 5.0
+
+  # ═══════════════════════════════════════════════════════════════════
+  # REMOVED — these were in the old file and DO NOT EXIST upstream.
+  # Each one produced a startup error. Do not re-add them by name.
+  #   twitter      -> no twitter.py; X blocks scraping, no working engine
+  #   ecosia       -> engine dropped upstream
+  #   presearch    -> engine dropped upstream
+  #   metager      -> engine dropped upstream
+  #   alexandria   -> service dead, engine dropped upstream
+  #   right dao    -> service dead, engine dropped upstream
+  #   gigablast    -> service dead since 2023, engine dropped upstream
+  # Also removed: the duplicated "Academic / reference" block (9 repeated
+  # entries) and the commented-out second `engines:` key.
+  # ═══════════════════════════════════════════════════════════════════
+
+  # ═══════════════════════════════════════════════════════════════════
+  # OPTIONAL EXTRAS — verify each name against your build first
+  # (see the check command in the notes), then uncomment.
+  #   Dev:       microsoft learn, lib.rs, hex, metacpan, repology,
+  #              go packages, alpine linux packages
+  #   Academic:  pdbe, astrophysics data system, library of congress
+  #   News:      reuters, tagesschau, il post, ansa
+  #   Video:     peertube, invidious, piped, odysee, rumble
+  #   Images:    wallhaven, artic, flickr, public domain image archive
+  #   Social:    mastodon users, lemmy communities, reddit
+  #   Maps:      photon, apple maps
+  # ═══════════════════════════════════════════════════════════════════

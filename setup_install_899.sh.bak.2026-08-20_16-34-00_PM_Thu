@@ -402,6 +402,244 @@ cat >Caddyfile <<'CADDY'
 }
 CADDY
 
+cat >searxng/settings.yml <<EOF
+# Managed by $SCRIPT_NAME. Add persistent custom settings below as needed.
+# Documentation: https://docs.searxng.org/admin/settings/
+use_default_settings: true
+
+general:
+  instance_name: "$INSTANCE_NAME"
+  donation_url: false
+
+server:
+  secret_key: "$SECRET_KEY"
+  image_proxy: true
+  method: "GET"
+  limiter: false
+
+search:
+  formats:
+    - html
+    - json
+
+# Keep all upstream defaults and enable additional general-web providers.
+# Google Web is added explicitly because current defaults include Google CSE,
+# but not the direct Google Web engine. Provider anti-bot limits may still
+# suspend an individual engine; SearXNG will continue with the others.
+
+engines:
+  # Major search engines
+  - name: google
+    engine: google
+    shortcut: go
+    categories: [general]
+    disabled: false
+    timeout: 6.0
+  - name: bing
+    disabled: false
+    timeout: 5.0
+  - name: yandex
+    disabled: false
+    timeout: 6.0
+  - name: yahoo
+    disabled: false
+    timeout: 5.0
+  - name: baidu
+    disabled: false
+    timeout: 6.0
+  - name: naver
+    disabled: false
+    timeout: 6.0
+  - name: twitter
+    engine: twitter
+    shortcut: tw
+    categories: [general, social media]
+    disabled: false
+    timeout: 6.0
+    weight: 1.5
+
+  # Privacy / alternative search
+  - name: brave
+    disabled: false
+    timeout: 5.0
+  - name: duckduckgo
+    disabled: false
+    timeout: 5.0
+  - name: startpage
+    disabled: false
+    timeout: 6.0
+  - name: mojeek
+    disabled: false
+    timeout: 5.0
+  - name: qwant
+    disabled: false
+    timeout: 5.0
+  - name: ecosia
+    disabled: false
+    timeout: 5.0
+  - name: presearch
+    disabled: false
+    timeout: 5.0
+  - name: metager
+    disabled: false
+    timeout: 6.0
+
+  # Other general indexes
+  - name: yep
+    disabled: false
+    timeout: 5.0
+  - name: marginalia
+    disabled: false
+    timeout: 6.0
+  - name: alexandria
+    disabled: false
+    timeout: 5.0
+  - name: right dao
+    disabled: false
+    timeout: 5.0
+  - name: gigablast
+    disabled: false
+    timeout: 5.0
+
+  # Academic / reference
+  - name: wikipedia
+    disabled: false
+    timeout: 5.0
+  - name: wikidata
+    disabled: false
+    timeout: 5.0
+  - name: wolframalpha
+    disabled: false
+    timeout: 6.0
+  - name: crossref
+    disabled: false
+    timeout: 6.0
+  - name: arxiv
+    disabled: false
+    timeout: 6.0
+  - name: pubmed
+    disabled: false
+    timeout: 6.0
+  - name: semantic scholar
+    disabled: false
+    timeout: 6.0
+  - name: google scholar
+    disabled: false
+    timeout: 6.0
+  - name: openlibrary
+    disabled: false
+    timeout: 5.0
+
+  # News
+  - name: bing news
+    disabled: false
+    timeout: 5.0
+  - name: google news
+    disabled: false
+    timeout: 6.0
+  - name: yahoo news
+    disabled: false
+    timeout: 5.0
+
+  # Code / dev
+  - name: github
+    disabled: false
+    timeout: 5.0
+  - name: gitlab
+    disabled: false
+    timeout: 5.0
+  - name: stackoverflow
+    disabled: false
+    timeout: 5.0
+  - name: npm
+    disabled: false
+    timeout: 5.0
+  - name: pypi
+    disabled: false
+    timeout: 5.0
+
+  # Media
+  - name: bing images
+    disabled: false
+    timeout: 5.0
+  - name: bing videos
+    disabled: false
+    timeout: 5.0
+  - name: youtube
+    disabled: false
+    timeout: 6.0
+  - name: vimeo
+    disabled: false
+    timeout: 5.0
+  - name: soundcloud
+    disabled: false
+    timeout: 5.0
+
+  # Maps / local
+  - name: openstreetmap
+    disabled: false
+    timeout: 5.0
+
+# Academic / reference
+  - name: google scholar
+    disabled: false
+    timeout: 6.0
+  - name: arxiv
+    disabled: false
+    timeout: 6.0
+  - name: pubmed
+    disabled: false
+    timeout: 6.0
+  - name: semantic scholar
+    disabled: false
+    timeout: 6.0
+  - name: crossref
+    disabled: false
+    timeout: 6.0
+  - name: wikipedia
+    disabled: false
+    timeout: 5.0
+  - name: wikidata
+    disabled: false
+    timeout: 5.0
+  - name: wolframalpha
+    disabled: false
+    timeout: 6.0
+  - name: openlibrary
+    disabled: false
+    timeout: 5.0
+
+#engines:
+#  - name: google
+#    engine: google
+#    shortcut: go
+#    categories: [general]
+#    disabled: false
+#    timeout: 6.0
+#  - name: bing
+#    disabled: false
+#    timeout: 5.0
+#  - name: mojeek
+#    disabled: false
+#    timeout: 5.0
+#  - name: qwant
+#    disabled: false
+#    timeout: 5.0
+#  - name: yahoo
+#    disabled: false
+#    timeout: 5.0
+#  - name: yep
+#    disabled: false
+#    timeout: 5.0
+
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 15.0
+
+valkey:
+  url: redis://redis:6379/0
+EOF
+
 chmod 600 .env
 chmod 640 searxng/settings.yml
 if ((EUID == 0)); then
