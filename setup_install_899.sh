@@ -402,6 +402,10 @@ cat >Caddyfile <<'CADDY'
 }
 CADDY
 
+mkdir -p "${STACK_DIR}/searxng" &&
+	wget -O "${STACK_DIR}/searxng/settings.yml" \
+		"https://raw.githubusercontent.com/HelloWorldWinning/vps/main/searxng_settings.yml"
+
 chmod 600 .env
 chmod 640 searxng/settings.yml
 if ((EUID == 0)); then
