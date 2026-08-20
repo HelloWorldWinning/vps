@@ -450,6 +450,13 @@ engines:
   - name: naver
     disabled: false
     timeout: 6.0
+  - name: twitter
+    engine: twitter
+    shortcut: tw
+    categories: [general, social media]
+    disabled: false
+    timeout: 6.0
+    weight: 1.5
 
   # Privacy / alternative search
   - name: brave
