@@ -236,6 +236,12 @@ docker compose down
 sleep 7
 sudo chmod -R 777 "$full_path"
 docker compose up -d
+
 # Show running containers
 echo "Running Docker containers:"
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E 'outline|redis|postgres|webpage_outline'
+
+# for import
+cd /root/Outline_D
+sudo chown -R 1001:1001 ./data/storage-data
+sudo chmod -R u+rwX ./data/storage-data
