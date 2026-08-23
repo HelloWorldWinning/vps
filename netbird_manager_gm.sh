@@ -62,7 +62,9 @@ convert_timezone() {
 # Print separator line
 print_separator() {
 	local width=$1
-	printf "${CYAN}"
+	#printf "${CYAN}"
+
+	printf "${GREEN}"
 	printf '─%.0s' $(seq 1 $width)
 	printf "${NC}\n"
 }
