@@ -472,6 +472,13 @@ clean_install
 sudo pip install --break-system-packages tiktoken
 pip install --break-system-packages tiktoken
 
-rm -rf ~/.local/share/nvim/plugged/nvim-treesitter && nvim +PlugInstall +qall
+# Skip if running inside tmux session "ins"
+if [ "${TMUX:-}" ] && [ "$(tmux display-message -p '#S' 2>/dev/null)" = "ins" ]; then
+	echo "Running inside tmux session 'ins' — skipping."
+else
+	rm -rf ~/.local/share/nvim/plugged/nvim-treesitter &&
+		nvim +PlugInstall +qall
+fi
+
 echo "rm -rf ~/.local/share/nvim/plugged/nvim-treesitter  && nvim +PlugInstall +qall"
 echo "Done"
