@@ -785,4 +785,6 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress
 sudo apt install vivid -y
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk
 
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii
+
 sudo reboot
