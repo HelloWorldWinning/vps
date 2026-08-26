@@ -7,7 +7,7 @@ Pin-Priority: 100
 EOF
 
 sudo apt update
-apt policy wireguard-tools        # you should now see 1.0.20250521-1 available
+#apt policy wireguard-tools        # you should now see 1.0.20250521-1 available
+apt-cache policy wireguard-tools
 sudo apt -t unstable install wireguard-tools -y
 wg --version
-

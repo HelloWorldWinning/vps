@@ -14,12 +14,6 @@ bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/u
 
 cat >/root/ultimate_wrapper.sh <<'EOF'
 #!/bin/bash
-
-export PAGER=cat
-export APT_PAGER=cat
-export SYSTEMD_PAGER=cat
-export GIT_PAGER=cat
-
 # Set all environment variables to avoid interaction
 export DEBIAN_FRONTEND=noninteractive
 export APT_LISTCHANGES_FRONTEND=none
