@@ -1227,6 +1227,8 @@ https://zhile.one/archives/1404.html
 	ii) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii ;;
 		#	00)eval "exit";;
 	q) eval "exit" ;;
+	dd_step1) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step1-rescue-reimage_new.sh) ;;
+	dd_step2) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step2-normal-finalize_new.sh) ;;
 
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 	*) echo "wrong input" ;;
