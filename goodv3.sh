@@ -1229,6 +1229,7 @@ https://zhile.one/archives/1404.html
 	q) eval "exit" ;;
 	dd_step1) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step1-rescue-reimage_new.sh) ;;
 	dd_step2) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step2-normal-finalize_new.sh) ;;
+	wg_code) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/prepare-wireguard-vps.sh) ;;
 
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 	*) echo "wrong input" ;;
