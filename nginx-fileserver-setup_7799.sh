@@ -58,20 +58,20 @@ run_cmd mkdir -p "$INSTALL_DIR"
 if [[ -f "$INSTALL_DIR/docker-compose.yml" ]]; then
 	echo "🧹 Cleaning up existing instance..."
 	cd "$INSTALL_DIR"
-	
+
 	# Stop and remove existing containers
 	if docker-compose ps | grep -q "Up\|Exit"; then
 		echo "   - Stopping existing containers..."
 		docker-compose down || true
 	fi
-	
+
 	# Remove any orphaned containers with the same name pattern
 	CONTAINER_NAME=$(docker ps -a --filter "name=dshare_instance-nginx" --format "{{.Names}}" | head -1)
 	if [[ -n "$CONTAINER_NAME" ]]; then
 		echo "   - Removing orphaned container: $CONTAINER_NAME"
 		docker rm -f "$CONTAINER_NAME" || true
 	fi
-	
+
 	# Clean up any containers that might have the old naming pattern
 	docker ps -a --filter "name=nginx" --filter "ancestor=nginx" --format "{{.Names}}" | while read container; do
 		if [[ "$container" =~ (dshare|d\.share) ]]; then
@@ -79,7 +79,7 @@ if [[ -f "$INSTALL_DIR/docker-compose.yml" ]]; then
 			docker rm -f "$container" || true
 		fi
 	done
-	
+
 	echo "✅ Existing instance cleaned up"
 else
 	echo "ℹ️  No existing instance found"
@@ -155,6 +155,8 @@ services:
     image: nginx:latest
     container_name: dshare_fileserver
     restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
     volumes:
       # Mount your data directory to /data inside container
       - /data/d.share:/data:ro
@@ -186,13 +188,13 @@ if docker-compose ps | grep -q "Up"; then
 	echo ""
 	echo "🌐 Access your file server at:"
 	echo "   - http://localhost:7799"
-	
+
 	# Get the first non-loopback IP
 	SERVER_IP=$(hostname -I | awk '{print $1}')
 	if [[ -n "$SERVER_IP" ]]; then
 		echo "   - http://$SERVER_IP:7799"
 	fi
-	
+
 	echo ""
 	echo "📁 File directory: $DATA_DIR"
 	echo "⚙️  Installation directory: $INSTALL_DIR"
@@ -204,12 +206,12 @@ if docker-compose ps | grep -q "Up"; then
 	echo "   - Check status: cd $INSTALL_DIR && docker-compose ps"
 	echo ""
 	echo "🔄 The server will automatically restart after system reboots"
-	
+
 	# Show container info
 	echo ""
 	echo "📊 Container Status:"
 	docker-compose ps
-	
+
 else
 	echo "❌ Failed to start nginx file server. Check the logs:"
 	docker-compose logs
