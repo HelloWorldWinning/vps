@@ -3,6 +3,8 @@ services:
     image: nginx:latest
     container_name: dshare_fileserver
     restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
     volumes:
       # Mount your data directory to /data inside container
       - /data/d.share:/data:ro
