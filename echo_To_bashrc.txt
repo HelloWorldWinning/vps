@@ -422,7 +422,7 @@ e() {
 	shift
 	local additional_terms=("$@")
 	/usr/lib/cargo/bin/fd -HI --absolute-path --color=never "$search_term" "${additional_terms[@]}" |
-		rg --color=always \
+		rg --color=auto \
                         --colors 'match:fg:red' \
                         --colors 'match:style:bold' \
 			--colors 'line:none' \
