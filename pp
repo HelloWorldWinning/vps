@@ -950,7 +950,7 @@ def main() -> None:
         "\n---\n"
         f"TOKENS of this summary — gpt-4o(o200k): {g_total:,} | "
         f"claude(≈o200k×{CLAUDE_TOKEN_FACTOR}): {c_total:,}   "
-        f"[{tk.label}]\n"
+        #       f"[{tk.label}]\n"
     )
     out_text = body_text + footer
 
