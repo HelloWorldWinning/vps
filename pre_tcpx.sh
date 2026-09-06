@@ -788,4 +788,6 @@ sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.
 
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii
 
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo
+
 sudo reboot

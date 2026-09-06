@@ -1233,6 +1233,9 @@ https://zhile.one/archives/1404.html
 
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 	*) echo "wrong input" ;;
+
+	oo) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo ;;
+
 	esac
 
 	read -p 'time to go': seconds
