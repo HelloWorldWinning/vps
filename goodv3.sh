@@ -1194,7 +1194,7 @@ https://zhile.one/archives/1404.html
 	wos_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
 	sco_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
 	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
-	o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "o success installed" ;;
+		#o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "o success installed" ;;
 	pl) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/extract_project_digest.py -o /usr/local/bin/pl && chmod +x /usr/local/bin/pl && echo "pl success installed" ;;
 	pp) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pp -o /usr/local/bin/pp && chmod +x /usr/local/bin/pp && echo "pp success installed" ;;
 
@@ -1234,7 +1234,7 @@ https://zhile.one/archives/1404.html
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 	*) echo "wrong input" ;;
 
-	oo) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo ;;
+	o) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o ;;
 
 	esac
 

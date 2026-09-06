@@ -751,7 +751,6 @@ install_openssh_server_forcefully() {
 	return "$final_rc"
 }
 
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 # Usage:
 #   install_openssh_server_forcefully <apt_timeout> <dpkg_timeout> <kill_after>
 
@@ -788,6 +787,10 @@ sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.
 
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii
 
-sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo
+#curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
+
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo
+
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
 
 sudo reboot
