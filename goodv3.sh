@@ -1232,10 +1232,10 @@ https://zhile.one/archives/1404.html
 	wg_code) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/prepare-wireguard-vps.sh) ;;
 
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
-	*) echo "wrong input" ;;
 
 	o) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o ;;
 
+	*) echo "wrong input" ;;
 	esac
 
 	read -p 'time to go': seconds
