@@ -1042,11 +1042,15 @@ def main(argv):
     #   else:  # i: oldest first -> newest at the bottom
     #       entries.sort(key=lambda e: e.st.st_mtime_ns)
 
-    if prog == "u":
+    #   if prog == "u":
+    #       entries.sort(key=lambda e: (e.name.lower().lstrip("."), e.name))
+    #   else:  # k: oldest first -> newest at the bottom
+    #       entries.sort(key=lambda e: e.st.st_mtime_ns)
+
+    if prog == "i":
         entries.sort(key=lambda e: (e.name.lower().lstrip("."), e.name))
     else:  # k: oldest first -> newest at the bottom
         entries.sort(key=lambda e: e.st.st_mtime_ns)
-
     render(entries, Theme(want_color(args), want_icons(args)))
     return 0
 
