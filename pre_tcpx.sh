@@ -789,7 +789,7 @@ sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.
 
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
 	sudo chmod 0755 /usr/local/bin/k &&
-	sudo ln -sf /usr/local/bin/k /usr/local/bin/u
+	sudo ln -sf /usr/local/bin/k /usr/local/bin/i
 
 #curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 
