@@ -1194,7 +1194,7 @@ https://zhile.one/archives/1404.html
 	wos_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
 	sco_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
 	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
-		#o) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "o success installed" ;;
+	oo) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed" ;;
 	pl) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/extract_project_digest.py -o /usr/local/bin/pl && chmod +x /usr/local/bin/pl && echo "pl success installed" ;;
 	pp) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pp -o /usr/local/bin/pp && chmod +x /usr/local/bin/pp && echo "pp success installed" ;;
 
