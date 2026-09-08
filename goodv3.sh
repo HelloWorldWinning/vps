@@ -1227,7 +1227,8 @@ https://zhile.one/archives/1404.html
 	#ii) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii ;;
 	k) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k &&
 		sudo chmod 0755 /usr/local/bin/k &&
-		sudo ln -sf /usr/local/bin/k /usr/local/bin/i ;;
+		sudo ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully" ;;
+
 		#	00)eval "exit";;
 	q) eval "exit" ;;
 	dd_step1) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step1-rescue-reimage_new.sh) ;;
