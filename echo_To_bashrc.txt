@@ -340,7 +340,7 @@ fds() {
 
 
 
-alias m='mkdir -p '
+#alias m='mkdir -p '
 
 
 
@@ -369,7 +369,7 @@ fi
 alias ff='exa --icons  --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify'
 
 alias b='bat '
-alias m='mkdir '
+#alias m='mkdir '
 #alias rm='rm -i'
 
 export HISTSIZE=-1
