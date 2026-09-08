@@ -797,6 +797,6 @@ sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_c
 
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
 
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
+sudo curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
 
 sudo reboot

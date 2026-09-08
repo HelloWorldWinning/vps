@@ -829,7 +829,6 @@ lm() { _l_by_kind "name" "$@"; }
 #echo ""
 #exa -la --sort=changed
 #alias u=ii
-alias u=ii
 lm
 
 
