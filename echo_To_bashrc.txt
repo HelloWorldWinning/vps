@@ -356,17 +356,14 @@ fds() {
 # Conditional ll alias based on Debian version
 if [[ -f /etc/debian_version ]] && [[ $(cat /etc/debian_version | cut -d. -f1) == "13" ]]; then
     # Debian 13 - use eza
-alias ll='eza --icons  --all --long --sort=newest --no-user --no-permissions --git --header --color=always --only-files'  
+alias ll='eza --icons  --all --long --sort=newest --no-user --no-permissions --git --header --color=auto --only-files'  
 else
    
-alias ll='exa --icons --all --long --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify --no-icons | grep -v "/$"'
+alias ll='exa --icons --all --long --sort=newest --no-user --no-permissions --git --header --color=auto  --group-directories-first --classify --no-icons | grep -v "/$"'
 
 fi
 
-
-
-
-alias ff='exa --icons  --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=always --group-directories-first --classify'
+alias ff='exa --icons  --only-dirs --long --bytes --sort=newest --no-user --no-permissions --git --header --color=auto --group-directories-first --classify'
 
 alias b='bat '
 #alias m='mkdir '
