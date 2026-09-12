@@ -48,6 +48,16 @@ from datetime import datetime
 C_FOOTER_TOKENS = "1;31"  # bold red
 C_FOOTER_FILES = "1;33"  # bold blue
 
+
+# ---- program-name -> within-group sort ------------------------------------
+# Add a line here for every extra symlink name you create. A name that is not
+# listed falls back to PROG_SORT_DEFAULT. --sort=... always overrides this.
+PROG_SORT = {
+    "kl": "modified",  # oldest first -> newest modified at the BOTTOM of its group
+    "kn": "name",  # A-Z by name
+}
+PROG_SORT_DEFAULT = "modified"
+
 # ===========================================================================
 # WARNING 1 -- only these are tokenized (pure text / string-content files).
 #              Everything else (mp4, jpg, zip, pdf, .so, ...) shows "-".
@@ -1104,9 +1114,20 @@ def want_icons(args) -> bool:
     return icons
 
 
+# def want_sort(argv0_prog: str, args) -> str:
+#    """'modified' (default) or 'name'."""
+#    sort = "name" if argv0_prog.startswith("u") else "modified"
+#    for a in args:
+#        if a in ("--sort=name", "--name"):
+#            sort = "name"
+#        elif a in ("--sort=modified", "--sort=mtime", "--modified"):
+#            sort = "modified"
+#    return sort
+
+
 def want_sort(argv0_prog: str, args) -> str:
-    """'modified' (default) or 'name'."""
-    sort = "name" if argv0_prog.startswith("u") else "modified"
+    """'modified' or 'name' -- from PROG_SORT, overridable by --sort=..."""
+    sort = PROG_SORT.get(argv0_prog, PROG_SORT_DEFAULT)
     for a in args:
         if a in ("--sort=name", "--name"):
             sort = "name"
