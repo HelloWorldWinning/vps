@@ -1238,6 +1238,7 @@ https://zhile.one/archives/1404.html
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 
 	o) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o ;;
+	kl) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && sudo chmod 0755 /usr/local/bin/kl && sudo ln -sf /usr/local/bin/kl /usr/local/bin/kn ;;
 
 	*) echo "wrong input" ;;
 	esac
