@@ -35,7 +35,7 @@
             "folder_icon": "",
             "style": "full"
           },
-	  "template": "       <i>{{ .Env.POSH_DIR_PARENT }}</i><b>{{ .Env.POSH_DIR_BASE }}</b><b>      {{ .Env.POSH_DIR_COUNT }}      </b> <#988999>{{ .Env.POSH_DIR_FLAG }}{{ .UserName }}</>",
+          "template": "{{.Env.POSH_DIR_INFO }}{{ .UserName }}</>",
           "foreground": "#c42570",
           "powerline_symbol": "",
           "background": "transparent",
