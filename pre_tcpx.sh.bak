@@ -554,10 +554,10 @@ apt full-upgrade -y
 apt install -y linux-image-amd64 linux-headers-amd64
 
 #
-apt install systemd-timesyncd -y
-systemctl enable systemd-timesyncd
-systemctl start systemd-timesyncd
-timedatectl set-ntp true
+#sudo apt install systemd-timesyncd  -y
+#sudo systemctl enable systemd-timesyncd
+#sudo systemctl start systemd-timesyncd
+#sudo timedatectl set-ntp true
 #
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh)
@@ -586,7 +586,7 @@ curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
-apt update && apt install cargo ripgrep pandoc
+apt update && sudo apt install cargo ripgrep pandoc
 cargo install ripgrep_all
 
 #bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
@@ -600,7 +600,7 @@ cat >~/.config/lf/lfrc <<'EOF'
 map <enter> open
 cmd open $nvim "$f"
 EOF
-apt install ranger
+#sudo apt install ranger
 bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
 # 1. Download to /usr/local/bin (in $PATH by default on Debian)
@@ -609,11 +609,11 @@ chmod +x /usr/local/bin/tagcat
 
 wget -O /usr/local/bin/tokencount https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokencount
 chmod +x /usr/local/bin/tokencount
-###apt install  -y openssh-server
-#########DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
-DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
+###apt install  -y sudo openssh-server
+#########sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
+#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
 
-dpkg --configure -a
+#sudo dpkg --configure -a
 
 #!/usr/bin/env bash
 #set -Eeuo pipefail
@@ -763,11 +763,11 @@ bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/77
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
-##bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
-curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
-chmod +x /tmp/install_acme.sh
-bash -x /tmp/install_acme.sh
+#sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
+##sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
+#sudo curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
+#sudo chmod +x /tmp/install_acme.sh
+#sudo bash -x /tmp/install_acme.sh
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh)
 
@@ -783,22 +783,23 @@ curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress
 
 apt install vivid -y
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kkk
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && chmod 0755 /usr/local/bin/i && ln -sf /usr/local/bin/i /usr/local/bin/ii
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
-	#	chmod 0755 /usr/local/bin/k &&
-	#	ln -sf /usr/local/bin/k /usr/local/bin/i
-	curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k && chmod 0755 /usr/local/bin/k && ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
+#	sudo chmod 0755 /usr/local/bin/k &&
+#	sudo ln -sf /usr/local/bin/k /usr/local/bin/i
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && chmod 0755 /usr/local/bin/kl && ln -sf /usr/local/bin/kl /usr/local/bin/kn
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k && sudo chmod 0755 /usr/local/bin/k && sudo ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
+
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && sudo chmod 0755 /usr/local/bin/kl && sudo ln -sf /usr/local/bin/kl /usr/local/bin/kn
 
 #curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && chmod 755 /usr/local/bin/oo
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && chmod 755 /usr/local/bin/o
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
 
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
 

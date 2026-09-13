@@ -112,14 +112,14 @@ apt-get update
 echo "nameserver 8.8.4.4" | tee -a /etc/resolv.conf
 echo "nameserver 8.8.8.8" | tee -a /etc/resolv.conf
 
-apt update
-apt-get update
+sudo apt update
+sudo apt-get update
 
-apt install -y python3-pynvim
-apt install -y vnstat
-apt install -y shfmt
-apt install -y colordiff
-apt install -y fuse3
+sudo apt install -y python3-pynvim
+sudo apt install -y vnstat
+sudo apt install -y shfmt
+sudo apt install -y colordiff
+sudo apt install -y fuse3
 
 apt-get install -y silversearcher-ag
 apt-get install -y fd-find
@@ -127,15 +127,15 @@ apt-get install -y ripgrep
 apt-get install -y git-lfs
 apt-get install -y dnsutils
 
-ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
+sudo ln -s /usr/lib/cargo/bin/fd /usr/local/bin/fd
 
-apt install -y ncdu
-apt install -y duf
-apt install -y ftp
-apt install -y dfc
-apt install -y black
-apt install -y eza
-apt install -y exa
+sudo apt install -y ncdu
+sudo apt install -y duf
+sudo apt install -y ftp
+sudo apt install -y dfc
+sudo apt install -y black
+sudo apt install -y eza
+sudo apt install -y exa
 
 apt-get install -y xsel
 apt-get install -y xclip
@@ -147,15 +147,15 @@ apt-get install -y apache2-utils
 
 git config http.postBuffer 524288000
 
-apt-get install -y apache2-utils
-apt-get install -y lsof
-apt-get install -y wget
-apt-get install -y curl
-apt-get install -y nmap
-apt-get install -y neofetch
-apt-get install -y btop
-apt-get -y install fd-find
-apt-get -y install httpie
+sudo apt-get install -y apache2-utils
+sudo apt-get install -y lsof
+sudo apt-get install -y wget
+sudo apt-get install -y curl
+sudo apt-get install -y nmap
+sudo apt-get install -y neofetch
+sudo apt-get install -y btop
+sudo apt-get -y install fd-find
+sudo apt-get -y install httpie
 
 git config --global core.editor "vim"
 
@@ -170,23 +170,23 @@ sleep 4
 
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh)
 
-apt install -y net-tools
-apt install -y unzip
-apt install -y mc
-apt install -y lynx
-apt install -y telnet
-apt install -y zip
-apt install -y lsof
-apt install -y vim
-apt install -y httpie
-apt install -y netcat-openbsd
-apt install -y tree
-apt install -y screen
-apt install -y htop
-apt install -y tmux
-apt install -y rsync
+sudo apt install -y net-tools
+sudo apt install -y unzip
+sudo apt install -y mc
+sudo apt install -y lynx
+sudo apt install -y telnet
+sudo apt install -y zip
+sudo apt install -y lsof
+sudo apt install -y vim
+sudo apt install -y httpie
+sudo apt install -y netcat-openbsd
+sudo apt install -y tree
+sudo apt install -y screen
+sudo apt install -y htop
+sudo apt install -y tmux
+sudo apt install -y rsync
 
-timedatectl set-timezone Australia/Perth
+sudo timedatectl set-timezone Australia/Perth
 echo '--ipv4' >>~/.curlrc
 echo 'inet4_only = on' >>~/.wgetrc
 #alias tls="tmux list-sessions"
@@ -521,9 +521,9 @@ rm /tmp/tmp-move.sh /tmp/dt_function
 ##########
 # install app here 2025-06-02_02-50-06
 
-dpkg --configure -a
+sudo dpkg --configure -a
 
-wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && mv dysk /usr/local/bin/
+wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && sudo mv dysk /usr/local/bin/
 
 #plain=off
 #oldtext=darkred
@@ -536,7 +536,7 @@ newtext=white
 banner=no
 EOF
 
-apt install fuse -y
+sudo apt install fuse -y
 apt install fuse -y
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh)
@@ -549,15 +549,15 @@ bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh)
 
-apt update
-apt full-upgrade -y
-apt install -y linux-image-amd64 linux-headers-amd64
+sudo apt update
+sudo apt full-upgrade -y
+sudo apt install -y linux-image-amd64 linux-headers-amd64
 
 #
-apt install systemd-timesyncd -y
-systemctl enable systemd-timesyncd
-systemctl start systemd-timesyncd
-timedatectl set-ntp true
+#sudo apt install systemd-timesyncd  -y
+#sudo systemctl enable systemd-timesyncd
+#sudo systemctl start systemd-timesyncd
+#sudo timedatectl set-ntp true
 #
 
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh)
@@ -579,14 +579,14 @@ pip3 install jedi
 npm i -g typescript-language-server typescript
 ######## for nvim  end
 
-apt install -y bsdmainutils
-apt install bc
+sudo apt install -y bsdmainutils
+sudo apt install bc
 
 curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
-apt update && apt install cargo ripgrep pandoc
+sudo apt update && sudo apt install cargo ripgrep pandoc
 cargo install ripgrep_all
 
 #bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
@@ -594,26 +594,26 @@ cargo install ripgrep_all
 ####printf "\n\n\n0\n" | bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh)
 
 curl -sL https://github.com/gokcehan/lf/releases/latest/download/lf-linux-amd64.tar.gz | tar xz
-mv lf /usr/local/bin/
+sudo mv lf /usr/local/bin/
 mkdir -p ~/.config/lf
 cat >~/.config/lf/lfrc <<'EOF'
 map <enter> open
 cmd open $nvim "$f"
 EOF
-apt install ranger
+#sudo apt install ranger
 bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
 # 1. Download to /usr/local/bin (in $PATH by default on Debian)
-wget -O /usr/local/bin/tagcat https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat
-chmod +x /usr/local/bin/tagcat
+sudo wget -O /usr/local/bin/tagcat https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat
+sudo chmod +x /usr/local/bin/tagcat
 
-wget -O /usr/local/bin/tokencount https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokencount
-chmod +x /usr/local/bin/tokencount
-###apt install  -y openssh-server
-#########DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
-DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
+sudo wget -O /usr/local/bin/tokencount https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokencount
+sudo chmod +x /usr/local/bin/tokencount
+###apt install  -y sudo openssh-server
+#########sudo DEBIAN_FRONTEND=noninteractive yes| apt install -y openssh-server
+#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -q install openssh-server
 
-dpkg --configure -a
+#sudo dpkg --configure -a
 
 #!/usr/bin/env bash
 #set -Eeuo pipefail
@@ -763,11 +763,11 @@ bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/77
 apt install -y socat
 install_openssh_server_forcefully 180s 90s 5s
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
-##bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
-curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
-chmod +x /tmp/install_acme.sh
-bash -x /tmp/install_acme.sh
+#sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
+##sudo bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
+#sudo curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
+#sudo chmod +x /tmp/install_acme.sh
+#sudo bash -x /tmp/install_acme.sh
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh)
 
@@ -781,25 +781,26 @@ bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/d
 pip install --break-system-packages tiktoken
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed"
 
-apt install vivid -y
+sudo apt install vivid -y
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kkk
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && sudo chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && sudo ln -sf /usr/local/bin/kk /usr/local/bin/kkk
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && chmod 0755 /usr/local/bin/i && ln -sf /usr/local/bin/i /usr/local/bin/ii
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && sudo chmod 0755 /usr/local/bin/i && sudo ln -sf /usr/local/bin/i /usr/local/bin/ii
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
-	#	chmod 0755 /usr/local/bin/k &&
-	#	ln -sf /usr/local/bin/k /usr/local/bin/i
-	curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k && chmod 0755 /usr/local/bin/k && ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
+#	sudo chmod 0755 /usr/local/bin/k &&
+#	sudo ln -sf /usr/local/bin/k /usr/local/bin/i
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && chmod 0755 /usr/local/bin/kl && ln -sf /usr/local/bin/kl /usr/local/bin/kn
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k && sudo chmod 0755 /usr/local/bin/k && sudo ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
+
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && sudo chmod 0755 /usr/local/bin/kl && sudo ln -sf /usr/local/bin/kl /usr/local/bin/kn
 
 #curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && chmod 755 /usr/local/bin/oo
+#sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && sudo chmod 755 /usr/local/bin/oo
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && chmod 755 /usr/local/bin/o
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
 
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
+sudo curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
 
-reboot
+sudo reboot
