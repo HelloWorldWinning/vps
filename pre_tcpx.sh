@@ -785,6 +785,8 @@ apt install vivid -y
 
 # curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kkk
 
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success"
+
 curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && chmod 0755 /usr/local/bin/i && ln -sf /usr/local/bin/i /usr/local/bin/ii
 
 curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
