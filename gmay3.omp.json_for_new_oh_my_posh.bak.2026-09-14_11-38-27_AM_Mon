@@ -12,7 +12,7 @@
           "foreground": "#cccccc",
           "background": "transparent",
           "force": true,
-          "template": "      ",
+          "template":  "      ",
           "properties": {
             "cache_duration": "none"
           }
@@ -32,10 +32,10 @@
         {
           "properties": {
             "cache_duration": "none",
-            "folder_icon": "",
+            "folder_icon": "",
             "style": "full"
           },
-          "template": "       <i>{{ .Env.POSH_DIR_PARENT }}</i><b>{{ .Env.POSH_DIR_BASE }}</b><b>      {{ .Env.POSH_DIR_COUNT }}      </b> <#988999>{{ .Env.POSH_DIR_FLAG }}{{ .UserName }}</>",
+	  "template": "       <i>{{ .Env.POSH_DIR_PARENT }}</i><b>{{ .Env.POSH_DIR_BASE }}</b><b>      {{ .Env.POSH_DIR_COUNT }}      </b> <#988999>{{ .Env.POSH_DIR_FLAG }}{{ .UserName }}</>",
           "foreground": "#c42570",
           "powerline_symbol": "",
           "background": "transparent",
@@ -59,7 +59,7 @@
             "fetch_stash_count": true,
             "fetch_upstream_icon": true
           },
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} ",
           "foreground": "#000000",
           "powerline_symbol": "",
           "background": "#f5f26e",
@@ -82,7 +82,7 @@
           "properties": {
             "cache_duration": "none"
           },
-          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
           "foreground": "#ffffff",
           "powerline_symbol": "",
           "background": "#6CA35E",
@@ -114,9 +114,9 @@
           "properties": {
             "cache_duration": "none"
           },
-          "template": "<b>{{ $w := .CurrentDate | date \"Monday\" }}{{ $p := sub 9 (len $w) }}{{ printf \"%*s%s%*s\" (div $p 2) \"\" $w (sub $p (div $p 2)) \"\" }} {{ .CurrentDate | date \"02 PM 03:04\" }}   </b>",
+          "template": "<b> Sunday   14 PM 09:30   </b>",
           "foreground": "#a803a8",
-          "type": "time",
+          "type": "text",
           "style": "plain"
         }
       ],

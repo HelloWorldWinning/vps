@@ -11,11 +11,6 @@
 #      placed before the init line is silently overwritten.
 #   3. The flag is built from raw UTF-8 bytes instead of printf '\U...', which only
 #      works under a UTF-8 locale.
-#   4. The second prompt line (weekday / day / AM-PM / clock) is now a native oh-my-posh
-#      time segment inside gmay3.omp.json_for_new_oh_my_posh. This core caches the parsed
-#      config per POSH_SESSION_ID, so the old "cron + jq rewrites the template every
-#      minute" trick can no longer reach a running shell — its clock froze at the time the
-#      shell was started. update_prompt_date_DD_Day.sh and its cron entry are removed.
 #
 # Safe to re-run. Everything it puts in ~/.bashrc lives between the BEGIN/END markers
 # below and is replaced on each run; ~/.bashrc is backed up and syntax-checked first.
@@ -41,11 +36,10 @@ wget --inet4-only -q -O "$CONFIG" "$RAW/gmay3.omp.json_for_new_oh_my_posh" &&
 
 wget --inet4-only -q -O "$THEMES/hostname_length_adjuster.sh" "$RAW/hostname_length_adjuster.sh"
 wget --inet4-only -q -O "$THEMES/cpu_usage.sh" "$RAW/cpu_usage.sh"
-# The second prompt line is now a native oh-my-posh time segment, so the minute-by-minute
-# jq patcher is dead weight on this core: oh-my-posh caches the parsed config per
-# POSH_SESSION_ID, so edits made to gmay3.omp.json after a shell starts are never seen by
-# that shell. Remove the leftover script; its cron entry is dropped further down.
-rm -f "$THEMES/update_prompt_date_DD_Day.sh"
+wget --inet4-only -q -O "$THEMES/update_prompt_date_DD_Day.sh" "$RAW/update_prompt_date_DD_Day.sh"
+chmod +x "$THEMES/update_prompt_date_DD_Day.sh"
+# That script hardcodes config_file=/root/themes/gmay3.omp.json; point it at this $HOME.
+sed -i "s#^config_file=.*#config_file=\"$CONFIG\"#" "$THEMES/update_prompt_date_DD_Day.sh"
 
 # Country code, cached — set_poshcontext turns it into the flag. Done here too so the
 # verification at the end works on a brand-new host.
@@ -230,21 +224,21 @@ else
 fi
 
 # ----------------------------------------------------------------------------- cron
-# Weather only. The date/time cron is deleted: the clock is rendered by oh-my-posh itself.
+LOCK_FILE="/tmp/prompt_update.lock"
+CRON_DATE="*/1 * * * * /usr/bin/flock -n $LOCK_FILE $THEMES/update_prompt_date_DD_Day.sh"
 CRON_WEA="*/30 * * * * curl -sSL $RAW/weather_temperature.sh | bash"
 
-CRON_TMP="$(mktemp)"
-crontab -l 2>/dev/null |
-	grep -v 'update_prompt_date_DD_Day.sh' |
-	grep -v 'weather_temperature.sh' >"$CRON_TMP"
-echo "$CRON_WEA" >>"$CRON_TMP"
-crontab "$CRON_TMP"
-rm -f "$CRON_TMP"
+{
+	crontab -l 2>/dev/null | grep -v 'update_prompt_date_DD_Day.sh' | grep -v 'weather_temperature.sh'
+	echo "$CRON_DATE"
+	echo "$CRON_WEA"
+} | crontab -
 echo "--- crontab ---"
 crontab -l
 
 # --------------------------------------------------------------------- first run
 curl -sSL "$RAW/weather_temperature.sh" | bash
+bash "$THEMES/update_prompt_date_DD_Day.sh"
 
 # ------------------------------------------------------------------------- verify
 echo "--- verify: context variables ---"
@@ -256,12 +250,10 @@ printf 'POSH_DIR_PARENT=[%s]\nPOSH_DIR_BASE=[%s]\nPOSH_DIR_COUNT=[%s]\nPOSH_DIR_
 "
 
 echo "--- verify: rendered prompt ---"
-# POSH_SESSION_ID is unset on purpose: with it set, oh-my-posh replays the config it
-# cached for that session instead of reading the file just written.
 country_code="$CC" bash -c "
 source '$CONTEXT'
 set_poshcontext
-env -u POSH_SESSION_ID oh-my-posh print primary --shell=bash --config '$CONFIG'
+oh-my-posh print primary --shell=bash --config '$CONFIG'
 " | sed 's/\\\[[^]]*\\\]//g'
 echo
 echo "Every POSH_* value above must be non-empty, and the rendered line must show"
