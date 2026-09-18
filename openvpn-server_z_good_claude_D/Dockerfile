@@ -1,11 +1,39 @@
-#FROM debian:bookworm-slim
 FROM debian:trixie-slim
-# 8.210.139.66
 
-# Install required packages
+# ===========================================================================
+#  OpenVPN server - DUAL STACK (IPv4 + IPv6 carried inside the tunnel)
+#  proto tcp / port 81
+#
+#    IPv4 tunnel : 10.81.0.0/16     -> NAT44 (MASQUERADE) out of the uplink
+#    IPv6 tunnel : fd81:81:81::/64  -> NAT66 (MASQUERADE) out of the uplink
+#
+#  Same design as the working UDP/82 image, with the transport switched to TCP.
+#  Subnets are deliberately different from the UDP stack (10.82.0.0/16 and
+#  fd82:82:82::/64) so both servers can run on the same VPS, and a single
+#  client may even hold configs for both.
+#
+#  Both default routes are pushed to the client, so the client can no longer
+#  reach the internet over its own native IPv6.  That removes the IPv6 leak
+#  WITHOUT needing "block-ipv6" in the .ovpn file, and IPv6 keeps working.
+#
+#  Failure mode is safe: if this container has no IPv6 uplink, client IPv6
+#  traffic enters the tunnel and is dropped here - it never leaks out of the
+#  client. Applications then fall back to IPv4 (Happy Eyeballs).
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# 1. OpenVPN from the upstream repo
+# ---------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y wget gnupg ca-certificates && \
+    wget -qO - https://swupdate.openvpn.net/repos/repo-public.gpg | gpg --dearmor > /usr/share/keyrings/openvpn-repo-public.gpg && \
+    echo 'deb [signed-by=/usr/share/keyrings/openvpn-repo-public.gpg] http://build.openvpn.net/debian/openvpn/stable bookworm main' > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
+    apt-get update && \
+    apt-get install -y openvpn
+
+# iproute2 is required: up.sh detects the uplink interface with "ip"
 RUN apt-get update && apt-get install -y \
-    openvpn \
     iptables \
+    iproute2 \
     openssl \
     wget \
     ca-certificates \
@@ -15,46 +43,43 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Install easy-rsa
-RUN wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/v3.1.2/EasyRSA-3.1.2.tgz \
+# ---------------------------------------------------------------------------
+# 2. easy-rsa + PKI
+# ---------------------------------------------------------------------------
+RUN EASYRSA_LATEST=$(curl -s4 https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -d\" -f4) && \
+    wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST#v}.tgz \
     && mkdir -p /etc/openvpn/easy-rsa \
     && tar xzf /tmp/easy-rsa.tgz --strip-components=1 --no-same-owner --directory /etc/openvpn/easy-rsa \
     && rm -f /tmp/easy-rsa.tgz
 
-# Setup OpenVPN configuration
 WORKDIR /etc/openvpn/easy-rsa
 
-# Create vars file first
 RUN echo "set_var EASYRSA_ALGO ec\n\
 set_var EASYRSA_CURVE prime256v1\n\
 set_var EASYRSA_CA_EXPIRE 3650\n\
 set_var EASYRSA_CERT_EXPIRE 3650\n\
 set_var EASYRSA_CRL_DAYS 3650" > vars
 
-# Initialize PKI and create certificates
 RUN ./easyrsa init-pki && \
     ./easyrsa --batch build-ca nopass && \
     ./easyrsa --batch build-server-full server nopass && \
     ./easyrsa gen-crl && \
-    # Generate keys for clients
     for i in $(seq 1 1000); do \
         ./easyrsa --batch build-client-full "client_${i}" nopass; \
     done
 
-# Create necessary directories
 RUN mkdir -p /var/log/openvpn /etc/sysctl.d /etc/openvpn/config
 
-# Generate DH parameters
 RUN openssl dhparam -out /etc/openvpn/config/dh2048.pem 2048
 
-# Copy necessary files
 RUN cp pki/ca.crt pki/private/ca.key pki/issued/server.crt pki/private/server.key pki/crl.pem /etc/openvpn/config/ && \
     chmod 644 /etc/openvpn/config/crl.pem
 
-# Generate tls-crypt key
 RUN openvpn --genkey secret /etc/openvpn/config/tls-crypt.key
 
-# Create server configuration
+# ---------------------------------------------------------------------------
+# 3. Server configuration - IPv4 + IPv6 over TCP/81
+# ---------------------------------------------------------------------------
 RUN echo "port 81\n\
 proto tcp\n\
 dev tun\n\
@@ -64,14 +89,31 @@ persist-key\n\
 persist-tun\n\
 keepalive 10 120\n\
 topology subnet\n\
+\n\
+# ---------- IPv4 tunnel ----------\n\
 server 10.81.0.0 255.255.0.0\n\
+\n\
+# ---------- IPv6 tunnel ----------\n\
+# ULA prefix, masqueraded (NAT66) behind the single global IPv6 of the VPS.\n\
+# A ULA is used because cloud providers hand out a /128, not a routed /64.\n\
+server-ipv6 fd81:81:81::/64\n\
+\n\
 ifconfig-pool-persist ipp.txt\n\
+\n\
+# ---------- push BOTH default routes: this is what kills the IPv6 leak ----------\n\
+push \"redirect-gateway def1 bypass-dhcp ipv6\"\n\
+push \"route-ipv6 2000::/3\"\n\
+\n\
+# ---------- DNS (v4 + v6 resolvers) ----------\n\
 push \"dhcp-option DNS 1.1.1.1\"\n\
 push \"dhcp-option DNS 8.8.8.8\"\n\
 push \"dhcp-option DNS 9.9.9.9\"\n\
 push \"dhcp-option DNS 1.0.0.1\"\n\
 push \"dhcp-option DNS 8.8.4.4\"\n\
-push \"redirect-gateway def1 bypass-dhcp\"\n\
+push \"dhcp-option DNS6 2606:4700:4700::1111\"\n\
+push \"dhcp-option DNS6 2001:4860:4860::8888\"\n\
+push \"dhcp-option DNS6 2620:fe::fe\"\n\
+\n\
 dh /etc/openvpn/config/dh2048.pem\n\
 tls-crypt /etc/openvpn/config/tls-crypt.key\n\
 crl-verify /etc/openvpn/config/crl.pem\n\
@@ -88,7 +130,10 @@ tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\n\
 status /var/log/openvpn/status.log\n\
 verb 3" > /etc/openvpn/server.conf
 
-# Create client configs
+# ---------------------------------------------------------------------------
+# 4. Client configurations
+#    NOTE: no block-ipv6 here - IPv6 now goes through the tunnel.
+# ---------------------------------------------------------------------------
 RUN mkdir -p /root/client-configs && \
     for i in $(seq 1 1000); do \
         echo "client\n\
@@ -111,6 +156,8 @@ tls-version-min 1.2\n\
 tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\n\
 ignore-unknown-option block-outside-dns\n\
 setenv opt block-outside-dns\n\
+# IPv6 is carried inside the tunnel - do NOT add block-ipv6 to this file.\n\
+# Requires an OpenVPN 2.5+ client.\n\
 verb 3\n\
 <ca>\n\
 $(cat /etc/openvpn/config/ca.crt)\n\
@@ -126,45 +173,101 @@ $(cat /etc/openvpn/config/tls-crypt.key)\n\
 </tls-crypt>" > /root/client_${i}.ovpn; \
     done
 
-# Create start script
+# ---------------------------------------------------------------------------
+# 5. Firewall / NAT - IPv4 and IPv6, uplink interface auto-detected
+# ---------------------------------------------------------------------------
+RUN echo '#!/bin/sh\n\
+V4NET=10.81.0.0/16\n\
+V6NET=fd81:81:81::/64\n\
+PORT=81\n\
+PROTO=tcp\n\
+\n\
+# Find the interface holding the default route (eth0 under a docker bridge,\n\
+# but something else under --network host, e.g. ens5 on Alibaba Cloud).\n\
+detect_if() {\n\
+    _prev=\n\
+    _dev=\n\
+    for _tok in $(ip -$1 route show default 2>/dev/null | head -n 1); do\n\
+        if [ "$_prev" = "dev" ]; then _dev=$_tok; break; fi\n\
+        _prev=$_tok\n\
+    done\n\
+    echo $_dev\n\
+}\n\
+\n\
+WAN4=$(detect_if 4)\n\
+[ -n "$WAN4" ] || WAN4=eth0\n\
+WAN6=$(detect_if 6)\n\
+[ -n "$WAN6" ] || WAN6=$WAN4\n\
+\n\
+echo "[up.sh] IPv4 uplink: $WAN4"\n\
+echo "[up.sh] IPv6 uplink: $WAN6"\n\
+\n\
+# ---------------- IPv4 ----------------\n\
+iptables -t nat -A POSTROUTING -s $V4NET -o $WAN4 -j MASQUERADE\n\
+iptables -A INPUT -i tun0 -j ACCEPT\n\
+iptables -A INPUT -i $WAN4 -p $PROTO --dport $PORT -j ACCEPT\n\
+iptables -A FORWARD -i $WAN4 -o tun0 -j ACCEPT\n\
+iptables -A FORWARD -i tun0 -o $WAN4 -j ACCEPT\n\
+\n\
+# ---------------- IPv6 ----------------\n\
+if ip6tables -n -L INPUT >/dev/null 2>&1; then\n\
+    ip6tables -t nat -A POSTROUTING -s $V6NET -o $WAN6 -j MASQUERADE || echo "[up.sh] WARNING: NAT66 rule rejected - the host kernel is missing ip6table_nat"\n\
+    ip6tables -A INPUT -i tun0 -j ACCEPT\n\
+    ip6tables -A INPUT -i $WAN6 -p $PROTO --dport $PORT -j ACCEPT\n\
+    ip6tables -A FORWARD -i $WAN6 -o tun0 -j ACCEPT\n\
+    ip6tables -A FORWARD -i tun0 -o $WAN6 -j ACCEPT\n\
+else\n\
+    echo "[up.sh] WARNING: ip6tables is unusable here - IPv6 will not be routed"\n\
+fi' > /etc/openvpn/up.sh && \
+    chmod +x /etc/openvpn/up.sh
+
+# ---------------------------------------------------------------------------
+# 6. Entrypoint - sysctls, firewall, IPv6 readiness report, then openvpn
+# ---------------------------------------------------------------------------
 RUN echo '#!/bin/sh\n\
 mkdir -p /dev/net\n\
 if [ ! -c /dev/net/tun ]; then\n\
     mknod /dev/net/tun c 10 200\n\
 fi\n\
 \n\
-# Set ip forwarding directly\n\
-echo 1 > /proc/sys/net/ipv4/ip_forward\n\
-echo 1 > /proc/sys/net/ipv6/conf/all/forwarding\n\
+set_sysctl() {\n\
+    if [ -w "$1" ]; then echo "$2" > "$1"; fi\n\
+}\n\
+\n\
+set_sysctl /proc/sys/net/ipv4/ip_forward 1\n\
+set_sysctl /proc/sys/net/ipv6/conf/all/disable_ipv6 0\n\
+set_sysctl /proc/sys/net/ipv6/conf/default/disable_ipv6 0\n\
+\n\
+# accept_ra=2 keeps an RA-learned IPv6 default route alive once forwarding is\n\
+# switched on - without it the kernel drops RAs and the uplink loses IPv6.\n\
+for f in /proc/sys/net/ipv6/conf/*/accept_ra; do set_sysctl "$f" 2; done\n\
+\n\
+set_sysctl /proc/sys/net/ipv6/conf/all/forwarding 1\n\
+set_sysctl /proc/sys/net/ipv6/conf/default/forwarding 1\n\
+\n\
+if [ "$(cat /proc/sys/net/ipv4/ip_forward 2>/dev/null)" != "1" ]; then\n\
+    echo "[start] WARNING: IPv4 forwarding is OFF. Run the container with --privileged or --sysctl net.ipv4.ip_forward=1"\n\
+fi\n\
+if [ "$(cat /proc/sys/net/ipv6/conf/all/forwarding 2>/dev/null)" != "1" ]; then\n\
+    echo "[start] WARNING: IPv6 forwarding is OFF. Run the container with --privileged or --sysctl net.ipv6.conf.all.forwarding=1"\n\
+fi\n\
 \n\
 /etc/openvpn/up.sh\n\
+\n\
+echo "[start] ---- IPv6 readiness ----"\n\
+ip -6 addr show scope global 2>/dev/null | grep inet6 || echo "[start] no global IPv6 address on this container"\n\
+if ip -6 route show default 2>/dev/null | grep -q default; then\n\
+    echo "[start] IPv6 default route present - clients get working IPv6 through the tunnel"\n\
+else\n\
+    echo "[start] WARNING: no IPv6 default route inside this container."\n\
+    echo "[start]          Clients still receive an IPv6 default route into the tunnel, so"\n\
+    echo "[start]          nothing leaks, but IPv6 destinations stay unreachable."\n\
+    echo "[start]          Fix: attach the container to an IPv6-enabled docker network."\n\
+fi\n\
+echo "[start] ------------------------"\n\
+\n\
 exec openvpn --config /etc/openvpn/server.conf' > /etc/openvpn/start.sh && \
     chmod +x /etc/openvpn/start.sh
 
-# Add iptables rules script
-RUN echo '#!/bin/sh\n\
-iptables -t nat -A POSTROUTING -s 10.81.0.0/16 -o eth0 -j MASQUERADE\n\
-iptables -A INPUT -i tun0 -j ACCEPT\n\
-iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT\n\
-iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT\n\
-iptables -A INPUT -i eth0 -p tcp --dport 81 -j ACCEPT\n\
-ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE\n\
-ip6tables -A INPUT -i tun0 -j ACCEPT\n\
-ip6tables -A FORWARD -i eth0 -o tun0 -j ACCEPT\n\
-ip6tables -A FORWARD -i tun0 -o eth0 -j ACCEPT\n\
-ip6tables -A INPUT -i eth0 -p tcp --dport 81 -j ACCEPT' > /etc/openvpn/up.sh && \
-    chmod +x /etc/openvpn/up.sh
-
 EXPOSE 81/tcp
 CMD ["/etc/openvpn/start.sh"]
-
-
-
-# mkdir -p /data/ovpn-clients
-#for i in {1..30}; do
-#    docker cp openvpn:/root/client_${i}.ovpn /data/ovpn-clients/
-#done
-
-
-
-
