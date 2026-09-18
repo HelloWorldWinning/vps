@@ -20,8 +20,6 @@
 # ===========================================================================
 
 NET_NAME="ovpn6"
-NET_V4="172.30.82.0/24"
-NET_V6="fd00:82:82::/64"
 COMPOSE_DIR="/root/openvpn-server_z_udp"
 CLIENT_DIR="/root/openvpn-clients_udp"
 CONTAINER="openvpn_udp"
@@ -76,10 +74,10 @@ DAEMON_JSON="/etc/docker/daemon.json"
 NEED_DOCKER_RESTART=0
 mkdir -p /etc/docker
 
+# "experimental": true,
 if [ ! -f "$DAEMON_JSON" ]; then
 	cat >"$DAEMON_JSON" <<'EOF'
 {
-  "experimental": true,
   "ip6tables": true
 }
 EOF
@@ -97,7 +95,7 @@ try:
         d = {}
 except Exception:
     d = {}
-d["experimental"] = True
+#d["experimental"] = True
 d["ip6tables"] = True
 with open(p, "w") as fh:
     json.dump(d, fh, indent=2)
@@ -123,33 +121,68 @@ fi
 # 3. the IPv6-enabled docker network
 #    Created with the CLI rather than inside docker-compose.yml, because the
 #    legacy python docker-compose ignores enable_ipv6 in v3 compose files.
+#    Subnets are auto-selected: any hardcoded pair fails with "Pool overlaps
+#    with other one on this address space" as soon as another network - or the
+#    daemon default-address-pool / fixed-cidr-v6 - already covers it.
 # ---------------------------------------------------------------------------
 echo "============================================"
 echo "Preparing IPv6 docker network: ${NET_NAME}"
 echo "============================================"
+
+echo "Subnets already allocated to docker networks:"
+for n in $(docker network ls --format '{{.Name}}'); do
+	SUBS=$(docker network inspect -f '{{range .IPAM.Config}}{{.Subnet}} {{end}}' "$n" 2>/dev/null)
+	[ -n "$SUBS" ] && printf '  %-22s %s\n' "$n" "$SUBS"
+done
+FIXED_V6=$(grep -Eo '"fixed-cidr-v6"[^,}]*' "$DAEMON_JSON" 2>/dev/null)
+[ -n "$FIXED_V6" ] && echo "  daemon.json            ${FIXED_V6}"
+POOLS=$(grep -Eo '"default-address-pools".*' "$DAEMON_JSON" 2>/dev/null)
+[ -n "$POOLS" ] && echo "  daemon.json            ${POOLS}"
+
+# an existing ovpn6 without IPv6 is useless - drop it
 if docker network inspect "$NET_NAME" >/dev/null 2>&1; then
 	HAS_V6=$(docker network inspect -f '{{.EnableIPv6}}' "$NET_NAME" 2>/dev/null)
 	if [ "$HAS_V6" != "true" ]; then
 		echo "Network ${NET_NAME} exists but has no IPv6 - recreating it."
 		docker rm -f "$CONTAINER" >/dev/null 2>&1
 		docker network rm "$NET_NAME" >/dev/null 2>&1
-	else
-		echo "Network ${NET_NAME} already IPv6-enabled."
 	fi
 fi
 
-if ! docker network inspect "$NET_NAME" >/dev/null 2>&1; then
-	docker network create --ipv6 \
-		--subnet "$NET_V4" \
-		--subnet "$NET_V6" \
-		"$NET_NAME" >/dev/null
-	if [ $? -eq 0 ]; then
-		echo "Created network ${NET_NAME} (${NET_V4}, ${NET_V6})."
-	else
-		echo "ERROR: failed to create the IPv6 docker network. Aborting."
+if docker network inspect "$NET_NAME" >/dev/null 2>&1; then
+	echo "Network ${NET_NAME} is already IPv6-enabled - keeping it."
+else
+	# a randomly generated ULA as the last-resort candidate
+	RAND_HEX=$(head -c 5 /dev/urandom | od -An -tx1 | tr -d ' \n')
+	RAND_V6="fd${RAND_HEX:0:2}:${RAND_HEX:2:4}:${RAND_HEX:6:4}::/64"
+
+	# 10.82.0.0/16 is the VPN IPv4 pool and fd82:82:82::/64 the VPN IPv6 pool,
+	# so neither may appear here.
+	V4_CANDIDATES=(172.30.82.0/24 172.28.82.0/24 10.182.82.0/24 10.183.82.0/24 192.168.182.0/24)
+	V6_CANDIDATES=(fd00:82:82::/64 fdb6:8282:1::/64 fdc7:9a4e:82::/64 "$RAND_V6")
+
+	NET_CREATED=0
+	for v4 in "${V4_CANDIDATES[@]}"; do
+		for v6 in "${V6_CANDIDATES[@]}"; do
+			if docker network create --ipv6 --subnet "$v4" --subnet "$v6" "$NET_NAME" >/dev/null 2>&1; then
+				echo "Created network ${NET_NAME} (${v4}, ${v6})."
+				NET_CREATED=1
+				break 2
+			fi
+		done
+	done
+
+	if [ "$NET_CREATED" != "1" ]; then
+		echo "ERROR: every candidate subnet pair overlapped an existing pool."
+		echo "       Re-running one attempt to show the raw docker error:"
+		docker network create --ipv6 --subnet "${V4_CANDIDATES[0]}" --subnet "${V6_CANDIDATES[0]}" "$NET_NAME"
+		echo "       Free a range, or edit V4_CANDIDATES / V6_CANDIDATES above."
 		exit 1
 	fi
 fi
+
+NET_SUBNETS=$(docker network inspect -f '{{range .IPAM.Config}}{{.Subnet}} {{end}}' "$NET_NAME" 2>/dev/null)
+echo "Network ${NET_NAME} subnets: ${NET_SUBNETS}"
 
 # ---------------------------------------------------------------------------
 # 4. compose file
@@ -315,7 +348,7 @@ echo "============================================"
 echo "Server IPv4        : ${THIS_HOST_IP}"
 echo "Server IPv6        : ${THIS_HOST_IP6:-none}"
 echo "Port               : 82/udp"
-echo "Docker network     : ${NET_NAME} (${NET_V4}, ${NET_V6})"
+echo "Docker network     : ${NET_NAME} (${NET_SUBNETS})"
 echo "IPv6 through VPN   : ${IPV6_STATUS}"
 echo "Client configs     : ${CLIENT_DIR}/"
 echo "Client configs zip : ${CLIENT_DIR}/${hostname}_vpn_client_udp_${NUM_CLIENTS}_configs.zip"
