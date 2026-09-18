@@ -76,7 +76,12 @@ RUN openvpn --genkey secret /etc/openvpn/config/tls-crypt.key
 # 3. Server configuration - IPv4 + IPv6
 # ---------------------------------------------------------------------------
 RUN echo "port 82\n\
-proto udp\n\
+# proto udp6 = a dual-stack [::]:82 socket. It serves native IPv6 clients AND\n\
+# IPv4 clients (as v4-mapped addresses), because --bind ipv6only is not set.\n\
+# Plain \"proto udp\" binds 0.0.0.0 only, which is unreachable for IPv6 clients\n\
+# once the docker daemon has ip6tables enabled and DNATs inbound v6 to the\n\
+# container address.\n\
+proto udp6\n\
 dev tun\n\
 user nobody\n\
 group nogroup\n\
@@ -238,6 +243,17 @@ for f in /proc/sys/net/ipv6/conf/*/accept_ra; do set_sysctl "$f" 2; done\n\
 \n\
 set_sysctl /proc/sys/net/ipv6/conf/all/forwarding 1\n\
 set_sysctl /proc/sys/net/ipv6/conf/default/forwarding 1\n\
+\n\
+# bindv6only=0 is what makes the [::]:82 socket also accept IPv4 clients.\n\
+set_sysctl /proc/sys/net/ipv6/bindv6only 0\n\
+\n\
+# The server binds a dual-stack socket (proto udp6). If this container somehow\n\
+# has no IPv6 stack at all that bind fails and openvpn refuses to start, so\n\
+# fall back to IPv4-only instead of dying.\n\
+if [ ! -f /proc/sys/net/ipv6/conf/all/disable_ipv6 ] || [ "$(cat /proc/sys/net/ipv6/conf/all/disable_ipv6)" = "1" ]; then\n\
+    echo "[start] no usable IPv6 stack here - falling back to proto udp (IPv4 only)"\n\
+    sed -i "s@^proto udp6@proto udp@" /etc/openvpn/server.conf\n\
+fi\n\
 \n\
 if [ "$(cat /proc/sys/net/ipv4/ip_forward 2>/dev/null)" != "1" ]; then\n\
     echo "[start] WARNING: IPv4 forwarding is OFF. Run the container with --privileged or --sysctl net.ipv4.ip_forward=1"\n\

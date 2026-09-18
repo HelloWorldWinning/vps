@@ -2,15 +2,10 @@ FROM debian:trixie-slim
 
 # ===========================================================================
 #  OpenVPN server - DUAL STACK (IPv4 + IPv6 carried inside the tunnel)
-#  proto tcp / port 81
+#  proto udp / port 82
 #
-#    IPv4 tunnel : 10.81.0.0/16     -> NAT44 (MASQUERADE) out of the uplink
-#    IPv6 tunnel : fd81:81:81::/64  -> NAT66 (MASQUERADE) out of the uplink
-#
-#  Same design as the working UDP/82 image, with the transport switched to TCP.
-#  Subnets are deliberately different from the UDP stack (10.82.0.0/16 and
-#  fd82:82:82::/64) so both servers can run on the same VPS, and a single
-#  client may even hold configs for both.
+#    IPv4 tunnel : 10.82.0.0/16     -> NAT44 (MASQUERADE) out of the uplink
+#    IPv6 tunnel : fd82:82:82::/64  -> NAT66 (MASQUERADE) out of the uplink
 #
 #  Both default routes are pushed to the client, so the client can no longer
 #  reach the internet over its own native IPv6.  That removes the IPv6 leak
@@ -30,7 +25,7 @@ RUN apt-get update && apt-get install -y wget gnupg ca-certificates && \
     apt-get update && \
     apt-get install -y openvpn
 
-# iproute2 is required: up.sh detects the uplink interface with "ip"
+# iproute2 is required: the new up.sh detects the uplink interface with "ip"
 RUN apt-get update && apt-get install -y \
     iptables \
     iproute2 \
@@ -44,7 +39,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# 2. easy-rsa + PKI
+# 2. easy-rsa + PKI  (unchanged)
 # ---------------------------------------------------------------------------
 RUN EASYRSA_LATEST=$(curl -s4 https://api.github.com/repos/OpenVPN/easy-rsa/releases/latest | grep "tag_name" | cut -d\" -f4) && \
     wget -O /tmp/easy-rsa.tgz https://github.com/OpenVPN/easy-rsa/releases/download/${EASYRSA_LATEST}/EasyRSA-${EASYRSA_LATEST#v}.tgz \
@@ -65,7 +60,7 @@ RUN ./easyrsa init-pki && \
     ./easyrsa --batch build-server-full server nopass && \
     ./easyrsa gen-crl && \
     for i in $(seq 1 1000); do \
-        ./easyrsa --batch build-client-full "client_${i}" nopass; \
+        ./easyrsa --batch build-client-full "client_udp_${i}" nopass; \
     done
 
 RUN mkdir -p /var/log/openvpn /etc/sysctl.d /etc/openvpn/config
@@ -78,14 +73,10 @@ RUN cp pki/ca.crt pki/private/ca.key pki/issued/server.crt pki/private/server.ke
 RUN openvpn --genkey secret /etc/openvpn/config/tls-crypt.key
 
 # ---------------------------------------------------------------------------
-# 3. Server configuration - IPv4 + IPv6 over TCP/81
+# 3. Server configuration - IPv4 + IPv6
 # ---------------------------------------------------------------------------
-RUN echo "port 81\n\
-# proto tcp6 = a dual-stack [::]:81 listener. It accepts native IPv6 clients\n\
-# AND IPv4 clients (as v4-mapped addresses), because --bind ipv6only is not set.\n\
-# Plain \"proto tcp\" binds 0.0.0.0 only, which is invisible to IPv6 clients once\n\
-# the docker daemon has ip6tables enabled and DNATs inbound v6 to the container.\n\
-proto tcp6\n\
+RUN echo "port 82\n\
+proto udp\n\
 dev tun\n\
 user nobody\n\
 group nogroup\n\
@@ -95,12 +86,12 @@ keepalive 10 120\n\
 topology subnet\n\
 \n\
 # ---------- IPv4 tunnel ----------\n\
-server 10.81.0.0 255.255.0.0\n\
+server 10.82.0.0 255.255.0.0\n\
 \n\
 # ---------- IPv6 tunnel ----------\n\
 # ULA prefix, masqueraded (NAT66) behind the single global IPv6 of the VPS.\n\
 # A ULA is used because cloud providers hand out a /128, not a routed /64.\n\
-server-ipv6 fd81:81:81::/64\n\
+server-ipv6 fd82:82:82::/64\n\
 \n\
 ifconfig-pool-persist ipp.txt\n\
 \n\
@@ -141,8 +132,8 @@ verb 3" > /etc/openvpn/server.conf
 RUN mkdir -p /root/client-configs && \
     for i in $(seq 1 1000); do \
         echo "client\n\
-proto tcp\n\
-remote 8.210.139.66 81\n\
+proto udp\n\
+remote 8.210.139.66 82\n\
 dev tun\n\
 resolv-retry infinite\n\
 nobind\n\
@@ -167,24 +158,23 @@ verb 3\n\
 $(cat /etc/openvpn/config/ca.crt)\n\
 </ca>\n\
 <cert>\n\
-$(awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' /etc/openvpn/easy-rsa/pki/issued/client_${i}.crt)\n\
+$(awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' /etc/openvpn/easy-rsa/pki/issued/client_udp_${i}.crt)\n\
 </cert>\n\
 <key>\n\
-$(cat /etc/openvpn/easy-rsa/pki/private/client_${i}.key)\n\
+$(cat /etc/openvpn/easy-rsa/pki/private/client_udp_${i}.key)\n\
 </key>\n\
 <tls-crypt>\n\
 $(cat /etc/openvpn/config/tls-crypt.key)\n\
-</tls-crypt>" > /root/client_${i}.ovpn; \
+</tls-crypt>" > /root/client_udp_${i}.ovpn; \
     done
 
 # ---------------------------------------------------------------------------
 # 5. Firewall / NAT - IPv4 and IPv6, uplink interface auto-detected
 # ---------------------------------------------------------------------------
 RUN echo '#!/bin/sh\n\
-V4NET=10.81.0.0/16\n\
-V6NET=fd81:81:81::/64\n\
-PORT=81\n\
-PROTO=tcp\n\
+V4NET=10.82.0.0/16\n\
+V6NET=fd82:82:82::/64\n\
+PORT=82\n\
 \n\
 # Find the interface holding the default route (eth0 under a docker bridge,\n\
 # but something else under --network host, e.g. ens5 on Alibaba Cloud).\n\
@@ -209,7 +199,7 @@ echo "[up.sh] IPv6 uplink: $WAN6"\n\
 # ---------------- IPv4 ----------------\n\
 iptables -t nat -A POSTROUTING -s $V4NET -o $WAN4 -j MASQUERADE\n\
 iptables -A INPUT -i tun0 -j ACCEPT\n\
-iptables -A INPUT -i $WAN4 -p $PROTO --dport $PORT -j ACCEPT\n\
+iptables -A INPUT -i $WAN4 -p udp --dport $PORT -j ACCEPT\n\
 iptables -A FORWARD -i $WAN4 -o tun0 -j ACCEPT\n\
 iptables -A FORWARD -i tun0 -o $WAN4 -j ACCEPT\n\
 \n\
@@ -217,7 +207,7 @@ iptables -A FORWARD -i tun0 -o $WAN4 -j ACCEPT\n\
 if ip6tables -n -L INPUT >/dev/null 2>&1; then\n\
     ip6tables -t nat -A POSTROUTING -s $V6NET -o $WAN6 -j MASQUERADE || echo "[up.sh] WARNING: NAT66 rule rejected - the host kernel is missing ip6table_nat"\n\
     ip6tables -A INPUT -i tun0 -j ACCEPT\n\
-    ip6tables -A INPUT -i $WAN6 -p $PROTO --dport $PORT -j ACCEPT\n\
+    ip6tables -A INPUT -i $WAN6 -p udp --dport $PORT -j ACCEPT\n\
     ip6tables -A FORWARD -i $WAN6 -o tun0 -j ACCEPT\n\
     ip6tables -A FORWARD -i tun0 -o $WAN6 -j ACCEPT\n\
 else\n\
@@ -249,17 +239,6 @@ for f in /proc/sys/net/ipv6/conf/*/accept_ra; do set_sysctl "$f" 2; done\n\
 set_sysctl /proc/sys/net/ipv6/conf/all/forwarding 1\n\
 set_sysctl /proc/sys/net/ipv6/conf/default/forwarding 1\n\
 \n\
-# bindv6only=0 is what makes the [::]:81 socket also accept IPv4 clients.\n\
-set_sysctl /proc/sys/net/ipv6/bindv6only 0\n\
-\n\
-# The server binds a dual-stack socket (proto tcp6). If this container somehow\n\
-# has no IPv6 stack at all that bind fails and openvpn refuses to start, so\n\
-# fall back to IPv4-only instead of dying.\n\
-if [ ! -f /proc/sys/net/ipv6/conf/all/disable_ipv6 ] || [ "$(cat /proc/sys/net/ipv6/conf/all/disable_ipv6)" = "1" ]; then\n\
-    echo "[start] no usable IPv6 stack here - falling back to proto tcp (IPv4 only)"\n\
-    sed -i "s@^proto tcp6@proto tcp@" /etc/openvpn/server.conf\n\
-fi\n\
-\n\
 if [ "$(cat /proc/sys/net/ipv4/ip_forward 2>/dev/null)" != "1" ]; then\n\
     echo "[start] WARNING: IPv4 forwarding is OFF. Run the container with --privileged or --sysctl net.ipv4.ip_forward=1"\n\
 fi\n\
@@ -277,12 +256,13 @@ else\n\
     echo "[start] WARNING: no IPv6 default route inside this container."\n\
     echo "[start]          Clients still receive an IPv6 default route into the tunnel, so"\n\
     echo "[start]          nothing leaks, but IPv6 destinations stay unreachable."\n\
-    echo "[start]          Fix: attach the container to an IPv6-enabled docker network."\n\
+    echo "[start]          Fix: run with --network host, or attach the container to an"\n\
+    echo "[start]          IPv6-enabled docker network."\n\
 fi\n\
 echo "[start] ------------------------"\n\
 \n\
 exec openvpn --config /etc/openvpn/server.conf' > /etc/openvpn/start.sh && \
     chmod +x /etc/openvpn/start.sh
 
-EXPOSE 81/tcp
+EXPOSE 82/udp
 CMD ["/etc/openvpn/start.sh"]
