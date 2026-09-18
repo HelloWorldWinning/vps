@@ -77,10 +77,10 @@ DAEMON_JSON="/etc/docker/daemon.json"
 NEED_DOCKER_RESTART=0
 mkdir -p /etc/docker
 
+# "experimental": true,
 if [ ! -f "$DAEMON_JSON" ]; then
 	cat >"$DAEMON_JSON" <<'EOF'
 {
-  "experimental": true,
   "ip6tables": true
 }
 EOF
@@ -98,7 +98,7 @@ try:
         d = {}
 except Exception:
     d = {}
-d["experimental"] = True
+#d["experimental"] = True
 d["ip6tables"] = True
 with open(p, "w") as fh:
     json.dump(d, fh, indent=2)
