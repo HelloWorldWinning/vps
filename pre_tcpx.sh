@@ -804,4 +804,11 @@ curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debia
 
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
 
+################
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k &&
+	sudo chmod 0755 /usr/local/bin/k &&
+	sudo ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
+sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success"
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed"
+
 reboot
