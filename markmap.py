@@ -2616,7 +2616,8 @@ def render_markdown_file(markdown_path: Path) -> None:
     append_css_code_to_html(outfile)
     append_new_code_to_html(outfile)
 
-    print(f"[✓] {markdown_path} → {BR}{outfile}{RS}")
+    #   print(f"[✓] {markdown_path} → {BR}{outfile}{RS}")
+    print(f"[✓] {markdown_path} → \n\n\n{BR}{outfile}{RS}\n\n")
 
 
 def render_markdown_content(markdown_text: str) -> None:
