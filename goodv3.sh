@@ -1241,6 +1241,7 @@ https://zhile.one/archives/1404.html
 		#kl) sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && sudo chmod 0755 /usr/local/bin/kl && sudo ln -sf /usr/local/bin/kl /usr/local/bin/kn ;;
 	kk) curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success" ;;
 
+	wt0) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter-wt0-firewall.sh) ;;
 	*) echo "wrong input" ;;
 	esac
 
