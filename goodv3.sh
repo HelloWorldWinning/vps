@@ -1053,7 +1053,7 @@ https://zhile.one/archives/1404.html
 		#	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_docker/run_docker.sh )  ;;
 	187) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh) ;;
 		#	       	bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter_d/run_highlight_service_docker.sh )  ;;
-	ins_docker) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
+	docker_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
 	101)
 		#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )
 		#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh )
