@@ -60,7 +60,8 @@ services:
       - "33399:3389"
     volumes:
       - ./Downloads:/Downloads
-      - /usr/share/fonts:/usr/local/share/host-fonts:ro
+#     - /usr/share/fonts:/usr/local/share/host-fonts:ro
+      - /usr/share/fonts:/usr/share/fonts
     environment:
       - DOWNLOAD_DIR=/Downloads
       - LANG=C.UTF-8
