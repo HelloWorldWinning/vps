@@ -27,24 +27,46 @@ chmod 777 "$HOST_DOWNLOAD_DIR" # Ensure proper permissions
 #    restart: always
 #EOL
 
-cat >$COMPOSE_FILE <<EOL
+#cat >$COMPOSE_FILE <<EOL
+#services:
+#  remote-desktop:
+#    image: scottyhardy/docker-remote-desktop:latest
+#    container_name: remote-desktop
+#    hostname: tempSJ
+#    ports:
+#      - "33399:3389"
+#    volumes:
+#   #  - /data/docker-remote-desktop_d/download:/downloads
+#      - ./Downloads:/Downloads
+##     - /usr/share/fonts:/usr/share/fonts:ro        # Share host fonts (if available)
+#      - /usr/share/fonts:/usr/local/share/host-fonts:ro
+#
+#    environment:
+#      - DOWNLOAD_DIR=/Downloads
+#      - LANG=C.UTF-8                            # Set locale to Simplified Chinese
+#      - LANGUAGE=zh_CN:zh                           # Language fallback chain
+#      - LC_ALL=C.UTF-8                          # Override all locale settings
+#      - TZ=Asia/Shanghai                            # Optional: set timezone
+#    restart: always
+#EOL
+
+cat >"$COMPOSE_FILE" <<EOL
 services:
   remote-desktop:
     image: scottyhardy/docker-remote-desktop:latest
     container_name: remote-desktop
-    hostname: tempSJ
+    hostname: ${HOSTNAME}
     ports:
       - "33399:3389"
     volumes:
-   #  - /data/docker-remote-desktop_d/download:/downloads
       - ./Downloads:/Downloads
-      - /usr/share/fonts:/usr/share/fonts:ro        # Share host fonts (if available)
+      - /usr/share/fonts:/usr/local/share/host-fonts:ro
     environment:
       - DOWNLOAD_DIR=/Downloads
-      - LANG=C.UTF-8                            # Set locale to Simplified Chinese
-      - LANGUAGE=zh_CN:zh                           # Language fallback chain
-      - LC_ALL=C.UTF-8                          # Override all locale settings
-      - TZ=Asia/Shanghai                            # Optional: set timezone
+      - LANG=C.UTF-8
+      - LANGUAGE=zh_CN:zh
+      - LC_ALL=C.UTF-8
+      - TZ=Asia/Shanghai
     restart: always
 EOL
 
