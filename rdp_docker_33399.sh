@@ -109,6 +109,18 @@ docker-compose pull
 echo "Starting the container..."
 docker-compose up -d
 
+sleep 2
+
+# Fix ownership of /home/ubuntu (Docker creates it as root because of the nested mount)
+echo "Fixing /home/ubuntu ownership..."
+for i in $(seq 1 60); do
+	if docker exec remote-desktop id ubuntu >/dev/null 2>&1; then
+		docker exec remote-desktop chown ubuntu:ubuntu /home/ubuntu
+		break
+	fi
+	sleep 1
+done
+
 # Check if container is running
 if docker-compose ps | grep -q "remote-desktop"; then
 	echo "Container is running successfully"
