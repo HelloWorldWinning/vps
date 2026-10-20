@@ -60,6 +60,7 @@ services:
       - "33399:3389"
     volumes:
       - ./Downloads:/Downloads
+      - ./Downloads:/home/ubuntu/Downloads
 #     - /usr/share/fonts:/usr/local/share/host-fonts:ro
       - /usr/share/fonts:/usr/share/fonts
     environment:
