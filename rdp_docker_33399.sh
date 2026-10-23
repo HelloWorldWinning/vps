@@ -63,12 +63,15 @@ services:
       - ./Downloads:/home/ubuntu/Downloads
 #     - /usr/share/fonts:/usr/local/share/host-fonts:ro
       - /usr/share/fonts:/usr/share/fonts
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     environment:
       - DOWNLOAD_DIR=/Downloads
       - LANG=C.UTF-8
       - LANGUAGE=zh_CN:zh
       - LC_ALL=C.UTF-8
-      - TZ=Asia/Shanghai
+  #   - TZ=Asia/Shanghai
+      - TZ=Australia/Perth
     restart: always
 EOL
 
