@@ -64,7 +64,7 @@ services:
 #     - /usr/share/fonts:/usr/local/share/host-fonts:ro
       - /usr/share/fonts:/usr/share/fonts
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+#     - /etc/timezone:/etc/timezone:ro
     environment:
       - DOWNLOAD_DIR=/Downloads
       - LANG=C.UTF-8
