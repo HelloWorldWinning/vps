@@ -1157,6 +1157,7 @@ https://zhile.one/archives/1404.html
 	rt) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
 	xray_tls_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
 	xray_tls_cl) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
+	vision) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
 	xray_reality_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp_reality_maneger.sh) ;;
 	xray_grpc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc_maneger_docker.sh) ;;
 	xray_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp3_maneger_docker_xhttp.sh) ;;
