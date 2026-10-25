@@ -1109,7 +1109,8 @@ https://zhile.one/archives/1404.html
 	ghost) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ghost-startup_docker.sh) ;;
 	jelly) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jellyfin.sh) ;;
 	libre) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_libretv.sh) ;;
-	gcp) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_gcp_login_email2.sh) ;;
+	gcp0) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_gcp_login_email2.sh) ;;
+	gcp) curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ssh-keys" -H "Metadata-Flavor: Google" | grep -oP '"userName":"\K[^"]+' | head -n 1 ;;
 	dttt) ins_dt ;;
 	hy2) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh) ;;
 	tv) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh) ;;
