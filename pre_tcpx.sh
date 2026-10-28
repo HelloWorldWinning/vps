@@ -811,4 +811,7 @@ sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_c
 sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success"
 curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed"
 
+curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
+curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
+
 reboot
