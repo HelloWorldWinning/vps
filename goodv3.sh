@@ -937,7 +937,7 @@ EOF
 		bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current13.sh')
 		;;
 	ddupdate)
-		curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 13 --password 'password' --ssh-port 54322
+		curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 13 --password 'password' --ssh-port 54322 && reboot
 		;;
 	4441) bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh') ;;
 	65) eval "$ss_rust2" ;;

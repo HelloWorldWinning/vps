@@ -580,13 +580,13 @@ npm i -g typescript-language-server typescript
 ######## for nvim  end
 
 apt install -y bsdmainutils
-apt install bc
+apt install -y bc
 
 curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
-apt update && apt install cargo ripgrep pandoc
+apt update && apt install cargo ripgrep pandoc -y
 cargo install ripgrep_all
 
 #bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim.sh)
@@ -600,7 +600,7 @@ cat >~/.config/lf/lfrc <<'EOF'
 map <enter> open
 cmd open $nvim "$f"
 EOF
-apt install ranger
+apt install ranger -y
 bash <(curl -s https://raw.githubusercontent.com/kamiyaa/joshuto/master/utils/install.sh)
 
 # 1. Download to /usr/local/bin (in $PATH by default on Debian)
@@ -674,16 +674,14 @@ install_openssh_server_forcefully() {
 		echo "[INFO] Running: ${label}"
 		echo "[INFO] Hard timeout: ${limit}, kill-after: ${kill_after_local}"
 
-		set +e
+		local rc=0
 		"${SUDO[@]}" env \
 			DEBIAN_FRONTEND=noninteractive \
 			DEBIAN_PRIORITY=critical \
 			NEEDRESTART_MODE=a \
 			UCF_FORCE_CONFFOLD=1 \
 			APT_LISTCHANGES_FRONTEND=none \
-			timeout --signal=TERM --kill-after="${kill_after_local}" "${limit}" "$@"
-		local rc=$?
-		set -e
+			timeout --signal=TERM --kill-after="${kill_after_local}" "${limit}" "$@" || rc=$?
 
 		if [ "$rc" -eq 0 ]; then
 			echo "[INFO] Success: ${label}"
@@ -761,7 +759,8 @@ install_openssh_server_forcefully() {
 bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh)
 
 apt install -y socat
-install_openssh_server_forcefully 180s 90s 5s
+#install_openssh_server_forcefully 180s 90s 5s
+install_openssh_server_forcefully 180s 90s 5s || echo "[WARN] openssh-server step failed, continuing" >&2
 
 bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
 ##bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
@@ -779,39 +778,34 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
 
 pip install --break-system-packages tiktoken
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed"
 
-apt install vivid -y
+########## small CLI tools (each one independent; a failure never stops the script)
+########## small CLI tools (each one independent; a failure never stops the script)
+set +e # safety net in case anything above re-enabled errexit
+B=https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
-# curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk.py -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && chmod +x /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kkk
+install_bin() { # $1 = repo file, $2 = destination path
+	if curl -4fsSL "$B/$1" -o "$2" && chmod 0755 "$2"; then
+		echo "[OK]   $2"
+	else
+		echo "[FAIL] $2 (from $1)" >&2
+	fi
+}
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success"
+install_bin compress_xz /usr/local/bin/cx
+install_bin k_color.py /usr/local/bin/k
+ln -sf /usr/local/bin/k /usr/local/bin/i
+ln -sf /usr/local/bin/k /usr/local/bin/ii
+install_bin kk /usr/local/bin/kk
+install_bin kl /usr/local/bin/kl
+ln -sf /usr/local/bin/kl /usr/local/bin/kn
+install_bin tt /usr/local/bin/tt
+install_bin oo_debian /usr/local/bin/o
+install_bin pushing_files.sh /usr/local/bin/oo
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/i_color.py -o /usr/local/bin/i && chmod 0755 /usr/local/bin/i && ln -sf /usr/local/bin/i /usr/local/bin/ii
+echo "---- verify ----"
+ls -l /usr/local/bin/{cx,k,i,ii,kk,kl,kn,tt,o,oo}
 
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/m_color.py -o /usr/local/bin/k &&
-	#	chmod 0755 /usr/local/bin/k &&
-	#	ln -sf /usr/local/bin/k /usr/local/bin/i
-	curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k && chmod 0755 /usr/local/bin/k && ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
-
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kl -o /usr/local/bin/kl && chmod 0755 /usr/local/bin/kl && ln -sf /usr/local/bin/kl /usr/local/bin/kn
-
-#curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/o && chmod +x /usr/local/bin/o && echo "success installed"
-
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo -o /usr/local/bin/oo && chmod 755 /usr/local/bin/oo
-
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && chmod 755 /usr/local/bin/o
-
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
-
-################
-sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/k_color.py -o /usr/local/bin/k &&
-	sudo chmod 0755 /usr/local/bin/k &&
-	sudo ln -sf /usr/local/bin/k /usr/local/bin/i && echo "k installed successfully"
-sudo curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kk -o /usr/local/bin/kk && chmod 0755 /usr/local/bin/kk && ln -sf /usr/local/bin/kk /usr/local/bin/kn && echo "kk installed success"
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed"
-
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed"
-curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/oo_debian -o /usr/local/bin/o && sudo chmod 755 /usr/local/bin/o
+rm -f /root/crontab.bak /root/pre_tcpx.sh
 
 reboot
