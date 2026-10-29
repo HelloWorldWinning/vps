@@ -1218,6 +1218,7 @@ https://zhile.one/archives/1404.html
 	8443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
 	singbox) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
 	qb) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
+	16080) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
 	ccaa2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaa2.sh) ;;
 	file) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh) ;;
 	nb_dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh) ;;
