@@ -5,7 +5,8 @@ set -Eeuo pipefail
 
 # --- Defaults (you can hardcode a fallback like 'default' if you want) ---
 # Example of your requested style: NETBIRD_TOKEN=${NETBIRD_TOKEN:-default}
-NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_jZgdKbt8LL0h9mR7tIBGelb47ZZRog2XLmgq}" # export NETBIRD_TOKEN=nbp_...
+#NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_jZgdKbt8LL0h9mR7tIBGelb47ZZRog2XLmgq}" # export NETBIRD_TOKEN=nbp_...
+NETBIRD_TOKEN="${NETBIRD_TOKEN:-nbp_hTzNjw5EuwEOAo1Ph0OMinRhINwDtj0DsTGs}" # export NETBIRD_TOKEN=nbp_...
 NETBIRD_API="${NETBIRD_API:-https://api.netbird.io/api}"                   # self-host: https://your-mgmt:33073/api
 NETBIRD_TIMEOUT="${NETBIRD_TIMEOUT:-30}"
 TZ="${TZ:-Asia/Shanghai}" # Set default timezone
