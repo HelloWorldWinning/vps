@@ -346,7 +346,7 @@ reset_peer_name() {
 		echo -e "${GREEN}✓ Peer name updated successfully!${NC}"
 		echo -e "${CYAN}New DNS Label: $(echo "$response" | jq -r '.dns_label')${NC}"
 	else
-		echo -e "${RED}✗ Failed to update peer name.${NC}"
+		echo -e "${RED}❌Failed to update peer name.${NC}"
 		echo "$response" | jq -r '.message // .'
 	fi
 	echo ""
@@ -397,7 +397,7 @@ reset_peer_ip() {
 		echo -e "${GREEN}✓ Peer IP updated successfully!${NC}"
 		echo -e "${CYAN}New IP: $(echo "$response" | jq -r '.ip')${NC}"
 	else
-		echo -e "${RED}✗ Failed to update peer IP.${NC}"
+		echo -e "${RED}❌Failed to update peer IP.${NC}"
 		echo "$response" | jq -r '.message // .'
 	fi
 	echo ""
@@ -430,7 +430,7 @@ delete_peer_interactive() {
 		if delete_peer "$peer_id"; then
 			echo -e "${GREEN}✓ Peer deleted successfully!${NC}"
 		else
-			echo -e "${RED}✗ Failed to delete peer.${NC}"
+			echo -e "${RED}❌Failed to delete peer.${NC}"
 		fi
 	else
 		echo -e "${YELLOW}Operation cancelled.${NC}"
