@@ -8,6 +8,9 @@
 # - NetBird status JSON is loaded once only, then reused everywhere.
 # - The current node is included in the numbered peer table and highlighted.
 # - The displayed ordering and peer-number resolution use the exact same cached rows.
+# - The CONN column shows each peer's NetBird connection state:
+#     remote peer : ✔ when NetBird reports status "Connected", otherwise ❌
+#     current node: ✔ when this node is connected to the NetBird management server, otherwise ❌
 
 # --- Configuration ---
 API_PORT="7778"
@@ -19,6 +22,15 @@ NO_COL_W=8
 NO_COL_W_TOP=10
 
 STATUS_COL_W=7
+
+# --- CONN column symbols ---
+# *_W is the number of terminal columns the symbol occupies on screen.
+# ✔ (U+2714) is normally 1 column wide; ❌ (U+274C) is normally 2 columns wide.
+# If the CONN column looks misaligned in your terminal, adjust these two widths.
+CONN_OK="✔"
+CONN_OK_W=1
+CONN_BAD="❌"
+CONN_BAD_W=2
 
 # --- Colors for better output ---
 BOLD_BLUE=$'\033[1;34m'
@@ -34,7 +46,7 @@ BOLD_RED=$'\033[1;31m'
 CYAN=$'\033[0;36m'
 BOLD_CYAN=$'\033[1;36m'
 
-# Current-node row: white text on a red background.
+# Current-node row: white text on a blue background.
 #CURRENT_ROW=$'\033[1;37;41m'
 CURRENT_ROW=$'\033[1;37;44m'
 NC=$'\033[0m'
@@ -46,8 +58,9 @@ NB_HAS_PEERS=0
 NB_ERROR_REASON=""
 
 # Cached, normalized table rows:
-# marker<TAB>fqdn<TAB>ip
+# marker<TAB>fqdn<TAB>ip<TAB>conn
 # marker is CURRENT or PEER.
+# conn is Y (connected) or N (not connected).
 NB_PEER_ROWS=""
 
 # --- Common delimiter ---
@@ -207,7 +220,8 @@ get_current_peer_fqdn() {
 	printf '%s\n' "$peer"
 }
 
-# Return the local node's best available NetBird IP.
+# Return the local node's best available NetBird IP, without the CIDR suffix
+# (NetBird reports the local IP as e.g. "100.64.0.5/16").
 get_current_peer_ip() {
 	local ip=""
 
@@ -234,7 +248,24 @@ get_current_peer_ip() {
 		)
 	fi
 
+	ip="${ip%%/*}"
 	printf '%s\n' "$ip"
+}
+
+# Return Y when the local node is connected to the NetBird management server, else N.
+get_current_peer_conn() {
+	local conn="N"
+
+	if [ "$NB_JSON_OK" -eq 1 ]; then
+		conn=$(
+			printf '%s' "$NB_JSON" | jq -r '
+                if (.management.connected? // false) == true then "Y" else "N" end
+            '
+		)
+	fi
+
+	[ "$conn" = "Y" ] || conn="N"
+	printf '%s\n' "$conn"
 }
 
 get_current_peer() {
@@ -247,13 +278,17 @@ get_current_peer() {
 # Build one normalized, sorted table used by both display and number resolution.
 #
 # Output stored in NB_PEER_ROWS:
-# CURRENT<TAB>fqdn<TAB>ip
-# PEER<TAB>fqdn<TAB>ip
+# CURRENT<TAB>fqdn<TAB>ip<TAB>conn
+# PEER<TAB>fqdn<TAB>ip<TAB>conn
 #
 # The local node is inserted even though NetBird normally omits it from
 # .peers.details. Duplicate peer rows are removed.
+#
+# Remote rows from jq never contain an empty field (fqdn falls back to ip,
+# empty ip becomes "-", conn is always Y or N), because bash `read` with a
+# tab IFS would collapse consecutive tabs and shift the columns.
 build_nb_peer_rows() {
-	local current_fqdn current_ip current_name remote_rows
+	local current_fqdn current_ip current_name current_conn remote_rows
 
 	NB_PEER_ROWS=""
 
@@ -261,28 +296,40 @@ build_nb_peer_rows() {
 
 	current_fqdn="$(get_current_peer_fqdn)"
 	current_ip="$(get_current_peer_ip)"
+	current_conn="$(get_current_peer_conn)"
 	current_name="${current_fqdn%%.*}"
 
 	remote_rows=$(
 		printf '%s' "$NB_JSON" | jq -r '
             (.peers.details? // [])
             | .[]
-            | [
-                (
+            | {
+                fqdn: (
                     .fqdn?
                     // .hostname?
                     // .hostName?
                     // .name?
-                    // empty
+                    // ""
                 ),
-                (
+                ip: (
                     .netbirdIp?
                     // .netbirdIP?
                     // .ip?
-                    // empty
+                    // ""
+                ),
+                conn: (
+                    if ((.status? // .connStatus? // "") | tostring | ascii_downcase) == "connected"
+                    then "Y"
+                    else "N"
+                    end
                 )
+              }
+            | select(.fqdn != "" or .ip != "")
+            | [
+                (if .fqdn == "" then .ip else .fqdn end),
+                (if .ip == "" then "-" else .ip end),
+                .conn
               ]
-            | select(.[0] != "" or .[1] != "")
             | @tsv
         '
 	)
@@ -290,12 +337,13 @@ build_nb_peer_rows() {
 	NB_PEER_ROWS=$(
 		{
 			if [ -n "$current_fqdn" ] || [ -n "$current_ip" ]; then
-				printf 'CURRENT\t%s\t%s\n' "$current_fqdn" "$current_ip"
+				printf 'CURRENT\t%s\t%s\t%s\n' "$current_fqdn" "$current_ip" "$current_conn"
 			fi
 
 			if [ -n "$remote_rows" ]; then
-				while IFS=$'\t' read -r fqdn ip; do
+				while IFS=$'\t' read -r fqdn ip conn; do
 					[ -n "$fqdn" ] || fqdn="$ip"
+					[ "$conn" = "Y" ] || conn="N"
 
 					# Do not duplicate the current node if it also appears remotely.
 					if { [ -n "$current_ip" ] && [ "$ip" = "$current_ip" ]; } ||
@@ -304,7 +352,7 @@ build_nb_peer_rows() {
 						continue
 					fi
 
-					printf 'PEER\t%s\t%s\n' "$fqdn" "$ip"
+					printf 'PEER\t%s\t%s\t%s\n' "$fqdn" "$ip" "$conn"
 				done <<<"$remote_rows"
 			fi
 		} | awk -F'\t' '
@@ -353,8 +401,11 @@ upload_file() {
 }
 
 # --- Function to print cached NetBird peer list before selection ---
-# Output format: left-padded No., compact dynamic NAME/DNS_LABEL columns, IP.
-# The current node appears in the same numbered list with a red background.
+# Output format: left-padded No., compact dynamic NAME/CONN/DNS_LABEL columns, IP.
+# The current node appears in the same numbered list with a highlighted background.
+#
+# The CONN cell is padded manually using CONN_OK_W / CONN_BAD_W, because awk
+# printf pads by bytes (mawk) or characters (gawk), not by on-screen width.
 print_nb_list() {
 	if [ "$NB_JSON_OK" -ne 1 ]; then
 		echo -e "${YELLOW}Warning: ${NB_ERROR_REASON}. Please enter destination domain/IP manually.${NC}"
@@ -370,9 +421,23 @@ print_nb_list() {
 		-v no_w="$NO_COL_W" \
 		-v peer_hi="$BOLD_RED" \
 		-v current_hi="$CURRENT_ROW" \
-		-v nc="$NC" '
+		-v ok_hi="$BOLD_GREEN" \
+		-v nc="$NC" \
+		-v ok_sym="$CONN_OK" \
+		-v ok_dw="$CONN_OK_W" \
+		-v bad_sym="$CONN_BAD" \
+		-v bad_dw="$CONN_BAD_W" '
+        function spaces(n,    s) {
+            s = ""
+            while (n-- > 0) s = s " "
+            return s
+        }
+
         BEGIN {
             name_w = length("NAME")
+            conn_w = length("CONN")
+            if (ok_dw  > conn_w) conn_w = ok_dw
+            if (bad_dw > conn_w) conn_w = bad_dw
             dns_w  = length("DNS_LABEL")
             ip_w   = length("IP")
         }
@@ -381,7 +446,8 @@ print_nb_list() {
             marker = $1
             fqdn   = $2
             ip     = $3
-	    sub(/\/.*/, "", ip)
+            conn   = $4
+            sub(/\/.*/, "", ip)
             name   = fqdn
             sub(/\..*/, "", name)
 
@@ -393,6 +459,7 @@ print_nb_list() {
             names[NR]   = name
             dns[NR]     = fqdn
             ips[NR]     = ip
+            conns[NR]   = (conn == "Y") ? "Y" : "N"
 
             if (length(name) > name_w) name_w = length(name)
             if (length(fqdn) > dns_w) dns_w = length(fqdn)
@@ -402,31 +469,44 @@ print_nb_list() {
         END {
             if (NR == 0) exit
 
-            table_w = 1 + no_w + 2 + name_w + 2 + dns_w + 2 + ip_w
+            table_w = 1 + no_w + 2 + name_w + 2 + conn_w + 2 + dns_w + 2 + ip_w
 
-            printf " %*s  %-*s  %-*s  %s\n", no_w, "", name_w, "NAME", dns_w, "DNS_LABEL", "IP"
+            printf " %*s  %-*s  %-*s  %-*s  %s\n", no_w, "", name_w, "NAME", conn_w, "CONN", dns_w, "DNS_LABEL", "IP"
             for (i = 0; i < table_w; i++) printf "─"
             printf "\n"
 
             for (i = 1; i <= NR; i++) {
+                if (conns[i] == "Y") {
+                    sym = ok_sym
+                    pad = spaces(conn_w - ok_dw)
+                } else {
+                    sym = bad_sym
+                    pad = spaces(conn_w - bad_dw)
+                }
+
                 if (markers[i] == "CURRENT") {
                     # Color the complete current-node row, including padding.
-printf " "
-
-printf "%*s", no_w - length(i), ""
-
-printf "%s%d  %-*s  %-*s  %-*s%s\n",
-    current_hi,
-    i,
-    name_w, names[i],
-    dns_w, dns[i],
-    ip_w, ips[i],
-    nc
-
+                    printf " "
+                    printf "%*s", no_w - length(i), ""
+                    printf "%s%d  %-*s  %s%s  %-*s  %-*s%s\n",
+                        current_hi,
+                        i,
+                        name_w, names[i],
+                        sym, pad,
+                        dns_w, dns[i],
+                        ip_w, ips[i],
+                        nc
                 } else {
-                    printf " %s%*d%s  %s%-*s%s  %-*s  %s\n",
+                    if (conns[i] == "Y") {
+                        conn_cell = ok_hi sym nc pad
+                    } else {
+                        conn_cell = sym pad
+                    }
+
+                    printf " %s%*d%s  %s%-*s%s  %s  %-*s  %s\n",
                         peer_hi, no_w, i, nc,
                         peer_hi, name_w, names[i], nc,
+                        conn_cell,
                         dns_w, dns[i],
                         ips[i]
                 }
@@ -437,6 +517,7 @@ printf "%s%d  %-*s  %-*s  %-*s%s\n",
 
 # --- Function to resolve a peer No. from the cached displayed list ---
 # Uses NB_PEER_ROWS directly, so numbering always matches print_nb_list.
+# Prints: fqdn<TAB>ip
 resolve_peer_ip() {
 	local num="$1"
 
@@ -445,7 +526,7 @@ resolve_peer_ip() {
 	fi
 
 	printf '%s\n' "$NB_PEER_ROWS" |
-		awk -F'\t' -v n="$num" 'NR == n { print $2 "\t" $3 }'
+		awk -F'\t' -v n="$num" 'NR == n { ip = $3; sub(/\/.*/, "", ip); print $2 "\t" ip }'
 }
 
 print_upload_queue() {
