@@ -188,7 +188,7 @@ display_peers_table() {
 		if [[ "$connected" == "true" ]]; then
 			conn_status="${GREEN}✓${NC}    "
 		else
-			conn_status="${RED}✗${NC}    "
+			conn_status="${RED}❌${NC}    "
 		fi
 
 		# Calculate seen ago
