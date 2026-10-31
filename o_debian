@@ -10,8 +10,8 @@
 # - The current node is included in the numbered peer table and highlighted.
 # - The displayed ordering and peer-number resolution use the exact same cached rows.
 # - The CONN column shows each peer's NetBird connection state:
-#     remote peer : ✔ when NetBird reports status "Connected", otherwise ❌
-#     current node: ✔ when this node is connected to the NetBird management server, otherwise ❌
+#     remote peer : ✓ when NetBird reports status "Connected", otherwise ❌
+#     current node: ✓ when this node is connected to the NetBird management server, otherwise ❌
 
 # --- Configuration ---
 API_PORT="7778"
@@ -26,9 +26,9 @@ STATUS_COL_W=7
 
 # --- CONN column symbols ---
 # *_W is the number of terminal columns the symbol occupies on screen.
-# ✔ (U+2714) is normally 1 column wide; ❌ (U+274C) is normally 2 columns wide.
+# ✓ (U+2714) is normally 1 column wide; ❌ (U+274C) is normally 2 columns wide.
 # If the CONN column looks misaligned in your terminal, adjust these two widths.
-CONN_OK="✔"
+CONN_OK="✓"
 CONN_OK_W=1
 CONN_BAD="❌"
 CONN_BAD_W=2
