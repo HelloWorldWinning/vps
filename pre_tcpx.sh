@@ -806,6 +806,8 @@ install_bin pushing_files.sh /usr/local/bin/oo
 echo "---- verify ----"
 ls -l /usr/local/bin/{cx,k,i,ii,kk,kl,kn,tt,o,oo}
 
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh)
+
 rm -f /root/crontab.bak /root/pre_tcpx.sh
 
 reboot
