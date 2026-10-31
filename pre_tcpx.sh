@@ -800,7 +800,7 @@ install_bin kk /usr/local/bin/kk
 install_bin kl /usr/local/bin/kl
 ln -sf /usr/local/bin/kl /usr/local/bin/kn
 install_bin tt /usr/local/bin/tt
-install_bin oo_debian /usr/local/bin/o
+install_bin o_debian /usr/local/bin/o
 install_bin pushing_files.sh /usr/local/bin/oo
 
 echo "---- verify ----"
