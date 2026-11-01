@@ -996,7 +996,7 @@ def main() -> None:
         pass
 
     print()
-    print(f"✓ wrote {out_path}")
+    print(f"✓ wrote \n{out_path}")
     # print(
     #     f"  tokens — gpt-4o(o200k): {g_total:,} | "
     #     f"claude(≈×{CLAUDE_TOKEN_FACTOR}): {c_total:,}   [{tk.label}]"
