@@ -248,6 +248,10 @@ services:
     environment:
       # The pocat/naiveproxy image uses PATH to locate its config file.
       - PATH=/etc/naiveproxy/Caddyfile
+
+networks:
+  default:
+    enable_ipv6: true
 EOF
 	ok "Wrote ${yml_path}"
 }
