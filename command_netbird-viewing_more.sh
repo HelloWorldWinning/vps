@@ -100,10 +100,15 @@ Subcommands:
   csv             export CSV
   detail FQDN     show a single peer (pretty JSON)
 
+Columns (table):
+  NETBIRD_IP      NetBird overlay IPv4 (e.g. 100.0.0.66)
+  NETBIRD_IPV6    NetBird overlay IPv6 (e.g. fd:100::33:9b9c:f7bc:b09d)
+  PUBLIC_IP       public endpoint IP: IPv4 if available, otherwise IPv6
+
 Options:
   --connected         only connected peers
   --name SUBSTR       filter by name (case-insensitive regex ok)
-  --ip SUBSTR         filter by IP (regex ok)
+  --ip SUBSTR         filter by NetBird IP, IPv4 or IPv6 (regex ok)
   --wide              (not applicable for command version)
   --sort FIELD        name (default) | ip | last_seen | connected
   --watch [N]         refresh every N seconds (default 5)
@@ -407,6 +412,7 @@ def is_ipv6:
 (.peers.details + [{
   fqdn: $self_fqdn,
   netbirdIp: .netbirdIp,
+  netbirdIpv6: (.netbirdIpv6 // ""),
   status: "Connected",
   lastStatusUpdate: (now | strftime("%Y-%m-%dT%H:%M:%SZ")),
   connectionType: "Self",
@@ -420,7 +426,7 @@ def is_ipv6:
   latency: 0
 }])
 | map(select( ($only_connected == 0) or (.status == "Connected") ))
-| map(select(matches(.fqdn; $name) and matches(.netbirdIp; $ip)))
+| map(select(matches(.fqdn; $name) and (matches(.netbirdIp; $ip) or matches(.netbirdIpv6; $ip))))
 | sort_by( __SORT_EXPR__ )
 JQ
 	)"
@@ -428,15 +434,9 @@ JQ
 	printf '%s' "$JQ_COMMON"
 }
 
-# --- Rendering: Table (TSV -> column) ---
-render_table() {
-	local NOW_TS
-	NOW_TS=$(date -u +%s)
-	local JQ_COMMON
-	JQ_COMMON="$(build_jq_common)"
-	local JQ_TSV
-	JQ_TSV="$(
-		cat <<'JQ'
+# --- Shared jq row helpers (used by table and CSV) ---
+jq_row_helpers() {
+	cat <<'JQ'
 def parse_time(s):
   if (s // "") == "" then empty
   else (s | sub("\\.[0-9]+Z$"; "Z") | sub("\\.[0-9]+\\+.*$"; "Z") | sub("\\+.*$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime)
@@ -468,16 +468,12 @@ def seen_ago(p):
 def extract_ip_from_endpoint:
   if . == null or . == "" then ""
   elif startswith("[") then
-    # IPv6 bracketed format: [ip]:port
     (split("]")[0] | ltrimstr("["))
   elif test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$") then
-    # IPv4 format: ip:port
     split(":")[0]
   elif test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$") then
-    # IPv4 without port
     .
   else
-    # IPv6 without brackets
     (. | split(":")) as $parts |
     if ($parts | length) > 1 then
       ($parts[-1]) as $last |
@@ -491,13 +487,11 @@ def extract_ip_from_endpoint:
     end
   end;
 
-# Check if an IP is IPv4
 def is_ipv4:
   if . == null or . == "" then false
   else test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")
   end;
 
-# Check if an IP is IPv6
 def is_ipv6:
   if . == null or . == "" then false
   elif test("\\.") then false
@@ -505,36 +499,50 @@ def is_ipv6:
   else false
   end;
 
-# Extract IPv4 from remote endpoint
+# Public IPv4 from the remote endpoint
 def get_public_ipv4(p):
-  # First try the main remote endpoint
   ((p.iceCandidateEndpoint.remote // "") | extract_ip_from_endpoint) as $ip |
-  if ($ip | is_ipv4) then $ip
-  else ""
-  end;
+  if ($ip | is_ipv4) then $ip else "" end;
 
-# Extract IPv6 from remote endpoint
+# Public IPv6: dedicated remote_v6 (self row) first, else the remote endpoint if it is IPv6
 def get_public_ipv6(p):
-  # First check if there's a dedicated remote_v6 field (for self)
   ((p.iceCandidateEndpoint.remote_v6 // "") | extract_ip_from_endpoint) as $v6_dedicated |
   if ($v6_dedicated | is_ipv6) then $v6_dedicated
   else
-    # Otherwise check if the main remote endpoint is IPv6
     ((p.iceCandidateEndpoint.remote // "") | extract_ip_from_endpoint) as $ip |
-    if ($ip | is_ipv6) then $ip
-    else ""
-    end
+    if ($ip | is_ipv6) then $ip else "" end
   end;
 
-def header: ["No.","NAME","DNS_LABEL","IP","PUBLIC_IP","PUBLIC_IP_V6","CONN","SEEN_AGO","LAST_SEEN"];
+# Single PUBLIC_IP column: IPv4 if present, otherwise IPv6
+def get_public_ip(p):
+  get_public_ipv4(p) as $v4 |
+  if $v4 != "" then $v4 else get_public_ipv6(p) end;
+
+# NetBird overlay addresses without the /prefix
+def netbird_ip(p):   ((p.netbirdIp   // "") | split("/")[0]);
+def netbird_ipv6(p): ((p.netbirdIpv6 // "") | split("/")[0]);
+JQ
+}
+
+# --- Rendering: Table (TSV -> column) ---
+render_table() {
+	local NOW_TS
+	NOW_TS=$(date -u +%s)
+	local JQ_COMMON
+	JQ_COMMON="$(build_jq_common)"
+	local JQ_TSV
+	JQ_TSV="$(jq_row_helpers)
+$(
+		cat <<'JQ'
+def header: ["No.","NAME","DNS_LABEL","NETBIRD_IP","NETBIRD_IPV6","PUBLIC_IP","CONN","SEEN_AGO","LAST_SEEN"];
 
 def base_row(idx; p):
   [ (idx + 1),
     (p.fqdn // "" | split(".")[0]),
     (p.fqdn//""),
-    ((p.netbirdIp//"") | split("/")[0]),
-    (get_public_ipv4(p)),
-    (get_public_ipv6(p)),
+    (netbird_ip(p)),
+    (netbird_ipv6(p)),
+    (get_public_ip(p)),
     (if p.status == "Connected" then "✓" else "❌" end),
     (seen_ago(p)),
     (format_time(p.lastStatusUpdate))
@@ -565,97 +573,20 @@ render_csv() {
 	local JQ_COMMON
 	JQ_COMMON="$(build_jq_common)"
 	local JQ_CSV
-	JQ_CSV="$(
+	JQ_CSV="$(jq_row_helpers)
+$(
 		cat <<'JQ'
-def parse_time(s):
-  if (s // "") == "" then empty
-  else (s | sub("\\.[0-9]+Z$"; "Z") | sub("\\.[0-9]+\\+.*$"; "Z") | sub("\\+.*$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime)
-  end;
-
-def format_time(s):
-  if (s // "") == "" then ""
-  else try ((s | sub("\\.[0-9]+Z$"; "Z") | sub("\\.[0-9]+\\+.*$"; "Z") | sub("\\+.*$"; "Z") | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) | strftime("%Y-%m-%d %H:%M:%S")) catch ""
-  end;
-
-def humanize:
-  if (.|tonumber) < 0 then "0s ago"
-  else
-    ( (. /86400)|floor ) as $d |
-    ( ((. %86400)/3600)|floor ) as $h |
-    ( ((. % 3600)/60)|floor ) as $m |
-    ( (. % 60)|floor ) as $s |
-    if   $d > 0 then "\($d)d" + (if $h>0 then " \($h)h" else "" end) + " ago"
-    elif $h > 0 then "\($h)h" + (if $m>0 then " \($m)m" else "" end) + " ago"
-    elif $m > 0 then "\($m)m" + (if $s>0 then " \($s)s" else "" end) + " ago"
-    else "\($s)s ago" end
-  end;
-
-def seen_ago(p):
-  (p.lastStatusUpdate // "") as $ls |
-  if $ls == "" then "" else try (($now - (parse_time($ls))) | humanize) catch "" end;
-
-# Parse IP:port endpoint, handling both IPv4 and IPv6
-def extract_ip_from_endpoint:
-  if . == null or . == "" then ""
-  elif startswith("[") then
-    (split("]")[0] | ltrimstr("["))
-  elif test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$") then
-    split(":")[0]
-  elif test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$") then
-    .
-  else
-    (. | split(":")) as $parts |
-    if ($parts | length) > 1 then
-      ($parts[-1]) as $last |
-      if ($last | test("^[0-9]{1,5}$")) and (($last | tonumber) <= 65535) then
-        ($parts[:-1] | join(":"))
-      else
-        .
-      end
-    else
-      .
-    end
-  end;
-
-def is_ipv4:
-  if . == null or . == "" then false
-  else test("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")
-  end;
-
-def is_ipv6:
-  if . == null or . == "" then false
-  elif test("\\.") then false
-  elif test(":") then true
-  else false
-  end;
-
-def get_public_ipv4(p):
-  ((p.iceCandidateEndpoint.remote // "") | extract_ip_from_endpoint) as $ip |
-  if ($ip | is_ipv4) then $ip
-  else ""
-  end;
-
-def get_public_ipv6(p):
-  ((p.iceCandidateEndpoint.remote_v6 // "") | extract_ip_from_endpoint) as $v6_dedicated |
-  if ($v6_dedicated | is_ipv6) then $v6_dedicated
-  else
-    ((p.iceCandidateEndpoint.remote // "") | extract_ip_from_endpoint) as $ip |
-    if ($ip | is_ipv6) then $ip
-    else ""
-    end
-  end;
-
 to_entries as $rows
 |
-( ["no","name","dns_label","ip","public_ip","public_ip_v6","connected","seen_ago","last_seen"] | @csv ),
+( ["no","name","dns_label","netbird_ip","netbird_ipv6","public_ip","connected","seen_ago","last_seen"] | @csv ),
 ( $rows[] |
   .key as $idx | .value as $p |
   ( [ ($idx+1),
       ($p.fqdn // "" | split(".")[0]),
       ($p.fqdn//""),
-      (($p.netbirdIp//"") | split("/")[0]),
-      (get_public_ipv4($p)),
-      (get_public_ipv6($p)),
+      (netbird_ip($p)),
+      (netbird_ipv6($p)),
+      (get_public_ip($p)),
       ($p.status == "Connected"),
       (seen_ago($p)),
       (format_time($p.lastStatusUpdate))
