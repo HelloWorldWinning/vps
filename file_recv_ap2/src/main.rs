@@ -177,7 +177,7 @@ async fn main() -> anyhow::Result<()> {
         info!("HOST_MAPPING_PATHS: {}", mappings_str);
     }
 
-    info!("FileRecvAPI starting on [::]:{port}");
+    //  info!("FileRecvAPI starting on [::]:{port}");
     info!("TIMEZONE: {}", tz);
     info!("SAVING_PATH: {}", base_path.display());
     info!("FILE_TYPES_USE: {}", file_types_use);
@@ -212,8 +212,24 @@ async fn main() -> anyhow::Result<()> {
         .layer(DefaultBodyLimit::disable())
         .with_state(state);
 
-    let addr = SocketAddr::from((Ipv6Addr::UNSPECIFIED, port));
-    axum::serve(tokio::net::TcpListener::bind(addr).await?, app).await?;
+    //  let addr = SocketAddr::from((Ipv6Addr::UNSPECIFIED, port));
+    //  axum::serve(tokio::net::TcpListener::bind(addr).await?, app).await?;
+
+    let listener = match tokio::net::TcpListener::bind(SocketAddr::from((
+        Ipv6Addr::UNSPECIFIED,
+        port,
+    )))
+    .await
+    {
+        Ok(l) => l,
+        Err(e) => {
+            warn!("IPv6 bind failed ({e}); falling back to 0.0.0.0");
+            tokio::net::TcpListener::bind(SocketAddr::from(([0, 0, 0, 0], port))).await?
+        }
+    };
+    info!("FileRecvAPI listening on {}", listener.local_addr()?);
+    axum::serve(listener, app).await?;
+
     Ok(())
 }
 
