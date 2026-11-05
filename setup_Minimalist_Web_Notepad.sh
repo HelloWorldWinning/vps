@@ -68,6 +68,7 @@ echo "Creating docker-compose.yml..."
 #      - MWN_SAVE_PATH=/var/www/html/_tmp
 #    restart: unless-stopped
 #EOF
+TZ=$(cat /etc/timezone)
 
 cat >docker-compose.yml <<EOF
 services:
@@ -80,6 +81,7 @@ services:
       - ${DATA_DIR}:/var/www/html/_tmp
 
     environment:
+      - TZ=${TZ}
       - MWN_BASE_URL=
       - MWN_SAVE_PATH=/var/www/html/_tmp
     restart: unless-stopped
