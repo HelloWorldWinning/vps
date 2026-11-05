@@ -187,8 +187,9 @@ apt install -y tmux
 apt install -y rsync
 
 timedatectl set-timezone Australia/Perth
-echo '--ipv4' >>~/.curlrc
-echo 'inet4_only = on' >>~/.wgetrc
+
+#echo '--ipv4' >>~/.curlrc
+#echo 'inet4_only = on' >>~/.wgetrc
 #alias tls="tmux list-sessions"
 
 ln -s /usr/bin/python3 /usr/local/bin/python

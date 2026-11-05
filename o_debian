@@ -371,14 +371,19 @@ upload_file() {
 	local file_path="$2"
 	local api_host="$3"
 	local result_file="$4"
-	local response curl_status saved_path clean_response
+	#local response curl_status saved_path clean_response
+	local response curl_status saved_path clean_response url_host
 
 	if [ ! -f "$file_path" ]; then
 		printf '%s\tSKIP\t%s\t%s\n' "$index" "$file_path" "Not a regular file" >"$result_file"
 		return 0
 	fi
 
-	response=$(curl -sS -X POST "http://${api_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+	#response=$(curl -sS -X POST "http://${api_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+	url_host="$api_host"
+	[[ "$url_host" == *:* ]] && url_host="[${url_host}]"
+	response=$(curl -q -g -sS -X POST "http://${url_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+
 	curl_status=$?
 
 	if [ "$curl_status" -ne 0 ]; then
@@ -754,6 +759,8 @@ print_nb_list
 print_delim
 
 read -r -p "Number/Domain/IP: " API_HOST
+API_HOST="${API_HOST#\[}"
+API_HOST="${API_HOST%\]}"
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
