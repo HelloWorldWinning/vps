@@ -13,7 +13,7 @@ use std::{
     collections::{HashMap, HashSet},
     env,
     io::ErrorKind,
-    net::SocketAddr,
+    net::{Ipv6Addr, SocketAddr},
     path::{Path, PathBuf},
 };
 use tokio::{
@@ -177,7 +177,7 @@ async fn main() -> anyhow::Result<()> {
         info!("HOST_MAPPING_PATHS: {}", mappings_str);
     }
 
-    info!("FileRecvAPI starting on 0.0.0.0:{port}");
+    info!("FileRecvAPI starting on [::]:{port}");
     info!("TIMEZONE: {}", tz);
     info!("SAVING_PATH: {}", base_path.display());
     info!("FILE_TYPES_USE: {}", file_types_use);
@@ -212,7 +212,7 @@ async fn main() -> anyhow::Result<()> {
         .layer(DefaultBodyLimit::disable())
         .with_state(state);
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    let addr = SocketAddr::from((Ipv6Addr::UNSPECIFIED, port));
     axum::serve(tokio::net::TcpListener::bind(addr).await?, app).await?;
     Ok(())
 }
