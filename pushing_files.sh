@@ -370,14 +370,19 @@ upload_file() {
 	local file_path="$2"
 	local api_host="$3"
 	local result_file="$4"
-	local response curl_status saved_path clean_response
+	#local response curl_status saved_path clean_response
+	local response curl_status saved_path clean_response url_host
 
 	if [ ! -f "$file_path" ]; then
 		printf '%s\tSKIP\t%s\t%s\n' "$index" "$file_path" "Not a regular file" >"$result_file"
 		return 0
 	fi
 
-	response=$(curl -sS -X POST "http://${api_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+	#response=$(curl -sS -X POST "http://${api_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+	url_host="$api_host"
+	[[ "$url_host" == *:* ]] && url_host="[${url_host}]"
+	response=$(curl -q -g -sS -X POST "http://${url_host}:${API_PORT}/?api_passwd=${API_PASSWD}" -F "file=@${file_path}" 2>&1)
+
 	curl_status=$?
 
 	if [ "$curl_status" -ne 0 ]; then
@@ -663,12 +668,15 @@ print_nb_list
 print_delim
 
 read -r -p "Number/Domain/IP: " API_HOST
+API_HOST="${API_HOST#\[}"
+API_HOST="${API_HOST%\]}"
 
 if [ -z "${API_HOST}" ]; then
 	echo -e "${RED}Error: Peer No., domain, or IP is required.${NC}"
 	exit 1
 fi
 
+target_label="$API_HOST"
 # --- Lazy input ---
 # If the entry is a 1-3 digit number, treat it as a peer No. from the printed cached NetBird list.
 # Anything else, such as real IP, hostname, or domain, falls through to manual host behavior.
@@ -690,6 +698,7 @@ if [[ "${API_HOST}" =~ ^[0-9]{1,3}$ ]]; then
 	peer_fqdn="${peer_line%%$'\t'*}"
 	API_HOST="${peer_line##*$'\t'}"
 	peer_name="${peer_fqdn%%.*}"
+	target_label="$peer_name"
 
 	if [ -z "$API_HOST" ] || [ "$API_HOST" = "-" ]; then
 		echo -e "${RED}Error: peer No. ${peer_no} ('${peer_name}') has no usable NetBird IP.${NC}"
@@ -713,7 +722,8 @@ fi
 print_delim
 #echo -e "${BOLD_RED}  online  ${API_HOST}${NC}"
 #echo -e "${BOLD_RED}   Online   ${NC}"
-echo -e "${BOLD_RED}  ${peer_name}  ${NC}"
+#echo -e "${BOLD_RED}  ${peer_name}  ${NC}"
+echo -e "${BOLD_RED}  ${target_label}  ${NC}"
 print_delim
 
 # === Step 2: Collect All File/Folder Paths ===
