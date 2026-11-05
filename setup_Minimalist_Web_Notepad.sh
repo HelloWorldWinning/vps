@@ -68,7 +68,19 @@ echo "Creating docker-compose.yml..."
 #      - MWN_SAVE_PATH=/var/www/html/_tmp
 #    restart: unless-stopped
 #EOF
-TZ=$(cat /etc/timezone)
+# Detect host timezone robustly
+if command -v timedatectl >/dev/null 2>&1; then
+	TZ=$(timedatectl show -p Timezone --value 2>/dev/null)
+fi
+if [ -z "$TZ" ] && [ -f /etc/timezone ]; then
+	TZ=$(cat /etc/timezone)
+fi
+if [ -z "$TZ" ] && [ -L /etc/localtime ]; then
+	TZ=$(readlink -f /etc/localtime | sed 's|.*/zoneinfo/||')
+fi
+TZ=${TZ:-Australia/Perth} # final fallback
+
+echo "Using TZ=$TZ"
 
 cat >docker-compose.yml <<EOF
 services:
