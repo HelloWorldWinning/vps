@@ -944,6 +944,7 @@ function getNodeText(node) {
 
 
 function showHud(message, timeout = 900) {
+        return;            // ← add this line: disables every HUD popup
   ensureNavStyle();
 
   let hud = document.getElementById("mm-shift-nav-hud");
