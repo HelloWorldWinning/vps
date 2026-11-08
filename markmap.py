@@ -1417,7 +1417,7 @@ function drawTargetBox(el) {
   const padX = 9;
   const padY = 6;
 
-  const barWidth = 4.5;
+  const barWidth = 3.0;
   const barGap = 1;
 
   const bg = document.createElementNS(SVG_NS, "rect");
