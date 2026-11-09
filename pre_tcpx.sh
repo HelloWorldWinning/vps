@@ -486,6 +486,7 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 
 ###########wg  end
 
+#apt install -y zoxide
 bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh)
 
 # startup_port16_py_jupyter.sh
