@@ -1251,7 +1251,8 @@ https://zhile.one/archives/1404.html
 
 	wt0) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter-wt0-firewall.sh) ;;
 	zram) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh) ;;
-	g_s) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh) ;;
+	#g_s) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh) ;;
+	g_s) curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh -o /usr/local/bin/g_s && chmod +x /usr/local/bin/g_s && echo "success" ;;
 	*) echo "wrong input" ;;
 	esac
 
