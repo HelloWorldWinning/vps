@@ -32,7 +32,7 @@ cert_dir=${naive_path}/certs
 www_dir=${naive_path}/www
 log_dir=${naive_path}/log
 
-CONTAINER=naiveproxy
+CONTAINER=naiveproxy_8443
 DEFAULT_IMAGE=pocat/naiveproxy:latest
 
 # --------------------------------------------------------------------------- #
