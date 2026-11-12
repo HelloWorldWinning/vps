@@ -20,6 +20,12 @@ Column widths (mode/size/user/date/tokens) are computed ACROSS ALL groups,
 so every row in the listing stays aligned.
 
 Options:
+  -t TYPE                     show only this group; repeat or comma-list:
+                              -t txt   -t md,py   -t .json   -t dir
+                              (aliases: dir, link, noext, other)
+  -T 0|1                      within-group order: 0 = newest at BOTTOM
+                              (default), 1 = newest at TOP (reverses the
+                              sort, so with --sort=name it gives Z-A)
   --sort=modified|name        within-group sort (default: modified)
   --color=auto|always|never   default auto (honors NO_COLOR); use `always` when piping to `less -R`
   --icons / --no-icons        default on (KK_ICONS=0 disables permanently)
@@ -1136,15 +1142,74 @@ def want_sort(argv0_prog: str, args) -> str:
     return sort
 
 
+# -t names that are not file extensions -> internal group keys
+TYPE_ALIASES = {
+    "dir": "0-dir",
+    "dirs": "0-dir",
+    "link": "1-link",
+    "links": "1-link",
+    "symlink": "1-link",
+    "noext": "zzz-noext",
+    "other": "zzz-other",
+}
+
+
+def parse_opts(args):
+    """Take -t TYPE and -T 0|1 out of args.
+
+    Accepted forms: -t txt | -t=txt | -ttxt   and   -T 1 | -T=1 | -T1
+    Returns (types: set of group keys, newest_top: bool, remaining args).
+    Raises ValueError on a missing or invalid value.
+    """
+    types: set[str] = set()
+    newest_top = False
+    rest = []
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a[:2] not in ("-t", "-T") or a.startswith("--"):
+            rest.append(a)
+            i += 1
+            continue
+        flag = a[:2]
+        if a == flag:  # value is the next argument
+            if i + 1 >= len(args):
+                raise ValueError(f"option {flag} needs a value")
+            val = args[i + 1]
+            i += 2
+        else:  # -t=txt / -ttxt
+            val = a[3:] if a[2] == "=" else a[2:]
+            i += 1
+        if flag == "-t":
+            for t in val.split(","):
+                t = t.strip().lower().lstrip(".")
+                if t:
+                    types.add(TYPE_ALIASES.get(t, t))
+            if not types:
+                raise ValueError("option -t needs a type, e.g. -t txt")
+        else:
+            if val not in ("0", "1"):
+                raise ValueError(f"option -T takes 0 or 1, not '{val}'")
+            newest_top = val == "1"
+    return types, newest_top, rest
+
+
 def main(argv):
     prog = os.path.basename(argv[0])
     args = [a for a in argv[1:] if a != "--"]
     if any(a in ("-h", "--help") for a in args):
         print(__doc__)
         return 0
+    try:
+        only_types, newest_top, args = parse_opts(args)
+    except ValueError as err:
+        print(f"kk: {err}", file=sys.stderr)
+        return 2
     paths = [a for a in args if not a.startswith("-")] or ["."]
 
     entries = collect(paths)
+    if only_types:  # filter BEFORE tokenizing, so hidden files cost nothing
+        entries = [e for e in entries if e.kind in only_types]
     if not entries:
         return 0
 
@@ -1168,7 +1233,7 @@ def main(argv):
     groups = []
     for kind in sorted(buckets, key=lambda k: k.encode("utf-8")):
         ents = buckets[kind]
-        ents.sort(key=key)
+        ents.sort(key=key, reverse=newest_top)
         groups.append((kind, ents))
 
     show_group_total = SHOW_GROUP_TOTAL or ("--total-per-group" in args)
