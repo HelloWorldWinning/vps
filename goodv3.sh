@@ -1254,6 +1254,8 @@ https://zhile.one/archives/1404.html
 	zram) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh) ;;
 	#g_s) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh) ;;
 	gss) curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh -o /usr/local/bin/gss && chmod +x /usr/local/bin/gss && echo "success" ;;
+	raw_install) curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install ;;
+	raw) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh) ;;
 
 	*) echo "wrong input" ;;
 	esac
