@@ -585,8 +585,8 @@ apt install -y bsdmainutils
 apt install -y bc
 
 curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
+#bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
+#bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
 apt update && apt install cargo ripgrep pandoc -y
 cargo install ripgrep_all
@@ -809,6 +809,8 @@ echo "---- verify ----"
 ls -l /usr/local/bin/{cx,k,i,ii,kk,kl,kn,tt,o,oo}
 
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh)
+
+curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install
 
 rm -f /root/crontab.bak /root/pre_tcpx.sh
 
