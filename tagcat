@@ -1,82 +1,110 @@
 #!/usr/bin/env bash
-# tagcat — bundle files into a single tagged txt file.
-# Usage:
-#   tagcat                      # all regular files in cwd
-#   tagcat a.md b.txt           # only these files
-#   tagcat -o out.txt *.md      # custom output name
-set -u
+# Bundle files with an absolute-path manifest and matching numbered sections.
+# Usage: tagcat | tagcat a.md b.txt | tagcat -o out.txt *.md
+# Requires Bash and GNU coreutils (standard on Debian).
+set -euo pipefail
 
-folder=$(basename "$(pwd)")
+die() { printf 'tagcat: %s\n' "$*" >&2; exit 1; }
+
+root=$(pwd -P)
+folder=$(basename -- "$root")
 datetag=$(date '+%Y-%m-%d_%H-%M-%S_%p_%a')
-
-# Default output name: bundle_{folder}_{date_time_tag}.txt
 output="bundle_${folder}_${datetag}.txt"
 
-if [ "${1:-}" = "-o" ]; then
-	if [ -z "${2:-}" ]; then
-		echo "tagcat: -o needs a filename" >&2
-		exit 2
-	fi
-	output="$2"
-	shift 2
+if [[ ${1:-} == -o ]]; then
+    [[ -n ${2:-} ]] || die '-o needs a filename'
+    output=$2
+    shift 2
 fi
+if [[ ${1:-} == -- ]]; then shift; fi
 
-# Collect files
-files=()
-if [ "$#" -eq 0 ]; then
-	shopt -s nullglob 2>/dev/null || true
-	for f in *; do
-		[ -f "$f" ] || continue
-		[ "$f" = "$output" ] && continue
-		files+=("$f")
-	done
+command -v realpath >/dev/null 2>&1 || die 'realpath is required (GNU coreutils)'
+output_abs=$(realpath -m -- "$output")
+[[ ! -d $output_abs ]] || die "output is a directory: $output"
+output_dir=$(dirname -- "$output_abs")
+[[ -d $output_dir ]] || die "output directory does not exist: $output_dir"
+
+# Collect inputs before creating temporary files; default selection is unchanged:
+# regular files in cwd, excluding hidden files and subdirectory contents.
+candidates=()
+if (( $# == 0 )); then
+    shopt -s nullglob
+    for f in "$root"/*; do
+        [[ -f $f ]] && candidates+=("$f")
+    done
 else
-	for f in "$@"; do
-		files+=("$f")
-	done
+    candidates=("$@")
 fi
 
-echo "tagcat: output = $output"
-echo "tagcat: found ${#files[@]} file(s) in $(pwd)"
-
-if [ "${#files[@]}" -eq 0 ]; then
-	echo "tagcat: no files to bundle" >&2
-	exit 1
-fi
-
-# Truncate output file
-: >"$output"
-
-count=0
-for file in "${files[@]}"; do
-	if [ ! -f "$file" ]; then
-		echo "tagcat: skipping '$file' (not a regular file)" >&2
-		continue
-	fi
-	# Tag: original file name (basename), unchanged
-	tag=$(basename "$file")
-	# Absolute path for the cat header line
-	abspath=$(realpath -- "$file" 2>/dev/null || readlink -f -- "$file" 2>/dev/null || printf '%s/%s' "$(pwd)" "$file")
-	{
-		printf '<%s>\n' "$tag"
-		printf 'cat %s\n' "$abspath"
-		cat -- "$file"
-		printf '\n</%s>\n\n' "$tag"
-	} >>"$output"
-	echo "  + $file  ->  <$tag>"
-	count=$((count + 1))
+files=()
+for file in "${candidates[@]}"; do
+    if [[ ! -f $file || ! -r $file ]]; then
+        printf 'tagcat: skipping %q (not a readable regular file)\n' "$file" >&2
+        continue
+    fi
+    abspath=$(realpath -e -- "$file")
+    # Also exclude symlink and hardlink aliases of the output.
+    if [[ $abspath == "$output_abs" ]] || [[ -e $output_abs && $file -ef $output_abs ]]; then
+        printf 'tagcat: skipping output file %q\n' "$file" >&2
+        continue
+    fi
+    files+=("$abspath")
 done
 
-head_info="<docs_in_folder_${folder}>"
-tail_info="</docs_in_folder_${folder}>"
+count=${#files[@]}
+(( count > 0 )) || die 'no files to bundle'
+printf 'tagcat: output = %s\ntagcat: found %d file(s) in %s\n' "$output_abs" "$count" "$root"
 
-# Prepend
-printf '%s\n\n' "$head_info" | cat - "$output" >/tmp/tmpfile && mv /tmp/tmpfile "$output"
-# Append
-printf '%s\n' "$tail_info" >>"$output"
+# Unique temporary file beside the output; failed reads never replace the output.
+tmp=$(mktemp -- "$output_dir/.tagcat.XXXXXXXX")
+trap 'rm -f -- "$tmp"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
-echo "tagcat: wrote $count file(s) to"
+# Escape paths for one-line metadata; file contents are copied unchanged.
+escape_metadata() {
+    local s=$1
+    s=${s//&/\&amp;}
+    s=${s//</\&lt;}
+    s=${s//>/\&gt;}
+    s=${s//$'\r'/\&#13;}
+    s=${s//$'\n'/\&#10;}
+    s=${s//$'\t'/\&#9;}
+    printf '%s' "$s"
+}
 
-echo ""
-echo -e "\033[1;31m$(pwd)/$output\033[0m"
-tt $(pwd)/$output
+{
+    printf '<docs_in_folder>\n\n'
+    printf '<file_manifest>\n'
+    printf 'Root directory: '; escape_metadata "$root"; printf '\n'
+    printf 'Total files: %d\n' "$count"
+    printf 'Order: manifest and content sections use the same file IDs.\n'
+    printf 'Metadata escaping: XML entities; content is copied verbatim.\n\n'
+    for ((i=0; i<count; i++)); do
+        printf '%03d  ' "$((i+1))"
+        escape_metadata "${files[i]}"
+        printf '\n'
+    done
+    printf '</file_manifest>\n\n'
+
+    for ((i=0; i<count; i++)); do
+        file=${files[i]}
+        printf -v id '%03d' "$((i+1))"
+        printf '<file_%s>\n' "$id"
+        printf 'File name: '; escape_metadata "$(basename -- "$file")"; printf '\n'
+        printf 'Absolute path: '; escape_metadata "$file"; printf '\n'
+        printf 'cat '; printf '%q' "$file"; printf '\n'
+        printf '<content>\n'
+        cat -- "$file" || die "failed to read: $file"
+        printf '\n</content>\n</file_%s>\n\n' "$id"
+    done
+    printf '</docs_in_folder>\n'
+} > "$tmp"
+
+mv -f -- "$tmp" "$output_abs"
+printf 'tagcat: wrote %d file(s) to\n\n\033[1;31m%s\033[0m\n' "$count" "$output_abs"
+
+# Keep the original convenience opener when available.
+if command -v tt >/dev/null 2>&1; then
+    tt "$output_abs" || printf 'tagcat: tt could not open the output\n' >&2
+fi
