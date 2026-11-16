@@ -244,15 +244,15 @@ mkdir -p /root/themes/
 
 #wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
-wget  -O /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+wget -O /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 mkdir -p ~/.vscode-server/data/Machine/
 sleep 1
-wget  -O ~/.vscode-server/data/Machine/settings.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
-wget  -O ~/.vscode-server/data/Machine/custom.css https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/custom.css
+wget -O ~/.vscode-server/data/Machine/settings.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
+wget -O ~/.vscode-server/data/Machine/custom.css https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/custom.css
 
 # ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )'
-bash <(curl  -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 #
 #
 ##### vim
@@ -290,7 +290,7 @@ source $HOME/.bashrc
 
 mkdir -p /root/.config/neofetch
 
-wget  -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
+wget -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
 
 cat <<"EOF" >>/etc/sysctl.conf
 net.core.rmem_max=26214400
@@ -405,10 +405,11 @@ else
 	# If the unique identifier doesn't exist, append the content to ~/.bashrc
 	echo "Unique identifier not found in ~/.bashrc. Adding."
 	echo export setup_time_first=\"$(date)\" >>~/.bashrc
+	echo 'export next_payment_date=""' >>~/.bashrc
 	curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >>~/.bashrc
 fi
 
-bash <(curl  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh)
 
 curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/python_D/cleanpy.sh >/usr/bin/cpy
 chmod +x /usr/bin/cpy
@@ -455,17 +456,17 @@ apt upgrade -y
 apt update -y
 apt install iptables -y
 apt install wireguard -y
-wget  -O /etc/wireguard/wg0.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf
+wget -O /etc/wireguard/wg0.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg0.conf
 systemctl enable wg-quick@wg0.service
 systemctl restart wg-quick@wg0.service
 
-wget  -O /etc/wireguard/wg1.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf
+wget -O /etc/wireguard/wg1.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg1.conf
 systemctl enable wg-quick@wg1.service
 systemctl restart wg-quick@wg1.service
 
-wget  -O /etc/wireguard/wg2.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf
+wget -O /etc/wireguard/wg2.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg2.conf
 systemctl enable wg-quick@wg2.service
 systemctl restart wg-quick@wg2.service
@@ -525,7 +526,7 @@ rm /tmp/tmp-move.sh /tmp/dt_function
 
 dpkg --configure -a
 
-wget  https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && mv dysk /usr/local/bin/
+wget https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && mv dysk /usr/local/bin/
 
 #plain=off
 #oldtext=darkred

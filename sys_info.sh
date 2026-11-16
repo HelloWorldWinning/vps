@@ -1,136 +1,176 @@
 #!/bin/bash
+# sys_info.sh - login banner with a system summary
+#
+# Optional variables. Each is read from the environment first; if it is not
+# set there, the last "export NAME=..." line in ~/.bashrc, ~/.profile or
+# ~/.bash_profile is used (so the order of lines in ~/.bashrc does not matter).
+#
+#   setup_time_first   When this machine was set up. Write it once with:
+#                        echo export setup_time_first=\"$(date)\" >>~/.bashrc
+#                      Also accepts "2025-11-13 22:45:00" or an epoch (1731500000).
+#                      If missing or unreadable: modification time of /etc/passwd.
+#
+#   next_payment_date  Next billing date. Accepted formats:
+#                        2026-11-16_22-20-45   2026-11-16_22-20   2026-11-16_22
+#                        2026-11-16            2026-11            2026
+#                      Missing parts default to the start of the period
+#                      (2026-11 -> 2026-11-01 00:00, 2026 -> 2026-01-01 00:00).
+#                      The "Next Pay" row is printed only when this is set.
 
-# Clear the screen
-clear
-printf "\033c"
+export LC_ALL=C
 
-# Display separator
-echo "----------------------------------------------------------------------"
+# ---------------------------------------------------------------- settings
+LABEL_W=10   # width of the left column (longest label is 10 chars)
+SEP='----------------------------------------------------------------------'
 
-# Display last login without 'from still'
-if [ -n "$SSH_CLIENT" ]; then
-  # Parse SSH_CLIENT for the IP address
-  ip=$(echo $SSH_CLIENT | awk '{print $1}')
-
-  # Get current date info
-  cur_date=$(date "+%Y-%m-%d %H:%M:%S %a")
-
-  # Display modified 'Last login' line
-  echo "Last login: from $ip $cur_date"
+if [[ -t 1 ]]; then
+  RED=$'\033[31m'; YEL=$'\033[33m'; RST=$'\033[0m'
+else
+  RED=''; YEL=''; RST=''
 fi
 
-# Calculate and display setup time
-install_date=$(stat -c %Y /etc/passwd)
-current_date=$(date +%s)
-seconds_diff=$((current_date - install_date))
+# ---------------------------------------------------------------- helpers
+# row LABEL VALUE  -> every line goes through here, so the ':' column always lines up
+row() { printf "%-${LABEL_W}s : %s\n" "$1" "$2"; }
 
-# Calculate time components
-days=$((seconds_diff / 86400))
-remainder=$((seconds_diff % 86400))
-hours=$((remainder / 3600))
-remainder=$((remainder % 3600))
-minutes=$((remainder / 60))
-seconds=$((remainder % 60))
+trim() {
+  local s=$1
+  s=${s#"${s%%[![:space:]]*}"}
+  s=${s%"${s##*[![:space:]]}"}
+  printf '%s' "$s"
+}
 
-#echo "Setup time: $days days, $hours hours, $minutes minutes, $seconds seconds"
-echo "Setup Time: `setup_time`"
+# get_var NAME -> value from the environment, else from the shell rc files (never eval'd)
+get_var() {
+  local name=$1 val=${!1} f line
+  if [[ -z $val ]]; then
+    for f in ~/.bashrc ~/.profile ~/.bash_profile; do
+      [[ -r $f ]] || continue
+      line=$(grep -E "^[[:space:]]*(export[[:space:]]+)?${name}=" "$f" | tail -n 1)
+      if [[ -n $line ]]; then val=${line#*=}; break; fi
+    done
+  fi
+  val=$(trim "$val")
+  if [[ $val =~ ^\"([^\"]*)\" || $val =~ ^\'([^\']*)\' ]]; then
+    val=${BASH_REMATCH[1]}                 # quoted: take what is inside the quotes
+  else
+    val=${val%%[[:space:]]#*}              # unquoted: drop a trailing "# comment"
+  fi
+  trim "$val"
+}
 
-# Get the total uptime in seconds
-total_seconds=$(cat /proc/uptime | awk '{print $1}' | cut -d. -f1)
+# to_epoch STRING -> epoch seconds for a free-form date (e.g. output of `date`)
+to_epoch() {
+  local s=$1 e
+  [[ -z $s ]] && return 1
+  if [[ $s =~ ^@?[0-9]{9,}$ ]]; then echo "${s#@}"; return 0; fi
+  e=$(date -d "$s" +%s 2>/dev/null) && { echo "$e"; return 0; }
+  # GNU date does not know most zone abbreviations (AWST, CST, ...): drop them
+  # and read the time as local time, which is where `date` wrote it.
+  s=$(sed -E 's/(^|[[:space:]])[A-Z]{2,5}([[:space:]]|$)/ /g' <<<"$s")
+  e=$(date -d "$s" +%s 2>/dev/null) && { echo "$e"; return 0; }
+  return 1
+}
 
-# Define time constants
-seconds_per_minute=60
-seconds_per_hour=$((60 * seconds_per_minute))
-seconds_per_day=$((24 * seconds_per_hour))
-seconds_per_month=$((30 * seconds_per_day)) # Approximation
-seconds_per_year=$((12 * seconds_per_month)) # Approximation
+# pay_to_epoch STRING -> epoch seconds for the next_payment_date formats
+pay_to_epoch() {
+  local re='^([0-9]{4})(-([0-9]{1,2})(-([0-9]{1,2})([_T ]([0-9]{1,2})([-:]([0-9]{1,2})([-:]([0-9]{1,2}))?)?)?)?)?$'
+  [[ $1 =~ $re ]] || return 1
+  local Y=${BASH_REMATCH[1]}       m=${BASH_REMATCH[3]:-1}  d=${BASH_REMATCH[5]:-1}
+  local H=${BASH_REMATCH[7]:-0}    M=${BASH_REMATCH[9]:-0}  S=${BASH_REMATCH[11]:-0}
+  date -d "$Y-$m-$d $H:$M:$S" +%s 2>/dev/null   # also rejects 2026-02-30, 25h, ...
+}
 
-# Calculate time components
-years=$((total_seconds / seconds_per_year))
-remaining_seconds=$((total_seconds % seconds_per_year))
-months=$((remaining_seconds / seconds_per_month))
-remaining_seconds=$((remaining_seconds % seconds_per_month))
-days=$((remaining_seconds / seconds_per_day))
-remaining_seconds=$((remaining_seconds % seconds_per_day))
-hours=$((remaining_seconds / seconds_per_hour))
-remaining_seconds=$((remaining_seconds % seconds_per_hour))
-minutes=$((remaining_seconds / seconds_per_minute))
+# fmt_dur SECONDS -> " 365d |    0h |    6m"  (same 5-char columns as RAM/Swap/Disk)
+fmt_dur() {
+  local s=$1
+  (( s < 0 )) && s=$(( -s ))
+  printf '%4dd | %4dh | %4dm' $(( s / 86400 )) $(( s % 86400 / 3600 )) $(( s % 3600 / 60 ))
+}
 
-# Total days calculation
-total_days=$((years * 12 * 30 + months * 30 + days))
+fmt_date() { date -d "@$1" '+%Y-%m-%d %H:%M'; }
 
-# Build the output string
-output=""
-if [ $years -gt 0 ]; then
-  output="${years} years, "
+# Trailing note column: the "(" sits at the same position on every
+# duration row and every size row ("    (" after d/h/m, " G  (" after sizes).
+DUR_NOTE='    '
+SIZE_NOTE=' G  '
+
+# lscpu FIELD -> first value word (+ unit), e.g. "64 KiB"
+lscpu_out=$(lscpu 2>/dev/null)
+lscpu_field() {
+  awk -F: -v k="$1" '$1 == k { n = split($2, a, " "); print a[1] (n > 1 && a[2] !~ /^\(/ ? " " a[2] : ""); exit }' <<<"$lscpu_out"
+}
+
+# ---------------------------------------------------------------- output
+if [[ -t 1 ]]; then clear; printf '\033c'; fi
+
+now=$(date +%s)
+
+echo "$SEP"
+
+# Login
+if [[ -n $SSH_CLIENT ]]; then
+  row "Last Login" "${SSH_CLIENT%% *}  ($(date '+%Y-%m-%d %H:%M:%S %a'))"
 fi
 
-if [ $months -gt 0 ]; then
-  output="${output}${months} months, "
+# Setup Time: time since setup_time_first (fallback: /etc/passwd mtime)
+setup_epoch=$(to_epoch "$(get_var setup_time_first)") || setup_epoch=$(stat -c %Y /etc/passwd)
+row "Setup Time" "$(fmt_dur $(( now - setup_epoch )))${DUR_NOTE}($(fmt_date "$setup_epoch"))"
+
+# Up Time: time since boot
+up_s=$(cut -d. -f1 /proc/uptime)
+row "Up Time" "$(fmt_dur "$up_s")${DUR_NOTE}($(fmt_date $(( now - up_s ))))"
+
+# Next Pay: time left until next_payment_date (row only when the variable is set)
+pay_raw=$(get_var next_payment_date)
+if [[ -n $pay_raw ]]; then
+  if pay_epoch=$(pay_to_epoch "$pay_raw"); then
+    left=$(( pay_epoch - now ))
+    pay_txt="$(fmt_dur "$left")${DUR_NOTE}($(fmt_date "$pay_epoch")"
+    if   (( left < 0 ));          then row "Next Pay" "${RED}${pay_txt}, OVERDUE)${RST}"
+    elif (( left < 7 * 86400 ));  then row "Next Pay" "${YEL}${pay_txt})${RST}"
+    else                               row "Next Pay" "${pay_txt})"
+    fi
+  else
+    row "Next Pay" "${RED}cannot read next_payment_date='${pay_raw}'${RST}"
+  fi
 fi
 
-if [ $days -gt 0 ]; then
-  output="${output}${days} days, "
-fi
+# CPU
+cpu_model=$(awk -F: '/^model name/ { sub(/^[ \t]+/, "", $2); print $2; exit }' /proc/cpuinfo)
+cpu_mhz=$(awk -F: '/^cpu MHz/ { sub(/^[ \t]+/, "", $2); print $2; exit }' /proc/cpuinfo)
+cpu_cores=$(lscpu_field 'CPU(s)'); [[ -z $cpu_cores ]] && cpu_cores=$(nproc)
+l1=$(lscpu_field 'L1d cache'); l2=$(lscpu_field 'L2 cache'); l3=$(lscpu_field 'L3 cache')
 
-if [ $hours -gt 0 ]; then
-  output="${output}${hours} hours, "
-fi
+row "CPU Model" "${cpu_model:-unknown}"
+row "CPU MHz"   "${cpu_mhz:-unknown}"
+row "CPU Cores" "$cpu_cores"
+row "CPU Cache" "L1:${l1:-?} / L2:${l2:-?} / L3:${l3:-?}"
 
-if [ $minutes -gt 0 ]; then
-  output="${output}${minutes} minutes"
-fi
+# System
+os=$(lsb_release -ds 2>/dev/null | tr -d '"')
+if [[ -z $os && -r /etc/os-release ]]; then os=$(. /etc/os-release; echo "$PRETTY_NAME"); fi
+row "OS"     "${os:-unknown}"
+row "Arch"   "$(uname -m)"
+row "Kernel" "$(uname -r)"
+row "TCP CC" "$(sysctl -n net.ipv4.tcp_congestion_control 2>/dev/null || echo unknown)"
 
-# Append total days to the output
-output="${output} (up ${total_days} days)"
+# Memory / disk: avail | used | total, in GB
+swap=$(free -m | awk '/^Swap:/ { printf "%5.1f | %5.1f | %5.1f", $4/1024, $3/1024, $2/1024 }')
+ram=$(free -m  | awk '/^Mem:/  { printf "%5.1f | %5.1f | %5.1f", $7/1024, $3/1024, $2/1024 }')
+disk=$(df -BG --exclude-type overlay --exclude-type tmpfs --total 2>/dev/null |
+       awk '$1 == "total" { gsub(/G/, ""); printf "%5s | %5s | %5s", $4, $3, $2 }')
+row "Swap" "${swap}${SIZE_NOTE}(avail | used | total)"
+row "RAM"  "${ram}${SIZE_NOTE}(avail | used | total)"
+row "Disk" "${disk}${SIZE_NOTE}(avail | used | total)"
 
-# Display uptime
-echo -n "Up Time   : "
-echo $output | sed 's/, $//' | xargs
+# Public IP (an error page or JSON from a rate-limited service is ignored)
+pub_ip=''
+for url in https://ipinfo.io/ip https://api.ipify.org https://icanhazip.com; do
+  pub_ip=$(curl -s -m 5 "$url" 2>/dev/null | tr -d '[:space:]')
+  [[ $pub_ip =~ ^[0-9A-Fa-f:.]+$ ]] && break
+  pub_ip=''
+done
+row "Public IP" "${pub_ip:-Unable to determine}"
 
-# Rest of your existing script content
-CPU_MODEL=$(echo "CPU Model : $(cat /proc/cpuinfo | awk -F: '/model name/ {print $2; exit}' | sed 's/^ *//')")
-CPU_MHZ=$(echo "cpu MHz   : $(cat /proc/cpuinfo | awk -F: '/cpu MHz/ {print $2; exit}' | sed 's/^ *//')")
-
-CPU_CORES=$(lscpu | grep "^CPU(s):" | awk '{print $2}')
-L1_CACHE=$(lscpu | grep "L1d cache:" | awk '{print $3 " " $4}')
-L2_CACHE=$(lscpu | grep "L2 cache:" | awk '{print $3 " " $4}')
-L3_CACHE=$(lscpu | grep "L3 cache:" | awk '{print $3 " " $4}')
-
-echo "$CPU_MODEL"
-echo "$CPU_MHZ"
-echo "CPU Cores : $CPU_CORES"
-echo "CPU Cache : L1:$L1_CACHE / L2:$L2_CACHE / L3:$L3_CACHE"
-
-# Display OS information
-echo -n "OS        : "
-lsb_release -d | awk -F':' '{print $2}' | sed 's/^[ \t]*//'
-
-echo -n "Arch      : "
-uname -m
-
-echo -n "Kernel    : "
-uname -r
-
-echo -n "TCP CC    : "
-sysctl -n net.ipv4.tcp_congestion_control
-
-# Display Swap Information (converted to GB like RAM)
-echo -n "Swap      : "
-free -m | awk '/Swap:/ {total=$2/1024; used=$3/1024; available=$4/1024; printf "%5.1f | %5.1f | %5.1f G\n", available, used, total}'
-
-# Display Memory Information
-echo -n "RAM       : "
-free -m | awk '/Mem:/ {total=$2/1024; used=$3/1024; available=$7/1024; printf "%5.1f | %5.1f | %5.1f G\n", available, used, total}'
-
-# Display Disk Information
-echo -n "Disk      : "
-df -BG --exclude-type overlay --exclude-type tmpfs --total | awk '/total/ {sub(/G/, "", $4); sub(/G/, "", $3); sub(/G/, "", $2); printf "%5s | %5s | %5s G\n", $4, $3, $2}'
-
-echo -n "Public IP : "
-curl -s -m 5 https://ipinfo.io/ip 2>/dev/null || \
-curl -s -m 5 https://api.ipify.org 2>/dev/null || \
-curl -s -m 5 https://icanhazip.com 2>/dev/null || \
-echo "Unable to determine"
-
-echo -e "\n----------------------------------------------------------------------"
+echo "$SEP"
