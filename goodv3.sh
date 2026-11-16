@@ -17,7 +17,7 @@ docker_vmess_80_openai_65504() {
 	#!/bin/bash
 	#read -p "Please enter the IP or domain to replace OPENAI_IP_DOMAIN: " new_domain
 	read -p "openai: ss 65504  IP or domain: " new_domain
-	bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh)
+	bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_D/xray_vmess_80_ws_docker_openai_ss_65504.sh)
 
 	# Define the configuration file path
 	CONFIG_PATH="/root/xray_docker_d/config.yml"
@@ -388,8 +388,8 @@ sub_id=$(az account list --query [].id -o tsv) && az ad sp create-for-rbac --rol
 
 #80_VLESS-WSS-Nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/80_VLESS-WSS-Nginx.sh)'
 
-new_nginx_conf='bash <(curl -4 -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.sh )'
-new_nginx_conf_docker='bash <(curl -4 -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker.sh )'
+new_nginx_conf='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.sh )'
+new_nginx_conf_docker='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker.sh )'
 
 tuic='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tuic.sh )'
 hy_mine='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy_mine.sh )'
@@ -402,9 +402,9 @@ install_nginx='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWin
 docker_socks5_serjs='docker run -d --name socks5 -p 10869:1080 -e PROXY_USER=10869 -e PROXY_PASSWORD=10869 serjs/go-socks5-proxy'
 
 #aws_arm_dd='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "1" -port "54322" -console ttyS0,115200'
-aws_arm_dd='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322" -console ttyS0,115200'
+aws_arm_dd='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 12 -v 64 -p "weijingweiyi" -port "54322" -console ttyS0,115200'
 
-realm2='wget --inet4-only -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
+realm2='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 
 azure_create='bash <(curl -sSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/azure_create.sh)'
 
@@ -417,7 +417,7 @@ ss_rust2='bash <(curl -fsSL  https://raw.githubusercontent.com/xOS/Shadowsocks-R
 pre_InstallNET_modified_chu='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu.sh)'
 pre_InstallNET_modified_chu_debian12='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_InstallNET_modified_chu_debian12.sh )'
 
-dd_debian11='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
+dd_debian11='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"'
 
 xray_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_mianliu.sh)'
 
@@ -425,7 +425,7 @@ trojan_go_mianliu='bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorl
 
 tcpx121721='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcp131721.sh)'
 
-jobs_spiders='wget --inet4-only --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
+jobs_spiders='wget --no-check-certificate -O ~/jobs_spiders.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jobs_spiders.sh   && chmod +x ~/jobs_spiders.sh  && ~/jobs_spiders.sh && source ~/.bashrc  '
 
 ping_local='bash <(curl -fsSL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_local.sh)'
 
@@ -437,10 +437,10 @@ delete_user='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinn
 
 rdp='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp.sh)'
 
-ss_rust='wget --inet4-only -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && ./ss-plugins.sh'
 
 #Linux_tools='wget --inet4-only -N --no-check-certificate https://raw.githubusercontents.com/Misaka-blog/MisakaLinuxToolbox/master/MisakaToolbox.sh && bash MisakaToolbox.sh'
-Linux_tools='wget --inet4-only -N --no-check-certificate https://gitlab.com/misakablog/vps-toolbox/-/raw/main/MisakaToolbox.sh && bash MisakaToolbox.sh'
+Linux_tools='wget -N --no-check-certificate https://gitlab.com/misakablog/vps-toolbox/-/raw/main/MisakaToolbox.sh && bash MisakaToolbox.sh'
 
 iptables_rules='bash <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables.sh)'
 
@@ -448,7 +448,7 @@ disable_all_wg_servers='bash <(curl -sL    https://raw.githubusercontent.com/Hel
 
 latest_arm_kernel='bash <(curl -sL    https://raw.githubusercontent.com/HelloWorldWinning/vps/main/latest_arm_kernel.sh)'
 
-debian_tools='source <(curl -ipv4 -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/debian_tools ) '
+debian_tools='source <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/debian_tools ) '
 
 bashrc='source <(curl -sL   https://raw.githubusercontent.com/HelloWorldWinning/vps/main/bashrc ) '
 
@@ -467,7 +467,7 @@ isp_checker2='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinnin
 #bierendegongju='wget --inet4-only -O jcnfbox.sh https://raw.githubusercontent.com/Netflixxp/jcnf-box/main/jcnfbox.sh && chmod +x jcnfbox.sh && clear && ./jcnfbox.sh'
 
 bierendegongju1='bash <(curl -Ss https://www.idleleo.com/install.sh)'
-bierendegongju2='wget --inet4-only -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh'
+bierendegongju2='wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh" && chmod 700 /root/install.sh && /root/install.sh'
 
 update_Aria2='crontab -l > conf && echo  -e "* */4 * * *   bash /etc/ccaa/upbt.sh >> /tmp/tmp.txt" >> conf && crontab conf && rm -f conf'
 
@@ -483,7 +483,7 @@ open_ipv6='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/v
 
 xui='bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)'
 
-ss_rust='wget --inet4-only -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
+ss_rust='wget -N --no-check-certificate -c -t3 -T60 -O ss-plugins.sh https://git.io/fjlbl && chmod +x ss-plugins.sh && bash ss-plugins.sh'
 
 #nfFree='wget --inet4-only -N https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh && bash menu.sh '
 #nfFree='wget -N https://raw.githubusercontent.com/fscarmen/warp/main/menu.sh && bash menu.sh'
@@ -499,23 +499,23 @@ nf_free3='bash <(curl -fsSL git.io/warp.sh) menu'
 #nf='bash <(curl -L -s check.unlock.media)'
 nf='bash <(curl -L -s media.ispvps.com)'
 
-s5='wget --inet4-only --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
+s5='wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ~/gost.sh'
 
 # dd_oracle='bash <(wget --inet4-only --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 11 -v 64 -a -p  1'
 
-dd_oracle='bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dd_oracle_arm.sh') -d 11 -v 64 -a -p  1'
+dd_oracle='bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dd_oracle_arm.sh') -d 11 -v 64 -a -p  1'
 
 # dd_1='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://git.io/AutoReinstall.sh && bash AutoReinstall.sh'
 
-dd_1='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall2.sh && bash AutoReinstall.sh'
+dd_1='wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall2.sh && bash AutoReinstall.sh'
 
-dd='wget --inet4-only --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall.sh && chmod a+x AutoReinstall.sh && bash AutoReinstall.sh'
+dd='wget --no-check-certificate -O AutoReinstall.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/AutoReinstall.sh && chmod a+x AutoReinstall.sh && bash AutoReinstall.sh'
 
 # tcpx='wget --inet4-only -N --no-check-certificate "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh'
 
 tcpx='bash <(curl -fSsL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx_modified.sh)'
 
-realm='wget --inet4-only -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
+realm='wget -N --no-check-certificate https://git.io/realm.sh && chmod +x realm.sh && ./realm.sh'
 xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xrayMINE)'
 # xray='bash <(curl -sL  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vless.sh)'
 
@@ -534,31 +534,31 @@ speed3='bash <(curl -Lso-  bench.sh) |tee speed3.log'
 # wg='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -r && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i 's/eth0/${net_card}/g'  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 # wg='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && bash  ~/wireguard.sh  -u && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf &&  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   &&wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf && sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf && wg-quick up wg2 && systemctl enable wg-quick@wg2.service'
 
-wg61='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh ; chmod 755  ~/wireguard.sh ; bash ~/wireguard.sh -s ; bash  ~/wireguard.sh  -u ; wg-quick down wg0  ; mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111_oringal.conf  ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service; sysctl -p /etc/sysctl.conf '
+wg61='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh ; chmod 755  ~/wireguard.sh ; bash ~/wireguard.sh -s ; bash  ~/wireguard.sh  -u ; wg-quick down wg0  ; mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111_oringal.conf  ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service; sysctl -p /etc/sysctl.conf '
 
 #backup wg='apt update -y && apt upgrade -y && apt install iptables wireguard -y ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service;sysctl -p /etc/sysctl.conf ;  sysctl -p '
 
 #wg='apt update -y && apt upgrade -y && apt install iptables wireguard -y ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${net_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service;sysctl -p /etc/sysctl.conf ;  sysctl -p '
 
 #### good wg='apt update -y && apt upgrade -y && apt install iptables wireguard -y ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service;sysctl -p /etc/sysctl.conf ;  sysctl -p '
-wg='apt update -y ; apt upgrade -y ; apt install iptables wireguard -y ; wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget --inet4-only -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service;sysctl -p /etc/sysctl.conf ;  sysctl -p '
+wg='apt update -y ; apt upgrade -y ; apt install iptables wireguard -y ; wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf ;  sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg0.conf   ; wg-quick up wg0 ; systemctl enable wg-quick@wg0.service;wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg1.conf ;  wg-quick up wg1 ; systemctl enable wg-quick@wg1.service;  wget -O  /etc/wireguard/wg2.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf ; sed -i "s/eth0/${wg_card}/g"  /etc/wireguard/wg2.conf ; wg-quick up wg2 ; systemctl enable wg-quick@wg2.service;sysctl -p /etc/sysctl.conf ;  sysctl -p '
 
-wg_to_wgcf='wget --inet4-only --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
+wg_to_wgcf='wget --no-check-certificate -O ~/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh && chmod 755  ~/wireguard.sh && bash ~/wireguard.sh -s && wg-quick down wg0   &&  mv  /etc/wireguard/wg0.conf   /etc/wireguard/wg111.conf   && wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0 && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service'
 
-wg_after_warp=' wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0  && wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
+wg_after_warp=' wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_wgcf.conf && wg-quick up wg0  && wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_wgcf.conf && wg-quick up wg1 && systemctl enable wg-quick@wg1.service  && systemctl enable wg-quick@wg0.service'
 
-wg_for_oracle='wget --inet4-only -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_enp0s3.conf && wg-quick up wg0  ; wget --inet4-only -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_enp0s3.conf ; wg-quick up wg1; systemctl enable wg-quick@wg1.service  ; systemctl enable wg-quick@wg0.service'
+wg_for_oracle='wget -O  /etc/wireguard/wg0.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0_enp0s3.conf && wg-quick up wg0  ; wget -O  /etc/wireguard/wg1.conf  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1_enp0s3.conf ; wg-quick up wg1; systemctl enable wg-quick@wg1.service  ; systemctl enable wg-quick@wg0.service'
 
 openvpn='bash <(curl -sL https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh )'
-openvpn2='wget --inet4-only https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh'
+openvpn2='wget https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh'
 v2ray='bash <(curl -s -L https://git.io/v2ray.sh)'
 
 #kcptun='wget --inet4-only --no-check-certificate https://github.com/kuoruan/shell-scripts/raw/master/kcptun/kcptun.sh &&chmod +x ~/kcptun.sh &&bash ~/kcptun.sh'
 kcptun='bash <(curl -s -L https://raw.githubusercontent.com/HelloWorldWinning/vps/main/kcptun_modified.sh)'
 
-ss_go='wget --inet4-only -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
+ss_go='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh'
 ss_latest='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss.sh)'
-ssr='wget --inet4-only -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
+ssr='wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh'
 
 ##		#6.1) eval $wg ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "50 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
 ##		6) eval $wg61 ; eval $ipv4_v6_forwarding;crontab -l > conf && echo  -e "55 5 * * *   bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh)  >/root/feedback_restart_wg_everyday.txt" >> conf && crontab conf && rm -f conf; bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restart_wg_everyday.sh) ;;
@@ -583,7 +583,7 @@ ${Red_font_prefix}8.1${Font_color_suffix} modify_id_of_v2ray
 ${Red_font_prefix}999${Font_color_suffix} kcptun
 ${Red_font_prefix}10${Font_color_suffix} ss_go
 ${Red_font_prefix}11o${Font_color_suffix} dd  aws/aws windows   ,甲骨文, 用默(DHCP) , , GCP 子网掩码mask 255.255.255.0
-${Red_font_prefix}11${Font_color_suffix} bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
+${Red_font_prefix}11${Font_color_suffix} bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/InstallNET_modified_chu.sh') -d 11 -v 64 -p "1" -port "54322"  --ip-mask     --ip-gate  255.255.255.0    --ip-addr   
 ${Red_font_prefix}12${Font_color_suffix} dd_1 azure用默认
 ${Red_font_prefix}13${Font_color_suffix} gost s5 socks5代理用
 ${Red_font_prefix}13.1${Font_color_suffix}reaml2 转发
@@ -599,7 +599,7 @@ ${Red_font_prefix}221${Font_color_suffix} P3terx  netflix free
 ${Red_font_prefix}23${Font_color_suffix} 先 warp 再 wg
 ${Red_font_prefix}24${Font_color_suffix} ipv4 v6转发
 ${Red_font_prefix}25${Font_color_suffix} xray 换统一的uuid 并且 重启
-${Red_font_prefix}26${Font_color_suffix} 安装   wget --inet4-only curl vim tree lsof  sudo htop rsync screen jq net-tools
+${Red_font_prefix}26${Font_color_suffix} 安装   wget curl vim tree lsof  sudo htop rsync screen jq net-tools
 ${Red_font_prefix}27${Font_color_suffix} dd后. /etc/ssh/sshd_config  systemctl restart sshd 新建 ~/.ssh,覆盖安装
 ${Red_font_prefix}28${Font_color_suffix} wg 甲骨文网卡enp0s3专用
 ${Red_font_prefix}29${Font_color_suffix} dd甲骨文 debian 11 密码是:1
@@ -618,7 +618,7 @@ ${Red_font_prefix}41${Font_color_suffix} install docker
 ${Red_font_prefix}41.1${Font_color_suffix} install nginx
 ${Red_font_prefix}41.2${Font_color_suffix} docker MySQL MyNodeQuery
 ${Red_font_prefix}42${Font_color_suffix} install_docker_ccaa
-${Red_font_prefix}43${Font_color_suffix} wget --inet4-only bashrc 。手工输入  source  ~/.bashrc
+${Red_font_prefix}43${Font_color_suffix} wget bashrc 。手工输入  source  ~/.bashrc
 ${Red_font_prefix}44${Font_color_suffix} enable jupyter_notebook_remote_access  jupyter notebook   --port=16666 --ip 0.0.0.0 --no-browser --allow-root
 ${Red_font_prefix}45${Font_color_suffix} 升级到最新的 armv8 debian系统
 ${Red_font_prefix}46${Font_color_suffix} systemctl stop wg-quick@${wg_i} systemctl disable wg-quick@${wg_i}   systemctl stop and disable all wg
@@ -765,7 +765,7 @@ $(
 		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 		/sbin/sysctl -p
 		;;
-	d6) bash <(curl -4LSs "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_d/wireguard_docker_startup_65506.sh") ;;
+	d6) bash <(curl -LSs "https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_d/wireguard_docker_startup_65506.sh") ;;
 	wg)
 		wg-quick down wg0
 		wg-quick down wg1
@@ -787,27 +787,27 @@ $(
 		/sbin/sysctl -p
 		;;
 
-	7z) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
+	7z) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 	7.0) eval $openvpn ;;
 	7.1) eval $openvpn2 ;;
 	openvpn2) eval $openvpn2 ;;
 	50) eval $v2ray ;;
 	8.1) eval $modify_id_of_v2ray ;;
 	999) eval $kcptun ;;
-	99) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/one_file_transfer4.sh) ;;
+	99) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/one_file_transfer4.sh) ;;
 	10) eval $ss_go ;;
 	11o) eval $dd ;;
 	11) eval $dd_debian11 ;;
 	12) eval $dd_1 ;;
 		#	13) eval $s5;;
 		#	13) bash  <(curl -4LkSs https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh )       ;;
-	13) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gost.sh) ;;
+	13) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gost.sh) ;;
 
 	13.1) eval $realm2 ;;
 	14) eval "${nf}" | tee netflix.log ;;
 	15) eval $nfFree ;;
 		#       	155) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 ) ;;
-	155) wget --inet4-only -N --no-check-certificate -O /etc/wireguard/warp3 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 && chmod +x /etc/wireguard/warp3 && sudo ln -s /etc/wireguard/warp3 /usr/bin/warp3 ;;
+	155) wget -N --no-check-certificate -O /etc/wireguard/warp3 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/warp3 && chmod +x /etc/wireguard/warp3 && sudo ln -s /etc/wireguard/warp3 /usr/bin/warp3 ;;
 	16) eval $ss_rust ;;
 		#        17) eval $speed2;;
 	17) bash <(curl -Lso- https://down.wangchao.info/sh/superspeed.sh) ;;
@@ -857,20 +857,20 @@ $(
 	7) eval netstat_filter_quick ;;
 	77) eval netstat_filter ;;
 	5)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/network_monitor_openai.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/network_monitor_openai.sh)
 		;;
 	500) eval ps_filter ;;
 	r) read -p 'script to run': x && ${x} ;;
 	566) eval "$rdp" ;;
 	rdpcli) eval "$rdp" ;;
 	56)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh)
 		;;
 	rdp)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/rdp_docker_33399.sh)
 		;;
 	33389)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rdesktop_33389.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rdesktop_33389.sh)
 		;;
 	57) eval "$delete_user" ;;
 	58)
@@ -899,12 +899,12 @@ $(ip route get 1.2.3.4 | awk '{print $7}')   $('hostname')
 EOF
 		#yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh )
 		#bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh )
-		tmux new-session -d -s pre_ins ' yes | bash  <(curl --ipv4 -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) '
+		tmux new-session -d -s pre_ins ' yes | bash  <(curl  -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified_111.sh ) '
 		;;
 	1112)
-		yes | bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh)
+		yes | bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pre_tcpx.sh)
 		;;
-	1) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh) ;;
+	1) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tcpx.sh_v100.0.1.26_modified.sh) ;;
 	1.1)
 
 		eval 'rm -fr  ~/.ssh ;mkdir  ~/.ssh ; echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7lMkBC39ZW0RFnZZQCrfW2g2mGa2a8TvVd9d+UAfC13oybzrQ4oTEGnJbfhUneDHlo2/sPqN+WsI+xV9bKvUqfv8UfzBk12gB8JRH+gEaj98GqMdiF7YsHLOTDSyUZOEF0WdGORjAFPYOylEQWG/4rDJz7HHTNVoFp5qt8l542ldbSRTNWu8XWsSivEDDkYeb0FeAntn/biz3wXQmwz3myKNcEEBy3UfeysMGDvy/1noL9SQIuyB0Biwtuw4AstykUvoH0AP3nlSc4Cey/n3neCl8di+SBjzWUsICPmJkUQY7szzkFYUbChSO3A9lfmHpJsEGzDiLsF3v2Xdi3UfmfB1MumarW5byR18+KGL2QhCESqLffSONuCQ9UjJdVgdhyKfTTYkjIg8gJ9+1zJbJQq0MBQZw3WQCvyeiaxK/lOAL8CgHGuWDMfshwBgAxiU5mnGICdc253Bdr0pYG3R8CYJZvRmdSfygSZXv3EYDXu1Cz3NBDfdeAU2x6SFygE8= " > ~/.ssh/authorized_keys; sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/g"  /etc/ssh/sshd_config;sed -i "s/#Port 22/Port 54322/g"  /etc/ssh/sshd_config ;sed -i "s/Port 22/Port 54322/g"  /etc/ssh/sshd_config ; sed -i "s/PermitRootLogin no/PermitRootLogin yes/g"  /etc/ssh/sshd_config ; systemctl restart sshd'
@@ -916,34 +916,34 @@ EOF
 
 	mianliu2) eval "$trojan_go_mianliu" ;;
 	3) eval "$xray_mianliu" ;;
-	d80) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
-	xray) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
+	d80) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
+	xray) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
 
 	d80ai) docker_vmess_80_openai_65504 ;;
 
-	d81) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
-	d82) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
-	openvpn) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
-	openvpn82) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
-	openvpn81) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
+	d81) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
+	d82) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
+	openvpn) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
+	openvpn82) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh) ;;
+	openvpn81) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh) ;;
 
-	65504) bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh') ;;
+	65504) bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh') ;;
 	411) eval "$pre_InstallNET_modified_chu" ;;
 	444) eval "$pre_InstallNET_modified_chu_debian12" ;;
 	4)
-		bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current.sh')
+		bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current.sh')
 		;;
 	dd13)
-		bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current13.sh')
+		bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/CHU_reinstall_debian_current13.sh')
 		;;
 	ddupdate)
 		curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 13 --username "root" --password "password" --ssh-port 54322 && echo "rebooting in 4s, Ctrl-C to cancel" && sleep 4 && reboot
 		;;
-	4441) bash <(wget --inet4-only --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh') ;;
+	4441) bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh') ;;
 	65) eval "$ss_rust2" ;;
 		#     66)eval "$ping_local_fast" ;;
 		#        66) bash  <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ping_ask.sh ) ;;
-	66) bash <(curl --ipv4 -Ls http://jingyi.today:9090/ping_ask.sh) ;;
+	66) bash <(curl -Ls http://jingyi.today:9090/ping_ask.sh) ;;
 
 	67) eval "$html" ;;
 	68)
@@ -971,7 +971,7 @@ EOF
 
 	8) echo -e "${Red_font_prefix}${Bold_prefix}Listening${Font_color_suffix}. Waiting for incoming data..." && nc -l 9 -q 1 | tar xfvz - ;;
 		#		74)read -p 'ip or domain =>': IPIP && tar cfzv  - *  | nc -q 1 ${IPIP} 9 ;;
-	9) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
+	9) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sendfiles.sh) ;;
 	75) docker run -itd --name az --restart always -p 8888:8888 dqjdda/azure-manager && docker exec -it az flask admin 1 19860826 ;;
 	75.1)
 		echo '
@@ -992,7 +992,7 @@ https://zhile.one/archives/1404.html
 		;;
 
 	76)
-		wget --inet4-only -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
+		wget -O AWS-Panel-linux-amd64.zip https://github.com/Yuzuki616/AWS-Panel/releases/download/v0.3.6/AWS-Panel-linux-amd64.zip
 		unzip AWS-Panel-linux-amd64.zip
 		chmod 777 AWS-Panel-linux-amd64
 		nohup ./AWS-Panel-linux-amd64 >/dev/null 2>&1 &
@@ -1000,7 +1000,7 @@ https://zhile.one/archives/1404.html
 	1777) eval "${tuic}" ;;
 	78) eval "${new_nginx_conf}" ;;
 	79) eval "${new_nginx_conf_docker}" ;;
-	799) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker_html.sh) ;;
+	799) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf_docker_html.sh) ;;
 	80) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/new_nginx_conf.txt.sh ;;
 	81) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh) ;;
 	nvim_dc) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh) ;;
@@ -1008,39 +1008,39 @@ https://zhile.one/archives/1404.html
 	nvim_cli) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/install_neovim_bin.sh) ;;
 	81a) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/bundle.sh) ;;
 	82) git clone https://github.com/HelloWorldWinning/vps.git ;;
-	83) curl --ipv4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh | bash ;;
-	84) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh) ;;
-	85) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh) ;;
-	86) curl -4L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh | tee testvps.log ;;
+	83) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/md2html.py.sh | bash ;;
+	84) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ports_transfer.sh) ;;
+	85) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/clean_footprint.sh) ;;
+	86) curl -L https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh | tee testvps.log ;;
 	866) bash <(curl -fSsL yabs.sh) -i ;;
 
 	87) prefer_ipv4 ;;
 	88) option_88_function ;;
 	89) curl https://raw.githubusercontent.com/HelloWorldWinning/vps/main/some_notes.sh ;;
-	90) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
-	ohmyposhold) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
-	900) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
-	ohmyposh) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
-	91) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh) ;;
-	cloudreve) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
-	93) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh) ;;
-	ft) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh) ;;
-	2) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path_quick.sh) ;;
-	22) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh) ;;
-	d2) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh) ;;
+	90) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
+	ohmyposhold) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh) ;;
+	900) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
+	ohmyposh) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh.sh) ;;
+	91) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hysteria2.sh) ;;
+	cloudreve) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_cloudreve.sh) ;;
+	93) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_resolvconf.sh) ;;
+	ft) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ft.sh) ;;
+	2) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path_quick.sh) ;;
+	22) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docker_path.sh) ;;
+	d2) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh) ;;
 	0)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh)
-		bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sys_info.sh)
+		bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_check3.sh)
 		;;
 
-	95) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
-	swap) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
-	96) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_txt.sh) ;;
-	97) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tika.sh) ;;
-	988) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh) ;;
-	981) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deploy_token_service_backend_webpage.sh) ;;
-	98) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_docker_compose_google_todynalist_pdftotxt.sh) ;;
-	980) bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/url_to_text_docker_d/deploy-extractor_docker.sh) ;;
+	95) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
+	swap) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swap.sh) ;;
+	96) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_txt.sh) ;;
+	97) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tika.sh) ;;
+	988) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pdf_to_html_combined_tika.sh) ;;
+	981) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deploy_token_service_backend_webpage.sh) ;;
+	98) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_docker_compose_google_todynalist_pdftotxt.sh) ;;
+	980) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/url_to_text_docker_d/deploy-extractor_docker.sh) ;;
 	sncli) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/sncli.sh) ;;
 	100) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter16666.sh) ;;
 	lab) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/lab_install.sh) ;;
@@ -1048,21 +1048,21 @@ https://zhile.one/archives/1404.html
 	1011) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader.sh) ;;
 	10111) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/start_book_docker_instance.sh) ;;
 	d189)
-		bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D3/setup-readwise_highlights_viewer.sh')
+		bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/book1321_readwise_highlight_D3/setup-readwise_highlights_viewer.sh')
 		;;
 	10112) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/calibre_linux_setup_ebook_online_reader__docker_d2/public_everyone_start_book_docker_instance.sh) ;;
 	d88) yes | bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/typecho_docker_setup.sh) ;;
 		#	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter.sh )  ;;
 		#	10122) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_docker/run_docker.sh )  ;;
-	187) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh) ;;
+	187) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh) ;;
 		#	       	bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter_d/run_highlight_service_docker.sh )  ;;
-	docker_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
+	docker_install) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
 	101)
 		#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter1666.sh )
 		#bash  <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/jupyter166.sh )
 		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh)
 		bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh)
-		bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh)
+		bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh)
 		echo "======================================="
 		echo "sleep 3 seconds..."
 		sleep 3
@@ -1072,14 +1072,14 @@ https://zhile.one/archives/1404.html
 		#netstat -tulnp |grep 166 | wc -l
 		;;
 
-	d16) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh) ;;
+	d16) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh) ;;
 	102) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/cn_coding.sh) ;;
 	103) bash <(curl -sLk yabs.sh) -i ;;
 	104) yes | bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ta-lib.sh) ;;
 	105) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/branch.sh) ;;
 	1066) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder.sh) ;;
-	7777) bash <(curl -4Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh) ;;
-	7788) bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh) ;;
+	7777) bash <(curl -Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh) ;;
+	7788) bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh) ;;
 	107) curl -sL yabs.sh | bash -s -- -i ;;
 
 	108) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ddp_master.sh) ;;
@@ -1087,7 +1087,7 @@ https://zhile.one/archives/1404.html
 	ax) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown.sh) ;;
 	a) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh) ;;
 
-	b) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh) ;;
+	b) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh) ;;
 	tmux) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh) ;;
 	cccc) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmux_d/tmux_install.sh) ;;
 	d) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/share_data_to_accessor.sh) ;;
@@ -1095,16 +1095,16 @@ https://zhile.one/archives/1404.html
 	i) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/do_zip.sh) ;;
 	g) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/distri.sh) ;;
 	h) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/init_github_project.sh) ;;
-	d3010) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_docker_affine.sh) ;;
+	d3010) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_docker_affine.sh) ;;
 	666) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/temp_bash_d/2024-03-20_14-32-34.sh) ;;
-	d443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
-	outline_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
-	outline) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
-	outline_tik) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_authentik_setup.sh) ;;
-	udp54000) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh) ;;
-	udp_re) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh) ;;
-	run3g) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh) ;;
-	backup) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh) ;;
+	d443) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
+	outline_install) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
+	outline) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_d/outline_setup_openai.sh) ;;
+	outline_tik) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_authentik_setup.sh) ;;
+	udp54000) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh) ;;
+	udp_re) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/custom_udp_redirect.sh) ;;
+	run3g) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tmpfs_manager_run.sh) ;;
+	backup) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/add_rsyncbackup_user.sh) ;;
 		#	dd) yes |docker system prune -a -f --volumes  ;;
 	dd) docker system prune -a -f --volumes ;;
 	d2) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/overlay-storage-inspector.sh) ;;
@@ -1115,78 +1115,78 @@ https://zhile.one/archives/1404.html
 	gcp0) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_gcp_login_email2.sh) ;;
 	gcp) curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ssh-keys" -H "Metadata-Flavor: Google" | grep -oP '"userName":"\K[^"]+' | head -n 1 ;;
 	dttt) ins_dt ;;
-	hy2) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh) ;;
-	tv) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh) ;;
-	bbrv3) bash <(curl -4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_bbrv3.sh) ;;
-	vpn_tools) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh) ;;
-	chrony) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh) ;;
-	d7799) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh) ;;
-	webtop) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_webtop.sh) ;;
-	wg_newer) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh) ;;
-	nb_docker) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
-	nb_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
-	netbird_cli) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
-	nb) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
-	nnn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_manager_gm.sh) ;;
-	nn) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh) ;;
-	n) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
-	d1777) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh) ;;
-	savefile) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
-	d7778) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
-	gdu) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh) ;;
-	p) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh) ;;
-	netbird_de) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
-	nb_de) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
-	re_info) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh) ;;
-	run_inodes) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh) ;;
-	restic) bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh) ;;
-	f_cache) curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash ;;
-	install_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
-	install_affine) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh) ;;
-	notepad) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
-	3090) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
-	notepad_pw) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
-	3099) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
-	install_flatnote) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh) ;;
-	install_wf) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
-	install_standard_note) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
-	4433) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
-	install_standard_note_443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
-	neo4j) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
-	journald_conf_set) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
-	ipv6_one) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_one.sh) ;;
-	ipv6_many) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_many.sh) ;;
-	docu) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docusaurus_manager.sh) ;;
-	outline_coll) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
-	outline_list) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
-	xray_reality_tcp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
-	rt) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
-	xray_tls_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
-	xray_tls_cl) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
-	vision) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
-	xray_reality_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp_reality_maneger.sh) ;;
-	xray_grpc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc_maneger_docker.sh) ;;
-	xray_xhttp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp3_maneger_docker_xhttp.sh) ;;
-	docmost) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docmost_setup.sh) ;;
-	test_reality) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/test_reality.sh) ;;
-	up_v6_gcp_gm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gm.sh) ;;
-	up_v6_gcp_gp) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
-	up_v6_aws) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/up_v6_aws.sh) ;;
-	copier) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/copier.sh) ;;
-	t) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokentool) ;;
+	hy2) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh) ;;
+	tv) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh) ;;
+	bbrv3) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_bbrv3.sh) ;;
+	vpn_tools) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh) ;;
+	chrony) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh) ;;
+	d7799) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh) ;;
+	webtop) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_webtop.sh) ;;
+	wg_newer) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh) ;;
+	nb_docker) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh) ;;
+	nb_cli) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
+	netbird_cli) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
+	nb) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh) ;;
+	nnn) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_manager_gm.sh) ;;
+	nn) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-viewing_more.sh) ;;
+	n) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/command_netbird-viewing_more.sh) ;;
+	d1777) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh) ;;
+	savefile) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
+	d7778) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh) ;;
+	gdu) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh) ;;
+	p) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh) ;;
+	netbird_de) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
+	nb_de) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/deregister_netbird.sh) ;;
+	re_info) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/redirect_info.sh) ;;
+	run_inodes) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/run-mount-inode-manager.sh) ;;
+	restic) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/restic_setup_d/restic_setup.sh) ;;
+	f_cache) curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash ;;
+	install_dc) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh) ;;
+	install_affine) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/affine_d/affine_setup.sh) ;;
+	notepad) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
+	3090) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh) ;;
+	notepad_pw) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
+	3099) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh) ;;
+	install_flatnote) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_flatnotes.sh) ;;
+	install_wf) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/writefreely_setup.sh) ;;
+	install_standard_note) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
+	4433) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/4433_domain.sh) ;;
+	install_standard_note_443) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/443_trusted_domain_use.sh) ;;
+	neo4j) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Neo4j_setup.sh) ;;
+	journald_conf_set) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/journald_conf_set.sh) ;;
+	ipv6_one) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_one.sh) ;;
+	ipv6_many) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ipv6_many.sh) ;;
+	docu) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docusaurus_manager.sh) ;;
+	outline_coll) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
+	outline_list) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/outline_collections_list.sh) ;;
+	xray_reality_tcp) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
+	rt) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_reality_maneger.sh) ;;
+	xray_tls_gp) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_gp.sh) ;;
+	xray_tls_cl) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
+	vision) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_tls_maneger_cl.sh) ;;
+	xray_reality_xhttp) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp_reality_maneger.sh) ;;
+	xray_grpc) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_grpc_maneger_docker.sh) ;;
+	xray_xhttp) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_xhttp3_maneger_docker_xhttp.sh) ;;
+	docmost) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/docmost_setup.sh) ;;
+	test_reality) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/test_reality.sh) ;;
+	up_v6_gcp_gm) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gm.sh) ;;
+	up_v6_gcp_gp) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tools/up_v6_gcp_gp.sh) ;;
+	up_v6_aws) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/up_v6_aws.sh) ;;
+	copier) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/copier.sh) ;;
+	t) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tokentool) ;;
 		#mm) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.sh) ;;
 		#mm) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py) ;;
-	mm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py -o /usr/local/bin/mm && chmod +x /usr/local/bin/mm && echo "✅ Done! 'mm' command installed successfully." || echo "❌ Installation failed." ;;
-	mmc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mmc -o /usr/local/bin/mmc && chmod +x /usr/local/bin/mmc && echo "✅ Done! 'mmc' command installed successfully." || echo "❌ Installation failed." ;;
-	rmm) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap_html_to_outline.py -o /usr/local/bin/rmm && chmod +x /usr/local/bin/rmm && echo "✅ Done! 'rmm' cormmand installed successfully." || echo "❌ Installation failed." ;;
+	mm) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap.py -o /usr/local/bin/mm && chmod +x /usr/local/bin/mm && echo "✅ Done! 'mm' command installed successfully." || echo "❌ Installation failed." ;;
+	mmc) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mmc -o /usr/local/bin/mmc && chmod +x /usr/local/bin/mmc && echo "✅ Done! 'mmc' command installed successfully." || echo "❌ Installation failed." ;;
+	rmm) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markmap_html_to_outline.py -o /usr/local/bin/rmm && chmod +x /usr/local/bin/rmm && echo "✅ Done! 'rmm' cormmand installed successfully." || echo "❌ Installation failed." ;;
 		#wos) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib) ;;
 		#tag) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat) ;;
-	webdav) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
-	nextcloud_aio) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;
-	nextcloud_doc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_Onlyoffice_publicip_domain.sh) ;;
-	nextcloud) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_publicip_domain.sh) ;;
+	webdav) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/WebDAV.sh) ;;
+	nextcloud_aio) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_AIO_manager.sh) ;;
+	nextcloud_doc) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_Onlyoffice_publicip_domain.sh) ;;
+	nextcloud) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/Nextcloud_publicip_domain.sh) ;;
 
-	acme_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh) ;;
+	acme_install) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh) ;;
 		#acme_install) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
 		#install_acme) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh) ;;
 	acme) bash /usr/local/bin/acme-manager ;;
@@ -1198,36 +1198,36 @@ https://zhile.one/archives/1404.html
 
 	nq) bash <(curl -sL https://run.NodeQuality.com) 2>&1 | tee /root/nodequality_$(date +%Y%m%d_%H%M%S).log ;;
 
-	wos_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
-	sco_bib) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
-	tt) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
-	oo) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed" ;;
-	pl) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/extract_project_digest.py -o /usr/local/bin/pl && chmod +x /usr/local/bin/pl && echo "pl success installed" ;;
-	pp) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pp -o /usr/local/bin/pp && chmod +x /usr/local/bin/pp && echo "pp success installed" ;;
+	wos_bib) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib -o /usr/local/bin/wos_bib && chmod +x /usr/local/bin/wos_bib ;;
+	sco_bib) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/sco_bib && chmod +x /usr/local/bin/sco_bib ;;
+	tt) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tt -o /usr/local/bin/tt && chmod +x /usr/local/bin/tt && echo "tt tokencount installed" ;;
+	oo) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pushing_files.sh -o /usr/local/bin/oo && chmod +x /usr/local/bin/oo && echo "oo success installed" ;;
+	pl) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/extract_project_digest.py -o /usr/local/bin/pl && chmod +x /usr/local/bin/pl && echo "pl success installed" ;;
+	pp) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/pp -o /usr/local/bin/pp && chmod +x /usr/local/bin/pp && echo "pp success installed" ;;
 
-	refine) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
+	refine) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/refine_bib_by_filter.py -o /usr/local/bin/refine && chmod +x /usr/local/bin/refine ;;
 
-	get_tc) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
-	me) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
+	get_tc) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wos_bib_py -o /usr/local/bin/get_tc && chmod +x /usr/local/bin/get_tc ;;
+	me) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/mermaid.py -o /usr/local/bin/me && chmod +x /usr/local/bin/me && echo "mermaid me installed" ;;
 
-	cx) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed" ;;
-	tagcat) curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat -o /usr/local/bin/tagcat && chmod +x /usr/local/bin/tagcat && echo "tagcat installed" ;;
+	cx) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/compress_xz -o /usr/local/bin/cx && chmod +x /usr/local/bin/cx && echo "cx installed" ;;
+	tagcat) curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tagcat -o /usr/local/bin/tagcat && chmod +x /usr/local/bin/tagcat && echo "tagcat installed" ;;
 
-	anytls) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
-	naive_dc) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
-	8543) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
-	naive_cli) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
-	8443_cli) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
-	8443) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_8443_docker.sh) ;;
-	singbox) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
-	qb) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
-	16080) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
-	ccaa2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaa2.sh) ;;
-	file) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh) ;;
-	nb_dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh) ;;
-	dns) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh) ;;
-	dns2) bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_openai.sh) ;;
-	strip_test) python <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/strip_test.py) ;;
+	anytls) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/anytls.sh) ;;
+	naive_dc) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
+	8543) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_maneger.sh) ;;
+	naive_cli) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
+	8443_cli) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_systemctl_maneger.sh) ;;
+	8443) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/naive_8443_docker.sh) ;;
+	singbox) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/singbox_manager.sh) ;;
+	qb) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
+	16080) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/qBittorrent_File_Browser_install.sh) ;;
+	ccaa2) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ccaa2.sh) ;;
+	file) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh) ;;
+	nb_dns) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh) ;;
+	dns) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh) ;;
+	dns2) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_openai.sh) ;;
+	strip_test) python <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/strip_test.py) ;;
 	smb) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/smb_install_manager_debugged.sh) ;;
 	km) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-km.sh) ;;
 	ds) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-ds.sh) ;;
@@ -1240,9 +1240,9 @@ https://zhile.one/archives/1404.html
 
 		#	00)eval "exit";;
 	q) eval "exit" ;;
-	dd_step1) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step1-rescue-reimage_new.sh) ;;
-	dd_step2) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step2-normal-finalize_new.sh) ;;
-	wg_re) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/prepare-wireguard-vps.sh) ;;
+	dd_step1) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step1-rescue-reimage_new.sh) ;;
+	dd_step2) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/step2-normal-finalize_new.sh) ;;
+	wg_re) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/prepare-wireguard-vps.sh) ;;
 
 	899) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_install_899.sh) ;;
 
@@ -1254,8 +1254,8 @@ https://zhile.one/archives/1404.html
 	zram) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh) ;;
 	#g_s) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh) ;;
 	gss) curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh -o /usr/local/bin/gss && chmod +x /usr/local/bin/gss && echo "success" ;;
-	raw_install) curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install ;;
-	raw) bash <(curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh) ;;
+	raw_install) curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install ;;
+	raw) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh) ;;
 
 	*) echo "wrong input" ;;
 	esac

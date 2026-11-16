@@ -25,7 +25,7 @@ trap cleanup_tmp EXIT
 
 ##############################
 
-curl -4Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
+curl -Lo /tmp/acme_one_time_install_after_rebuild.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/acme_one_time_install_after_rebuild.sh
 chmod +x /tmp/acme_one_time_install_after_rebuild.sh
 nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
 
@@ -163,7 +163,7 @@ git config --global core.editor "vim"
 
 #apt install docker-compose -y
 ### compose v2 install
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v2_claude.sh)
 #####bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_docker_compose_v1_claude.sh )
 
 sleep 4
@@ -244,15 +244,15 @@ mkdir -p /root/themes/
 
 #wget   --inet4-only  -O  /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
-wget --inet4-only -O /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
+wget  -O /root/themes/gmay3.omp.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gmay3.omp.json
 
 mkdir -p ~/.vscode-server/data/Machine/
 sleep 1
-wget --inet4-only -O ~/.vscode-server/data/Machine/settings.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
-wget --inet4-only -O ~/.vscode-server/data/Machine/custom.css https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/custom.css
+wget  -O ~/.vscode-server/data/Machine/settings.json https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/settings_vscode.json
+wget  -O ~/.vscode-server/data/Machine/custom.css https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/custom.css
 
 # ipv4_v6_forwarding='bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh  )'
-bash <(curl --ipv4 -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
+bash <(curl  -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 #
 #
 ##### vim
@@ -286,11 +286,11 @@ source $HOME/.bashrc
 ###curl -4s https://ohmyposh.dev/install.sh | bash -s
 # export env1=value1 && export env2=value2 && bash my.sh
 
-(export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh && export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache) && (curl -4s https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh | bash -s)
+(export XDG_CACHE_HOME=$HOME/.cache/oh-my-posh && export OMP_CACHE_DIR=$HOME/.oh-my-posh/cache) && (curl -s https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ohmyposh_23_7_2.sh | bash -s)
 
 mkdir -p /root/.config/neofetch
 
-wget -4 -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
+wget  -O /root/.config/neofetch/config.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/neofetch_config.conf
 
 cat <<"EOF" >>/etc/sysctl.conf
 net.core.rmem_max=26214400
@@ -371,14 +371,14 @@ EOF
 ########### vmess end
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh )
 
-bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh')
+bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ss-rust-launch-tcp-only.sh')
 
-bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh)
+bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D/start_up_openvpn-server_z.sh)
 
-bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh)
+bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/openvpn-server_z_good_claude_D_udp_82/start_up_openvpn-server_z_udp.sh)
 
 # 106) 7777
-bash <(curl -4Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh)
+bash <(curl -Lsk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/upload_folder_d/run_docker_compose.sh)
 # 101)
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/start_jupyter166_1666_instances.sh)
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/markdown_render_dockerfile/markdown_render_docker.sh)
@@ -408,14 +408,14 @@ else
 	curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/echo_To_bashrc.txt >>~/.bashrc
 fi
 
-bash <(curl --ipv4 -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh)
+bash <(curl  -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/swapDD.sh)
 
-curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/python_D/cleanpy.sh >/usr/bin/cpy
+curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/python_D/cleanpy.sh >/usr/bin/cpy
 chmod +x /usr/bin/cpy
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/disable_ssh_password.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/disable_ssh_password.sh)
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vifm_installer.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vifm_installer.sh)
 
 rm /root/crontab.bak
 rm /root/pre_tcpx.sh
@@ -455,17 +455,17 @@ apt upgrade -y
 apt update -y
 apt install iptables -y
 apt install wireguard -y
-wget --inet4-only -O /etc/wireguard/wg0.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf
+wget  -O /etc/wireguard/wg0.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg0.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg0.conf
 systemctl enable wg-quick@wg0.service
 systemctl restart wg-quick@wg0.service
 
-wget --inet4-only -O /etc/wireguard/wg1.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf
+wget  -O /etc/wireguard/wg1.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg1.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg1.conf
 systemctl enable wg-quick@wg1.service
 systemctl restart wg-quick@wg1.service
 
-wget --inet4-only -O /etc/wireguard/wg2.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf
+wget  -O /etc/wireguard/wg2.conf https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg2.conf
 sed -i "s/eth0/${wg_card}/g" /etc/wireguard/wg2.conf
 systemctl enable wg-quick@wg2.service
 systemctl restart wg-quick@wg2.service
@@ -476,8 +476,8 @@ systemctl restart wg-quick@wg2.service
 
 #  bash  <(curl -Ls  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh )
 sleep 6
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh)
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables_55000_rules.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wgiptabels.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/iptables_55000_rules.sh)
 bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_forwarding.sh)
 
 #bash  <(curl -4LSs  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/udp_redirect54000_54999.sh )
@@ -487,15 +487,15 @@ bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ip_
 ###########wg  end
 
 #apt install -y zoxide
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/fzf_d/config_fzf.sh)
 
 # startup_port16_py_jupyter.sh
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/16_d/startup_port16_py_jupyter.sh)
 
 #bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install-helix.sh   )
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rust.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_rust.sh)
 
-bash <(curl -f4sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_highlight_converter__D_fastapi_docker2/calibre_highlights_converter_dockerup.sh)
 
 ##########
 ##########
@@ -525,7 +525,7 @@ rm /tmp/tmp-move.sh /tmp/dt_function
 
 dpkg --configure -a
 
-wget -4 https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && mv dysk /usr/local/bin/
+wget  https://dystroy.org/dysk/download/x86_64-linux/dysk -O dysk && chmod +x dysk && mv dysk /usr/local/bin/
 
 #plain=off
 #oldtext=darkred
@@ -541,15 +541,15 @@ EOF
 apt install fuse -y
 apt install fuse -y
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh)
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/nginx-fileserver-setup_7799.sh)
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/1777_d/startup_port1777_md.sh)
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/file_recv_ap2/startup_port7778_file_save.sh)
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dust_gdu_install.sh)
 
 apt update
 apt full-upgrade -y
@@ -562,14 +562,14 @@ systemctl start systemd-timesyncd
 timedatectl set-ntp true
 #
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/chrony.sh)
 
 #bash <(curl -fSsL4  https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_netbird_docker.sh )
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird_cli.sh)
 
-bash <(curl -fSsL4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh)
+bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/wg_newer.sh)
 
-bash <(curl -4Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vim.d/nvim_dc.sh)
 ######## for nvim start
 
 pip install pynvim
@@ -584,7 +584,7 @@ npm i -g typescript-language-server typescript
 apt install -y bsdmainutils
 apt install -y bc
 
-curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
+curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/_f_cached_setup.sh | bash
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad.sh)
 #bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/setup_Minimalist_Web_Notepad_passwd.sh)
 
@@ -758,18 +758,18 @@ install_openssh_server_forcefully() {
 #chmod +x /tmp/acme_one_time_install_after_rebuild.sh
 #nohup bash /tmp/acme_one_time_install_after_rebuild.sh >/var/log/acme_install.log 2>&1 &
 
-bash <(curl -4Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh)
+bash <(curl -Lk https://raw.githubusercontent.com/HelloWorldWinning/vps/main/7788_web_new/setup_7788_web_download_docker.sh)
 
 apt install -y socat
 #install_openssh_server_forcefully 180s 90s 5s
 install_openssh_server_forcefully 180s 90s 5s || echo "[WARN] openssh-server step failed, continuing" >&2
 
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme-renew-all.sh)
 ##bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh)
-curl -4Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
+curl -Lo /tmp/install_acme.sh https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_acme.sh
 chmod +x /tmp/install_acme.sh
 bash -x /tmp/install_acme.sh
-bash <(curl -4LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
+bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_filebrowser.sh)
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/netbird-hosts_install.sh)
 
 #rm -r /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html
@@ -777,7 +777,7 @@ bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/ne
 #source "$HOME/.cargo/env" && rustup toolchain install stable
 #source "$HOME/.cargo/env" && rustup component add rust-analyzer
 #  dns_test_claude.sh
-bash <(curl -4Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
+bash <(curl -Lk 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/dns_test_claude.sh')
 
 pip install --break-system-packages tiktoken
 
@@ -787,7 +787,7 @@ set +e # safety net in case anything above re-enabled errexit
 B=https://raw.githubusercontent.com/HelloWorldWinning/vps/main
 
 install_bin() { # $1 = repo file, $2 = destination path
-	if curl -4fsSL "$B/$1" -o "$2" && chmod 0755 "$2"; then
+	if curl -fsSL "$B/$1" -o "$2" && chmod 0755 "$2"; then
 		echo "[OK]   $2"
 	else
 		echo "[FAIL] $2 (from $1)" >&2
@@ -810,7 +810,7 @@ ls -l /usr/local/bin/{cx,k,i,ii,kk,kl,kn,tt,o,oo}
 
 bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh)
 
-curl -Ls4 https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install
+curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install
 
 rm -f /root/crontab.bak /root/pre_tcpx.sh
 
