@@ -10,8 +10,8 @@ set -Eeuo pipefail
 ############################
 # Tunables (env overrides) #
 ############################
-XRAY_DIR="${XRAY_DIR:-/root/xray_docker_d}"
-XRAY_CONTAINER_NAME="${XRAY_CONTAINER_NAME:-xray_docker_instance}"
+XRAY_DIR="${XRAY_DIR:-/root/xray_docker_80_d}"
+XRAY_CONTAINER_NAME="${XRAY_CONTAINER_NAME:-xray_docker_80_instance}"
 IMAGE_REPO="${IMAGE_REPO:-ghcr.io/xtls/xray-core}"
 CONFIG_URL="${CONFIG_URL:-https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config}"
 REFRESH_CONFIG="${REFRESH_CONFIG:-1}"   # 1 = refresh config.json from CONFIG_URL, 0 = keep existing
