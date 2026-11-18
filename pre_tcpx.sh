@@ -819,7 +819,8 @@ echo "---- configure zram ----"
 curl -fLSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh \
 	-o /tmp/install_zram.sh || exit 1
 
-bash /tmp/install_zram.sh
+#setsid -w bash /tmp/install_zram.sh </dev/null || exit 1
+ZRAM_NO_MENU=1 setsid -w bash /tmp/install_zram.sh </dev/null || exit 1
 
 echo "---- zram configuration finished ----"
 
