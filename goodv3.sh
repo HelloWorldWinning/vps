@@ -1256,6 +1256,8 @@ https://zhile.one/archives/1404.html
 	gss) curl -fsSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/gemini_switcher.sh -o /usr/local/bin/gss && chmod +x /usr/local/bin/gss && echo "success" ;;
 	raw_install) curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install ;;
 	raw) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh) ;;
+	xrayd) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/xray_docker_multi.sh) ;;
+	xraydrandom) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/xray_docker_multi_4_good.sh) ;;
 
 	*) echo "wrong input" ;;
 	esac
