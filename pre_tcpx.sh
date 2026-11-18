@@ -809,10 +809,18 @@ install_bin pushing_files.sh /usr/local/bin/oo
 echo "---- verify ----"
 ls -l /usr/local/bin/{cx,k,i,ii,kk,kl,kn,tt,o,oo}
 
-bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh)
+#bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh)
 
 curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/raw_note/main/install_manger.sh | bash -s -- --install
 
 rm -f /root/crontab.bak /root/pre_tcpx.sh
+echo "---- configure zram ----"
+
+curl -fLSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_zram.sh \
+	-o /tmp/install_zram.sh || exit 1
+
+bash /tmp/install_zram.sh
+
+echo "---- zram configuration finished ----"
 
 reboot
