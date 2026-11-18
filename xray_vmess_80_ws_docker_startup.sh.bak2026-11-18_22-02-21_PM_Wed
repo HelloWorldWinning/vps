@@ -1,0 +1,380 @@
+#!/usr/bin/env bash
+#
+# xray_vmess_80_ws_docker_startup.sh
+#
+# One-shot installer/updater for Xray-Core (VMess over WS on :80) via Docker + Compose.
+# Safe to run repeatedly. Installs fresh if missing; updates in-place if present.
+#
+set -Eeuo pipefail
+
+############################
+# Tunables (env overrides) #
+############################
+XRAY_DIR="${XRAY_DIR:-/root/xray_docker_d}"
+XRAY_CONTAINER_NAME="${XRAY_CONTAINER_NAME:-xray_docker_instance}"
+IMAGE_REPO="${IMAGE_REPO:-ghcr.io/xtls/xray-core}"
+CONFIG_URL="${CONFIG_URL:-https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vmess_80_ws.config}"
+REFRESH_CONFIG="${REFRESH_CONFIG:-1}"   # 1 = refresh config.json from CONFIG_URL, 0 = keep existing
+XRAY_TAG="${XRAY_TAG:-}"                # Pin to a tag (e.g. v25.9.11 or 25.9.11). Empty = auto
+CLEAN_OLD_IMAGE="${CLEAN_OLD_IMAGE:-1}" # Remove previous image after successful start
+STARTUP_WAIT_SECS="${STARTUP_WAIT_SECS:-30}"
+
+####################################
+# Pretty logging & small utilities #
+####################################
+if [[ -t 1 ]]; then
+	NC=$'\033[0m'
+	B=$'\033[1m'
+	RED=$'\033[31m'
+	GREEN=$'\033[32m'
+	YELLOW=$'\033[33m'
+	BLUE=$'\033[34m'
+else
+	NC=""
+	B=""
+	RED=""
+	GREEN=""
+	YELLOW=""
+	BLUE=""
+fi
+
+log() { # level msg...
+	local lvl="$1"
+	shift || true
+	local prefix
+	case "$lvl" in
+	INFO) prefix="${BLUE}[INFO]${NC}" ;;
+	WARN) prefix="${YELLOW}[WARN]${NC}" ;;
+	ERROR) prefix="${RED}[ERROR]${NC}" ;;
+	OK) prefix="${GREEN}[OK]${NC}" ;;
+	*) prefix="[${lvl}]" ;;
+	esac
+	# *** IMPORTANT: log to STDERR so stdout stays clean for captured values ***
+	printf "%s %s\n" "${prefix}" "$*" >&2
+}
+
+# Make failures noisy with context
+trap 'rc=$?; log ERROR "Aborted (exit ${rc}). See messages above."; exit $rc' ERR
+
+# Retry helper: retry <attempts> <sleep_seconds> <cmd...>
+retry() {
+	local attempts="$1"
+	shift
+	local sleep_s="$1"
+	shift
+	local i=1
+	until "$@"; do
+		if ((i >= attempts)); then return 1; fi
+		log WARN "Attempt ${i}/${attempts} failed; retrying in ${sleep_s}s: $*"
+		sleep "${sleep_s}"
+		((i++))
+	done
+}
+
+# Run with timeout if available
+with_timeout() {
+	local secs="$1"
+	shift
+	if command -v timeout >/dev/null 2>&1; then
+		timeout --foreground "${secs}" "$@"
+	else
+		"$@"
+	fi
+}
+
+# Simple lock to avoid concurrent runs
+LOCK_FD=9
+LOCK_FILE="/var/lock/xray_vmess_80_ws.lock"
+mkdir -p "$(dirname "$LOCK_FILE")"
+if command -v flock >/dev/null 2>&1; then
+	exec {LOCK_FD}>"$LOCK_FILE"
+	if ! flock -n "$LOCK_FD"; then
+		log ERROR "Another run is in progress. Exiting."
+		exit 1
+	fi
+fi
+
+require_root() {
+	if [[ "$(id -u)" -ne 0 ]]; then
+		log ERROR "Please run as root. Try: sudo bash $0"
+		exit 1
+	fi
+}
+
+ensure_pkg() {
+	local pkg="$1"
+	if command -v "$pkg" >/dev/null 2>&1; then return 0; fi
+	if command -v apt-get >/dev/null 2>&1; then
+		export DEBIAN_FRONTEND=noninteractive
+		retry 3 3 apt-get update -y
+		retry 3 3 apt-get install -y "$pkg"
+	elif command -v dnf >/dev/null 2>&1; then
+		retry 3 3 dnf install -y "$pkg"
+	elif command -v yum >/dev/null 2>&1; then
+		retry 3 3 yum install -y "$pkg"
+	elif command -v apk >/dev/null 2>&1; then
+		retry 3 3 apk add --no-cache "$pkg"
+	else
+		log ERROR "No supported package manager found to install ${pkg}."
+		exit 1
+	fi
+}
+
+ensure_basics() {
+	command -v curl >/dev/null 2>&1 || ensure_pkg curl
+	command -v jq >/dev/null 2>&1 || ensure_pkg jq
+}
+
+ensure_docker() {
+	if ! command -v docker >/dev/null 2>&1; then
+		log WARN "Docker not found. Attempting install (Debian/Ubuntu best-effort)."
+		if command -v apt-get >/dev/null 2>&1; then
+			export DEBIAN_FRONTEND=noninteractive
+			retry 3 3 apt-get update -y
+			retry 3 3 apt-get install -y docker.io
+			systemctl enable --now docker || true
+		else
+			log ERROR "Docker required but not installed."
+			exit 1
+		fi
+	fi
+	# Compose v2 preferred
+	if docker compose version >/dev/null 2>&1; then
+		:
+	elif command -v docker-compose >/dev/null 2>&1; then
+		:
+	else
+		log WARN "Docker Compose not found. Installing plugin (Debian/Ubuntu best-effort)."
+		if command -v apt-get >/dev/null 2>&1; then
+			export DEBIAN_FRONTEND=noninteractive
+			retry 3 3 apt-get update -y
+			retry 3 3 apt-get install -y docker-compose-plugin
+		fi
+		if ! docker compose version >/dev/null 2>&1 && ! command -v docker-compose >/dev/null 2>&1; then
+			log ERROR "Docker Compose is required but missing."
+			exit 1
+		fi
+	fi
+}
+
+resolve_compose_cmd() {
+	if docker compose version >/dev/null 2>&1; then
+		COMPOSE_CMD=(docker compose)
+	else
+		COMPOSE_CMD=(docker-compose)
+	fi
+}
+
+###############################
+# Release tag discovery logic #
+###############################
+get_latest_release_version() {
+	# returns "25.9.11" (no "v")
+	with_timeout 20s curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest |
+		jq -r '.tag_name' |
+		sed 's/^[vV]//' |
+		tr -d '[:space:]'
+}
+
+check_image_tag() {
+	local tag="$1"
+	with_timeout 20s docker manifest inspect "${IMAGE_REPO}:${tag}" >/dev/null 2>&1
+}
+
+pick_working_image_tag() {
+	local taglist=()
+	if [[ -n "${XRAY_TAG}" ]]; then
+		taglist+=("${XRAY_TAG}")
+		[[ "${XRAY_TAG}" =~ ^[vV] ]] || taglist+=("v${XRAY_TAG}")
+		taglist+=("${XRAY_TAG}-ls" "v${XRAY_TAG}-ls")
+	else
+		local latest
+		if latest="$(get_latest_release_version)"; then
+			log INFO "Latest GitHub release: ${latest}"
+			taglist+=("${latest}" "v${latest}" "${latest}-ls" "v${latest}-ls")
+		else
+			log WARN "Failed to fetch latest release; trying fallbacks."
+		fi
+		taglist+=("latest" "stable" "1.8.7" "1.8.6" "1.8.5" "1.8.4")
+	fi
+
+	local t
+	for t in "${taglist[@]}"; do
+		if check_image_tag "$t"; then
+			printf "%s" "$t" # stdout ONLY returns the tag (no newline)
+			return 0
+		fi
+	done
+	return 1
+}
+
+#########################################
+# Compose file + config management      #
+#########################################
+write_compose_file() {
+	local image_tag="$1"
+	cat >"${XRAY_DIR}/docker-compose.yml" <<EOF
+services:
+  xray:
+    image: ${IMAGE_REPO}:${image_tag}
+    container_name: ${XRAY_CONTAINER_NAME}
+    user: root
+    volumes:
+      - ./config.json:/config.json:ro
+    network_mode: "host"
+    command: run -c /config.json
+    restart: unless-stopped
+EOF
+}
+
+backup_if_exists() {
+	local f="$1"
+	if [[ -f "$f" ]]; then
+		local ts
+		ts="$(date -u +%Y%m%dT%H%M%SZ)"
+		cp -a "$f" "${f}.bak.${ts}"
+		log INFO "Backed up ${f} -> ${f}.bak.${ts}"
+	fi
+}
+
+ensure_config() {
+	local dest="${XRAY_DIR}/config.json"
+	if [[ "${REFRESH_CONFIG}" == "1" ]]; then
+		backup_if_exists "$dest"
+		log INFO "Fetching config.json from ${CONFIG_URL}"
+		with_timeout 30s curl -4fsSL --retry 3 --retry-delay 2 "${CONFIG_URL}" -o "${dest}"
+	elif [[ ! -f "$dest" ]]; then
+		log WARN "config.json missing. Downloading from ${CONFIG_URL}"
+		with_timeout 30s curl -4fsSL --retry 3 --retry-delay 2 "${CONFIG_URL}" -o "${dest}"
+	else
+		log INFO "Keeping existing config.json (REFRESH_CONFIG=0)"
+	fi
+	if ! jq empty "${dest}" >/dev/null 2>&1; then
+		log ERROR "config.json invalid JSON."
+		exit 1
+	fi
+}
+
+is_port_in_use() {
+	local port="${1:-80}"
+	if command -v lsof >/dev/null 2>&1; then
+		lsof -nP -iTCP:"${port}" -sTCP:LISTEN
+	elif command -v ss >/dev/null 2>&1; then
+		ss -ltnp | grep -E "LISTEN\s+.*:(?:${port}|\*:${port})\b" || true
+	elif command -v netstat >/dev/null 2>&1; then
+		netstat -ltnp 2>/dev/null | grep -E ":(?:${port})\s" || true
+	else
+		return 1
+	fi
+}
+
+#########################################
+# Container lifecycle helpers           #
+#########################################
+container_exists() {
+	docker ps -a --format '{{.Names}}' | grep -Fxq "${XRAY_CONTAINER_NAME}"
+}
+
+container_is_up() {
+	docker ps --format '{{.Names}} {{.Status}}' |
+		awk -v name="${XRAY_CONTAINER_NAME}" '$1==name {print $0}' |
+		grep -q "Up"
+}
+
+stop_and_remove_container() {
+	if container_exists; then
+		log INFO "Stopping existing container ${XRAY_CONTAINER_NAME} ..."
+		docker stop "${XRAY_CONTAINER_NAME}" >/dev/null 2>&1 || true
+		log INFO "Removing container ${XRAY_CONTAINER_NAME} ..."
+		docker rm -f "${XRAY_CONTAINER_NAME}" >/dev/null 2>&1 || true
+	fi
+}
+
+wait_for_up() {
+	local waited=0
+	while ((waited < STARTUP_WAIT_SECS)); do
+		if container_is_up; then
+			return 0
+		fi
+		sleep 1
+		((waited++))
+	done
+	return 1
+}
+
+#########################################
+# Main                                  #
+#########################################
+main() {
+	require_root
+	ensure_basics
+	ensure_docker
+	resolve_compose_cmd
+
+	log INFO "Working directory: ${XRAY_DIR}"
+	mkdir -p "${XRAY_DIR}"
+	cd "${XRAY_DIR}"
+
+	log INFO "Choosing a working image tag from ${IMAGE_REPO} ..."
+	local chosen_tag
+	if ! chosen_tag="$(pick_working_image_tag)"; then
+		log ERROR "Could not find a working image tag on ${IMAGE_REPO}."
+		exit 1
+	fi
+	log OK "Selected image tag: ${chosen_tag}"
+
+	write_compose_file "${chosen_tag}"
+	ensure_config
+
+	if out="$(is_port_in_use 80)"; then
+		if [[ -n "$out" ]]; then
+			log WARN "Port 80 appears to be in use; the container may fail to bind."
+			printf "%s\n" "$out" >&2
+		fi
+	fi
+
+	local prev_image_id=""
+	if container_exists; then
+		prev_image_id="$(docker inspect -f '{{.Image}}' "${XRAY_CONTAINER_NAME}" 2>/dev/null || true)"
+		log INFO "Existing instance detected. Previous image id: ${prev_image_id:-<none>}"
+		stop_and_remove_container
+	fi
+
+	log INFO "Pulling image ${IMAGE_REPO}:${chosen_tag} ..."
+	if ! retry 3 5 with_timeout 300s "${COMPOSE_CMD[@]}" -f "${XRAY_DIR}/docker-compose.yml" pull; then
+		log ERROR "Failed to pull image ${IMAGE_REPO}:${chosen_tag}"
+		exit 1
+	fi
+
+	log INFO "Starting container ${XRAY_CONTAINER_NAME} ..."
+	if ! with_timeout 120s "${COMPOSE_CMD[@]}" -f "${XRAY_DIR}/docker-compose.yml" up -d; then
+		log ERROR "Failed to start container with ${IMAGE_REPO}:${chosen_tag}"
+		exit 1
+	fi
+
+	if wait_for_up; then
+		log OK "Container is up."
+	else
+		log ERROR "Container did not become 'Up' within ${STARTUP_WAIT_SECS}s."
+		docker logs --tail=150 "${XRAY_CONTAINER_NAME}" || true
+		exit 1
+	fi
+
+	if [[ -n "${prev_image_id}" && "${CLEAN_OLD_IMAGE}" == "1" ]]; then
+		local new_image_id
+		new_image_id="$(docker inspect -f '{{.Image}}' "${XRAY_CONTAINER_NAME}")"
+		if [[ "${prev_image_id}" != "${new_image_id}" ]]; then
+			log INFO "Removing previous image ${prev_image_id} ..."
+			docker image rm -f "${prev_image_id}" >/dev/null 2>&1 || true
+		fi
+	fi
+
+	log INFO "Container information:"
+	docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" --filter "name=${XRAY_CONTAINER_NAME}"
+	log INFO "Recent logs:"
+	docker logs --tail=50 "${XRAY_CONTAINER_NAME}" || true
+
+	log OK "Done."
+}
+
+main "$@"

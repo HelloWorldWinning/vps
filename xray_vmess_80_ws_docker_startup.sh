@@ -307,6 +307,20 @@ wait_for_up() {
 #########################################
 main() {
 	require_root
+	local xray_port=""
+	if ! IFS= read -r -t 7 -p "Xray port [80] (7s timeout): " xray_port; then
+		xray_port=80
+		printf '\n' >&2
+	fi
+	xray_port="${xray_port:-80}"
+
+	if [[ ! "$xray_port" =~ ^[0-9]{1,5}$ ]] ||
+		((10#$xray_port < 1 || 10#$xray_port > 65535)); then
+		log ERROR "Invalid port: ${xray_port}. Expected 1–65535."
+		exit 1
+	fi
+	xray_port=$((10#$xray_port))
+	log INFO "Using port: ${xray_port}"
 	ensure_basics
 	ensure_docker
 	resolve_compose_cmd
@@ -326,9 +340,17 @@ main() {
 	write_compose_file "${chosen_tag}"
 	ensure_config
 
-	if out="$(is_port_in_use 80)"; then
+	local config_tmp
+	config_tmp="$(mktemp "${XRAY_DIR}/config.json.tmp.XXXXXX")"
+	jq --argjson port "$xray_port" \
+		'.inbounds[0].port = $port' \
+		"${XRAY_DIR}/config.json" >"$config_tmp"
+	mv -- "$config_tmp" "${XRAY_DIR}/config.json"
+
+	if out="$(is_port_in_use "$xray_port")"; then
 		if [[ -n "$out" ]]; then
-			log WARN "Port 80 appears to be in use; the container may fail to bind."
+			#		log WARN "Port 80 appears to be in use; the container may fail to bind."
+			log WARN "Port ${xray_port} appears to be in use; the container may fail to bind."
 			printf "%s\n" "$out" >&2
 		fi
 	fi

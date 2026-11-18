@@ -917,7 +917,7 @@ EOF
 	mianliu2) eval "$trojan_go_mianliu" ;;
 	3) eval "$xray_mianliu" ;;
 	d80) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
-	xray) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
+	xray80) bash <(curl -LSs https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_vmess_80_ws_docker_startup.sh) ;;
 
 	d80ai) docker_vmess_80_openai_65504 ;;
 
