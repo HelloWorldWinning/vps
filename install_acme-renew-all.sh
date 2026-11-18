@@ -475,11 +475,19 @@ issue_new_interactive() {
     echo "  key:     $key_path"
     echo ""
 
-    read -r -p "Continue? [y/N]: " yn
-    case "$yn" in
-        y|Y|yes|YES) ;;
-        *) say "${YELLOW}Cancelled.${NC}"; return 0 ;;
-    esac
+#   read -r -p "Continue? [y/N]: " yn
+#   case "$yn" in
+#       y|Y|yes|YES) ;;
+#       *) say "${YELLOW}Cancelled.${NC}"; return 0 ;;
+#   esac
+
+read -r -p "Continue? [Y/n]: " yn
+case "$yn" in
+    n|N|no|NO) say "${YELLOW}Cancelled.${NC}"; return 0 ;;
+    *) ;;
+esac
+
+
 
     if [[ "$mode" == "standalone" ]]; then
         "$ACME_BIN" --issue -d "$domain" --standalone --keylength ec-256
