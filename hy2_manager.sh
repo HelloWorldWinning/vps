@@ -979,14 +979,26 @@ show_connections() {
 	for file in "${hy2_main_path}"/exports/*.details.txt; do
 		printf '\n------------------------------------------------------------\n'
 		cat "$file"
+
 		printf '\n复制即用的单端口 URI:\n'
 		cat "${file%.details.txt}.uri.txt"
+
 		printf '\n官方格式的端口跳跃 URI（客户端须支持范围 URI）:\n'
 		cat "${file%.details.txt}.hopping-uri.txt"
-		printf '\n单端口连接二维码:\n'
-		qrencode -t ANSIUTF8 <"${file%.details.txt}.uri.txt" || warn '终端二维码生成失败，请使用 PNG 文件。'
+
+		printf '\n========== 单端口连接二维码 ==========\n'
+		qrencode -t ANSIUTF8 <"${file%.details.txt}.uri.txt" ||
+			warn '单端口二维码生成失败，请使用 PNG 文件。'
+
+		printf '\n========== 端口跳跃范围连接二维码 ==========\n'
+		qrencode -t ANSIUTF8 <"${file%.details.txt}.hopping-uri.txt" ||
+			warn '端口跳跃二维码生成失败，请使用 hopping PNG 文件。'
+
 		printf '\nPNG: %s\n跳跃 PNG: %s\n官方客户端配置: %s\n' \
-			"${file%.details.txt}.png" "${file%.details.txt}.hopping.png" "${file%.details.txt}.client.yaml"
+			"${file%.details.txt}.png" \
+			"${file%.details.txt}.hopping.png" \
+			"${file%.details.txt}.client.yaml"
+
 	done
 }
 show_status() {
