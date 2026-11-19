@@ -1115,7 +1115,8 @@ https://zhile.one/archives/1404.html
 	gcp0) bash <(curl -sL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/get_gcp_login_email2.sh) ;;
 	gcp) curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/ssh-keys" -H "Metadata-Flavor: Google" | grep -oP '"userName":"\K[^"]+' | head -n 1 ;;
 	dttt) ins_dt ;;
-	hy2) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh) ;;
+	hy2_old) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2.sh) ;;
+	hy2) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/hy2_manager.sh) ;;
 	tv) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/tv.sh) ;;
 	bbrv3) bash <(curl -sSL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_bbrv3.sh) ;;
 	vpn_tools) bash <(curl -fSsL https://raw.githubusercontent.com/HelloWorldWinning/vps/main/vpn-tools.sh) ;;
