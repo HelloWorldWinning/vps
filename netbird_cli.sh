@@ -149,11 +149,22 @@ deregister_if_running() {
 	fi
 }
 
+#bring_up() {
+#	enable_start_service
+#	wait_for_daemon
+#	#netbird up --setup-key "${SETUP_KEY}" --enable-rosenpass --rosenpass-permissive --allow-server-ssh --enable-ssh-root
+#	netbird up --setup-key "${SETUP_KEY}" --allow-server-ssh --enable-ssh-root
+#}
+
 bring_up() {
 	enable_start_service
 	wait_for_daemon
-	#netbird up --setup-key "${SETUP_KEY}" --enable-rosenpass --rosenpass-permissive --allow-server-ssh --enable-ssh-root
-	netbird up --setup-key "${SETUP_KEY}" --allow-server-ssh --enable-ssh-root
+
+	netbird up \
+		--setup-key "${SETUP_KEY}" \
+		--wireguard-port "${WIREGUARD_PORT:=54999}" \
+		--allow-server-ssh \
+		--enable-ssh-root
 }
 
 print_info() {
