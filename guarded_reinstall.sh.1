@@ -1,0 +1,326 @@
+#!/usr/bin/env bash
+# guarded_reinstall - makes you prove you are on the RIGHT VPS before anything destructive runs.
+#
+# USAGE  (run the file with bash). Paste this whole block at the TOP of your script,
+#        then call it on its own line ABOVE the dangerous line:
+#
+#     guarded_reinstall
+#     curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh ... && reboot
+#
+# If any check fails it does `exit 1`, so the line below it can never run. Ctrl-C, Ctrl-D,
+# no terminal, no detectable IP: all of them abort. (Pasted into a live SSH shell, a failed
+# check closes that shell - on purpose.)
+#
+# What it does:
+#   - shows the server's COUNTRY + CITY (IP geolocation; orientation only, never a check,
+#     and the IP itself is never printed)
+#   - STEP 1/2  type the HOSTNAME in CAPITALS
+#   - STEP 2/2  NetBird found -> type this machine's NetBird DNS label (e.g. la.a.a)
+#               no NetBird    -> type this server's FULL public IPv4 or IPv6
+#   - a wrong answer never falls back to the other question - it aborts.
+# Env: GUARD_EMOJI=0 / GUARD_EMOJI=1 forces emoji off / on (default: auto-detect).
+
+guarded_reinstall() {
+	( # subshell: nothing leaks into your script, and your set -e/-u/pipefail cannot interfere
+		set +e +u
+		set +o pipefail 2>/dev/null
+		if ! : </dev/tty 2>/dev/null; then
+			echo "guarded_reinstall: no terminal (/dev/tty) available - refusing to continue." >&2
+			exit 1
+		fi
+
+		W=66
+		RST=$'\033[0m'
+
+		#	BGR=$'\033[1;97;41m'
+
+		BGR=$'\033[1;31m'
+		BYL=$'\033[1;30;43m'
+		RED=$'\033[1;31m'
+		GRN=$'\033[1;32m'
+		YLW=$'\033[1;33m'
+		CYN=$'\033[1;36m'
+		MAG=$'\033[1;35m'
+		BLU=$'\033[1;34m'
+		DIM=$'\033[2m'
+		BLNK=$'\033[5m'
+
+		bar() { printf '%s%*s%s\n' "$1" "$W" "" "$RST"; }
+		line() { printf '%s  %-*s%s\n' "$1" $((W - 2)) "$2" "$RST"; }
+		ask() { read -rp "${CYN}>> $1${RST}" "$2" </dev/tty; }
+		danger() {
+			echo
+			bar "$BGR"
+			line "$BGR$BLNK" "!!!  DANGER:  FULL DISK WIPE + OS REINSTALL  !!!"
+			line "$BGR" "$1"
+			bar "$BGR"
+			echo
+		}
+
+		# --- IPv6 / IPv4 helpers ---
+		v6_norm() { # any IPv6 notation -> 8 groups, lowercase, no leading zeros
+			local a=${1,,} left right miss h i
+			local -a l r out res
+			[[ $a =~ ^[0-9a-f:]+$ ]] || return 1
+			[[ $a == *:::* ]] && return 1
+			if [[ $a == *::* ]]; then
+				right=${a#*::}
+				[[ $right == *::* ]] && return 1
+				left=${a%%::*}
+				IFS=: read -ra l <<<"$left"
+				IFS=: read -ra r <<<"$right"
+				miss=$((8 - ${#l[@]} - ${#r[@]}))
+				[ "$miss" -ge 1 ] || return 1
+				out=("${l[@]}")
+				for ((i = 0; i < miss; i++)); do out+=(0); done
+				out+=("${r[@]}")
+			else
+				IFS=: read -ra out <<<"$a"
+			fi
+			[ ${#out[@]} -eq 8 ] || return 1
+			for h in "${out[@]}"; do
+				[[ $h =~ ^[0-9a-f]{1,4}$ ]] || return 1
+				res+=("$(printf '%x' "$((16#$h))")")
+			done
+			(
+				IFS=:
+				echo "${res[*]}"
+			)
+		}
+		norm_ip() { if [[ $1 =~ ^[0-9]+(\.[0-9]+){3}$ ]]; then echo "$1"; else v6_norm "$1"; fi; }
+
+		# --- this server's own addresses: public IP + addresses on the default-route interface
+		#     (docker/bridge/NetBird interfaces are skipped on purpose: same on many VPS) ---
+		addr_list() {
+			local ip4 ip6 fam d a
+			ip4=$(curl -fs4 --connect-timeout 3 --max-time 4 https://api.ipify.org 2>/dev/null)
+			ip6=$(curl -fs6 --connect-timeout 3 --max-time 4 https://api6.ipify.org 2>/dev/null)
+			{
+				echo "$ip4"
+				echo "$ip6"
+				if command -v ip >/dev/null 2>&1; then
+					for fam in -4 -6; do
+						for d in $(ip $fam route show default 2>/dev/null | awk '{for(i=1;i<NF;i++) if($i=="dev") print $(i+1)}' | sort -u); do
+							ip -o $fam addr show dev "$d" scope global 2>/dev/null | awk '{print $4}' | cut -d/ -f1
+						done
+					done
+				else
+					hostname -I 2>/dev/null | tr ' ' '\n'
+				fi
+			} | while read -r a; do [ -n "$a" ] && norm_ip "$a"; done | sort -u
+		}
+		ip_ok() { # typed text must be a FULL address of this server (any IPv6 notation)
+			local t n=$1
+			t=${n//[[:space:]]/}
+			t=${t//\[/}
+			t=${t//\]/}
+			t=${t%%/*}
+			n=$(norm_ip "$t") || return 1
+			grep -qxF -- "$n" <<<"$ADDRS"
+		}
+
+		# --- NetBird: this machine's own DNS label (top-level "fqdn" of status --json) ---
+		fqdn_from_json() {
+			local j
+			j=$(cat)
+			if command -v jq >/dev/null 2>&1; then
+				printf '%s' "$j" | jq -r '.fqdn // empty' 2>/dev/null
+			elif command -v python3 >/dev/null 2>&1; then
+				printf '%s' "$j" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("fqdn") or "")' 2>/dev/null
+			else # no jq/python3: peers are listed first, so this machine'"'"'s fqdn is the LAST one
+				printf '%s' "$j" | grep -o '"fqdn":"[^"]*"' | tail -1 | cut -d'"' -f4
+			fi
+		}
+		nb_fqdn() { # prints the label, or fails when NetBird is missing / silent / has no label
+			local j f
+			command -v netbird >/dev/null 2>&1 || return 1
+			j=$(timeout 8 netbird status --json 2>/dev/null) || return 1
+			f=$(printf '%s' "$j" | fqdn_from_json)
+			f=${f,,}
+			f=${f//[[:space:]]/}
+			f=${f%.}
+			[ -n "$f" ] || return 1
+			echo "$f"
+		}
+
+		# --- server location: IP geolocation over the internet (informational only, never a check) ---
+		json_str() { # $1 = key; JSON on stdin -> top-level string value ("" if missing)
+			local j k=$1
+			j=$(cat)
+			if command -v jq >/dev/null 2>&1; then
+				printf '%s' "$j" | jq -r --arg k "$k" '.[$k] // empty | strings' 2>/dev/null
+			elif command -v python3 >/dev/null 2>&1; then
+				printf '%s' "$j" | python3 -c 'import sys,json; v=json.load(sys.stdin).get(sys.argv[1]); print(v if isinstance(v,str) else "")' "$k" 2>/dev/null
+			else
+				printf '%s' "$j" | grep -o "\"$k\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | head -1 | sed 's/^[^:]*:[[:space:]]*"//; s/"$//'
+			fi
+		}
+		geo_lookup() { # sets GEO_CC / GEO_COUNTRY / GEO_CITY / GEO_SRC; fails if no provider answers
+			local u j k country cc city t0=$SECONDS
+			GEO_CC=""
+			GEO_COUNTRY=""
+			GEO_CITY=""
+			GEO_SRC=""
+			for u in https://ipwho.is/ https://get.geojs.io/v1/ip/geo.json https://ipapi.co/json/ https://ipinfo.io/json; do
+				[ $((SECONDS - t0)) -lt 6 ] || break
+				j=$(curl -fs --connect-timeout 2 --max-time 3 -A 'Mozilla/5.0 (X11; Linux x86_64)' "$u" 2>/dev/null) || continue
+				[ -n "$j" ] || continue
+				country=""
+				for k in country_name countryName country; do
+					country=$(printf '%s' "$j" | json_str "$k")
+					[ -n "$country" ] && break
+				done
+				cc=""
+				for k in country_code countryCode; do
+					cc=$(printf '%s' "$j" | json_str "$k")
+					[ -n "$cc" ] && break
+				done
+				city=""
+				for k in city cityName; do
+					city=$(printf '%s' "$j" | json_str "$k")
+					[ -n "$city" ] && break
+				done
+				if [ -z "$cc" ] && [ ${#country} -eq 2 ]; then
+					cc=$country
+					country=""
+				fi # ipinfo style: "country":"JP"
+				[ -n "$country$cc" ] || continue
+				GEO_CC=${cc^^}
+				GEO_COUNTRY=$country
+				GEO_CITY=$city
+				GEO_SRC=${u#https://}
+				GEO_SRC=${GEO_SRC%%/*}
+				return 0
+			done
+			return 1
+		}
+
+		# Emoji only when the session looks UTF-8 on a graphical terminal (not the Linux console,
+		# not a dumb/VT terminal). Emoji go on their OWN line, never inside the coloured box, so a
+		# terminal that draws them double-width or as boxes cannot break the layout.
+		# Override: GUARD_EMOJI=1 (force on) / GUARD_EMOJI=0 (force off).
+		emoji_ok() {
+			case "${GUARD_EMOJI:-auto}" in 1) return 0 ;; 0) return 1 ;; esac
+			case "${LC_ALL:-${LC_CTYPE:-${LANG:-}}}" in *[Uu][Tt][Ff]-8* | *[Uu][Tt][Ff]8*) ;; *) return 1 ;; esac
+			case "${TERM:-dumb}" in linux | dumb | vt* | ansi | cons*) return 1 ;; esac
+			return 0
+		}
+		flag_emoji() { # 2-letter country code -> flag emoji, written as raw UTF-8 bytes (locale independent)
+			local cc=${1^^} i c out=""
+			[[ $cc =~ ^[A-Z]{2}$ ]] || return 1
+			for ((i = 0; i < 2; i++)); do
+				c=$(($(printf '%d' "'${cc:i:1}") - 65 + 166)) # regional indicator = F0 9F 87 (A6 + letter index)
+				out+=$(printf "$(printf '\\xf0\\x9f\\x87\\x%02x' "$c")")
+			done
+			printf '%s' "$out"
+		}
+		spread() { # "Hong Kong" -> "H O N G   K O N G"  (plain CAPS if too long or not ASCII)
+			local s=$1 out="" i ch lim=$2
+			case $s in *[!\ -~]*)
+				printf '%s' "$s"
+				return
+				;;
+			esac # non-ASCII (e.g. Sao Paulo with accents): leave as is
+			s=${s^^}
+			for ((i = 0; i < ${#s}; i++)); do
+				ch=${s:i:1}
+				if [ "$ch" = " " ]; then out+="  "; else out+="$ch "; fi
+			done
+			out=${out% }
+			if [ ${#out} -le "$lim" ]; then printf '%s' "$out"; else printf '%s' "$s"; fi
+		}
+
+		# LOCATION: bold white on bright magenta, yellow values
+		LBLU=$'\033[1;97;45m'
+
+		LYEL=$'\033[1;97;45m'
+
+		loc_line() { # label in white, value in bright yellow, on a full-width blue bar
+			local pad=$((W - 2 - ${#1} - ${#2}))
+			[ "$pad" -lt 0 ] && pad=0
+			printf '%s  %s%s%s%*s%s\n' "$LBLU" "$1" "$LYEL" "$2" "$pad" "" "$RST"
+		}
+		show_location() {
+			local cname country_txt city_txt
+			echo
+			if [ -z "$GEO_CC$GEO_COUNTRY" ]; then
+				echo "${BGR}  $(printf '\xf0\x9f\x93\x8d')  >>>  WHERE IS THIS SERVER?  <<<  $(flag_emoji "$GEO_CC")  ${RST}"
+				echo "${YLW}  Location lookup failed (offline?) - continuing without it.${RST}"
+				return
+			fi
+			cname=${GEO_COUNTRY:-$GEO_CC}
+			country_txt=$(spread "$cname" $((W - 19)))
+			if [ -n "$GEO_COUNTRY" ] && [ -n "$GEO_CC" ]; then country_txt+="   ($GEO_CC)"; fi
+			city_txt=$(spread "${GEO_CITY:-UNKNOWN}" $((W - 12)))
+			if emoji_ok; then
+				echo "${CYN}  $(printf '\xf0\x9f\x93\x8d')  >>>  WHERE IS THIS SERVER?  <<<  $(flag_emoji "$GEO_CC")${RST}"
+			else
+				echo "${BGR}  >>>  WHERE IS THIS SERVER?  <<<${RST}"
+			fi
+			bar "$LBLU"
+			loc_line "COUNTRY : " "$country_txt"
+			loc_line "CITY    : " "$city_txt"
+			bar "$LBLU"
+			echo "${DIM}  Approximate (IP geolocation via $GEO_SRC) - for orientation only.${RST}"
+		}
+
+		identify() {
+			[ -n "${IDENT_DONE:-}" ] && return
+			HN=$(hostname | tr 'a-z' 'A-Z')
+			NB=$(nb_fqdn) || NB=""
+			ADDRS=""
+			[ -n "$NB" ] || ADDRS=$(addr_list)
+			geo_lookup || true
+			IDENT_DONE=1
+		}
+		fail() {
+			echo
+			bar "$BGR"
+			line "$BGR" "ABORTED - nothing was changed."
+			bar "$BGR"
+			echo "${YLW}This server is actually:${RST} ${BYL} $HN ${RST}"
+			if [ -n "$NB" ]; then
+				echo "${YLW}NetBird label:         ${RST} ${BYL} $NB ${RST}"
+			else echo "${YLW}IP address(es):        ${RST} ${BYL} $(echo $ADDRS) ${RST}"; fi
+			echo "${YLW}If that is not the VPS you meant - good catch.${RST}"
+			exit 1
+		}
+
+		guard() {
+			local A B
+			echo "${DIM}Checking this server's identity and location...${RST}"
+			identify
+			danger "Confirm you are on the RIGHT VPS: 2 steps, both must match"
+			show_location
+			echo
+
+			echo "${CYN}STEP 1/2${RST}  ${BYL} HOSTNAME ${RST}"
+			ask "Type this server's HOSTNAME in CAPITALS: " A
+			[ -n "$A" ] && [ "$A" = "$HN" ] || fail
+			echo
+
+			if [ -n "$NB" ]; then
+				echo "${CYN}STEP 2/2${RST}  ${BLU} NETBIRD DETECTED ${RST}"
+				ask "Type this machine's NetBird DNS label :" B
+				B=${B,,}
+				B=${B//[[:space:]]/}
+				B=${B%.}
+				[ -n "$B" ] && [ "$B" = "$NB" ] || fail
+			else
+				echo "${CYN}STEP 2/2${RST}  ${MAG} NO NETBIRD - USING IP ${RST}"
+				[ -n "$ADDRS" ] || {
+					echo "${RED}Cannot detect any IP on this server - refusing to continue.${RST}"
+					exit 1
+				}
+				ask "Type this server's FULL public IP (IPv4 or IPv6): " B
+				ip_ok "$B" || fail
+			fi
+			echo
+			echo "${GRN}Guard passed for $HN - continuing with the reinstall command...${RST}"
+		}
+
+		guard
+	) || exit 1
+}
+
+guarded_reinstall
