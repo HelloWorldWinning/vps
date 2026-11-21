@@ -1,0 +1,346 @@
+# available
+
+- dimwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:47+00:00
+- winmote\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:47+00:00
+- motewin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:47+00:00
+- wininch\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:47+00:00
+- winspeck\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- speckwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- ebbwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- dewwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- winseep\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- seepwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:49+00:00
+- winsoak\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:50+00:00
+- winbend\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:50+00:00
+- bendwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:50+00:00
+- winbare\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:50+00:00
+- winhush\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:52+00:00
+- winmute\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:52+00:00
+- mutewin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:52+00:00
+- winundo\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:52+00:00
+- undowin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:52+00:00
+- winblank\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:53+00:00
+- blankwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:53+00:00
+- winpare\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- parewin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- winhind\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- hindwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- wingaps\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- gapswin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- winseam\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- seamwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- roamwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- airywin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:54+00:00
+- winblur\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- winhull\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- hullwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- winraft\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- knotwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- winfloat\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:56+00:00
+- gustwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:57+00:00
+- winomen\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:57+00:00
+- omenwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:57+00:00
+- winplod\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:57+00:00
+- plodwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:57+00:00
+- gazewin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:23:58+00:00
+- winhun\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:01+00:00
+- winzhou\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- zhouwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- winzhai\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- zhaiwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- mengwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- winmuji\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- mujiwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- winqiwu\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- qiwuwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- winyufeng\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- yufengwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- winchongxu\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- chongxuwin\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:02+00:00
+- dimdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:04+00:00
+- lowdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:04+00:00
+- lowtao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- ebbdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- ebbtao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- gapdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- gaptao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- faintdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- fainttao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- dulldao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- dulltao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- weakdao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- weaktao\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+- subtledo\.com — registration: 11\.17 USD; renewal: 11\.17 USD; checked: 2026-11-21T06:24:05+00:00
+
+# premium
+
+None.
+
+# unavailable
+
+- winwee\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- weewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winbit\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- bitwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winjot\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- jotwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winmin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- minwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- windim\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winthin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- thinwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winless\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- lesswin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winfew\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- fewwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- inchwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:47+00:00
+- winfine\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- finewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- winrare\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- rarewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- winlow\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- lowwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- winsoft\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- softwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- winebb\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- windew\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- winmist\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- mistwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- windrip\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- dripwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:49+00:00
+- soakwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winmild\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- mildwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winflex\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- flexwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winyield\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- yieldwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winnil\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- nilwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winnon\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- nonwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winnot\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- notwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winraw\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- rawwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- barewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:50+00:00
+- winlean\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- leanwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- hushwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- wincalm\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- calmwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winidle\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- idlewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winease\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- easewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winstill\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- stillwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winplain\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- plainwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winvale\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- valewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:52+00:00
+- winhub\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- hubwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winslow\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- slowwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winlate\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- latewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winlast\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- lastwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winwait\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- waitwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winhold\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- holdwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winback\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- backwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winturn\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- turnwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- winkeep\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- keepwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:53+00:00
+- wintrim\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- trimwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- wingap\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- gapwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- winslip\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- slipwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- winroam\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- winairy\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- winsoar\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- soarwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:54+00:00
+- blurwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- raftwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- winhum\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- humwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- winodd\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- oddwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- winnumb\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- numbwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- winknot\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- windrift\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- driftwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- winglide\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- glidewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- floatwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:56+00:00
+- wingust\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- winsail\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- sailwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- winflux\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- fluxwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- wintide\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- tidewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- winchip\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- chipwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- winecho\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- echowin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- winfate\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- fatewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- wintilt\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- tiltwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:57+00:00
+- wingull\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- gullwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- wingaze\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winhair\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- hairwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winwu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- wuwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winxu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- xuwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winpu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- puwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winxi\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- xiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winwei\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- weiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winrou\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- rouwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winci\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- ciwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:23:58+00:00
+- winqi\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- qiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- wingu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- guwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winse\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- sewin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winfu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- fuwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winji\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- jiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winfan\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- fanwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- wintui\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- tuiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winyou\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- youwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winyao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- yaowin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winyu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- yuwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:00+00:00
+- winlai\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- laiwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- hunwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- windun\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- dunwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- windao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- daowin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- wintao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- taowin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winjing\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- jingwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winxuan\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- xuanwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winmiao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- miaowin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winming\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- mingwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winshou\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- shouwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:01+00:00
+- winfeng\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- fengwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- winchong\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- chongwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- winwang\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- wangwin\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- winmeng\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:02+00:00
+- tinydao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- tinytao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- tinywar\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- tinydo\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- tinyact\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- tinyway\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- weeact\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- weeway\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- voiddao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- ruodao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- ruotao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- roudao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- routao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- xudao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- xutao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- pudao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- putao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- dimtao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:04+00:00
+- rawdao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- rawtao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- nildao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- niltao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- softdao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- softtao\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- nonact\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- unact\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:05+00:00
+- unvie\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- novie\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- nofoe\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- unhewn\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- unbored\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- seegap\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- findgap\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- ridewind\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- windride\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- emptyboat\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- chongxu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- xuzhou\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- xinzhai\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- zuowang\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- tianlai\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- wangji\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- yufeng\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- tianrui\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+- shuofu\.com — Registered, reserved, or otherwise unavailable; checked: 2026-11-21T06:24:06+00:00
+
+# unsupported
+
+None.
+
+# unknown
+
+None.
+
+# invalid
+
+None.
+
+# summary
+
+- Provider: Cloudflare Registrar Check API
+- Run created: 2026-11-21T06:23:47+00:00
+- Report generated: 2026-11-21T06:24:06+00:00
+- Outcome: Checking finished; inspect unknown and unsupported sections
+- Fully resolved: yes
+- Unique entries (including invalid): 299
+- available: 71
+- premium: 0
+- unavailable: 228
+- unsupported: 0
+- unknown: 0
+- invalid: 0
+- Input files: 1
+- Input lines: 299
+
+Available means positively confirmed registrable through this provider at the recorded time.
+Unavailable can mean registered, reserved, or otherwise blocked. Unsupported is not taken.
+Premium status does not itself confirm registrability. No domains were reserved or purchased.
+Recheck before purchase. Suffix validation uses the installed tldextract ICANN snapshot.
+
+Input files:
+
+- /data/vps/domain\_d/taoist\_short\_domain\_ideas\.txt
