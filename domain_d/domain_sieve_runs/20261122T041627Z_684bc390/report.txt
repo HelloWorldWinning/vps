@@ -1,0 +1,83 @@
+=== AVAILABLE (3) ===
+
+windue.com  |  registration 11.17 USD; renewal 11.17 USD  |  checked 2026-11-22T04:16:27+00:00
+prevwin.com  |  registration 11.17 USD; renewal 11.17 USD  |  checked 2026-11-22T04:16:28+00:00
+winxian.com  |  registration 11.17 USD; renewal 11.17 USD  |  checked 2026-11-22T04:16:28+00:00
+
+=== PREMIUM (0) ===
+
+None.
+
+=== UNAVAILABLE (33) ===
+
+prewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winpre.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+erewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winere.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+evewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+wineve.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+forewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winfore.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+antewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winante.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+donewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+windone.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+prepwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winprep.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+duewin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+planwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winplan.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+initwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+wininit.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:27+00:00
+winprev.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+dawnwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+windawn.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+budwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+winbud.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+soonwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+winsoon.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+rootwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+winroot.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+bornwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+winborn.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+zaowin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+winzao.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+xianwin.com  |  Registered, reserved, or otherwise unavailable  |  checked 2026-11-22T04:16:28+00:00
+
+=== UNSUPPORTED (0) ===
+
+None.
+
+=== UNKNOWN (0) ===
+
+None.
+
+=== INVALID (0) ===
+
+None.
+
+=== SUMMARY ===
+
+Provider: Cloudflare Registrar Check API
+Run created: 2026-11-22T04:16:27+00:00
+Report generated: 2026-11-22T04:16:28+00:00
+Outcome: Checking finished; inspect unknown and unsupported sections
+Fully resolved: yes
+Unique entries (including invalid): 36
+available: 3
+premium: 0
+unavailable: 33
+unsupported: 0
+unknown: 0
+invalid: 0
+Input files: 1
+Input lines: 36
+
+Available means positively confirmed registrable through this provider at the recorded time.
+Unavailable can mean registered, reserved, or otherwise blocked. Unsupported is not taken.
+Premium status does not itself confirm registrability. No domains were reserved or purchased.
+Recheck before purchase. Suffix validation uses the installed tldextract ICANN snapshot.
+
+Input files:
+
+/data/vps/domain_d/pre_win.txt
