@@ -1563,6 +1563,7 @@ https://zhile.one/archives/1404.html
 	xrayd) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_docker_multi.sh) ;;
 	xraydrandom) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/xray_docker_multi_4_good.sh) ;;
 	v46) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/v4_v6_temporary_switcher.sh) ;;
+	ip) bash <(curl -Ls https://raw.githubusercontent.com/HelloWorldWinning/vps/main/save_ip_quality_report.sh) ;;
 
 	*) echo "wrong input" ;;
 	esac
