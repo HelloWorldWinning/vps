@@ -1242,6 +1242,10 @@ EOF
 		guarded_reinstall
 		curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 13 --username "root" --password "password" --ssh-port 54322 && echo "rebooting in 4s, Ctrl-C to cancel" && sleep 4 && reboot
 		;;
+
+	ddupdate_now_now)
+		curl -fLO https://raw.githubusercontent.com/bin456789/reinstall/main/reinstall.sh && bash reinstall.sh debian 13 --username "root" --password "password" --ssh-port 54322 && echo "rebooting in 4s, Ctrl-C to cancel" && sleep 4 && reboot
+		;;
 	4441) bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/HelloWorldWinning/vps/main/install_debian_current_netboot.sh') ;;
 	65) eval "$ss_rust2" ;;
 		#     66)eval "$ping_local_fast" ;;
