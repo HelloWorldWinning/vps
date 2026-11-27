@@ -231,7 +231,8 @@ fi
 
 # ----------------------------------------------------------------------------- cron
 # Weather only. The date/time cron is deleted: the clock is rendered by oh-my-posh itself.
-CRON_WEA="*/30 * * * * curl -sSL $RAW/weather_temperature.sh | bash"
+#CRON_WEA="*/30 * * * * curl -sSL $RAW/weather_temperature.sh | bash"
+CRON_WEA="* */2 * * * curl -sSL $RAW/weather_temperature.sh | bash"
 
 CRON_TMP="$(mktemp)"
 crontab -l 2>/dev/null |
